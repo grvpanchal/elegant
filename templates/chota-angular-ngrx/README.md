@@ -1,46 +1,45 @@
-# @ngrx example application
+# TodosAppNgrx
 
-Example application utilizing @ngrx libraries, showcasing common patterns and best practices. Try it on [StackBlitz](https://ngrx.github.io/platform/stackblitz.html).
+Is the example for use Angular + Ngrx (Redux) for a [TodoMV* App](http://todomvc.com/)
 
-This app is a book collection manager. The user can authenticate, use the Google Books API to search for
-books and add them to their collection. This application utilizes [@ngrx/store](https://ngrx.io/guide/store) to manage
-the state of the app and to cache requests made to the Google Books API;
-[@ngrx/effects](https://ngrx.io/guide/effects) to isolate side effects; [@angular/router](https://angular.io/guide/router) to manage navigation between routes; [@angular/material](https://github.com/angular/material2) to provide design and styling.
+You can see all files about redux in [TodoMV* App](https://github.com/nicobytes/todo-app-ngrx/tree/master/src/redux)
 
 Built with [@angular/cli](https://github.com/angular/angular-cli)
 
-### Included
+# [DEMO ONLINE](https://todomvc-8d040.firebaseapp.com/)
 
-- [@ngrx/store](https://ngrx.io/guide/store) - RxJS powered state management for Angular apps, inspired by Redux
-- [@ngrx/effects](https://ngrx.io/guide/effects) - Side effect model for @ngrx/store
-- [@ngrx/router-store](https://ngrx.io/guide/router-store) - Bindings to connect the Angular Router to @ngrx/store
-- [@ngrx/entity](https://ngrx.io/guide/entity) - Entity State adapter for managing record collections.
-- [@ngrx/store-devtools](https://ngrx.io/guide/store-devtools) - Instrumentation for @ngrx/store enabling time-travel debugging
-- [@angular/router](https://angular.io/guide/router) - Angular Router
-- [@angular/material](https://material.angular.io) - Angular Material
-- [jest](https://jestjs.io) - JavaScript test runner with easy setup, isolated browser testing and snapshot testing
+![cover](https://firebasestorage.googleapis.com/v0/b/todomvc-8d040.appspot.com/o/cover.png?alt=media&token=e8d4f906-4866-4b7a-a51a-f73867f985e3 "cover")
+
+
+### Included
+- [@ngrx/store](https://github.com/ngrx/store) - RxJS powered state management for Angular apps, inspired by Redux
+- [@angular/router](https://github.com/angular/angular) - Angular Router
+- [@ngrx/store-devtools](https://github.com/ngrx/store-devtools) - Instrumentation for @ngrx/store enabling time-travel debugging
 
 ### Quick start
 
 ```bash
-# Clone the repository
-git clone https://github.com/ngrx/platform.git
+# clone the repo
+git clone https://github.com/nicobytes/todo-app-ngrx.git
 
-# Go to the example directory
-cd platform
+# Install the dependencies:
+npm install
 
-# Install the dependencies
-yarn
-
-# Start the server
-yarn nx serve example-app
+# start the server
+ng serve
 ```
 
-Navigate to [http://localhost:4200/](http://localhost:4200/) in your browser. To log in, the username and password is `test`.
+### Features
 
-_NOTE:_ The above setup instructions assume you have added local npm bin folders to your path.
-If this is not the case you will need to install the Angular CLI globally.
+- TodoMV* features ... [link](https://github.com/tastejs/todomvc/blob/master/app-spec.md#functionality)
+- Redux with ngrx
+- Persistence
+- Routing
+- coverage = 100% 
 
-### Try it on StackBlitz
+![coverage](https://firebasestorage.googleapis.com/v0/b/todomvc-8d040.appspot.com/o/coverage.png?alt=media&token=e4e0ab21-51f3-4959-8969-381f8a081944 "coverage")
 
-Try the example-app on [StackBlitz](https://ngrx.github.io/platform/stackblitz.html).
+# Todos
+
+- [] Add Angular Universal
+- [] PWA
