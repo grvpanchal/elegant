@@ -5,7 +5,7 @@
 
 In the context of Atomic Design, a page is the final output that users interact with and is composed of templates, organisms, molecules, and atoms. Here is an example of a simple `HomePage` page component that uses the `HomePageTemplate` template:
 
-```js
+```jsx
 // HomePage.js
 
 import React from "react";
@@ -30,7 +30,7 @@ In this example:
 
 Now, when we use the `HomePage` component in our application, it represents the final page that users will see:
 
-```js
+```jsx
 // App.js
 
 import React from "react";
