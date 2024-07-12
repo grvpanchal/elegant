@@ -11,7 +11,7 @@
 
   .code-box {
     display: flex;
-    padding: 4rem 0 1rem;
+    padding: 1rem 0 1rem;
     width: 100%;
     pre {
       font-size: 1em;
@@ -38,6 +38,26 @@
       }
     }
 
+  }
+
+  .select-box {
+    background-color: transparent;
+    display: block;
+    padding-top: 2.5rem;
+    width: 100%;
+
+    select {
+      background-color: transparent;
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+      outline: none;
+      border: none;
+
+      option {
+        color: #000;
+      }
+    }
   }
   .connected-steps {
     display: flex;

@@ -12,12 +12,16 @@
     </div>
     <div class="connector"></div>
     <div class="step">
-      <img src="{{ '/assets/img/brands/ux/saga.png' || | relative_url }}"" />
+      <img src="{{ '/assets/img/brands/state/saga.png' || | relative_url }}"" onclick="var event = document.createEvent('MouseEvents');event.initMouseEvent('mousedown', true, true, window);stateSelect.dispatchEvent(event);" />
       <div class="text">State</div>
     </div>
   </div>
+  <div class="select-box">
+    <select id="selectBoilerplate" name="selectBoilerplate" onchange="updateBoilerplate(this)">
+    </select>
+  </div>
   <div class="code-box">
-    <pre>npx elegant chota-react-saga</pre>
-    <a href="{{ '/demos/chota-react-saga' || | relative_url }}" class="btn"><span>DEMO</span><img src="https://icongr.am/clarity/play.svg?size=24&color=ffffff"></a>
+    <pre id="codeBox">npx elegant chota-react-saga</pre>
+    <a id="demoLink" href="{{ '/demos/chota-react-saga' || | relative_url }}" class="btn"><span>DEMO</span><img src="https://icongr.am/clarity/play.svg?size=24&color=ffffff"></a>
   </div>
 </div>

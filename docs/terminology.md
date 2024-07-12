@@ -1,5 +1,5 @@
 ---
-title: The UX Side
+title: The State Side
 layout: default
 ---
 # Terminology

@@ -52,7 +52,7 @@ const loop = (nodes, callback) => {
 const onTabSelect = (parentNode, node, i) => {
   node.addEventListener("click", (e) => {
     e.target.classList.add("selected");
-    loop(parentNode, (node, j) => i !==j ? node.classList.remove('selected') : null);
+    loop(parentNode, (node, j) => i !== j ? node.classList.remove('selected') : null);
   });
 };
 
@@ -60,10 +60,34 @@ tabsNodes = document.querySelectorAll(".code-tabs");
 
 loop(tabsNodes, (tabsNode) => {
   nodes = tabsNode.querySelectorAll("p");
-  if(nodes.length) {
+  if (nodes.length) {
     nodes[0].classList.add("hide");
     nodes[1].classList.add("selected");
   }
-    loop(nodes, (node, i) => onTabSelect(nodes, node, i));
+  loop(nodes, (node, i) => onTabSelect(nodes, node, i));
 })
 
+// Demo Selection component
+var demos = [
+  'chota-react-saga',
+  'chota-angular-ngrx',
+  'chota-react-redux',
+  'chota-react-rtk',
+  'chota-vue-pinia',
+  'chota-wc-saga',
+];
+
+const buildOption = (label, value) => `<option value="${value}">${label}</option>`;
+const buildOptions = (options) => options.map(option => buildOption(option, option)).toString();
+const buildselectBoilerplate = () => {
+  const optionHtml = buildOptions(demos);
+  selectBoilerplate.innerHTML = optionHtml; 
+};
+
+const updateBoilerplate = (e) => {
+  console.log('=== e', e.value);
+  codeBox.innerHTML = `nxp elegant ${e.value}`;
+  demoLink.href = `./demos/${e.value}`;
+};
+
+buildselectBoilerplate();
