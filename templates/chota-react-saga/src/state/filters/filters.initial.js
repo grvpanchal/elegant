@@ -1,6 +1,6 @@
 import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from "./filters.type";
 
-const instialFiltersState = [
+const initialFiltersState = [
   {
     id: SHOW_ALL,
     label: "All",
@@ -18,4 +18,4 @@ const instialFiltersState = [
   },
 ];
 
-export default instialFiltersState;
+export default initialFiltersState;

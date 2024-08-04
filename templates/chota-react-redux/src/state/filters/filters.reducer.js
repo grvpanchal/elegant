@@ -1,7 +1,7 @@
-import instialFiltersState from "./filters.initial";
+import initialFiltersState from "./filters.initial";
 import { SET_VISIBILITY_FILTER } from "./filters.type";
 
-const filters = (state = instialFiltersState, action) => {
+const filters = (state = initialFiltersState, action) => {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
       return state.map((filter) => {
