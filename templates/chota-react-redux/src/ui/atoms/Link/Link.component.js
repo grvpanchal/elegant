@@ -3,12 +3,12 @@ import { propTypes } from "./Link.type";
 
 
 
-const Link = ({ active, children, onClick }) => (
+const Link = ({ isActive, children, onClick }) => (
   <a
     href="#"
-    className={`button ${active ? "primary" : "outline"}`}
+    className={`button ${isActive ? "primary" : "outline"}`}
     onClick={onClick}
-    disabled={active}
+    disabled={isActive}
     role="button"
   >
     {children}
