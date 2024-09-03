@@ -1,28 +1,30 @@
-import c"./TodoItems.style.css";
+import { html } from "lit";
+import style from "./TodoItems.style";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+import emit from "../../../utils/events/emit";
+import "../../atoms/TodoItem/app-todo-item";
 
-import TodoItem from "../../atoms/TodoItem/TodoItem.component";
-import { propTypes } from "./TodoItems.type";
+function TodoItems({ todos, isDisabled }) {
+  useComputedStyles(this, [style]);
 
-const TodoItems = ({ todos, isDisabled, onToggleClick, onEditClick, onDeleteClick }) => {
-  return todos && todos.length ? (
-    <ul className="todo-items">
-      {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          id={todo.id}
-          {...todo}
-          isDisabled={isDisabled}
-          onToggleClick={() => onToggleClick(todo)}
-          onEditClick={() => onEditClick(todo)}
-          onDeleteClick={() => onDeleteClick(todo.id)}
-        />
-      ))}
+  return todos && todos.length ? html`
+    <ul class="todo-items">
+      ${todos.map((todo) => html`
+        <app-todo-item
+          .key=${todo.id}
+          .id=${todo.id}
+          .text=${todo.text}
+          .completed =${todo.completed}
+          .isDisabled=${isDisabled}
+          @onToggleClick=${() => emit(this, "onToggleClick", todo)}
+          @onEditClick=${() => emit(this, "onEditClick", todo)}
+          @onDeleteClick=${() => emit(this, "onDeleteClick", todo.id)}
+        ></app-todo-item>
+      `)}
     </ul>
-  ) : (
-    <p className="text-center empty-text">Nothing to display here. Carry on.</p>
-  );
+  ` : html`
+    <p class="text-center empty-text">Nothing to display here. Carry on.</p>
+  `;
 };
-
-TodoItems.propTypes = propTypes
 
 export default TodoItems;

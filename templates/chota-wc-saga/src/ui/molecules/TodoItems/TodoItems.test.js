@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import TodoItems from './TodoItems.component';
 import TestProvider from '../../../utils/providers/TestProvider';

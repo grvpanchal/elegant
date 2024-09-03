@@ -1,5 +1,5 @@
-import AddTodoForm from "./FilterGroup.component";
-export default { title: "Molecules/FilterGroup", component: AddTodoForm };
+import FilterGroup from "./FilterGroup.component";
+export default { title: "Molecules/FilterGroup", render: FilterGroup };
 
 export const Default = {
   args: {

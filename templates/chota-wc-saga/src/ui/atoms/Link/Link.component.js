@@ -1,15 +1,16 @@
 import { html } from "lit";
 import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 import style from './Link.style';
+import emit from "../../../utils/events/emit";
 
- export default function Link({ active, onClick }) {
+ export default function Link({ isActive, onClick }) {
   useComputedStyles(this, [style]);
   return html`
     <a
       href="#"
-      class=${`button ${active ? "primary" : "outline"}`}
-      @click=${onClick}
-      .disabled=${active}
+      class=${`button ${isActive ? "primary" : "outline"}`}
+      @click=${() => emit(this, "onClick", onClick)}
+      .disabled=${isActive}
       role="button"
     >
       <slot></slot>

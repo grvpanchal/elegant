@@ -6,17 +6,16 @@ import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 
 import '../IconButton/app-icon-button';
 import '../Image/app-image';
+import emit from "../../../utils/events/emit";
 
-export default function Alert({ variant, show, message, onCloseClick }) {
+export default function Alert({ variant, show, message }) {
   useComputedStyles(this, [style]);
 
   const [showAlert, setShowAlert] = useState(show);
 
   const handleClose = (e) => {
     setShowAlert(false);
-    if (onCloseClick) {
-      onCloseClick(e);
-    }
+    emit(this, "onCloseClick", e);
   };
 
   useEffect(() => {

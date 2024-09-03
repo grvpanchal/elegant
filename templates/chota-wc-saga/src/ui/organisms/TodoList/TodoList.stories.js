@@ -1,6 +1,5 @@
-
 import TodoList from "./TodoList.component";
-export default { title: "Organisms/TodoList", component: TodoList };
+export default { title: "Organisms/TodoList", render: TodoList };
 
 const events ={
   onTodoCreate: () => {},

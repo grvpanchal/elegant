@@ -1,5 +1,6 @@
-import TodoItems from "./TodoItems.component";
-export default { title: "Molecules/TodoItems", component: TodoItems };
+import { html } from "lit";
+import "./app-todo-items"
+export default { title: "Molecules/TodoItems", render: (args) => html`<app-todo-items .todos=${args.todos} ></app-todo-items>` };
 
 export const Default = {
   args: {

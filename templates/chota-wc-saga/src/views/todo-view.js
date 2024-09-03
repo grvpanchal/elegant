@@ -1,22 +1,30 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html } from 'lit-element';
 import '@vaadin/vaadin-text-field';
 import '@vaadin/vaadin-button';
 import '@vaadin/vaadin-checkbox';
 import '@vaadin/vaadin-radio-button/vaadin-radio-button';
 import '@vaadin/vaadin-radio-button/vaadin-radio-group';
+import {
+  VisibilityFilters,
+  getVisibleTodosSelector
+} from '../redux/reducer.js';
+import { connect } from 'pwa-helpers';
+import { store } from '../redux/store.js';
+import {
+  addTodo,
+  updateTodoStatus,
+  updateFilter,
+  clearCompleted
+} from '../redux/actions.js';
 
-import Styles from '../styles';
+import '../ui/templates/Layout/app-layout.js';
 
-const VisibilityFilters = {
-  SHOW_ALL: 'All',
-  SHOW_ACTIVE: 'Active',
-  SHOW_COMPLETED: 'Completed'
-};
+import '../containers/ConfigContainer.js';
+import '../containers/SiteHeaderContainer.js';
+import '../containers/TodoListContainer.js';
+import '../containers/TodoFiltersContainer.js';
 
-class TodoView extends LitElement {
-  static get styles() {
-    return Styles;
-  }
+class TodoView extends connect(store)(LitElement) {
   static get properties() {
     return {
       todos: { type: Array },
@@ -25,102 +33,25 @@ class TodoView extends LitElement {
     };
   }
 
-  constructor() {
-    super();
-    this.todos = [];
-    this.filter = VisibilityFilters.SHOW_ALL;
-    this.task = '';
+  stateChanged(state) {
+    this.todos = getVisibleTodosSelector(state);
+    this.filter = state.filter;
   }
 
   render() {
     return html`
-      <style>
-        todo-view {
-          display: block;
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        todo-view .input-layout {
-          width: 100%;
-          display: flex;
-        }
-
-        todo-view .input-layout vaadin-text-field {
-          flex: 1;
-          margin-right: var(--spacing);
-        }
-
-        todo-view .todos-list {
-          margin-top: var(--spacing);
-        }
-
-        todo-view .visibility-filters {
-          margin-top: calc(4 * var(--spacing));
-        }
-      </style>
-
-      <div class="input-layout" @keyup="${this.shortcutListener}">
-        <vaadin-text-field
-          placeholder="Task"
-          value="${this.task}"
-          @change="${this.updateTask}"
-        ></vaadin-text-field>
-
-        <vaadin-button theme="primary" @click="${this.addTodo}">
-          Add Todo
-        </vaadin-button>
-      </div>
-
-      <div class="todos-list">
-        ${
-          this.applyFilter(this.todos).map(
-            todo => html`
-              <div class="todo-item">
-                <vaadin-checkbox
-                  ?checked="${todo.complete}"
-                  @change="${
-                    e => this.updateTodoStatus(todo, e.target.checked)
-                  }"
-                >
-                  ${todo.task}
-                </vaadin-checkbox>
-              </div>
-            `
-          )
-        }
-      </div>
-
-      <vaadin-radio-group
-        class="visibility-filters"
-        value="${this.filter}"
-        @value-changed="${this.filterChanged}"
-      >
-        ${
-          Object.values(VisibilityFilters).map(
-            filter => html`
-              <vaadin-radio-button value="${filter}"
-                >${filter}</vaadin-radio-button
-              >
-            `
-          )
-        }
-      </vaadin-radio-group>
-      <vaadin-button @click="${this.clearCompleted}">
-        Clear Completed
-      </vaadin-button>
+      <app-layout>
+        <config-container></config-container>
+        <site-header-container></site-header-container>
+        <todo-list-container></todo-list-container>
+        <todo-filters-container></todo-filters-container>
+      </app-layout>
     `;
   }
 
   addTodo() {
     if (this.task) {
-      this.todos = [
-        ...this.todos,
-        {
-          task: this.task,
-          complete: false
-        }
-      ];
+      store.dispatch(addTodo(this.task));
       this.task = '';
     }
   }
@@ -136,28 +67,15 @@ class TodoView extends LitElement {
   }
 
   updateTodoStatus(updatedTodo, complete) {
-    this.todos = this.todos.map(todo =>
-      updatedTodo === todo ? { ...updatedTodo, complete } : todo
-    );
+    store.dispatch(updateTodoStatus(updatedTodo, complete));
   }
 
   filterChanged(e) {
-    this.filter = e.target.value;
+    store.dispatch(updateFilter(e.detail.value));
   }
 
   clearCompleted() {
-    this.todos = this.todos.filter(todo => !todo.complete);
-  }
-
-  applyFilter(todos) {
-    switch (this.filter) {
-      case VisibilityFilters.SHOW_ACTIVE:
-        return todos.filter(todo => !todo.complete);
-      case VisibilityFilters.SHOW_COMPLETED:
-        return todos.filter(todo => todo.complete);
-      default:
-        return todos;
-    }
+    store.dispatch(clearCompleted());
   }
 
   createRenderRoot() {

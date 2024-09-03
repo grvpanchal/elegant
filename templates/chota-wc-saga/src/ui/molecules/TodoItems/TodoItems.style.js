@@ -1,6 +1,7 @@
 import { css } from "lit";
 
-export default css`.todo-items {
+export default css`
+.todo-items {
   list-style: none;
   padding: 0;
 }

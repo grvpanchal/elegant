@@ -1,5 +1,20 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+import Vue from 'vue'
 import App from './App.vue'
+import './ui/theme.css';
 
-createApp(App).use(createPinia()).mount('#app')
+
+const app = createApp(App);
+app.use(createPinia()).mount('#app');
+
+const theme = Vue.observable({ theme: '' })
+
+Object.defineProperty(Vue.prototype, '$theme', {
+  get () {
+    return theme.theme
+  },
+  set (value) {
+    theme.theme = value
+  }
+})

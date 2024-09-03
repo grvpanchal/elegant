@@ -4,6 +4,7 @@ export default css`
 .todo-item {
   vertical-align: middle;
   clear: both;
+  list-style-type: none;
 }
 
 .todo-item input {

@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Input from "../../atoms/Input/Input.component";
-import Button from "../../atoms/Button/Button.component";
+import { html, useEffect, useState } from "haunted";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 
-const AddTodoForm = ({ buttonInfo, placeholder, isLoading, onTodoAdd, onTodoUpdate, todoValue }) => {
+import style from './AddTodoForm.style';
+import "../../atoms/Input/app-input";
+import "../../atoms/Button/app-button";
+import emit from "../../../utils/events/emit";
+
+function AddTodoForm({ buttonInfo, placeholder, isLoading, todoValue }) {
+  useComputedStyles(this, [style]);
   const [inputValue, setInputValue] = useState(todoValue || '');
   const { label, variant } = buttonInfo;
 
@@ -13,38 +18,33 @@ const AddTodoForm = ({ buttonInfo, placeholder, isLoading, onTodoAdd, onTodoUpda
 
   useEffect(() => setInputValue(todoValue), [todoValue]);
 
-  return (
+  const handleFormSubmit = (e) => {
+    if(e && e.preventDefault) e.preventDefault();
+    if (!inputValue.trim()) {
+      return;
+    }
+    if(todoValue) {
+      emit(this, 'onTodoUpdate', inputValue);
+    } else {
+      emit(this, 'onTodoAdd', inputValue);
+    }
+    setInputValue('');
+  }
+
+  return html`
     <div>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (!inputValue.trim()) {
-            return;
-          }
-          if(todoValue) {
-            onTodoUpdate(inputValue);
-          } else {
-            onTodoAdd(inputValue);
-          }
-          setInputValue('');
-        }}
+        @submit=${handleFormSubmit}
       >
-        <div className="grouped">
-          <Input className="" value={inputValue} disabled={isLoading} placeholder={placeholder} onChange={handleChange} />
-          <Button className={`button ${variant}`} isLoading={isLoading} type="submit">
-            {label}
-          </Button>
+        <div class="grouped">
+          <app-input .value=${inputValue} .disabled=${isLoading} .placeholder=${placeholder} @onChange=${(e) => handleChange(e.detail)} ></app-input>
+          <app-button .classes=${`button ${variant}`} .isLoading=${isLoading} type="submit" @onClick=${() => handleFormSubmit(this)}>
+            ${label}
+          </app-button>
         </div>
       </form>
     </div>
-  );
+  `;
 };
-
-AddTodoForm.defaultProps = {
-  buttonInfo: {
-    label: 'Add',
-    variant: 'primary'
-  }
-}
 
 export default AddTodoForm;

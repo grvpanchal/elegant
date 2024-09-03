@@ -3,6 +3,7 @@ import { css } from "lit";
 export default css`
 .skeleton {
   animation: skeleton-loading 1s linear infinite alternate;
+  display: block;
 }
 
 @keyframes skeleton-loading {

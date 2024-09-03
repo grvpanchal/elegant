@@ -1,7 +1,7 @@
 
-import { render } from "lit";
-import TodoItem from "./TodoItem.component";
-export default { title: "Atoms/TodoItem", render: TodoItem };
+import { html } from "lit";
+import "./app-todo-item";
+export default { title: "Atoms/TodoItem", render: (args) => html`<app-todo-item .text=${args.text}></app-todo-item>` };
 
 export const Default = {
   args: {

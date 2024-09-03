@@ -4,7 +4,10 @@ import html from '@web/rollup-plugin-html';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import esbuild from 'rollup-plugin-esbuild';
 import { generateSW } from 'rollup-plugin-workbox';
+import rollupReplace from '@rollup/plugin-replace';
 import path from 'path';
+
+const replace = fromRollup(rollupReplace);
 
 export default {
   input: 'index.html',
@@ -66,6 +69,9 @@ export default {
       skipWaiting: true,
       clientsClaim: true,
       runtimeCaching: [{ urlPattern: 'polyfills/*.js', handler: 'CacheFirst' }],
+    }),
+    replace({
+      'process.env.NODE_ENV': '"development"',
     }),
   ],
 };

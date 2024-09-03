@@ -1,7 +1,7 @@
 import './SiteHeader.style.css';
 
 export default function SiteHeader({ headerData, events }) {
-  const {brandName, theme } = headerData;
+  const { brandName, theme } = headerData;
   const { onThemeChangeClick } = events;
   return (
     <>

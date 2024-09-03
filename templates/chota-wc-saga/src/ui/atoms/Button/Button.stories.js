@@ -4,21 +4,21 @@ import './app-button';
 export default {
   title: 'Atoms/Button',
   render: (args) =>
-    html`<app-button .classVal="${args.classVal}" .isLoading="${args.isLoading}" @onClick="${args.onClick}">${args.label}</app-button>`,
+    html`<app-button .classes="${args.classes}" .isLoading="${args.isLoading}" @onClick="${args.onClick}">${args.label}</app-button>`,
 };
 
 export const Default = {
   args: {
-    classVal: 'button primary',
+    classes: 'button primary',
     label: 'Sample Button',
-    onClick: () => console.log('click')
+    onClick: (e) => console.log('click', e.detail)
   },
 };
 
 export const Loading = {
   args: {
     isLoading: true,
-    classVal: 'button primary',
+    classes: 'button primary',
     label: 'Sample Button',
   },
 };

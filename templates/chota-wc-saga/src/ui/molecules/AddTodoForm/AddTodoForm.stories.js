@@ -1,5 +1,10 @@
-import AddTodoForm from "./AddTodoForm.component";
-export default { title: "Molecules/AddTodoForm", component: AddTodoForm };
+import { html } from "lit";
+import "./app-add-todo-form";
+
+export default {
+  title: "Molecules/AddTodoForm", 
+  render: (args) => html`<app-add-todo-form .todo=${args.todoValue} .placeholder=${args.placeholder} .isLoading=${args.isLoading} .buttonInfo=${args.buttonInfo}
+></app-add-todo-form>` };
 
 export const Default = {
   args: {

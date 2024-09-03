@@ -1,7 +1,8 @@
-import Alert from "../../atoms/Alert/Alert.component";
-import AddTodoForm from "../../molecules/AddTodoForm/AddTodoForm.component";
-import TodoItems from "../../molecules/TodoItems/TodoItems.component";
-import Skeleton from "../../skeletons/Skeleton/Skeleton.component";
+import { html } from "lit";
+import "../../atoms/Alert/app-alert";
+import "../../molecules/AddTodoForm/app-add-todo-form";
+import "../../molecules/TodoItems/app-todo-items";
+import "../../skeletons/Skeleton/app-skeleton";
 
 export default function TodoList({ todoData, events }) {
   const {
@@ -11,46 +12,40 @@ export default function TodoList({ todoData, events }) {
     onTodoToggleUpdate,
     onTodoDelete,
   } = events;
-  return (
-    <>
-      {todoData.error ? (
-        <Alert
-          variant={"error"}
-          show={!!todoData.error}
-          message={todoData.error}
-        />
-      ) : null}
-      <AddTodoForm
-        todoValue={todoData.currentTodoItem.text || ""}
-        onTodoAdd={onTodoCreate}
-        onTodoUpdate={onTodoUpdate}
-        placeholder="Add your task"
-        isLoading={todoData.isActionLoading}
-        buttonInfo={{
+  return html`
+      ${todoData.error ? html`
+        <app-alert
+          .variant=${"error"}
+          .show=${!!todoData.error}
+          .message=${todoData.error}
+        ></app-alert>
+      ` : null}
+      <app-add-todo-form
+        .todoValue=${todoData.currentTodoItem.text || ""}
+        @onTodoAdd=${onTodoCreate}
+        @onTodoUpdate=${onTodoUpdate}
+        .placeholder=${"Add your task"}
+        .isLoading=${todoData.isActionLoading}
+        .buttonInfo=${{
           label: todoData.currentTodoItem.text ? "Save" : "Add",
           variant: "primary",
-        }} // TODO: Work on Labels Concept
-      />
-      {todoData.isContentLoading ? (
-        <>
+        }} 
+      ></app-add-todo-form>
+      ${todoData.isContentLoading ? html`
           <br />
-          <Skeleton height="24px" />
+          <app-skeleton height="24px" ></app-skeleton>
           <br />
-          <Skeleton height="24px" />
+          <app-skeleton height="24px" ></app-skeleton>
           <br />
-          <Skeleton height="24px" />
-        </>
-      ) : (
-        <>
-          <TodoItems
-            todos={todoData.todoItems || []}
-            onToggleClick={onTodoToggleUpdate}
-            onDeleteClick={onTodoDelete}
-            onEditClick={onTodoEdit}
-            isDisabled={todoData.isActionLoading}
-          />
-        </>
-      )}
-    </>
-  );
+          <app-skeleton height="24px" ></app-skeleton>
+      ` : html`
+          <app-todo-items
+            .todos=${todoData.todoItems || []}
+            .isDisabled=${todoData.isActionLoading}
+            @onToggleClick=${onTodoToggleUpdate}
+            @onDeleteClick=${onTodoDelete}
+            @onEditClick=${onTodoEdit}
+          ></app-todo-items>
+      `}
+  `;
 }

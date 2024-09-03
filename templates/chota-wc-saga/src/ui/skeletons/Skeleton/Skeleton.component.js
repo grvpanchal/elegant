@@ -1,13 +1,14 @@
 import { html } from "lit";
-import style from "./Skeleton.style";
+import styles from "./Skeleton.style";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 
-export default function Skeleton({ variant, height, width, style }) {
-  useComputedStyles(this, [style]);
+export default function Skeleton({ variant, height, width, styleCSS }) {
+  useComputedStyles(this, [styles]);
   return html`
     <div
       class=${`skeleton skeleton-${variant ? variant : "text"}`}
       style=${`
-        ${style}
+        ${styleCSS || ''}
         height: ${height};
         width: ${width};
       `}
