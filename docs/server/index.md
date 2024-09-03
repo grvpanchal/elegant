@@ -27,7 +27,21 @@ Below are links to basic terminologies conerning UI:
 19. [Progressive Web App (PWA)](./pwa)
 
 ## Approach
-### Connecting State with Organisms
 
-### Skeletons and lazy loading
+This architectur provides the most elegant and advanced solution to achieve performance without braking the modularity of UI and The State. below are techniques to to do this on the server side of application
+### Connecting State with Organisms with Containers
 
+REST Example
+GraphQL Example
+SWR
+
+### Optimization
+
+Switch between skeletons from pre defined organism to container
+lazy imports
+Module federation for MFE
+PWA Strategies
+
+### Page tuning for PWA
+Preload
+SSR with State management

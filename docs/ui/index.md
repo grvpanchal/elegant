@@ -26,21 +26,56 @@ Below are links to basic terminologies conerning UI:
 17. [Accessibility](./accessibility)
 
 ## Approach
-## Building base HTML Scaffolding to JSON
 
+### Folder Structure
+
+### Building base HTML Scaffolding to JSON
+
+Inline
+
+Block
+
+Iterable
+
+Sections / articles
+
+sementic layout
 
 ## Building with Atomic Design
+
+Atomic design docs
 
 <img src="{{ '/assets/img/atomic-design.png' | relative_url }}">
 
 ## Standardizing Base Component Objects
+
 <img src="{{ '/assets/img/css-components.webp' | relative_url }}">
+
+- Atom JSON
+- Molecule JSON
+- Iteratable Molecule JSON
+- Organism JSON with responsiveness
+- Template Placeholders and slots
 
 ## Understanding the base pattern of theming
 
+SCARFS
+
 <img src="{{ '/assets/img/css-theme.webp' | relative_url }}">
 
-## Identifying an Organism in Design 
+## Identifying an Organism in Design
+
+Data Isolation with Objects
+
+Lazy Loading patterns
+
+Error / Default 
 
 ## Transmitting Organism State for UX
+
+Any User Experience delivered with the iteraction of user can be divided onto
+
+- Reflection of Data in ordered pattern
+- Easing in of error to make user take actions to provide pathway to happ path
+- Dyanimic Loading skeletons to make users gracefully wait for ongoing async operation to deliver the content via network
 

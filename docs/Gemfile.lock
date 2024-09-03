@@ -26,7 +26,6 @@ GEM
       ffi (>= 1.15.0)
     eventmachine (1.2.7)
     ffi (1.16.3)
-    ffi (1.16.3-x64-mingw-ucrt)
     ffi (1.16.3-x64-unknown)
     forwardable-extended (2.6.0)
     html-proofer (3.19.4)
@@ -137,7 +136,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-23
-  x64-mingw-ucrt
+  x64-unknown
   x64-unknown
   x86_64-darwin-21
 
