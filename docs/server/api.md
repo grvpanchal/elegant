@@ -171,3 +171,7 @@ XML-RPC (Extensible Markup Language-Remote Procedure Call) can be described as a
 
 ### 5. WebSocket
 A two-way interactive communication session between the user’s browser and a server can be made smoother and faster with the help of an organized set of APIs known as WebSockets. WebSocket APIs play a vital role in helping receive event-driven responses, and they also help in easier management of sending messages to a server. Plus, the entire process involving this doesn’t even require having to poll the server in order to receive a reply.
+
+## References:
+
+https://blog.postman.com/understanding-api-basics-beginners/
