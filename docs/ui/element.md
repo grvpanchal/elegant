@@ -1,3 +1,8 @@
+---
+title: Element
+layout: default
+---
+
 # Element
 
 > - A single purpose entity of HTML
@@ -9,7 +14,7 @@ An element’s custom element state is one of `"undefined"`, `"failed"`, `"uncus
 
 The following code illustrates elements in each of these four states:
 
-```js
+```html
 <!DOCTYPE html>
 <script>
   window.customElements.define("sw-rey", class extends HTMLElement {})

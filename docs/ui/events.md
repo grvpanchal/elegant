@@ -1,3 +1,8 @@
+---
+title: Events
+layout: default
+---
+
 # Events
 
 > - A single purpose component

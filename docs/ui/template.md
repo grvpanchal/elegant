@@ -1,3 +1,7 @@
+---
+title: Template
+layout: default
+---
 # Template
 
 A template in the context of Atomic Design is a higher-level component that defines the overall structure of a page or section. Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:

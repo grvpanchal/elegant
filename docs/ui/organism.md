@@ -1,3 +1,8 @@
+---
+title: Organism
+layout: default
+---
+
 # Organism
 
 > - UI connector to state

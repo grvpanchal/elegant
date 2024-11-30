@@ -1,3 +1,7 @@
+---
+title: Attributes
+layout: default
+---
 # Attributes
 
 > - Information entity of HTML elements

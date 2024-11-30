@@ -1,3 +1,7 @@
+---
+title: Molecule
+layout: default
+---
 # Molecule
 
 > - Comprised of multiple atoms or molecules
@@ -5,7 +9,7 @@
 
 Here is a simple molecule example called `LoginForm` that combines two atoms: an `Input` atom and a `Button` atom. The `LoginForm` molecule represents a common user interface pattern where users can input their credentials and submit the form:
 
-```js
+```jsx
 // LoginForm.js
 
 import React, { useState } from "react";
@@ -50,7 +54,7 @@ In this example, the `LoginForm` molecule encapsulates the UI for a login form. 
 
 Now, we can use the `LoginForm` molecule in your application:
 
-```js
+```jsx
 // App.js
 
 import React from "react";

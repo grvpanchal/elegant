@@ -1,3 +1,8 @@
+---
+title: Atom
+layout: default
+---
+
 # Atom
 
 > - A single purpose component
@@ -5,7 +10,7 @@
 
 In React, an atom could be represented by a simple and reusable component that encapsulates a basic building block of the user interface. Here is an example of a `Button` component as an atom:
 
-```js
+```jsx
 // Button.js
 
 import React from "react";
@@ -26,7 +31,7 @@ This simple Button component can be reused throughout the application wherever a
 
 Here's an example of how we might use this Button component in a parent component:
 
-```js
+```jsx
 // App.js
 
 import React from "react";

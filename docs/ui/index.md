@@ -9,8 +9,8 @@ Below are links to basic terminologies conerning UI:
 
 1. [Element](./element)
 2. [DOM](./dom)
-3. [Component](./component)
-4. [Attributes](./attributes)
+3. [Attributes](./attributes)
+4. [Component](./component)
 5. [Props](./props)
 6. [Events](./events)
 7. [Atomic Design](./atomic-design)

@@ -1,3 +1,7 @@
+---
+title: Props
+layout: default
+---
 # Props
 
 > - Props are arguments passed into JS components

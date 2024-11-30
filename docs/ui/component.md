@@ -1,3 +1,7 @@
+---
+title: Component
+layout: default
+---
 # Component
 
 > - An interactive unit of element comprising of HTML, CSS and JS.
