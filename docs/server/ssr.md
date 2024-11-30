@@ -1,8 +1,14 @@
- ## SSR
+---
+title: Server Side Rendering
+layout: default
+---
+
+# Server Side Rendering
 
  - Image Optimization
 
-Standardize way that SSR works with State management
+## Standardize way that SSR works with State management
+
  - NextJs: https://github.com/vercel/next.js/tree/v14.0.0/examples/with-redux-saga
  - Ng Universal
  - Nuxt

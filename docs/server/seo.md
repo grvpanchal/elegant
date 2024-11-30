@@ -1,4 +1,9 @@
-## SEO
+---
+title: Search Engine Optimization
+layout: default
+---
+
+# SEO
 
 - robots.txt
 - Index meta tags with Open Graph and twittter

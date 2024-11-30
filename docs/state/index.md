@@ -13,7 +13,7 @@ Below are links to basic terminologies conerning UI:
 5. [Reducer](./reducer)
 6. [Operations](./operations)
 7. [Selectors](./selectors)
-8. [Middleware)](./middleware)
+8. [Middleware](./middleware)
 
 ## Approach
 

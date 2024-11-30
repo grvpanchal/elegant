@@ -1,3 +1,8 @@
+---
+title: Page
+layout: default
+---
+
 # Page
 
 > - Specific instances of templates that show what a UI looks like with real representative content in place.
@@ -25,8 +30,8 @@ export default HomePage;
 
 In this example:
 
-- `HomePage` is a page component that renders the `HomePageTemplate` template.
-- We can include additional page-specific content within the `HomePage` component, such as unique sections or features.
+* `HomePage` is a page component that renders the `HomePageTemplate` template.
+* We can include additional page-specific content within the `HomePage` component, such as unique sections or features.
 
 Now, when we use the `HomePage` component in our application, it represents the final page that users will see:
 
@@ -51,4 +56,4 @@ This structure follows the Atomic Design methodology, where atoms, molecules, or
 
 ## References:
 
-- https://atomicdesign.bradfrost.com/chapter-2/#pages
+* https://atomicdesign.bradfrost.com/chapter-2/#pages

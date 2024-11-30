@@ -1,4 +1,8 @@
- ## App Shell
+---
+title: App Shell
+layout: default
+---
+# App Shell
 
  - Providers
     - UI

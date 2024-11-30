@@ -88,6 +88,7 @@ const updateBoilerplate = (e) => {
   console.log('=== e', e.value);
   codeBox.innerHTML = `nxp elegant ${e.value}`;
   demoLink.href = `./demos/${e.value}`;
+  storybookLink.href = `./demos/storybooks/${e.value}`;
 };
 
 buildselectBoilerplate();

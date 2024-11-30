@@ -1,4 +1,8 @@
-## Container
+---
+title: Container
+layout: default
+---
+# Containers
 - CRUD 
 ```js
 const { loading, success, error } = state;

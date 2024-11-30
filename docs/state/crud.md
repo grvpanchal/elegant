@@ -1,4 +1,9 @@
-## CRUD
+---
+title: CRUD
+layout: default
+---
+
+# CRUD
 
 - https://www.codecademy.com/article/what-is-crud
  - REST

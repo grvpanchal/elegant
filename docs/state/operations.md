@@ -1,4 +1,9 @@
-## Operations
+---
+title: Operations
+layout: default
+---
+
+# Operations
 
 - CRUD Operation
 - Initial State Declation

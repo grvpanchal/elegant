@@ -1,4 +1,9 @@
-## Actions
+---
+title: Actions
+layout: default
+---
+
+# Actions
 
 - Atomic Events are linked with Actions in container
 - A reducer has a single entity in CRUD action
