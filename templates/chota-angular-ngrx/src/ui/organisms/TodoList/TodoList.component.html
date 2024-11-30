@@ -1,0 +1,32 @@
+<ng-template [ngIf]="todoData.error">
+  <app-alert
+    variant="error"
+    [show]="!!todoData.error"
+    [message]="todoData.error"
+  ></app-alert>
+</ng-template>
+<app-add-todo-form
+  [todoValue]="todoData.currentTodoItem.text || ''"
+  (onTodoAdd)="(onTodoCreate)"
+  (onTodoUpdate)="(onTodoUpdate)"
+  placeholder="Add your task"
+  [isLoading]="todoData.isActionLoading"
+  [buttonInfo]="buttonInfo"
+></app-add-todo-form>
+<ng-template [ngIf]="todoData.isContentLoading" [ngIfElse]="normal">
+  <br />
+  <app-skeleton height="24px"></app-skeleton>
+  <br />
+  <app-skeleton height="24px"></app-skeleton>
+  <br />
+  <app-skeleton height="24px"></app-skeleton>
+</ng-template>
+<ng-template #normal>
+  <app-todo-items
+    [todos]="todoData.todoItems"
+    [isDisabled]="todoData.isActionLoading"
+    (onToggleClick)="onTodoToggleUpdate.emit()"
+    (onDeleteClick)="onTodoDelete.emit()"
+    (onEditClick)="onTodoEdit.emit()"
+  ></app-todo-items>
+</ng-template>

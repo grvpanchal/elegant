@@ -4,6 +4,7 @@
   "description": "a command line tool to build an elegant Front End Architecture",
   "main": "index.js",
   "scripts": {
+    "build-demos": "bash demos.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {

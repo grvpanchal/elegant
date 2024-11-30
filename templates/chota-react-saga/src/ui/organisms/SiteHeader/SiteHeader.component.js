@@ -4,10 +4,8 @@ export default function SiteHeader({ headerData, events }) {
   const { brandName, theme } = headerData;
   const { onThemeChangeClick } = events;
   return (
-    <>
-      <br />
-      <br />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+    <header className="header">
+      <div className="header-block">
         <div>
           <h1>{brandName}</h1>
         </div>
@@ -15,7 +13,6 @@ export default function SiteHeader({ headerData, events }) {
           <h1 role="button" onClick={() => onThemeChangeClick()} className="text-right pointer">{theme === "dark" ? "☀️" : "🌙"}</h1>
         </div>
       </div>
-      <br />
-    </>
+    </header>
   );
 }

@@ -1,0 +1,13 @@
+<ng-template [ngIf]="filtersData.isContentLoading" [ngIfElse]="normal">
+  <div class="filter-loading">
+    <app-skeleton height="24px"></app-skeleton>
+    <app-skeleton height="24px"></app-skeleton>
+    <app-skeleton height="24px"></app-skeleton>
+  </div>
+</ng-template>
+<ng-template #normal>
+  <app-filter-group
+    [filterItems]="filtersData"
+    (onFilterClick)="events.onTodoFilterUpdate()"
+  ></app-filter-group>
+</ng-template>

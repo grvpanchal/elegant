@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <br />
-    <br />
-    <div style="display: flex; justify-content: space-between">
+  <header class="header">
+    <div class="header-block">
       <div>
         <h1>{{ headerData.brandName }}</h1>
       </div>
@@ -12,8 +10,7 @@
         </h1>
       </div>
     </div>
-    <br />
-  </div>
+  </header>
 </template>
 
 <script>

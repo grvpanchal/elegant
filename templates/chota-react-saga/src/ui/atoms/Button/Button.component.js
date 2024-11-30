@@ -7,7 +7,7 @@ export default function Button(props) {
   delete transformedProps.isLoading;
   if (props.isLoading) {
     return (
-      <button {...transformedProps} className={`${props.className} loading-button`}>
+      <button {...transformedProps} disabled={props.isLoading} className={`${props.className} loading-button`}>
         <Loader width="2px" size="1.2rem" color="#fff" />
       </button>
     );

@@ -1,0 +1,10 @@
+<a
+  href="#"
+  type="button"
+  (click)="onClick.emit($event)"
+  [ngClass]="classes"
+  [attr.disabled]="isActive"
+  role="button"
+>
+  <ng-content></ng-content>
+</a>

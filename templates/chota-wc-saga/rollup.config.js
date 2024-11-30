@@ -4,10 +4,8 @@ import html from '@web/rollup-plugin-html';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import esbuild from 'rollup-plugin-esbuild';
 import { generateSW } from 'rollup-plugin-workbox';
-import rollupReplace from '@rollup/plugin-replace';
+import replace from '@rollup/plugin-replace';
 import path from 'path';
-
-const replace = fromRollup(rollupReplace);
 
 export default {
   input: 'index.html',
@@ -28,7 +26,9 @@ export default {
       serviceWorkerPath: 'dist/sw.js',
     }),
     /** Resolve bare module imports */
-    nodeResolve(),
+    nodeResolve({
+        exportConditions: ['browser'],
+    }),
     /** Minify JS, compile JS to a lower language target */
     esbuild({
       minify: true,

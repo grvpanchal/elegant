@@ -1,0 +1,10 @@
+<ng-template [ngIf]="isLoading" [ngIfElse]="normal">
+  <button [ngClass]="computedClasses" [disabled]="isLoading">
+    <app-loader width="2px" size="1.2rem" color="#fff"></app-loader>
+  </button>
+</ng-template>
+<ng-template #normal>
+  <button type="button" (click)="onClick.emit($event)" [ngClass]="computedClasses">
+    <ng-content></ng-content>
+  </button>
+</ng-template>

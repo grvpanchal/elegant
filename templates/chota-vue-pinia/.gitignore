@@ -6,3 +6,4 @@ cypress/screenshots
 cypress/videos
 
 *storybook.log
+storybook-static

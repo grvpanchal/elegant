@@ -1,0 +1,18 @@
+<div
+  [ngClass]="classes"
+>
+  <div class="message">
+    <app-image [src]="src"></app-image>
+    <span>{{ message }}</span>
+  </div>
+  <div>
+    <app-icon-button
+      variant="clear"
+      alt="close"
+      color="ffffff"
+      iconName="x"
+      size="16"
+      (onClick)="onClick.emit($event)"
+    ></app-icon-button>
+  </div>
+</div>

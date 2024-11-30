@@ -1,6 +1,6 @@
 
-import TodoList from "./TodoFilters.component.vue";
-export default { title: "Organisms/TodoFilters", component: TodoList };
+import TodoFilters from "./TodoFilters.component.vue";
+export default { title: "Organisms/TodoFilters", component: TodoFilters };
 
 const events ={
   onTodoFilterUpdate: () => {},

@@ -1,6 +1,116 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["todos-todos-module"],{
 
-/***/ "./node_modules/@ngrx/entity/__ivy_ngcc__/fesm2015/entity.js":
+/***/ "+JRB":
+/*!************************************************!*\
+  !*** ./src/app/todos/states/todos-ui.state.ts ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "5J2L":
+/*!*********************************************!*\
+  !*** ./src/app/todos/states/todos.state.ts ***!
+  \*********************************************/
+/*! exports provided: todosAdapter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "todosAdapter", function() { return todosAdapter; });
+/* harmony import */ var _ngrx_entity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/entity */ "EVqC");
+
+const todosAdapter = Object(_ngrx_entity__WEBPACK_IMPORTED_MODULE_0__["createEntityAdapter"])();
+
+
+/***/ }),
+
+/***/ "B/6h":
+/*!************************************************!*\
+  !*** ./src/app/todos/actions/todos.actions.ts ***!
+  \************************************************/
+/*! exports provided: addTodo, updateTodo, deleteTodo, loadTodos */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTodo", function() { return addTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return updateTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return deleteTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadTodos", function() { return loadTodos; });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+
+const addTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] AddTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const updateTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] UpdateTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const deleteTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] DeleteTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const loadTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] LoadTodos', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+
+
+/***/ }),
+
+/***/ "BNvK":
+/*!*************************************************!*\
+  !*** ./src/app/todos/services/todos.service.ts ***!
+  \*************************************************/
+/*! exports provided: TodosService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosService", function() { return TodosService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+
+
+
+
+
+class TodosService {
+    constructor(apiUrl, http) {
+        this.apiUrl = apiUrl;
+        this.http = http;
+    }
+    getAllTodos() {
+        const url = `${this.apiUrl}/todos`;
+        return this.http.get(url)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(todos => todos.slice(0, 10)));
+    }
+    createTodo(todo) {
+        const url = `${this.apiUrl}/todos`;
+        return this.http.post(url, { todo })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
+    }
+    updateTodo(todo) {
+        const url = `${this.apiUrl}/todos/${todo.id}`;
+        return this.http.patch(url, { todo })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
+    }
+    deleteTodo(id) {
+        const url = `${this.apiUrl}/todos/${id}`;
+        return this.http.delete(url)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
+    }
+}
+TodosService.ɵfac = function TodosService_Factory(t) { return new (t || TodosService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"]('API_URL'), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
+TodosService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: TodosService, factory: TodosService.ɵfac });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"],
+                args: ['API_URL']
+            }] }, { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "EVqC":
 /*!*******************************************************************!*\
   !*** ./node_modules/@ngrx/entity/__ivy_ngcc__/fesm2015/entity.js ***!
   \*******************************************************************/
@@ -11,10 +121,10 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dictionary", function() { return Dictionary; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createEntityAdapter", function() { return createEntityAdapter; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /**
- * @license NgRx 9.2.0
+ * @license NgRx 9.2.1
  * (c) 2015-2018 Brandon Roberts, Mike Ryan, Rob Wormald, Victor Savkin
  * License: MIT
  */
@@ -846,56 +956,64 @@ if (false) {}
 
 /***/ }),
 
-/***/ "./src/app/todos/actions/index.ts":
-/*!****************************************!*\
-  !*** ./src/app/todos/actions/index.ts ***!
-  \****************************************/
-/*! exports provided: addTodo, updateTodo, deleteTodo, loadTodos, loadTodosRequest, loadTodosSuccess, loadTodosFail, addTodoRequest, addTodoSuccess, addTodoFail, updateTodoRequest, updateTodoSuccess, updateTodoFail, deleteTodoRequest, deleteTodoSuccess, deleteTodoFail */
+/***/ "FVuP":
+/*!******************************************!*\
+  !*** ./src/app/todos/selectors/index.ts ***!
+  \******************************************/
+/*! exports provided: geTodosState, getAllTodos, getCountAllTodos, getEntitiesTodos, getVisibleTodos, getTodo, getCountVisibleTodos, getFilter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.actions */ "./src/app/todos/actions/todos.actions.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["addTodo"]; });
+/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.selectors */ "oF5v");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "geTodosState", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["geTodosState"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["updateTodo"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAllTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getAllTodos"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["deleteTodo"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCountAllTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getCountAllTodos"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodos", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["loadTodos"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEntitiesTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getEntitiesTodos"]; });
 
-/* harmony import */ var _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todos-ui.actions */ "./src/app/todos/actions/todos-ui.actions.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosRequest"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisibleTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getVisibleTodos"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getTodo", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getTodo"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCountVisibleTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getCountVisibleTodos"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoRequest"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoSuccess"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoFail"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoRequest"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoSuccess"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoFail"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoRequest"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoSuccess"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoFail"]; });
-
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getFilter"]; });
 
 
 
 
 /***/ }),
 
-/***/ "./src/app/todos/actions/todos-ui.actions.ts":
+/***/ "FoCt":
+/*!*************************************!*\
+  !*** ./src/app/utils/validators.ts ***!
+  \*************************************/
+/*! exports provided: CustomValidators */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomValidators", function() { return CustomValidators; });
+class CustomValidators {
+    static isBlank(control) {
+        const value = control.value;
+        if (value === null || value === '') {
+            return null;
+        }
+        if (value.trim() === '') {
+            return { is_blank: true };
+        }
+        return null;
+    }
+}
+
+
+/***/ }),
+
+/***/ "GErn":
 /*!***************************************************!*\
   !*** ./src/app/todos/actions/todos-ui.actions.ts ***!
   \***************************************************/
@@ -916,7 +1034,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodoRequest", function() { return deleteTodoRequest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodoSuccess", function() { return deleteTodoSuccess; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodoFail", function() { return deleteTodoFail; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
 
 const loadTodosRequest = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] LoadTodosRequest');
 const loadTodosSuccess = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] LoadTodosSuccess');
@@ -934,30 +1052,7 @@ const deleteTodoFail = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAc
 
 /***/ }),
 
-/***/ "./src/app/todos/actions/todos.actions.ts":
-/*!************************************************!*\
-  !*** ./src/app/todos/actions/todos.actions.ts ***!
-  \************************************************/
-/*! exports provided: addTodo, updateTodo, deleteTodo, loadTodos */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTodo", function() { return addTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return updateTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return deleteTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadTodos", function() { return loadTodos; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-
-const addTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] AddTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
-const updateTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] UpdateTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
-const deleteTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] DeleteTodo', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
-const loadTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[TodoModule] LoadTodos', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
-
-
-/***/ }),
-
-/***/ "./src/app/todos/components/footer/footer.component.ts":
+/***/ "HvR+":
 /*!*************************************************************!*\
   !*** ./src/app/todos/components/footer/footer.component.ts ***!
   \*************************************************************/
@@ -967,8 +1062,8 @@ const loadTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FooterComponent", function() { return FooterComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "tyNb");
 
 
 
@@ -1028,87 +1123,143 @@ FooterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
 
 /***/ }),
 
-/***/ "./src/app/todos/components/index.ts":
-/*!*******************************************!*\
-  !*** ./src/app/todos/components/index.ts ***!
-  \*******************************************/
-/*! exports provided: COMPONENTS */
+/***/ "Ms5Y":
+/*!*****************************************!*\
+  !*** ./src/app/todos/reducers/index.ts ***!
+  \*****************************************/
+/*! exports provided: reducers, metaReducers, getTodosModuleState */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COMPONENTS", function() { return COMPONENTS; });
-/* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./footer/footer.component */ "./src/app/todos/components/footer/footer.component.ts");
-/* harmony import */ var _new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./new-todo/new-todo.component */ "./src/app/todos/components/new-todo/new-todo.component.ts");
-/* harmony import */ var _todo_todo_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo/todo.component */ "./src/app/todos/components/todo/todo.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reducers", function() { return reducers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "metaReducers", function() { return metaReducers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodosModuleState", function() { return getTodosModuleState; });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @environments/environment */ "AytR");
+/* harmony import */ var _todos_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todos.reducer */ "v84Q");
+/* harmony import */ var _todos_ui_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todos-ui.reducer */ "SlOp");
 
 
 
-const COMPONENTS = [
-    _footer_footer_component__WEBPACK_IMPORTED_MODULE_0__["FooterComponent"],
-    _new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_1__["NewTodoComponent"],
-    _todo_todo_component__WEBPACK_IMPORTED_MODULE_2__["TodoComponent"]
+
+const reducers = {
+    todos: _todos_reducer__WEBPACK_IMPORTED_MODULE_2__["todosReducer"],
+    todosUI: _todos_ui_reducer__WEBPACK_IMPORTED_MODULE_3__["todosUIReducer"]
+};
+const metaReducers = !_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].production ? [] : [];
+const getTodosModuleState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createFeatureSelector"])('todos-module');
+
+
+/***/ }),
+
+/***/ "NIkG":
+/*!*****************************************!*\
+  !*** ./src/app/todos/services/index.ts ***!
+  \*****************************************/
+/*! exports provided: SERVICES */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SERVICES", function() { return SERVICES; });
+/* harmony import */ var _todos_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.service */ "BNvK");
+
+const SERVICES = [
+    _todos_service__WEBPACK_IMPORTED_MODULE_0__["TodosService"]
 ];
 
 
 /***/ }),
 
-/***/ "./src/app/todos/components/new-todo/new-todo.component.ts":
-/*!*****************************************************************!*\
-  !*** ./src/app/todos/components/new-todo/new-todo.component.ts ***!
-  \*****************************************************************/
-/*! exports provided: NewTodoComponent */
+/***/ "P8oW":
+/*!*******************************************************************!*\
+  !*** ./src/app/todos/containers/todo-list/todo-list.container.ts ***!
+  \*******************************************************************/
+/*! exports provided: TodoListContainer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewTodoComponent", function() { return NewTodoComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _utils_validators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @utils/validators */ "./src/app/utils/validators.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoListContainer", function() { return TodoListContainer; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @todos/actions */ "idvC");
+/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/selectors */ "FVuP");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/todo/todo.component */ "Q2JR");
 
 
 
 
 
-class NewTodoComponent {
-    constructor() {
-        this.saveTodo = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.textField = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _utils_validators__WEBPACK_IMPORTED_MODULE_2__["CustomValidators"].isBlank]);
+
+
+
+
+function TodoListContainer_section_0_app_todo_2_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-todo", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("update", function TodoListContainer_section_0_app_todo_2_Template_app_todo_update_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r4.onUpdate($event); })("delete", function TodoListContainer_section_0_app_todo_2_Template_app_todo_delete_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r6.onDelete($event); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const todo_r3 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("todo", todo_r3);
+} }
+function TodoListContainer_section_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "ul", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, TodoListContainer_section_0_app_todo_2_Template, 1, 1, "app-todo", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const todos_r1 = ctx.ngIf;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", todos_r1);
+} }
+// tslint:disable-next-line: component-class-suffix
+class TodoListContainer {
+    constructor(store) {
+        this.store = store;
+        this.checkField = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](false);
+        this.todos$ = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["select"])(_todos_selectors__WEBPACK_IMPORTED_MODULE_4__["getVisibleTodos"]));
     }
     ngOnInit() {
     }
-    addTodo() {
-        if (this.textField.valid) {
-            const text = this.textField.value;
-            this.textField.setValue('', { emitEvent: false });
-            this.saveTodo.emit(text);
-        }
+    // TODO
+    // toggleAll() {
+    //  this.store.dispatch(new TodoActions.CompletedAllAction());
+    // }
+    onUpdate(update) {
+        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_3__["updateTodoRequest"])({ update });
+        this.store.dispatch(action);
+    }
+    onDelete(id) {
+        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_3__["deleteTodoRequest"])({ id });
+        this.store.dispatch(action);
     }
 }
-NewTodoComponent.ɵfac = function NewTodoComponent_Factory(t) { return new (t || NewTodoComponent)(); };
-NewTodoComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NewTodoComponent, selectors: [["app-new-todo"]], outputs: { saveTodo: "saveTodo" }, decls: 1, vars: 1, consts: [["id", "new-todo", "type", "text", "autofocus", "", "placeholder", "What needs to be done?", 1, "new-todo", 3, "formControl", "keyup.enter"]], template: function NewTodoComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("keyup.enter", function NewTodoComponent_Template_input_keyup_enter_0_listener() { return ctx.addTodo(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+TodoListContainer.ɵfac = function TodoListContainer_Factory(t) { return new (t || TodoListContainer)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"])); };
+TodoListContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: TodoListContainer, selectors: [["app-todo-list"]], decls: 2, vars: 3, consts: [["id", "main", "class", "main", 4, "ngIf"], ["id", "main", 1, "main"], ["id", "todo-list", 1, "todo-list"], [3, "todo", "update", "delete", 4, "ngFor", "ngForOf"], [3, "todo", "update", "delete"]], template: function TodoListContainer_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, TodoListContainer_section_0_Template, 3, 1, "section", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](1, "async");
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formControl", ctx.textField);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"]], encapsulation: 2, changeDetection: 0 });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NewTodoComponent, [{
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](1, 1, ctx.todos$));
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_6__["TodoComponent"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["AsyncPipe"]], encapsulation: 2, changeDetection: 0 });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodoListContainer, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
-                selector: 'app-new-todo',
-                templateUrl: './new-todo.component.html',
+                selector: 'app-todo-list',
+                templateUrl: './todo-list.container.html',
                 changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
             }]
-    }], function () { return []; }, { saveTodo: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
-        }] }); })();
+    }], function () { return [{ type: _ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"] }]; }, null); })();
 
 
 /***/ }),
 
-/***/ "./src/app/todos/components/todo/todo.component.ts":
+/***/ "Q2JR":
 /*!*********************************************************!*\
   !*** ./src/app/todos/components/todo/todo.component.ts ***!
   \*********************************************************/
@@ -1118,10 +1269,10 @@ NewTodoComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineC
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoComponent", function() { return TodoComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _app_utils_validators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/utils/validators */ "./src/app/utils/validators.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _app_utils_validators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @app/utils/validators */ "FoCt");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "tyNb");
 
 
 
@@ -1233,7 +1384,21 @@ TodoComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
 
 /***/ }),
 
-/***/ "./src/app/todos/containers/index.ts":
+/***/ "Qok3":
+/*!****************************************************!*\
+  !*** ./src/app/todos/states/todos-module.state.ts ***!
+  \****************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "SX/p":
 /*!*******************************************!*\
   !*** ./src/app/todos/containers/index.ts ***!
   \*******************************************/
@@ -1243,9 +1408,9 @@ TodoComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONTAINERS", function() { return CONTAINERS; });
-/* harmony import */ var _layout_layout_container__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/layout.container */ "./src/app/todos/containers/layout/layout.container.ts");
-/* harmony import */ var _todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo-list/todo-list.container */ "./src/app/todos/containers/todo-list/todo-list.container.ts");
-/* harmony import */ var _todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo-detail/todo-detail.container */ "./src/app/todos/containers/todo-detail/todo-detail.container.ts");
+/* harmony import */ var _layout_layout_container__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layout/layout.container */ "h35w");
+/* harmony import */ var _todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo-list/todo-list.container */ "P8oW");
+/* harmony import */ var _todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo-detail/todo-detail.container */ "mAo9");
 
 
 
@@ -1258,7 +1423,265 @@ const CONTAINERS = [
 
 /***/ }),
 
-/***/ "./src/app/todos/containers/layout/layout.container.ts":
+/***/ "SlOp":
+/*!****************************************************!*\
+  !*** ./src/app/todos/reducers/todos-ui.reducer.ts ***!
+  \****************************************************/
+/*! exports provided: initialState, todosUIReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "todosUIReducer", function() { return todosUIReducer; });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/actions/todos-ui.actions */ "GErn");
+
+
+const initialState = {
+    loadingTodos: false,
+    errorLoadingTodos: null,
+    loadingAddTodo: false,
+    errorAddTodo: null,
+    loadingUpdateTodo: false,
+    errorUpdateTodo: null,
+    loadingDeleteTodo: false,
+    errorDeleteTodo: null,
+};
+const todosUIReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createReducer"])(initialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosRequest"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingTodos: true, errorLoadingTodos: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingTodos: false, errorLoadingTodos: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"], (state, { error }) => {
+    return Object.assign(Object.assign({}, state), { loadingTodos: false, errorLoadingTodos: error || null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoRequest"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingAddTodo: true, errorAddTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingAddTodo: false, errorAddTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"], (state, { error }) => {
+    return Object.assign(Object.assign({}, state), { loadingAddTodo: false, errorAddTodo: error || null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoRequest"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: true, errorUpdateTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoSuccess"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: false, errorUpdateTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoFail"], (state, { error }) => {
+    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: false, errorUpdateTodo: error || null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoRequest"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: true, errorDeleteTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoSuccess"], (state) => {
+    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: false, errorDeleteTodo: null });
+}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoFail"], (state, { error }) => {
+    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: false, errorDeleteTodo: error || null });
+}));
+
+
+/***/ }),
+
+/***/ "Tx2r":
+/*!***************************************!*\
+  !*** ./src/app/todos/states/index.ts ***!
+  \***************************************/
+/*! exports provided: todosAdapter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _todos_state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.state */ "5J2L");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "todosAdapter", function() { return _todos_state__WEBPACK_IMPORTED_MODULE_0__["todosAdapter"]; });
+
+/* harmony import */ var _todos_ui_state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todos-ui.state */ "+JRB");
+/* empty/unused harmony star reexport *//* harmony import */ var _todos_module_state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todos-module.state */ "Qok3");
+/* empty/unused harmony star reexport */
+
+
+
+
+/***/ }),
+
+/***/ "XUSM":
+/*!*****************************************************************!*\
+  !*** ./src/app/todos/components/new-todo/new-todo.component.ts ***!
+  \*****************************************************************/
+/*! exports provided: NewTodoComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewTodoComponent", function() { return NewTodoComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _utils_validators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @utils/validators */ "FoCt");
+
+
+
+
+
+class NewTodoComponent {
+    constructor() {
+        this.saveTodo = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.textField = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _utils_validators__WEBPACK_IMPORTED_MODULE_2__["CustomValidators"].isBlank]);
+    }
+    ngOnInit() {
+    }
+    addTodo() {
+        if (this.textField.valid) {
+            const text = this.textField.value;
+            this.textField.setValue('', { emitEvent: false });
+            this.saveTodo.emit(text);
+        }
+    }
+}
+NewTodoComponent.ɵfac = function NewTodoComponent_Factory(t) { return new (t || NewTodoComponent)(); };
+NewTodoComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: NewTodoComponent, selectors: [["app-new-todo"]], outputs: { saveTodo: "saveTodo" }, decls: 1, vars: 1, consts: [["id", "new-todo", "type", "text", "autofocus", "", "placeholder", "What needs to be done?", 1, "new-todo", 3, "formControl", "keyup.enter"]], template: function NewTodoComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("keyup.enter", function NewTodoComponent_Template_input_keyup_enter_0_listener() { return ctx.addTodo(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formControl", ctx.textField);
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"]], encapsulation: 2, changeDetection: 0 });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NewTodoComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-new-todo',
+                templateUrl: './new-todo.component.html',
+                changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+            }]
+    }], function () { return []; }, { saveTodo: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
+        }] }); })();
+
+
+/***/ }),
+
+/***/ "YJ73":
+/*!*********************************************!*\
+  !*** ./src/app/todos/guards/todos.guard.ts ***!
+  \*********************************************/
+/*! exports provided: TodosGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosGuard", function() { return TodosGuard; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/selectors */ "FVuP");
+/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @todos/actions */ "idvC");
+
+
+
+
+
+
+
+
+class TodosGuard {
+    constructor(store) {
+        this.store = store;
+    }
+    canActivate() {
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])([
+            this.checkTodos(),
+        ])
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(() => Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(true)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(() => Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(false)));
+    }
+    checkTodos() {
+        return this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(_todos_selectors__WEBPACK_IMPORTED_MODULE_4__["getCountAllTodos"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(total => {
+            if (total === 0) {
+                this.dispatchLoadTodos();
+            }
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["take"])(1));
+    }
+    dispatchLoadTodos() {
+        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_5__["loadTodosRequest"])();
+        this.store.dispatch(action);
+    }
+}
+TodosGuard.ɵfac = function TodosGuard_Factory(t) { return new (t || TodosGuard)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"])); };
+TodosGuard.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: TodosGuard, factory: TodosGuard.ɵfac });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosGuard, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"]
+    }], function () { return [{ type: _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "Zh1/":
+/*!***********************************************!*\
+  !*** ./src/app/todos/todos-routing.module.ts ***!
+  \***********************************************/
+/*! exports provided: TodosRoutingModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosRoutingModule", function() { return TodosRoutingModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./containers/layout/layout.container */ "h35w");
+/* harmony import */ var _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./containers/todo-detail/todo-detail.container */ "mAo9");
+/* harmony import */ var _todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/guards/todos.guard */ "YJ73");
+
+
+
+
+
+
+
+const routes = [
+    {
+        path: '',
+        component: _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__["LayoutContainer"],
+        canActivate: [_todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__["TodosGuard"]]
+    },
+    {
+        path: ':filter',
+        component: _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__["LayoutContainer"],
+        canActivate: [_todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__["TodosGuard"]]
+    },
+    {
+        path: 'detail/:id',
+        component: _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_3__["TodoDetailContainer"],
+    }
+];
+class TodosRoutingModule {
+}
+TodosRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: TodosRoutingModule });
+TodosRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function TodosRoutingModule_Factory(t) { return new (t || TodosRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](TodosRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosRoutingModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
+                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "aGCt":
+/*!***************************************!*\
+  !*** ./src/app/todos/guards/index.ts ***!
+  \***************************************/
+/*! exports provided: GUARDS */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GUARDS", function() { return GUARDS; });
+/* harmony import */ var _todos_guard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.guard */ "YJ73");
+
+const GUARDS = [
+    _todos_guard__WEBPACK_IMPORTED_MODULE_0__["TodosGuard"]
+];
+
+
+/***/ }),
+
+/***/ "h35w":
 /*!*************************************************************!*\
   !*** ./src/app/todos/containers/layout/layout.container.ts ***!
   \*************************************************************/
@@ -1268,14 +1691,14 @@ const CONTAINERS = [
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayoutContainer", function() { return LayoutContainer; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/actions */ "./src/app/todos/actions/index.ts");
-/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @todos/selectors */ "./src/app/todos/selectors/index.ts");
-/* harmony import */ var _components_new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/new-todo/new-todo.component */ "./src/app/todos/components/new-todo/new-todo.component.ts");
-/* harmony import */ var _todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../todo-list/todo-list.container */ "./src/app/todos/containers/todo-list/todo-list.container.ts");
-/* harmony import */ var _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/footer/footer.component */ "./src/app/todos/components/footer/footer.component.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/actions */ "idvC");
+/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @todos/selectors */ "FVuP");
+/* harmony import */ var _components_new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/new-todo/new-todo.component */ "XUSM");
+/* harmony import */ var _todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../todo-list/todo-list.container */ "P8oW");
+/* harmony import */ var _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/footer/footer.component */ "HvR+");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "ofXK");
 
 
 
@@ -1364,7 +1787,56 @@ LayoutContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
 
 /***/ }),
 
-/***/ "./src/app/todos/containers/todo-detail/todo-detail.container.ts":
+/***/ "idvC":
+/*!****************************************!*\
+  !*** ./src/app/todos/actions/index.ts ***!
+  \****************************************/
+/*! exports provided: addTodo, updateTodo, deleteTodo, loadTodos, loadTodosRequest, loadTodosSuccess, loadTodosFail, addTodoRequest, addTodoSuccess, addTodoFail, updateTodoRequest, updateTodoSuccess, updateTodoFail, deleteTodoRequest, deleteTodoSuccess, deleteTodoFail */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.actions */ "B/6h");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["addTodo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["updateTodo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodo", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["deleteTodo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodos", function() { return _todos_actions__WEBPACK_IMPORTED_MODULE_0__["loadTodos"]; });
+
+/* harmony import */ var _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todos-ui.actions */ "GErn");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosRequest"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadTodosFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoRequest"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoSuccess"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoFail"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoRequest"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoSuccess"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoFail"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoRequest", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoRequest"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoSuccess", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoSuccess"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "deleteTodoFail", function() { return _todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoFail"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "mAo9":
 /*!***********************************************************************!*\
   !*** ./src/app/todos/containers/todo-detail/todo-detail.container.ts ***!
   \***********************************************************************/
@@ -1374,11 +1846,11 @@ LayoutContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCo
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoDetailContainer", function() { return TodoDetailContainer; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/selectors */ "./src/app/todos/selectors/index.ts");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/selectors */ "FVuP");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "ofXK");
 
 
 
@@ -1430,94 +1902,76 @@ TodoDetailContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
 
 /***/ }),
 
-/***/ "./src/app/todos/containers/todo-list/todo-list.container.ts":
-/*!*******************************************************************!*\
-  !*** ./src/app/todos/containers/todo-list/todo-list.container.ts ***!
-  \*******************************************************************/
-/*! exports provided: TodoListContainer */
+/***/ "oF5v":
+/*!****************************************************!*\
+  !*** ./src/app/todos/selectors/todos.selectors.ts ***!
+  \****************************************************/
+/*! exports provided: geTodosState, getAllTodos, getCountAllTodos, getEntitiesTodos, getVisibleTodos, getTodo, getCountVisibleTodos, getFilter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoListContainer", function() { return TodoListContainer; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @todos/actions */ "./src/app/todos/actions/index.ts");
-/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/selectors */ "./src/app/todos/selectors/index.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/todo/todo.component */ "./src/app/todos/components/todo/todo.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "geTodosState", function() { return geTodosState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllTodos", function() { return getAllTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCountAllTodos", function() { return getCountAllTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEntitiesTodos", function() { return getEntitiesTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getVisibleTodos", function() { return getVisibleTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodo", function() { return getTodo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCountVisibleTodos", function() { return getCountVisibleTodos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return getFilter; });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_reducers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/reducers */ "Ms5Y");
+/* harmony import */ var _todos_states__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/states */ "Tx2r");
+/* harmony import */ var _app_reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/reducers */ "IGZg");
 
 
 
 
-
-
-
-
-
-function TodoListContainer_section_0_app_todo_2_Template(rf, ctx) { if (rf & 1) {
-    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-todo", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("update", function TodoListContainer_section_0_app_todo_2_Template_app_todo_update_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r5); const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r4.onUpdate($event); })("delete", function TodoListContainer_section_0_app_todo_2_Template_app_todo_delete_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r5); const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r6.onDelete($event); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const todo_r3 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("todo", todo_r3);
-} }
-function TodoListContainer_section_0_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "ul", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, TodoListContainer_section_0_app_todo_2_Template, 1, 1, "app-todo", 3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const todos_r1 = ctx.ngIf;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", todos_r1);
-} }
-// tslint:disable-next-line: component-class-suffix
-class TodoListContainer {
-    constructor(store) {
-        this.store = store;
-        this.checkField = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](false);
-        this.todos$ = this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["select"])(_todos_selectors__WEBPACK_IMPORTED_MODULE_4__["getVisibleTodos"]));
+const geTodosState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(_todos_reducers__WEBPACK_IMPORTED_MODULE_1__["getTodosModuleState"], state => state.todos);
+const { selectAll: getAllTodos, selectTotal: getCountAllTodos, selectEntities: getEntitiesTodos } = _todos_states__WEBPACK_IMPORTED_MODULE_2__["todosAdapter"].getSelectors(geTodosState);
+const getVisibleTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getAllTodos, _app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (todos, router) => {
+    var _a;
+    if ((_a = router === null || router === void 0 ? void 0 : router.state) === null || _a === void 0 ? void 0 : _a.params) {
+        const filter = router.state.params.filter;
+        switch (filter) {
+            default:
+                return todos;
+            case 'completed':
+                return todos.filter(t => t.completed);
+            case 'active':
+                return todos.filter(t => !t.completed);
+        }
     }
-    ngOnInit() {
+    return todos;
+});
+const getTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getEntitiesTodos, _app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (entities, router) => {
+    var _a;
+    if ((_a = router === null || router === void 0 ? void 0 : router.state) === null || _a === void 0 ? void 0 : _a.params) {
+        const id = router.state.params.id;
+        return entities[id];
     }
-    // TODO
-    // toggleAll() {
-    //  this.store.dispatch(new TodoActions.CompletedAllAction());
-    // }
-    onUpdate(update) {
-        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_3__["updateTodoRequest"])({ update });
-        this.store.dispatch(action);
+    return null;
+});
+const getCountVisibleTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getVisibleTodos, (todos) => todos.length);
+const getFilter = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(_app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (router) => {
+    if (router.state && router.state.params.filter) {
+        const filter = router.state.params.filter;
+        switch (filter) {
+            default:
+                return 'all';
+            case 'completed':
+                return 'completed';
+            case 'active':
+                return 'active';
+        }
     }
-    onDelete(id) {
-        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_3__["deleteTodoRequest"])({ id });
-        this.store.dispatch(action);
-    }
-}
-TodoListContainer.ɵfac = function TodoListContainer_Factory(t) { return new (t || TodoListContainer)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"])); };
-TodoListContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: TodoListContainer, selectors: [["app-todo-list"]], decls: 2, vars: 3, consts: [["id", "main", "class", "main", 4, "ngIf"], ["id", "main", 1, "main"], ["id", "todo-list", 1, "todo-list"], [3, "todo", "update", "delete", 4, "ngFor", "ngForOf"], [3, "todo", "update", "delete"]], template: function TodoListContainer_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](0, TodoListContainer_section_0_Template, 3, 1, "section", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipe"](1, "async");
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](1, 1, ctx.todos$));
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_6__["TodoComponent"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["AsyncPipe"]], encapsulation: 2, changeDetection: 0 });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodoListContainer, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
-        args: [{
-                selector: 'app-todo-list',
-                templateUrl: './todo-list.container.html',
-                changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
-            }]
-    }], function () { return [{ type: _ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"] }]; }, null); })();
+    return 'all';
+});
 
 
 /***/ }),
 
-/***/ "./src/app/todos/effects/index.ts":
+/***/ "qGd3":
 /*!****************************************!*\
   !*** ./src/app/todos/effects/index.ts ***!
   \****************************************/
@@ -1527,7 +1981,7 @@ TodoListContainer.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EFFECTS", function() { return EFFECTS; });
-/* harmony import */ var _todos_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.effects */ "./src/app/todos/effects/todos.effects.ts");
+/* harmony import */ var _todos_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.effects */ "sghd");
 
 const EFFECTS = [
     _todos_effects__WEBPACK_IMPORTED_MODULE_0__["TodosEffects"]
@@ -1536,7 +1990,7 @@ const EFFECTS = [
 
 /***/ }),
 
-/***/ "./src/app/todos/effects/todos.effects.ts":
+/***/ "sghd":
 /*!************************************************!*\
   !*** ./src/app/todos/effects/todos.effects.ts ***!
   \************************************************/
@@ -1546,12 +2000,12 @@ const EFFECTS = [
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosEffects", function() { return TodosEffects; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/effects */ "./node_modules/@ngrx/effects/__ivy_ngcc__/fesm2015/effects.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/actions */ "./src/app/todos/actions/index.ts");
-/* harmony import */ var _todos_services_todos_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @todos/services/todos.service */ "./src/app/todos/services/todos.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/effects */ "snw9");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/actions */ "idvC");
+/* harmony import */ var _todos_services_todos_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @todos/services/todos.service */ "BNvK");
 
 
 
@@ -1606,165 +2060,34 @@ TodosEffects.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInje
 
 /***/ }),
 
-/***/ "./src/app/todos/guards/index.ts":
-/*!***************************************!*\
-  !*** ./src/app/todos/guards/index.ts ***!
-  \***************************************/
-/*! exports provided: GUARDS */
+/***/ "shMz":
+/*!*******************************************!*\
+  !*** ./src/app/todos/components/index.ts ***!
+  \*******************************************/
+/*! exports provided: COMPONENTS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GUARDS", function() { return GUARDS; });
-/* harmony import */ var _todos_guard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.guard */ "./src/app/todos/guards/todos.guard.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COMPONENTS", function() { return COMPONENTS; });
+/* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./footer/footer.component */ "HvR+");
+/* harmony import */ var _new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./new-todo/new-todo.component */ "XUSM");
+/* harmony import */ var _todo_todo_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo/todo.component */ "Q2JR");
 
-const GUARDS = [
-    _todos_guard__WEBPACK_IMPORTED_MODULE_0__["TodosGuard"]
+
+
+// import AlertComponent from '../../../ui/atoms/Alert/Alert.component';
+// import ImageComponent from '../../../ui/atoms/Image/Image.component';
+const COMPONENTS = [
+    _footer_footer_component__WEBPACK_IMPORTED_MODULE_0__["FooterComponent"],
+    _new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_1__["NewTodoComponent"],
+    _todo_todo_component__WEBPACK_IMPORTED_MODULE_2__["TodoComponent"],
 ];
 
 
 /***/ }),
 
-/***/ "./src/app/todos/guards/todos.guard.ts":
-/*!*********************************************!*\
-  !*** ./src/app/todos/guards/todos.guard.ts ***!
-  \*********************************************/
-/*! exports provided: TodosGuard */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosGuard", function() { return TodosGuard; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/selectors */ "./src/app/todos/selectors/index.ts");
-/* harmony import */ var _todos_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @todos/actions */ "./src/app/todos/actions/index.ts");
-
-
-
-
-
-
-
-
-class TodosGuard {
-    constructor(store) {
-        this.store = store;
-    }
-    canActivate() {
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["forkJoin"])([
-            this.checkTodos(),
-        ])
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(() => Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(true)), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(() => Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(false)));
-    }
-    checkTodos() {
-        return this.store.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(_todos_selectors__WEBPACK_IMPORTED_MODULE_4__["getCountAllTodos"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["tap"])(total => {
-            if (total === 0) {
-                this.dispatchLoadTodos();
-            }
-        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["take"])(1));
-    }
-    dispatchLoadTodos() {
-        const action = Object(_todos_actions__WEBPACK_IMPORTED_MODULE_5__["loadTodosRequest"])();
-        this.store.dispatch(action);
-    }
-}
-TodosGuard.ɵfac = function TodosGuard_Factory(t) { return new (t || TodosGuard)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"])); };
-TodosGuard.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: TodosGuard, factory: TodosGuard.ɵfac });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosGuard, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"]
-    }], function () { return [{ type: _ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"] }]; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/app/todos/reducers/index.ts":
-/*!*****************************************!*\
-  !*** ./src/app/todos/reducers/index.ts ***!
-  \*****************************************/
-/*! exports provided: reducers, metaReducers, getTodosModuleState */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reducers", function() { return reducers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "metaReducers", function() { return metaReducers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodosModuleState", function() { return getTodosModuleState; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _todos_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todos.reducer */ "./src/app/todos/reducers/todos.reducer.ts");
-/* harmony import */ var _todos_ui_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./todos-ui.reducer */ "./src/app/todos/reducers/todos-ui.reducer.ts");
-
-
-
-
-const reducers = {
-    todos: _todos_reducer__WEBPACK_IMPORTED_MODULE_2__["todosReducer"],
-    todosUI: _todos_ui_reducer__WEBPACK_IMPORTED_MODULE_3__["todosUIReducer"]
-};
-const metaReducers = !_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].production ? [] : [];
-const getTodosModuleState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createFeatureSelector"])('todos-module');
-
-
-/***/ }),
-
-/***/ "./src/app/todos/reducers/todos-ui.reducer.ts":
-/*!****************************************************!*\
-  !*** ./src/app/todos/reducers/todos-ui.reducer.ts ***!
-  \****************************************************/
-/*! exports provided: initialState, todosUIReducer */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "todosUIReducer", function() { return todosUIReducer; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/actions/todos-ui.actions */ "./src/app/todos/actions/todos-ui.actions.ts");
-
-
-const initialState = {
-    loadingTodos: false,
-    errorLoadingTodos: null,
-    loadingAddTodo: false,
-    errorAddTodo: null,
-    loadingUpdateTodo: false,
-    errorUpdateTodo: null,
-    loadingDeleteTodo: false,
-    errorDeleteTodo: null,
-};
-const todosUIReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createReducer"])(initialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosRequest"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingTodos: true, errorLoadingTodos: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingTodos: false, errorLoadingTodos: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"], (state, { error }) => {
-    return Object.assign(Object.assign({}, state), { loadingTodos: false, errorLoadingTodos: error || null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoRequest"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingAddTodo: true, errorAddTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosSuccess"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingAddTodo: false, errorAddTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["loadTodosFail"], (state, { error }) => {
-    return Object.assign(Object.assign({}, state), { loadingAddTodo: false, errorAddTodo: error || null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoRequest"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: true, errorUpdateTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["updateTodoSuccess"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: false, errorUpdateTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["addTodoFail"], (state, { error }) => {
-    return Object.assign(Object.assign({}, state), { loadingUpdateTodo: false, errorUpdateTodo: error || null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoRequest"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: true, errorDeleteTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoSuccess"], (state) => {
-    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: false, errorDeleteTodo: null });
-}), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_todos_actions_todos_ui_actions__WEBPACK_IMPORTED_MODULE_1__["deleteTodoFail"], (state, { error }) => {
-    return Object.assign(Object.assign({}, state), { loadingDeleteTodo: false, errorDeleteTodo: error || null });
-}));
-
-
-/***/ }),
-
-/***/ "./src/app/todos/reducers/todos.reducer.ts":
+/***/ "v84Q":
 /*!*************************************************!*\
   !*** ./src/app/todos/reducers/todos.reducer.ts ***!
   \*************************************************/
@@ -1775,9 +2098,9 @@ const todosUIReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createRe
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "todosReducer", function() { return todosReducer; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_actions_todos_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/actions/todos.actions */ "./src/app/todos/actions/todos.actions.ts");
-/* harmony import */ var _todos_states__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/states */ "./src/app/todos/states/index.ts");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _todos_actions_todos_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/actions/todos.actions */ "B/6h");
+/* harmony import */ var _todos_states__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/states */ "Tx2r");
 
 
 
@@ -1797,271 +2120,7 @@ const todosReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createRedu
 
 /***/ }),
 
-/***/ "./src/app/todos/selectors/index.ts":
-/*!******************************************!*\
-  !*** ./src/app/todos/selectors/index.ts ***!
-  \******************************************/
-/*! exports provided: geTodosState, getAllTodos, getCountAllTodos, getEntitiesTodos, getVisibleTodos, getTodo, getCountVisibleTodos, getFilter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _todos_selectors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.selectors */ "./src/app/todos/selectors/todos.selectors.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "geTodosState", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["geTodosState"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAllTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getAllTodos"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCountAllTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getCountAllTodos"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEntitiesTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getEntitiesTodos"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisibleTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getVisibleTodos"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getTodo", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getTodo"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCountVisibleTodos", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getCountVisibleTodos"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return _todos_selectors__WEBPACK_IMPORTED_MODULE_0__["getFilter"]; });
-
-
-
-
-/***/ }),
-
-/***/ "./src/app/todos/selectors/todos.selectors.ts":
-/*!****************************************************!*\
-  !*** ./src/app/todos/selectors/todos.selectors.ts ***!
-  \****************************************************/
-/*! exports provided: geTodosState, getAllTodos, getCountAllTodos, getEntitiesTodos, getVisibleTodos, getTodo, getCountVisibleTodos, getFilter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "geTodosState", function() { return geTodosState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllTodos", function() { return getAllTodos; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCountAllTodos", function() { return getCountAllTodos; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEntitiesTodos", function() { return getEntitiesTodos; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getVisibleTodos", function() { return getVisibleTodos; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTodo", function() { return getTodo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCountVisibleTodos", function() { return getCountVisibleTodos; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return getFilter; });
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _todos_reducers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @todos/reducers */ "./src/app/todos/reducers/index.ts");
-/* harmony import */ var _todos_states__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @todos/states */ "./src/app/todos/states/index.ts");
-/* harmony import */ var _app_reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @app/reducers */ "./src/app/reducers/index.ts");
-
-
-
-
-const geTodosState = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(_todos_reducers__WEBPACK_IMPORTED_MODULE_1__["getTodosModuleState"], state => state.todos);
-const { selectAll: getAllTodos, selectTotal: getCountAllTodos, selectEntities: getEntitiesTodos } = _todos_states__WEBPACK_IMPORTED_MODULE_2__["todosAdapter"].getSelectors(geTodosState);
-const getVisibleTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getAllTodos, _app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (todos, router) => {
-    var _a;
-    if ((_a = router === null || router === void 0 ? void 0 : router.state) === null || _a === void 0 ? void 0 : _a.params) {
-        const filter = router.state.params.filter;
-        switch (filter) {
-            default:
-                return todos;
-            case 'completed':
-                return todos.filter(t => t.completed);
-            case 'active':
-                return todos.filter(t => !t.completed);
-        }
-    }
-    return todos;
-});
-const getTodo = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getEntitiesTodos, _app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (entities, router) => {
-    var _a;
-    if ((_a = router === null || router === void 0 ? void 0 : router.state) === null || _a === void 0 ? void 0 : _a.params) {
-        const id = router.state.params.id;
-        return entities[id];
-    }
-    return null;
-});
-const getCountVisibleTodos = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(getVisibleTodos, (todos) => todos.length);
-const getFilter = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createSelector"])(_app_reducers__WEBPACK_IMPORTED_MODULE_3__["getRouterState"], (router) => {
-    if (router.state && router.state.params.filter) {
-        const filter = router.state.params.filter;
-        switch (filter) {
-            default:
-                return 'all';
-            case 'completed':
-                return 'completed';
-            case 'active':
-                return 'active';
-        }
-    }
-    return 'all';
-});
-
-
-/***/ }),
-
-/***/ "./src/app/todos/services/index.ts":
-/*!*****************************************!*\
-  !*** ./src/app/todos/services/index.ts ***!
-  \*****************************************/
-/*! exports provided: SERVICES */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SERVICES", function() { return SERVICES; });
-/* harmony import */ var _todos_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.service */ "./src/app/todos/services/todos.service.ts");
-
-const SERVICES = [
-    _todos_service__WEBPACK_IMPORTED_MODULE_0__["TodosService"]
-];
-
-
-/***/ }),
-
-/***/ "./src/app/todos/services/todos.service.ts":
-/*!*************************************************!*\
-  !*** ./src/app/todos/services/todos.service.ts ***!
-  \*************************************************/
-/*! exports provided: TodosService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosService", function() { return TodosService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-
-
-
-
-
-class TodosService {
-    constructor(apiUrl, http) {
-        this.apiUrl = apiUrl;
-        this.http = http;
-    }
-    getAllTodos() {
-        const url = `${this.apiUrl}/todos`;
-        return this.http.get(url)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(todos => todos.slice(0, 10)));
-    }
-    createTodo(todo) {
-        const url = `${this.apiUrl}/todos`;
-        return this.http.post(url, { todo })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
-    }
-    updateTodo(todo) {
-        const url = `${this.apiUrl}/todos/${todo.id}`;
-        return this.http.patch(url, { todo })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
-    }
-    deleteTodo(id) {
-        const url = `${this.apiUrl}/todos/${id}`;
-        return this.http.delete(url)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((response) => response.todo));
-    }
-}
-TodosService.ɵfac = function TodosService_Factory(t) { return new (t || TodosService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"]('API_URL'), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
-TodosService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: TodosService, factory: TodosService.ɵfac });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosService, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"]
-    }], function () { return [{ type: undefined, decorators: [{
-                type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"],
-                args: ['API_URL']
-            }] }, { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }]; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/app/todos/states/index.ts":
-/*!***************************************!*\
-  !*** ./src/app/todos/states/index.ts ***!
-  \***************************************/
-/*! exports provided: todosAdapter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _todos_state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todos.state */ "./src/app/todos/states/todos.state.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "todosAdapter", function() { return _todos_state__WEBPACK_IMPORTED_MODULE_0__["todosAdapter"]; });
-
-
-
-
-/***/ }),
-
-/***/ "./src/app/todos/states/todos.state.ts":
-/*!*********************************************!*\
-  !*** ./src/app/todos/states/todos.state.ts ***!
-  \*********************************************/
-/*! exports provided: todosAdapter */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "todosAdapter", function() { return todosAdapter; });
-/* harmony import */ var _ngrx_entity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/entity */ "./node_modules/@ngrx/entity/__ivy_ngcc__/fesm2015/entity.js");
-
-const todosAdapter = Object(_ngrx_entity__WEBPACK_IMPORTED_MODULE_0__["createEntityAdapter"])();
-
-
-/***/ }),
-
-/***/ "./src/app/todos/todos-routing.module.ts":
-/*!***********************************************!*\
-  !*** ./src/app/todos/todos-routing.module.ts ***!
-  \***********************************************/
-/*! exports provided: TodosRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosRoutingModule", function() { return TodosRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./containers/layout/layout.container */ "./src/app/todos/containers/layout/layout.container.ts");
-/* harmony import */ var _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./containers/todo-detail/todo-detail.container */ "./src/app/todos/containers/todo-detail/todo-detail.container.ts");
-/* harmony import */ var _todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @todos/guards/todos.guard */ "./src/app/todos/guards/todos.guard.ts");
-
-
-
-
-
-
-
-const routes = [
-    {
-        path: '',
-        component: _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__["LayoutContainer"],
-        canActivate: [_todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__["TodosGuard"]]
-    },
-    {
-        path: ':filter',
-        component: _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_2__["LayoutContainer"],
-        canActivate: [_todos_guards_todos_guard__WEBPACK_IMPORTED_MODULE_4__["TodosGuard"]]
-    },
-    {
-        path: 'detail/:id',
-        component: _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_3__["TodoDetailContainer"],
-    }
-];
-class TodosRoutingModule {
-}
-TodosRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: TodosRoutingModule });
-TodosRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function TodosRoutingModule_Factory(t) { return new (t || TodosRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
-        _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](TodosRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](TodosRoutingModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
-                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/app/todos/todos.module.ts":
+/***/ "zrKR":
 /*!***************************************!*\
   !*** ./src/app/todos/todos.module.ts ***!
   \***************************************/
@@ -2071,24 +2130,24 @@ TodosRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodosModule", function() { return TodosModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/__ivy_ngcc__/fesm2015/store.js");
-/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/effects */ "./node_modules/@ngrx/effects/__ivy_ngcc__/fesm2015/effects.js");
-/* harmony import */ var _todos_routing_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./todos-routing.module */ "./src/app/todos/todos-routing.module.ts");
-/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components */ "./src/app/todos/components/index.ts");
-/* harmony import */ var _containers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./containers */ "./src/app/todos/containers/index.ts");
-/* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./reducers */ "./src/app/todos/reducers/index.ts");
-/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services */ "./src/app/todos/services/index.ts");
-/* harmony import */ var _effects__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./effects */ "./src/app/todos/effects/index.ts");
-/* harmony import */ var _guards__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./guards */ "./src/app/todos/guards/index.ts");
-/* harmony import */ var _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/footer/footer.component */ "./src/app/todos/components/footer/footer.component.ts");
-/* harmony import */ var _components_new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/new-todo/new-todo.component */ "./src/app/todos/components/new-todo/new-todo.component.ts");
-/* harmony import */ var _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/todo/todo.component */ "./src/app/todos/components/todo/todo.component.ts");
-/* harmony import */ var _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./containers/layout/layout.container */ "./src/app/todos/containers/layout/layout.container.ts");
-/* harmony import */ var _containers_todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./containers/todo-list/todo-list.container */ "./src/app/todos/containers/todo-list/todo-list.container.ts");
-/* harmony import */ var _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./containers/todo-detail/todo-detail.container */ "./src/app/todos/containers/todo-detail/todo-detail.container.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngrx/store */ "kt0X");
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngrx/effects */ "snw9");
+/* harmony import */ var _todos_routing_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./todos-routing.module */ "Zh1/");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components */ "shMz");
+/* harmony import */ var _containers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./containers */ "SX/p");
+/* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./reducers */ "Ms5Y");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services */ "NIkG");
+/* harmony import */ var _effects__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./effects */ "qGd3");
+/* harmony import */ var _guards__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./guards */ "aGCt");
+/* harmony import */ var _components_footer_footer_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/footer/footer.component */ "HvR+");
+/* harmony import */ var _components_new_todo_new_todo_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/new-todo/new-todo.component */ "XUSM");
+/* harmony import */ var _components_todo_todo_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/todo/todo.component */ "Q2JR");
+/* harmony import */ var _containers_layout_layout_container__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./containers/layout/layout.container */ "h35w");
+/* harmony import */ var _containers_todo_list_todo_list_container__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./containers/todo-list/todo-list.container */ "P8oW");
+/* harmony import */ var _containers_todo_detail_todo_detail_container__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./containers/todo-detail/todo-detail.container */ "mAo9");
 
 
 
@@ -2150,32 +2209,6 @@ TodosModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInject
                 ]
             }]
     }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/app/utils/validators.ts":
-/*!*************************************!*\
-  !*** ./src/app/utils/validators.ts ***!
-  \*************************************/
-/*! exports provided: CustomValidators */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomValidators", function() { return CustomValidators; });
-class CustomValidators {
-    static isBlank(control) {
-        const value = control.value;
-        if (value === null || value === '') {
-            return null;
-        }
-        if (value.trim() === '') {
-            return { is_blank: true };
-        }
-        return null;
-    }
-}
 
 
 /***/ })

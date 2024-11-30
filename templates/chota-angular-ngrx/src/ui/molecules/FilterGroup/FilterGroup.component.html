@@ -1,0 +1,9 @@
+<div class="grouped" role="group">
+  <app-link
+    *ngFor="let filterItem of filterItems"
+    [isActive]="filterItem.selected"
+    (onClick)="onFilterClick.emit(filterItem.id)"
+  >
+    {{ filterItem.label }}
+  </app-link>
+</div>
