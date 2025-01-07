@@ -1,4 +1,7 @@
-# Localization
+---
+title: Localization
+layout: default
+---
 
 ## What is Localization?
 

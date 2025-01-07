@@ -3,9 +3,7 @@ title: Images
 layout: default
 ---
 
-# Universal Image Component Documentation
-
-## Overview
+# Universal Image Component
 
 This document describes the universal Image Component that provides various optimizations for SSR (Server-Side Rendering), lazy loading, caching policy, and responsiveness. The goal is to deliver images in an efficient, SEO-friendly, and performance-optimized manner across different devices.
 
