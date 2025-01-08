@@ -72,5 +72,5 @@ Although closely related, localization and globalization are distinct concepts:
 5. **Iterate and Improve**: Localization is an ongoing process. Regularly gather feedback from local users and make improvements as needed.
 
 
-## Links to refer
+## Further Reading
 * https://phrase.com/blog/posts/step-step-guide-javascript-localization/
