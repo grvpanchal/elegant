@@ -115,14 +115,20 @@
             </h2>
             <ul class="tabs">
                 <li>
-                    <a href="https://pages.github.com/#user-site" class="selected">User or organization site</a>
+                    <a href="#react" class="selected">React</a>
                 </li>
                 <li>
-                    <a href="https://pages.github.com/#project-site">Project site</a>
+                    <a href="#angular">Angular</a>
+                </li>
+                <li>
+                    <a href="#vue">Vue</a>
+                </li>
+                <li>
+                    <a href="#wc">Web Components</a>
                 </li>
             </ul>
             <!-- ### Start of tutorials -->
-            <ul id="user-site" class="tutorial-list wrapper active">
+            <ul id="react" class="tutorial-list wrapper active">
                 <!-- <li id="create-repo-step" class="image-right">
                     <h4>Create a repository</h4>
                     <p>Head over to
@@ -133,45 +139,28 @@
                     </p>
                     <p class="details">If the first part of the repository doesn’t exactly match your username, it won’t work, so make sure to get it right.</p>
                 </li> -->
-                <li class="image-right">
-                    <h4>Select your framework of your choice.</h4>
-                    <ul class="tabs">
-                        <li>
-                            <a id="option-terminal" href="https://pages.github.com/#terminal-step-1" class="selected">React</a>
-                        </li>
-                        <li>
-                            <a id="option-desktop" href="https://pages.github.com/#setup-in-desktop">Angular</a>
-                        </li>
-                        <li>
-                            <a id="option-newuser" href="https://pages.github.com/#new-user-step-1">Vue</a>
-                        </li>
-                    </ul>
+                <li id="new-user-step-1" class="option-newuser animate-in">
+                    <h4>Clone the Boilerplate</h4>
+                    <p>The boilerplate easy starting point to setup base UI with Storybook, Server with SSR and State Mangement with REST proxy</p>
                     <img src="./assets/img/react-start.png" />
-                </li>
-                <li id="new-user-step-1" class="option-newuser animate-in hidden">
-                    <h4>Download GitHub Desktop</h4>
-                    <p>GitHub Desktop is a great way to use Git and GitHub on macOS and Windows.</p>
-                    <a class="desktop-download" href="https://desktop.github.com/">
-                        <span class="icon"></span>Download GitHub Desktop
-                    </a>
-                    <img
-                        src="./assets/dashboard@2x.png"
-                        width="1054"
-                        alt="GitHub Desktop screenshot"
-                        class="full-size"
-                    >
                 </li>
                 <li id="terminal-step-1" class="option-terminal">
                     <h4>Analyse your Mocks</h4>
                     <p>Go to the state folder, create todo folder and create todo.initial.js</p>
                     <div class="flex">
                         <div>
+                            <img src="./assets/img/mock.png" />
+                            <img src="./assets/img/mock-code.png" />
                             <p>Understanding Site Scaffolding</p>
                         </div>
                         <div>
+                            <img src="./assets/img/events.png" />
+                            <img src="./assets/img/events-code.png" />
                             <p>Evaluate Actionable Events</p>
                         </div>
                         <div>
+                            <img src="./assets/img/loading.png" />
+                            <img src="./assets/img/loading-code.png" />
                             <p>Streamline Loading Instances</p>
                         </div>
                     </div>
@@ -188,35 +177,48 @@
                     <p class="details">If the app doesn't open, launch it and clone the repository from the app.</p>
                 </li>
                 <li class="option-terminal">
-                    <h4>Analyse your Mocks</h4>
+                    <h4>Build your UI</h4>
                     <p>Go to the state folder, create todo folder and create todo.initial.js</p>
                     <div class="flex">
                         <div>
-                            <p>Understanding Site Scaffolding</p>
+                            <p>Build UI organism around Scaffolding​</p>
                         </div>
                         <div>
-                            <p>Evaluate Actionable Events</p>
+                            <p>Check interactiveness and Responsiveness on Storybook</p>
                         </div>
                         <div>
-                            <p>Streamline Loading Instances</p>
+                            <p>Define Events props for state operation and actions</p>
                         </div>
                     </div>
                 </li>
                 <li class="option-terminal">
-                    <h4>Hello World</h4>
-                    <p>Enter the project folder and add an index.html file:</p>
-                    <div class="terminal">
-                        <div class="header"></div>
-                        <div class="shell">
-                            <p>
-                                <span class="path">~</span>
-                                <span class="prompt">$</span>cd
-                                <em>username</em>.github.io
-                            </p>
-                            <p>
-                                <span class="path">~</span>
-                                <span class="prompt">$</span>echo "Hello World" &gt; index.html
-                            </p>
+                    <h4>Build State and Connect to UI​</h4>
+                    <p>Go to the state folder, create todo folder and create todo.initial.js</p>
+                    <div class="flex">
+                        <div>
+                            <p>Use Site Scaffolding for initial state​</p>
+                        </div>
+                        <div>
+                            <p>Define Selectors and actions as per CRUD</p>
+                        </div>
+                        <div>
+                            <p>Connect you Organism to your operation within your Container</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="option-terminal">
+                    <h4>Repeat the process with each organism</h4>
+                    <p>One to One relationship with organism and reducer / state operation allows easy work distribution on a large application enabling developers to work parallelly and independently. </p>
+                    <div class="flex">
+                        <div>
+                            <ul>
+                                <li>Parallel Development of UI and State​</li>
+                                <li>Easy allocation of page sections to developers​</li>
+                                <li>Improved Performance based organism loading using containers</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <img src="./assets/img/repeat.png" />
                         </div>
                     </div>
                 </li>
@@ -283,7 +285,245 @@
             </ul>
             <!-- End of user site tutorial -->
             <!-- Project Site tutorial -->
-            <ul id="project-site" class="tutorial-list wrapper">
+            <ul id="angular" class="tutorial-list wrapper">
+                <li class="question">
+                    <h4>Use a theme, or start from scratch?</h4>
+                    <p>
+                        You have the option to start with one of the pre-built themes,
+                        <br>
+                        or to create a site from scratch.
+                    </p>
+                    <ul class="tabs">
+                        <li>
+                            <a id="option-generate" href="https://pages.github.com/#generate-step-1" class="selected">Choose a theme</a>
+                        </li>
+                        <li>
+                            <a id="option-vanilla" href="https://pages.github.com/#vanilla-step-1">Start from scratch</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="generate-step-1" class="option-generate">
+                    <h4>Repository Settings</h4>
+                    <p>Head over to
+                        <a href="https://github.com/">GitHub.com</a>
+                        and create a new repository, or go to an existing one.
+                        <br>
+                        <strong>Click on the Settings tab</strong>.
+                    </p>
+                    <img src="./assets/repo-settings@2x.png" width="720" alt="Settings for a repository">
+                </li>
+                <li class="option-generate">
+                    <h4>Theme chooser</h4>
+                    <p>Scroll down to the
+                        <strong>GitHub Pages</strong> section. Press
+                        <strong>Choose a theme</strong>.
+                    </p>
+                    <img src="./assets/launch-theme-chooser@2x.png" width="720" alt="Automatic Generator button on GitHub.com, Settings">
+                </li>
+                <li class="option-generate">
+                    <h4>Pick a theme</h4>
+                    <p>
+                        Choose one of the themes from the carousel at the top.
+                        <br>When you're done, click
+                        <strong>Select theme</strong> on the right.
+                    </p>
+                    <img
+                        src="./assets/theme-chooser@2x.png"
+                        class="full-size"
+                        width="720"
+                        alt="Choose layout"
+                    >
+                </li>
+                <li class="option-generate">
+                    <h4>Edit content</h4>
+                    <p>Use the editor to add content to your site.</p>
+                    <img
+                        class="full-size"
+                        src="./assets/code-editor@2x.png"
+                        width="720"
+                        alt="Add content to your GitHub Pages site"
+                    >
+                </li>
+                <li class="option-generate">
+                    <h4>Commit</h4>
+                    <p>Enter a commit comment and click on
+                        <strong>Commit changes</strong> below the editor.
+                    </p>
+                    <img
+                        class="full-size"
+                        src="./assets/commit-edits@2x.png"
+                        width="720"
+                        alt="Commit Markdown content to your repository"
+                    >
+                </li>
+                <!-- Start of vanilla sub tutorial -->
+                <li id="vanilla-step-1" class="option-vanilla animate-in hidden">
+                    <h4>Create an index file</h4>
+                    <p>Head over to
+                        <a href="https://github.com/">GitHub.com</a> and
+                        <a data-proofer-ignore="true" href="https://github.com/new">create a new repository</a>
+                        , or go to an existing one.
+                        <br>Click on the
+                        <strong>Create new file</strong> button.
+                    </p>
+                    <img src="./assets/new-create-file@2x.png" width="720" alt="Create a file in your repository">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Hello World</h4>
+                    <p>Name the file
+                        <code>index.html</code> and type some HTML content into the editor.
+                    </p>
+                    <img src="./assets/new-index-html@2x.png" width="720" alt="Hello World on GitHub.com">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Commit the file</h4>
+                    <p>Scroll to the bottom of the page, write a commit message, and commit the new file.</p>
+                    <img src="./assets/new-commit-file@2x.png" width="720" alt="Commit the file">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Repository Settings</h4>
+                    <p>
+                        <strong>Click on the Settings tab</strong>
+                        and scroll down to the GitHub Pages section.
+                        <br>Then select the
+                        <strong>main branch</strong> source and click on the
+                        <strong>Save</strong> button.
+                    </p>
+                    <img src="./assets/source-setting@2x.png" width="720" alt="GitHub Pages Source Setting">
+                </li>
+                <li class="option-all">
+                    <h4>…and you're done!</h4>
+                    <p>Fire up a browser and go to
+                        <strong>http://
+                            <em>username</em>.github.io/
+                            <em>repository</em>
+                        </strong>.
+                    </p>
+                    <div class="hero-octicon">
+                        <span class="mega-octicon octicon-check"></span>
+                    </div>
+                </li>
+            </ul>
+            <ul id="vue" class="tutorial-list wrapper">
+                <li class="question">
+                    <h4>Use a theme, or start from scratch?</h4>
+                    <p>
+                        You have the option to start with one of the pre-built themes,
+                        <br>
+                        or to create a site from scratch.
+                    </p>
+                    <ul class="tabs">
+                        <li>
+                            <a id="option-generate" href="https://pages.github.com/#generate-step-1" class="selected">Choose a theme</a>
+                        </li>
+                        <li>
+                            <a id="option-vanilla" href="https://pages.github.com/#vanilla-step-1">Start from scratch</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="generate-step-1" class="option-generate">
+                    <h4>Repository Settings</h4>
+                    <p>Head over to
+                        <a href="https://github.com/">GitHub.com</a>
+                        and create a new repository, or go to an existing one.
+                        <br>
+                        <strong>Click on the Settings tab</strong>.
+                    </p>
+                    <img src="./assets/repo-settings@2x.png" width="720" alt="Settings for a repository">
+                </li>
+                <li class="option-generate">
+                    <h4>Theme chooser</h4>
+                    <p>Scroll down to the
+                        <strong>GitHub Pages</strong> section. Press
+                        <strong>Choose a theme</strong>.
+                    </p>
+                    <img src="./assets/launch-theme-chooser@2x.png" width="720" alt="Automatic Generator button on GitHub.com, Settings">
+                </li>
+                <li class="option-generate">
+                    <h4>Pick a theme</h4>
+                    <p>
+                        Choose one of the themes from the carousel at the top.
+                        <br>When you're done, click
+                        <strong>Select theme</strong> on the right.
+                    </p>
+                    <img
+                        src="./assets/theme-chooser@2x.png"
+                        class="full-size"
+                        width="720"
+                        alt="Choose layout"
+                    >
+                </li>
+                <li class="option-generate">
+                    <h4>Edit content</h4>
+                    <p>Use the editor to add content to your site.</p>
+                    <img
+                        class="full-size"
+                        src="./assets/code-editor@2x.png"
+                        width="720"
+                        alt="Add content to your GitHub Pages site"
+                    >
+                </li>
+                <li class="option-generate">
+                    <h4>Commit</h4>
+                    <p>Enter a commit comment and click on
+                        <strong>Commit changes</strong> below the editor.
+                    </p>
+                    <img
+                        class="full-size"
+                        src="./assets/commit-edits@2x.png"
+                        width="720"
+                        alt="Commit Markdown content to your repository"
+                    >
+                </li>
+                <!-- Start of vanilla sub tutorial -->
+                <li id="vanilla-step-1" class="option-vanilla animate-in hidden">
+                    <h4>Create an index file</h4>
+                    <p>Head over to
+                        <a href="https://github.com/">GitHub.com</a> and
+                        <a data-proofer-ignore="true" href="https://github.com/new">create a new repository</a>
+                        , or go to an existing one.
+                        <br>Click on the
+                        <strong>Create new file</strong> button.
+                    </p>
+                    <img src="./assets/new-create-file@2x.png" width="720" alt="Create a file in your repository">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Hello World</h4>
+                    <p>Name the file
+                        <code>index.html</code> and type some HTML content into the editor.
+                    </p>
+                    <img src="./assets/new-index-html@2x.png" width="720" alt="Hello World on GitHub.com">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Commit the file</h4>
+                    <p>Scroll to the bottom of the page, write a commit message, and commit the new file.</p>
+                    <img src="./assets/new-commit-file@2x.png" width="720" alt="Commit the file">
+                </li>
+                <li class="option-vanilla animate-in hidden">
+                    <h4>Repository Settings</h4>
+                    <p>
+                        <strong>Click on the Settings tab</strong>
+                        and scroll down to the GitHub Pages section.
+                        <br>Then select the
+                        <strong>main branch</strong> source and click on the
+                        <strong>Save</strong> button.
+                    </p>
+                    <img src="./assets/source-setting@2x.png" width="720" alt="GitHub Pages Source Setting">
+                </li>
+                <li class="option-all">
+                    <h4>…and you're done!</h4>
+                    <p>Fire up a browser and go to
+                        <strong>http://
+                            <em>username</em>.github.io/
+                            <em>repository</em>
+                        </strong>.
+                    </p>
+                    <div class="hero-octicon">
+                        <span class="mega-octicon octicon-check"></span>
+                    </div>
+                </li>
+            </ul>
+            <ul id="wc" class="tutorial-list wrapper">
                 <li class="question">
                     <h4>Use a theme, or start from scratch?</h4>
                     <p>

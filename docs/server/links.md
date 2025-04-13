@@ -1,9 +1,9 @@
 ---
 title: Links
-layout: default
+layout: doc
+slug: links
 ---
-
-# **Universal Link Component**
+# Link Navigation
 
 The **Universal Link Component** (ULC) is a flexible and reusable module designed to handle URL routing, dynamic links, and deep linking in web applications. This component is framework-agnostic and can be integrated into various frontend frameworks like **React**, **Angular**, and **Vue**. It provides a unified approach to manage navigation, handle parameterized routes, and ensure proper handling of external and app-based links.
 
@@ -276,7 +276,5 @@ The Universal Link Component is highly configurable to adapt to different routin
 <Link to={`/profile/${userId}`} onClick={customLinkHandler}>Go to Profile</Link>
 ```
 
----
-
-### Further readings:
-* https://mattburgess.medium.com/framework-routers-and-linking-98398af89022
+## References
+- https://mattburgess.medium.com/framework-routers-and-linking-98398af89022

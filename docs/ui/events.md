@@ -1,6 +1,7 @@
 ---
 title: Events
-layout: default
+layout: doc
+slug: events
 ---
 
 # Events
@@ -39,6 +40,6 @@ Here's a simple example of handling a `click` event:
 </html>
 ```
 
-## References:
+## References
 
 - https://developer.mozilla.org/en-US/docs/Web/Events

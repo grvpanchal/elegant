@@ -1,9 +1,10 @@
 ---
 title: Authentication
-layout: default
+layout: doc
+slug: authentication
 ---
 
-# **Authentication**
+# Authentication
 
 The Authentication can be a reusable module designed to handle user authentication, ensuring secure login, registration, password management, and role-based access control (RBAC) across multiple services or applications. It provides standard methods and interfaces for validating user credentials, managing authentication tokens, and maintaining session integrity.
 
@@ -209,9 +210,6 @@ If enabled, users will be prompted for an additional form of authentication, suc
 - **Token Storage**: Tokens should be securely stored, ideally in HTTP-only cookies.
 - **Rate Limiting**: Implement rate limiting to prevent brute-force attacks.
 
----
-
-
-# Further Reading
+## References
 - https://zivukushingai.medium.com/everything-you-need-to-know-about-frontend-and-backend-authentication-ultimate-guide-7142a752249c
 - https://webauthn.guide/

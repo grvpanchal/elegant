@@ -1,13 +1,14 @@
 ---
 title: Index file
-layout: default
+layout: doc
+slug: index-file
 ---
 
- # Index File
+# Index File
 
 An **index file** is a critical file in web development. It typically serves as the main entry point for a web application or website. The most common type of index file is the `index.html` file for static websites, or `index.js`/`index.ts` for JavaScript applications like React, Vue, or Angular.
 
-## 1. **index.html (for Static Websites)**
+## 1. index.html (for Static Websites)
 The `index.html` file is usually the **default landing page** of a website. When a user visits a website, the server typically looks for this file to serve as the first page they see.
 
 ### Key Features:
@@ -69,10 +70,8 @@ In modern JavaScript frameworks like **React**, **Angular**, or **Vue.js**, the 
 - **Web App Structure**: In frameworks like **React** or **Angular**, `index.js` plays a key role in loading the application efficiently and ensuring everything is set up before the app starts.
 - **User Experience**: A properly configured **index file** ensures that users can easily access the homepage and that the application loads correctly.
 
-## 4. Links to refer
-
+## References
 - https://blog.grvpanchal.me/2019/01/standard-way-to-approach-webpage.html
-
 - https://validator.w3.org/#validate_by_input
 
 

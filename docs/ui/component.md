@@ -1,6 +1,7 @@
 ---
 title: Component
-layout: default
+layout: doc
+slug: component
 ---
 # Component
 
@@ -57,7 +58,7 @@ Here's a simple example of a Web Component using Custom Elements:
 
 In the HTML body, `<custom-button></custom-button>` is used to insert an instance of the custom button component.
 
-## References:
+## References
 
 - https://react.dev/learn/your-first-component
 - https://medium.com/@adityaa803/components-in-javascript-1f5c66042fa5

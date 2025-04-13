@@ -1,9 +1,10 @@
 ---
 title: Protocol
-layout: default
+layout: doc
+slug: ssg
 ---
 
-# **Protocol and Security**
+# Protocol and Security
 
 This document covers key protocols and technologies for securing web applications and improving user experience. The following topics are covered:
 
@@ -199,7 +200,7 @@ The **Internet Protocols** encompass the set of rules that define how data is tr
 
 ---
 
-For further reading, see the additional resources:
+## References
 - [MDN Service Workers](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Tutorials/CycleTracker/Secure_connection)
 - [.wellknown](https://www.ssldragon.com/blog/well-known-folder/)
 - [Lets Encrypt](https://www.inmotionhosting.com/support/website/ssl/lets-encrypt-ssl-ubuntu-with-certbot/)

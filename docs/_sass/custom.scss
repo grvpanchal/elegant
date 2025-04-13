@@ -65,16 +65,18 @@
       // flex-direction: column;
       width: 100%;
       padding: 3rem 1rem;
-      .title, #container {
+      .title,
+      #container {
         font-size: 1.75rem;
       }
     }
-  
+
     @include small {
       flex-direction: column;
       width: 100%;
       padding: 2rem 1rem;
-      .title, #container {
+      .title,
+      #container {
         font-size: 1.5rem;
       }
     }
@@ -123,10 +125,12 @@
   p.selected {
     border-bottom: 1px solid #000;
   }
-  p + pre, p + .highlighter-rouge {
+  p + pre,
+  p + .highlighter-rouge {
     display: none;
   }
-  p.selected + pre, , p.selected + .highlighter-rouge {
+  p.selected + pre,
+  p.selected + .highlighter-rouge {
     order: 1;
     display: block;
     width: 100%;

@@ -1,6 +1,7 @@
 ---
 title: DOM
-layout: default
+layout: doc
+slug: dom
 ---
 # DOM
 
@@ -30,6 +31,6 @@ The document currently loaded in each one of your browser tabs is represented by
 </html>
 ```
 
-## References:
+## References
 
 - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents

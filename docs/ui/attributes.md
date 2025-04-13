@@ -1,6 +1,7 @@
 ---
 title: Attributes
-layout: default
+layout: doc
+slug: attributes
 ---
 # Attributes
 
@@ -36,6 +37,6 @@ Elements in HTML have attributes; these are additional values that configure the
   <div onclick="console.log(onclick)">Click me!</div>
   ```
 
-## HTML attribute reference:
+## References
 
 - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes

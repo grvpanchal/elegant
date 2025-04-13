@@ -3,6 +3,7 @@ require("colors");
 const readLineSync = require("readline-sync");
 const path = require("path");
 const fse = require("fs-extra");
+const pkg = require("./package.json");
 
 const NO_CHOICE_MADE = -1;
 const CURR_DIR = process.cwd();
@@ -10,6 +11,28 @@ const templatesDir = path.join(__dirname, "templates");
 const templates = fse.readdirSync(templatesDir);
 let selectedTemplate = '';
 let index;
+
+const installSuccessMessage = (projectName) => {
+  console.log(`
+  ${"Success!".green} Created ${projectName} at ${CURR_DIR}/${projectName}
+  Inside that directory, you can run several commands:
+
+  ${"npm start".cyan}
+    Starts the development server.
+
+  ${"npm run build".cyan}
+    Bundles the app into static files for production.
+
+  We suggest that you begin by typing:
+
+    ${"cd".cyan} ${projectName}
+    ${"npm install --legacy-peer-deps".cyan}
+    ${"npm start".cyan}
+  
+  To run the Storybook:
+    ${"npm run storybook".cyan}
+  `);
+};
 
 if (!templates.length) {
   console.log("no template to choose from , templates folder is empty");
@@ -19,6 +42,10 @@ if (!templates.length) {
 process.argv.forEach(function (val, index) {
   if(val.includes('index.js')) {
     const nextVal = process.argv[index + 1];
+    if(nextVal && nextVal === '-v') {
+      console.log(`v${pkg.version}`);
+      process.exit(0);
+    }
     selectedTemplate = templates.find(t => t === nextVal);
   }
 });
@@ -49,7 +76,7 @@ if (confirmCreateDirectory) {
   const destination = path.join(CURR_DIR, projectName);
   fse
     .copy(source, destination)
-    .then(() => console.log(`Successfully created ${destination}`.green))
+    .then(() => installSuccessMessage(projectName))
     .catch((err) => console.error(err));
 } else {
   console.log("Aborted creating a new template");

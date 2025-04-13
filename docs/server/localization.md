@@ -1,9 +1,10 @@
 ---
 title: Localization
-layout: default
+layout: doc
+slug: localization
 ---
 
-## What is Localization?
+# Localization
 
 Localization (often abbreviated as L10n) refers to the process of adapting a product, content, or service to meet the language, cultural, and other specific needs of a particular target market or region. While translation focuses mainly on converting text from one language to another, localization takes a broader approach by addressing all elements of the product, including:
 
@@ -72,5 +73,5 @@ Although closely related, localization and globalization are distinct concepts:
 5. **Iterate and Improve**: Localization is an ongoing process. Regularly gather feedback from local users and make improvements as needed.
 
 
-## Further Reading
-* https://phrase.com/blog/posts/step-step-guide-javascript-localization/
+## References
+- https://phrase.com/blog/posts/step-step-guide-javascript-localization/

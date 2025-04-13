@@ -1,6 +1,7 @@
 ---
 title: Organism
-layout: default
+layout: doc
+slug: organism
 ---
 
 # Organism
@@ -10,7 +11,7 @@ layout: default
 
 Here is an example of an organism called `Header` that combines multiple molecules and atoms. The `Header` organism might consist of a `Logo` molecule, a `Navigation` molecule, and a `Button` atom for a user profile:
 
-```js
+```jsx
 // Header.js
 
 import React from "react";
@@ -38,7 +39,7 @@ In this example:
 
 Now, let's create the `Logo` and `Navigation` components:
 
-```js
+```jsx
 // Logo.js
 
 import React from "react";
@@ -50,7 +51,7 @@ const Logo = () => {
 export default Logo;
 ```
 
-```js
+```jsx
 // Navigation.js
 
 import React from "react";
@@ -74,7 +75,7 @@ In this setup, the `Logo` and `Navigation` components can be considered molecule
 
 We can then use the Header organism in your application:
 
-```js
+```jsx
 // App.js
 
 import React from "react";
@@ -94,4 +95,6 @@ export default App;
 
 This illustrates how organisms in Atomic Design are composed of molecules and atoms to create larger and more complex components. The `Header` organism, in this case, represents a common structure that might appear at the top of many pages in our application.
 
-## References:
+## References
+
+- [1] https://atomicdesign.bradfrost.com/chapter-2/

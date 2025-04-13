@@ -1,6 +1,7 @@
 ---
 title: Element
-layout: default
+layout: doc
+slug: element
 ---
 
 # Element
@@ -43,6 +44,6 @@ The following code illustrates elements in each of these four states:
 <p is="sw-finn"></p>
 ```
 
-## Reference:
+## References
 
 - https://dom.spec.whatwg.org/#concept-element

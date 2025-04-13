@@ -1,9 +1,10 @@
 ---
-title: The Server Side
-layout: default
+title: Micro Frontend
+layout: doc
+slug: mfe
 ---
 
-## What are Micro Frontends?
+# Micro Frontend
 
 Micro Frontends (MFE) is an architectural style that brings the principles of **microservices** to the world of frontend development. In this approach, a large frontend application is broken down into smaller, more manageable, independent units or **micro-apps**, each responsible for a specific feature or functionality.
 
@@ -73,7 +74,7 @@ Micro Frontends are particularly useful in the following scenarios:
 - **Autonomous Teams**: When teams are autonomous and need the freedom to work independently without being blocked by others.
 - **Scalable Development**: When an application needs to scale quickly, and having independent deployable units is beneficial.
 
-## Further Reading
+## References
 
 - [Micro Frontends: An Introduction](https://micro-frontends.org/)
 - [Single SPA Documentation](https://single-spa.js.org/)

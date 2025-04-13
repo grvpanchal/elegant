@@ -197,12 +197,24 @@ a {
   h2,
   h3,
   h4,
-  h5,
-  h6 {
+  h5 {
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-weight: normal;
     color: $section-headings-color;
+  }
+
+  h6 {
+    margin: 2rem 0 0 0 !important;
+    padding: 0;
+    line-height: 1;
+    color: #777;
+    font-weight: 300;
+  }
+
+  h6 + h3 {
+    margin-top: 0;
+    font-size: 32px;
   }
 
   p {
