@@ -1,9 +1,4 @@
 import { LitElement, html } from 'lit-element';
-import '@vaadin/vaadin-text-field';
-import '@vaadin/vaadin-button';
-import '@vaadin/vaadin-checkbox';
-import '@vaadin/vaadin-radio-button/vaadin-radio-button';
-import '@vaadin/vaadin-radio-button/vaadin-radio-group';
 import {
   VisibilityFilters,
   getVisibleTodosSelector

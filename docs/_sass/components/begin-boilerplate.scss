@@ -73,11 +73,17 @@
     display: block;
     border: 4px solid #CCC;
     border-radius: 36px;
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
     text-align: center;
+    padding-top: 4px;
+
+    img {
+      z-index: -1; 
+    }
 
     .text {
+      padding-top: 4px;
       line-height: initial;
       font-weight: bold;
       text-transform: uppercase;

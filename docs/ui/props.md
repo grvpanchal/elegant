@@ -1,6 +1,7 @@
 ---
 title: Props
-layout: default
+layout: doc
+slug: props
 ---
 # Props
 
@@ -15,7 +16,7 @@ Maybe this schema will help clarify how attributes and properties reflection wor
 
 ![Props vs Attributes](../assets/img/props_vs_attributes.webp "Props vs Attributes")
 
-## References:
+## References
 
 - https://www.freecodecamp.org/news/how-to-use-props-in-reactjs/
 - https://javascript.works-hub.com/learn/web-components-api-definition-attributes-and-props-886c0

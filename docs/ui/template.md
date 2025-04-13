@@ -1,12 +1,13 @@
 ---
 title: Template
-layout: default
+layout: doc
+slug: template
 ---
 # Template
 
 A template in the context of Atomic Design is a higher-level component that defines the overall structure of a page or section. Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:
 
-```js
+```jsx
 // HomePageTemplate.js
 
 import React from "react";
@@ -33,7 +34,7 @@ In this example:
 
 Now, let's create a simple `MainContent` organism as an example:
 
-```js
+```jsx
 // MainContent.js
 
 import React from "react";
@@ -54,7 +55,7 @@ The `Header`, `MainContent`, and `Footer` components are used as molecules and o
 
 Now, we can use the `HomePageTemplate` template in our application:
 
-```js
+```jsx
 // App.js
 
 import React from "react";
@@ -74,3 +75,4 @@ export default App;
 This demonstrates how templates can be used to structure different sections or pages of your application by combining organisms. Templates are higher-level components that help maintain a consistent layout across multiple pages.
 
 ## References:
+- [1] https://atomicdesign.bradfrost.com/chapter-2/

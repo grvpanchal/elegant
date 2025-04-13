@@ -2,17 +2,17 @@
   <h2>BEGIN</h2>
   <div class="connected-steps">
     <div class="step">
-      <img src="{{ '/assets/img/brands/ui/chota.png' || | relative_url }}" />
+      <img id="uiImg" src="{{ '/assets/img/brands/ui/chota.png' || | relative_url }}" />
       <div class="text">UI</div>
     </div>
     <div class="connector"></div>
     <div class="step">
-      <img src="{{ '/assets/img/brands/server/react.png' || | relative_url }}"" />
+      <img id="serverImg" src="{{ '/assets/img/brands/server/react.png' || | relative_url }}"" />
       <div class="text">server</div>
     </div>
     <div class="connector"></div>
     <div class="step">
-      <img src="{{ '/assets/img/brands/state/saga.png' || | relative_url }}"" onclick="var event = document.createEvent('MouseEvents');event.initMouseEvent('mousedown', true, true, window);stateSelect.dispatchEvent(event);" />
+      <img id="stateImg" src="{{ '/assets/img/brands/state/saga.png' || | relative_url }}"" onclick="var event = document.createEvent('MouseEvents');event.initMouseEvent('mousedown', true, true, window);stateSelect.dispatchEvent(event);" />
       <div class="text">State</div>
     </div>
   </div>

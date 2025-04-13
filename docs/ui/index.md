@@ -1,81 +1,78 @@
 ---
 title: The UI Side
-layout: default
+layout: topics
+slug: ui
+description: UI and Themeing
 ---
-# The UI Side
-
-## Basics
-Below are links to basic terminologies conerning UI:
-
-1. [Element](./element)
-2. [DOM](./dom)
-3. [Attributes](./attributes)
-4. [Component](./component)
-5. [Props](./props)
-6. [Events](./events)
-7. [Atomic Design](./atomic-design)
-8. [Atom](./atom)
-9. [Molecule](./molecule)
-10. [Skeleton](./skeleton)
-11. [Organism](./organism)
-12. [Widget](./widget)
-13. [Layout / Template](./template)
-14. [Story](./story)
-15. [Theme](./theme)
-16. [Responsive Web Design (RWD)](./rwd)
-17. [Accessibility](./accessibility)
-
 ## Approach
 
 ### Folder Structure
+```
+.
+└── ui/
+    ├── atoms/
+    │   └── Button/
+    │       ├── Button.component.js
+    │       ├── Button.stories.js
+    │       ├── Button.style.css
+    │       ├── Button.test.js
+    │       └── Button.type.js
+    ├── molecules
+    ├── organisms
+    ├── skeletons
+    ├── templates
+    └── theme.css
+```
+THis Folder structure organizes UI components into different levels of abstraction, following the **Atomic Design methodology**. Here's a detailed explanation of the structure:
 
-### Building base HTML Scaffolding to JSON
+#### **Root Folder: `ui/`**
+This is the main directory containing all UI-related files and subfolders.
 
-Inline
+#### **Subfolders**
+1. **`atoms/`**
+   - Contains the smallest, reusable UI components (e.g., buttons, inputs, icons).
+   - Example: The `Button` folder includes all files related to the `Button` component:
+     - **`Button.component.js`**: The main implementation of the button component.
+     - **`Button.stories.js`**: Storybook file to document and test the button visually.
+     - **`Button.style.css`**: CSS file for styling the button.
+     - **`Button.test.js`**: Unit tests for the button component.
+     - **`Button.type.js`**: Type definitions (e.g., PropTypes or TypeScript types) for the button.
 
-Block
+2. **`molecules/`**
+   - Contains components made by combining multiple atoms. For example, an input field with a label or a search bar.
 
-Iterable
+3. **`organisms/`**
+   - Larger, more complex components formed by combining molecules and atoms. Examples include navigation bars or forms.
 
-Sections / articles
+4. **`skeletons/`**
+   - Placeholder components used during loading states to improve user experience.
 
-sementic layout
+5. **`templates/`**
+   - Defines page layouts by arranging organisms and other components in a structured way.
 
-## Building with Atomic Design
+6. **`theme.css`**
+   - A global stylesheet that manages themes, such as colors, fonts, and spacing across the application.
 
-Atomic design docs
+### Architecture
+<img src="/assets/img/diagrams/ui-system-diagram.png" alt="server system diagram" />
 
-<img src="{{ '/assets/img/atomic-design.png' | relative_url }}">
+This diagram visually represents how UI components are organized in Atomic Design:
 
-## Standardizing Base Component Objects
+1. **Atoms**
+   - The smallest building blocks (e.g., buttons, inputs).
+   - Accessible and reusable.
 
-<img src="{{ '/assets/img/css-components.webp' | relative_url }}">
+2. **Molecules**
+   - Created by combining atoms to form more complex elements (e.g., search bars or labeled inputs).
 
-- Atom JSON
-- Molecule JSON
-- Iteratable Molecule JSON
-- Organism JSON with responsiveness
-- Template Placeholders and slots
+3. **Organisms**
+   - Larger, functional components formed by combining molecules (e.g., a header with navigation links).
 
-## Understanding the base pattern of theming
+4. **Skeleton**
+   - Placeholder UI used during loading states to improve user experience.
 
-SCARFS
+5. **Template**
+   - Defines the structure of pages by arranging organisms in a layout.
 
-<img src="{{ '/assets/img/css-theme.webp' | relative_url }}">
-
-## Identifying an Organism in Design
-
-Data Isolation with Objects
-
-Lazy Loading patterns
-
-Error / Default 
-
-## Transmitting Organism State for UX
-
-Any User Experience delivered with the iteraction of user can be divided onto
-
-- Reflection of Data in ordered pattern
-- Easing in of error to make user take actions to provide pathway to happ path
-- Dyanimic Loading skeletons to make users gracefully wait for ongoing async operation to deliver the content via network
-
+6. **Theme Provider**
+   - Ensures consistent styling and theming across the application.

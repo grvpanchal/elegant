@@ -1,0 +1,106 @@
+<style>
+  .icon-container * {
+    box-sizing: border-box;
+  }
+
+  .icon-container {
+    max-width: 32rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Container for flexboxes */
+  .icon-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* Create four equal columns */
+  .icon-column {
+    flex: 20%;
+    /* padding: 7.5px; */
+    text-align: center;
+  }
+
+  .icon-column:hover {
+    text-decoration: none;
+  }
+
+  .icon-column h4 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  .icon-box {
+    height: 84px;
+    width: 84px;
+    border-radius: 8px;
+    border: 2px solid #fe854c;
+    margin: auto;
+    padding-top: 8px;
+  }
+
+  .icon-box img {
+    height: 64px;
+    width: 64px;
+  }
+
+  /* On screens that are 992px wide or less, go from four columns to two columns */
+  @media screen and (max-width: 768px) {
+    .icon-column {
+      flex: 33.3%;
+    }
+    .icon-container {
+      max-width: 20rem;
+    }
+  }
+
+  /* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 400px) {
+    .icon-column {
+      flex: 50%;
+    }
+    .icon-container {
+      max-width: 14rem;
+    }
+  }
+  .topic-banner {
+    display: flex;
+    justify-content: space-between;
+  }
+  .topic-banner h1 {
+    font-size: 2.4rem;
+    padding-top: 3rem;
+    margin-bottom: 0 !important;
+  }
+  .topic-banner p {
+    margin-top: 0;
+  }
+  .topic-banner h5 {
+    padding-left: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+</style>
+<div class="topic-banner">
+  <div>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.description }}</p>
+  </div>
+  <div>
+    <h5>Learn the Basics</h5>
+    <div class="icon-container">
+      <div class="icon-row">
+        {% assign topics = site.data.topics[page.slug] %}
+        {% for topic in topics %}
+        <a class="icon-column" href="./{{ topic.slug }}">
+          <div class="icon-box">
+            <img src="/assets/img/logos/{{ topic.slug }}.png" />
+          </div>
+          <h4>{{ topic.title }}</h4>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

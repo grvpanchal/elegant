@@ -1,47 +1,83 @@
-var textArray = [
-  "UI UX Oriented",
-  "Framework Agnostic",
-  "Atomic Design Ready",
-  "Modular",
-  "Scalable",
-  "Fully Test Covered",
-  "Development Savvy",
-  "Storybook Enabled",
-  "Performance Oriented",
-  "PWA Ready",
-  "Microfrontend Ready",
-];
-var text = textArray[0];
+console.log('=== main.js', window.location.pathname);
 
-var chars = text.split("");
-var container = document.getElementById("container");
+function updateBoilerplate(e) {
+  console.log('=== e', e.value);
+  const boilerPlate = e.value;
+  const [uiString, serverString, stateString] = boilerPlate.split('-');
+  uiImg.src = `/assets/img/brands/ui/${uiString}.png`;
+  serverImg.src = `/assets/img/brands/server/${serverString}.png`;
+  stateImg.src = `/assets/img/brands/state/${stateString}.png`;
+  codeBox.innerHTML = `npx elegant ${e.value}`;
+  demoLink.href = `./demos/${e.value}`;
+  storybookLink.href = `./demos/storybooks/${e.value}`;
+}
 
-var i = 0;
-var x = 1;
-setInterval(function () {
-  if (i < chars.length) {
-    container.innerHTML += chars[i++];
-  } else if (i < chars.length + 10) {
-    i++;
-  } else if (i < chars.length + 20) {
-    container.classList.add("type-clear");
-    i++;
-  } else if (i < chars.length + 25) {
-    container.innerHTML = "&nbsp;";
-    i++;
-  } else {
-    container.innerHTML = "&nbsp;";
-    if (x >= textArray.length) {
-      x = 0;
+if (window.location.pathname === '/') {
+  var textArray = [
+    "UI UX Oriented",
+    "Framework Agnostic",
+    "Atomic Design Ready",
+    "Modular",
+    "Scalable",
+    "Fully Test Covered",
+    "Development Savvy",
+    "Storybook Enabled",
+    "Performance Oriented",
+    "PWA Ready",
+    "Microfrontend Ready",
+  ];
+  var text = textArray[0];
+
+  var chars = text.split("");
+  var container = document.getElementById("container");
+
+  var i = 0;
+  var x = 1;
+
+  setInterval(function () {
+    if (container) {
+      if (i < chars.length) {
+        container.innerHTML += chars[i++];
+      } else if (i < chars.length + 10) {
+        i++;
+      } else if (i < chars.length + 20) {
+        container.classList.add("type-clear");
+        i++;
+      } else if (i < chars.length + 25) {
+        container.innerHTML = "&nbsp;";
+        i++;
+      } else {
+        container.innerHTML = "&nbsp;";
+        if (x >= textArray.length) {
+          x = 0;
+        }
+        text = textArray[x++];
+        chars = text.split("");
+        container.classList.remove("type-clear");
+        i = 0;
+      }
     }
-    text = textArray[x++];
-    chars = text.split("");
-    container.classList.remove("type-clear");
-    i = 0;
-  }
-}, 100);
+  }, 100);
 
+  // Demo Selection component
+  var demos = [
+    'chota-react-saga',
+    'chota-angular-ngrx',
+    'chota-react-redux',
+    'chota-react-rtk',
+    'chota-vue-pinia',
+    'chota-wc-saga',
+  ];
 
+  const buildOption = (label, value) => `<option value="${value}">${label}</option>`;
+  const buildOptions = (options) => options.map(option => buildOption(option, option)).toString();
+  const buildselectBoilerplate = () => {
+    const optionHtml = buildOptions(demos);
+    selectBoilerplate.innerHTML = optionHtml;
+  };
+
+  buildselectBoilerplate();
+}
 
 const loop = (nodes, callback) => {
   for (let i = 0; i < nodes.length; ++i) {
@@ -66,29 +102,3 @@ loop(tabsNodes, (tabsNode) => {
   }
   loop(nodes, (node, i) => onTabSelect(nodes, node, i));
 })
-
-// Demo Selection component
-var demos = [
-  'chota-react-saga',
-  'chota-angular-ngrx',
-  'chota-react-redux',
-  'chota-react-rtk',
-  'chota-vue-pinia',
-  'chota-wc-saga',
-];
-
-const buildOption = (label, value) => `<option value="${value}">${label}</option>`;
-const buildOptions = (options) => options.map(option => buildOption(option, option)).toString();
-const buildselectBoilerplate = () => {
-  const optionHtml = buildOptions(demos);
-  selectBoilerplate.innerHTML = optionHtml; 
-};
-
-const updateBoilerplate = (e) => {
-  console.log('=== e', e.value);
-  codeBox.innerHTML = `nxp elegant ${e.value}`;
-  demoLink.href = `./demos/${e.value}`;
-  storybookLink.href = `./demos/storybooks/${e.value}`;
-};
-
-buildselectBoilerplate();

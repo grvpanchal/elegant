@@ -1,6 +1,7 @@
 ---
 title: Page
-layout: default
+layout: doc
+slug: page
 ---
 
 # Page
@@ -54,6 +55,6 @@ export default App;
 
 This structure follows the Atomic Design methodology, where atoms, molecules, organisms, templates, and pages are used to build a scalable and modular design system. The `HomePage` component serves as the entry point for a specific page in our application, composed of the various building blocks defined in the lower levels of the design hierarchy.
 
-## References:
+## References
 
-* https://atomicdesign.bradfrost.com/chapter-2/#pages
+- https://atomicdesign.bradfrost.com/chapter-2/#pages

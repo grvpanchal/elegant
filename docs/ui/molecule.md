@@ -1,6 +1,7 @@
 ---
 title: Molecule
-layout: default
+layout: doc
+slug: molecule
 ---
 # Molecule
 
@@ -74,6 +75,6 @@ export default App;
 
 This illustrates how molecules, composed of atoms, can be used to create more complex and reusable components in a React application.
 
-## References:
+## References
 
 - https://atomicdesign.bradfrost.com/chapter-2/#molecules

@@ -1,6 +1,7 @@
 ---
 title: Atom
-layout: default
+layout: doc
+slug: atom
 ---
 
 # Atom
@@ -55,6 +56,6 @@ export default App;
 
 In this example, the `App` component uses the `Button` atom by passing in an `onClick` function and a `label`. This follows the Atomic Design principles of building up more complex components by combining simpler ones.
 
-## References:
+## References
 
 - https://atomicdesign.bradfrost.com/chapter-2/#atoms
