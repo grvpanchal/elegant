@@ -50,7 +50,7 @@ const MyProvider = ({ children }) => {
 
 Angular
 
-```typescript
+```ts
 @Injectable({
   providedIn: 'root'
 })
