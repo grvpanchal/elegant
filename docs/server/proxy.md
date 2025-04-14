@@ -25,13 +25,13 @@ This will forward any unknown requests to the specified URL[26].
 
 For more control, you can manually configure the proxy:
 
-1. Install the http-proxy-middleware package:
+Install the http-proxy-middleware package:
 ```bash
 npm install http-proxy-middleware --save
 ```
 
-2. Create a setupProxy.js file in your src directory:
-```javascript
+Create a setupProxy.js file in your src directory:
+```js
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {

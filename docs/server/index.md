@@ -5,11 +5,11 @@ slug: server
 description: Server and Browser interaction
 ---
 
-## Approach
+# Approach
 
 This architecture provides the most elegant and advanced solution to achieve performance without braking the modularity of UI and The State. below are techniques to to do this on the server side of application
 
-### Folder Structure
+## Folder Structure
 
 ```
 .
@@ -81,13 +81,13 @@ The image you provided represents a typical **Frontend Server folder structure**
 - **`sw.js`**: Service worker file for enabling Progressive Web App (PWA) features like offline caching.
 - **`index.js`**: The entry point of the Frontend application where the app is rendered into the DOM using the rendering engine of the framework.
 
-### Architecture
+## Architecture
 
 <img src="/assets/img/diagrams/server-system-diagram.png" alt="server system diagram" />
 
 The diagram represents the architecture of a web application, with a focus on modular design and the separation of backend and frontend components.
 
-### **Backend Side**
+### Backend Side
 
 1. **Providers**:
    - **Forms / Links / Image Localization Module**: Handles content-related functionalities like forms, links, and localized images.
@@ -108,7 +108,7 @@ The diagram represents the architecture of a web application, with a focus on mo
 
 5. **Container**: It acts as a bridge between the data layer (e.g., backend services, APIs) and the presentation layer (React components that render UI). Containers typically do not include presentational markup themselves but instead pass data and event handlers (via props) to child components.
 
-### **Frontend Side**
+### Frontend Side
 
 1. **Headers**:
    - **PWA (Progressive Web App)**: Ensures offline capabilities, responsiveness, and app-like features.
@@ -121,7 +121,7 @@ The diagram represents the architecture of a web application, with a focus on mo
 3. **Index File**:
    - Serves as the entry point for the frontend application, loading the app shell and initializing components.
 
-### **Containers & Pages**
+### Containers & Pages
 
 * Containers encapsulate individual components or modules that render specific parts of a page.
 * Pages receive events and props from containers to dynamically display content.

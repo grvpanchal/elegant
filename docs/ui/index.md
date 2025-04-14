@@ -4,9 +4,9 @@ layout: topics
 slug: ui
 description: UI and Themeing
 ---
-## Approach
+# Approach
 
-### Folder Structure
+## Folder Structure
 ```
 .
 └── ui/
@@ -25,10 +25,10 @@ description: UI and Themeing
 ```
 THis Folder structure organizes UI components into different levels of abstraction, following the **Atomic Design methodology**. Here's a detailed explanation of the structure:
 
-#### **Root Folder: `ui/`**
+### **Root Folder: `ui/`**
 This is the main directory containing all UI-related files and subfolders.
 
-#### **Subfolders**
+### **Subfolders**
 1. **`atoms/`**
    - Contains the smallest, reusable UI components (e.g., buttons, inputs, icons).
    - Example: The `Button` folder includes all files related to the `Button` component:
@@ -53,7 +53,7 @@ This is the main directory containing all UI-related files and subfolders.
 6. **`theme.css`**
    - A global stylesheet that manages themes, such as colors, fonts, and spacing across the application.
 
-### Architecture
+## Architecture
 <img src="/assets/img/diagrams/ui-system-diagram.png" alt="server system diagram" />
 
 This diagram visually represents how UI components are organized in Atomic Design:
