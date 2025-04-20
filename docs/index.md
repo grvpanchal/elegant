@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Frontend Architechture Principles
+title: Frontend Architecture Principles
 ---
 
 <style>
@@ -19,6 +19,18 @@ title: Frontend Architechture Principles
 .text-item {
   flex: 0 1 calc(50% - 2em); /* Each card takes up one-third of the row minus spacing */
 }
+
+
+@media (max-width: 600px) {
+  .card-container {
+    flex-wrap: wrap;
+  }
+  .card, .text-item {
+    flex: 0 1 100%;
+    margin-bottom: 2rem;
+  }
+}
+
 
 .card img {
   border-top-right-radius: 4px;
