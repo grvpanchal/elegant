@@ -77,6 +77,20 @@
   .topic-banner p {
     margin-top: 0;
   }
+
+  @media (max-width: 600px) {
+    .topic-banner {
+      flex-wrap: wrap;
+      justify-content: initial;
+    }
+    .topic-banner-img {
+      width: 100%;
+    }
+    .topic-banner h1, .topic-banner p {
+      flex: 0 1 100%;
+      margin-bottom: 2rem;
+    }
+  }
   .topic-banner h5 {
     padding-left: 0.5rem;
     margin-bottom: 0.5rem;
@@ -87,7 +101,7 @@
     <h1>{{ page.title }}</h1>
     <p>{{ page.description }}</p>
   </div>
-  <div>
+  <div class="topic-banner-img">
     <h5>Learn the Basics</h5>
     <div class="icon-container">
       <div class="icon-row">

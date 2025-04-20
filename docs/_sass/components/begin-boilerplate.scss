@@ -13,6 +13,7 @@
     display: flex;
     padding: 1rem 0 1rem;
     width: 100%;
+    flex-wrap: wrap;
     pre {
       font-size: 1em;
       overflow-x: auto;
@@ -27,17 +28,21 @@
     }
 
     a.btn {
-      margin-left: 1rem;
       line-height: 30px;
-      margin-bottom: 0;
+      margin-top: 1rem;
+      flex: 0 1 calc(50% - 0.5rem);
       span {
-        margin-right: 0.25rem;
+        margin-left: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
       }
       * {
         vertical-align: middle;
       }
+      + .btn {
+        margin-left: 1rem;
+      }
     }
-
   }
 
   .select-box {
@@ -64,22 +69,21 @@
     width: 360px;
     margin: 0 auto;
     align-items: center;
-
   }
 
   .step {
     color: #fff;
     background-color: #fff;
     display: block;
-    border: 4px solid #CCC;
-    border-radius: 36px;
+    border: 4px solid #ccc;
+    border-radius: 40px;
     width: 80px;
     height: 80px;
     text-align: center;
     padding-top: 4px;
 
     img {
-      z-index: -1; 
+      z-index: -1;
     }
 
     .text {
