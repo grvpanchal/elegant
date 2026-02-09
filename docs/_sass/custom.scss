@@ -1,5 +1,3 @@
-@use "sass:color";
-
 .site-nav {
   position: relative;
   z-index: 100;
@@ -33,7 +31,7 @@
       list-style-type: none;
       margin-right: -1px;
       > a {
-        color: color.adjust(#000, $lightness: -5%);
+        color: darken(#000, 5%);
         display: inline-block;
         padding: 0.75rem 1rem;
         &:hover {
@@ -50,7 +48,7 @@
       color: $header-heading-color;
     }
     .navlist > li > a {
-      color: color.adjust($header-heading-color, $lightness: -5%);
+      color: darken($header-heading-color, 5%);
       &:hover {
         color: $header-heading-color;
       }
