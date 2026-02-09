@@ -101,4 +101,33 @@ loop(tabsNodes, (tabsNode) => {
     nodes[1].classList.add("selected");
   }
   loop(nodes, (node, i) => onTabSelect(nodes, node, i));
-})
+});
+
+// Add copy buttons to code blocks
+document.querySelectorAll('.highlight > .highlight').forEach((block) => {
+  // Skip if already has a copy button
+  if (block.querySelector('.copy-btn')) return;
+  
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = 'Copy';
+  
+  copyBtn.addEventListener('click', () => {
+    const code = block.querySelector('code');
+    const text = code ? code.textContent : block.querySelector('pre').textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    }).catch((err) => {
+      console.error('Failed to copy:', err);
+    });
+  });
+  
+  block.appendChild(copyBtn);
+});
