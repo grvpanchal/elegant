@@ -1,0 +1,23 @@
+{% assign domain = page.url | split: "/" | slice: 1 | first %}
+{% if domain == "ui" or domain == "server" or domain == "state" %}
+<div class="instruction-alert">
+  <div class="instruction-alert__content">
+    <svg class="instruction-alert__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+    </svg>
+    <div class="instruction-alert__text">
+      <strong>Copilot Instructions Available</strong>
+      <span>Download this instruction file to enhance AI agent assistance for {{ page.title }} patterns in your codebase.</span>
+    </div>
+  </div>
+  <a href="{{ site.github.repository_url }}/raw/main/instructions/{{ domain }}-{{ page.slug }}.instructions.md" 
+     class="instruction-alert__download" 
+     download="{{ domain }}-{{ page.slug }}.instructions.md"
+     title="Download {{ page.title }} Instructions">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+    </svg>
+    <span>Download</span>
+  </a>
+</div>
+{% endif %}

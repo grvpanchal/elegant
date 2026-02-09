@@ -1,4 +1,8 @@
+@use "sass:color";
+
 .site-nav {
+  position: relative;
+  z-index: 100;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -29,7 +33,7 @@
       list-style-type: none;
       margin-right: -1px;
       > a {
-        color: darken(#000, 5);
+        color: color.adjust(#000, $lightness: -5%);
         display: inline-block;
         padding: 0.75rem 1rem;
         &:hover {
@@ -46,7 +50,7 @@
       color: $header-heading-color;
     }
     .navlist > li > a {
-      color: darken($color: $header-heading-color, $amount: 5);
+      color: color.adjust($header-heading-color, $lightness: -5%);
       &:hover {
         color: $header-heading-color;
       }
@@ -159,4 +163,111 @@
   50% {
     border-color: white;
   }
+}
+
+// Instruction Download Alert Box
+.instruction-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.5rem auto 2rem;
+  padding: 1rem 1.25rem;
+  max-width: 64rem;
+  background: linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%);
+  border: 1px solid #b8d4e8;
+  border-left: 4px solid #0969da;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+    color: #0969da;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    
+    strong {
+      color: #1a1a1a;
+      font-size: 0.95rem;
+    }
+    
+    span {
+      color: #555;
+      font-size: 0.875rem;
+      line-height: 1.4;
+    }
+  }
+
+  &__download {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #0969da;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.1s ease;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    &:hover {
+      background: #0756b8;
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    
+    &__download {
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// Inline code styling (not in code blocks)
+p code, li code, td code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  border: 1px solid #e1e4e8;
+  color: #24292e;
+}
+
+// Ensure code blocks in highlight have dark theme
+.highlight code {
+  background-color: transparent !important;
+  color: #d4d4d4 !important;
+  border: none;
+  padding: 0;
 }

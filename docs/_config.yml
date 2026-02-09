@@ -1,5 +1,12 @@
 theme: jekyll-theme-cayman
 
+sass:
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
+    - color-functions
+
 title: Elegant
 markdown: kramdown
 highlighter: rouge
