@@ -6,6 +6,10 @@ slug: protocol
 
 # Protocol and Security
 
+> - Rules for communication between clients and servers
+> - HTTPS enables PWA features and encrypted communication
+> - Foundation for real-time and streaming capabilities
+
 ## Key Insight
 
 Protocols define the rules for communication between clients and servers in web applications. The most critical protocol shift in modern web development is **HTTP to HTTPS**—not just for security, but as a **functional requirement**: Service Workers (enabling PWAs, offline caching, background sync) **only work over HTTPS** because they can intercept network requests. SSL/TLS certificates ensure encrypted communication, verified through domain validation (Let's Encrypt uses ACME protocol with `.well-known/acme-challenge/` directory). In development, self-signed certificates (mkcert) bypass browser security warnings on localhost. Beyond HTTPS, protocols govern data transfer (HTTP/2 multiplexing, HTTP/3 QUIC), real-time communication (WebSocket over TLS), and API design (REST over HTTP, GraphQL over HTTP/HTTPS). The protocol layer determines **what's possible**: HTTPS unlocks PWA features, HTTP/2 enables server push, WebSocket enables bidirectional streaming—choosing the right protocol architecture is choosing your application's capabilities.

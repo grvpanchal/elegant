@@ -5,6 +5,10 @@ slug: app-shell
 ---
 # App Shell
 
+> - Minimal HTML, CSS, JS to power the UI framework
+> - Cached via Service Worker for instant loading
+> - Separates static infrastructure from dynamic content
+
 An **App Shell** is the minimal HTML, CSS, and JavaScript required to power the user interface framework of a web application. It loads instantly (cached via Service Worker), providing the structural skeleton (header, navigation, footer) while dynamic content loads asynchronously. This architecture pattern, fundamental to Progressive Web Apps, separates the static application framework from dynamic content, enabling instant-loading UIs that feel native.
 
 ## Key Insight

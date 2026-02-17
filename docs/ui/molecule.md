@@ -7,6 +7,7 @@ slug: molecule
 
 > - Comprised of multiple atoms or molecules
 > - Populates a grouped or assembled sections of UI
+> - Creates functional UI patterns with single purpose
 
 ## Key Insight
 

@@ -6,6 +6,10 @@ slug: state
 
 # State Basics
 
+> - Application memory that changes over time
+> - From user inputs to API responses to UI toggles
+> - Foundation of dynamic and interactive applications
+
 ## Key Insight
 
 State is the memory of your application—every piece of data that changes over time, from user inputs to API responses to UI toggles. Mastering state management means understanding when state should live locally in components versus globally in a store, how to keep state synchronized with reality, and how to structure state to make your application predictable, debuggable, and performant.

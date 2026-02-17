@@ -5,6 +5,10 @@ slug: story
 ---
 # Story
 
+> - Component development snapshots for isolated testing
+> - Interactive documentation of UI component states
+> - Enables visual regression testing and design review
+
 ## Key Insight
 
 A Storybook story is a **component development snapshot**—capturing one specific visual state with precise props and data. Stories transform your component library into an **interactive workshop** where designers, developers, and QA can explore every edge case (loading state, error state, empty data) without touching application code. Think of stories as **unit tests for the eyes**: each story isolates and documents exactly how your component should look and behave in different scenarios.

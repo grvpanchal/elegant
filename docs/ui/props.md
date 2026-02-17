@@ -5,10 +5,9 @@ slug: props
 ---
 # Props
 
-> - Props are arguments passed into JS components
-> - Deliver structural information that unlike attributes, can be used by JS within components
-> - We can also define our custom properties, to define the custom behaviours of our custom elements.
-> - Properties can have any value and they are case sensitive.
+> - Arguments passed into JS components for configuration
+> - Deliver structural information usable by JS within components
+> - Define custom behaviors with case-sensitive property values
 
 ## Key Insight
 

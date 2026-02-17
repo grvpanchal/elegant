@@ -6,6 +6,10 @@ slug: container
 
 # Container
 
+> - Smart wrappers that handle data and logic
+> - Separates data fetching from UI rendering
+> - Enables reusable and testable component architecture
+
 ## Key Insight
 
 Container components are **smart wrappers that handle data and logic**, while presentational components are **dumb renderers that handle UI**. This "**brain vs beauty**" separation means containers know about Redux, API calls, and business logic, while presentational components only know about props and rendering. The pattern prevents the common anti-pattern of mixing data fetching with JSX rendering, which creates components that are impossible to reuse or test in isolation.

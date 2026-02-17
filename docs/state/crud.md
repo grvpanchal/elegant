@@ -6,6 +6,10 @@ slug: crud
 
 # CRUD
 
+> - Create, Read, Update, Delete operations
+> - Four basic operations on persistent storage
+> - Foundation of data management in applications
+
 CRUD stands for Create, Read, Update, and Delete, which are the four basic operations performed on persistent storage in computer programming. In the context of databases:
 
 * Create corresponds to INSERT in SQL

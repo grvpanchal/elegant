@@ -8,6 +8,7 @@ slug: atom
 
 > - A single purpose component
 > - Deliver display or interactiveness with single action
+> - Foundation of reusable UI systems
 
 ## Key Insight
 

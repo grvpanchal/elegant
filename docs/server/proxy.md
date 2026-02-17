@@ -6,6 +6,10 @@ slug: proxy
 
 # Proxy
 
+> - Intermediary between frontend and backend servers
+> - Solves CORS issues in development environments
+> - Provides SSL termination, load balancing, and security
+
 ## Key Insight
 
 A proxy server acts as an intermediary between your frontend and backend, solving the fundamental CORS (Cross-Origin Resource Sharing) problem in development: when your React app runs on `localhost:3000` and API runs on `localhost:5000`, browsers block requests due to different origins (ports differ). The proxy makes the browser think API requests come from the same origin by forwarding `/api/*` requests to the backend server while serving frontend assets from the same domain. This isn't just a dev convenience—it's production architecture: reverse proxies (Nginx, Cloudflare) sit in front of applications to provide SSL termination, load balancing, caching, DDoS protection, and origin hiding. The critical distinction: **development proxy** (Webpack Dev Server, Vite) simplifies local CORS issues, **reverse proxy** (Nginx, HAProxy) handles production traffic routing, security, and performance at scale.
