@@ -5,8 +5,9 @@ slug: component
 ---
 # Component
 
-> - An interactive unit of element comprising of HTML, CSS and JS.
-> - JS framework element to delivery reactivity with html tags, JS and CSS.
+> - An interactive unit of element comprising of HTML, CSS and JS
+> - JS framework element to deliver reactivity with HTML, JS and CSS
+> - Encapsulates structure, styling, and behavior into reusable units
 
 ## Key Insight
 

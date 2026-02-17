@@ -6,6 +6,10 @@ slug: operations
 
 # Operations
 
+> - Strategies for handling async operations
+> - Manages loading, success, and error states
+> - Ensures smooth UX during data fetching
+
 Handling asynchronous operations in state management requires careful consideration to ensure a smooth user experience and maintain application stability. Here are several strategies to effectively manage async operations in state management:
 
 ## Explicit State Management

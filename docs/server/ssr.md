@@ -6,6 +6,10 @@ slug: ssr
 
 # Server Side Rendering
 
+> - Generates HTML on the server for each request
+> - Dramatically improves perceived performance and SEO
+> - Delivers fully-rendered pages instantly to browsers
+
 ## Key Insight
 
 Server-Side Rendering (SSR) transforms your application from a blank page that loads slowly into a fully-rendered HTML document delivered instantly from the server, dramatically improving perceived performance, enabling search engine crawlers to index your content effectively, and providing a better experience for users on slow networks or low-powered devices—all while maintaining the interactivity of a modern single-page application.

@@ -6,6 +6,10 @@ slug: ssg
 
 # Static Site Generation
 
+> - Pre-renders pages at build time into static HTML
+> - Delivers blazing-fast page loads from CDNs
+> - Optimal for content-driven sites with infrequent changes
+
 ## Key Insight
 
 Static Site Generation (SSG) pre-renders pages at build time into HTML files served instantly from CDNs, delivering blazing-fast page loads (50-100ms vs 500ms+ SSR) with perfect SEO while drastically reducing server costs and infrastructure complexity—making it the optimal choice for content-driven sites where data changes infrequently. Modern SSG combines static speed with dynamic flexibility through Incremental Static Regeneration (ISR), revalidating pages periodically to keep content fresh without full rebuilds.

@@ -6,6 +6,10 @@ slug: api
 
 # API Services
 
+> - Bridge between frontend and backend for data flow
+> - Centralizes server communication with consistent patterns
+> - Handles authentication, error handling, and caching
+
 ## Key Insight
 
 API services are the bridge between your frontend and backend—your application's nervous system coordinating all data flow with consistency, error handling, and authentication built-in. By centralizing API logic into a structured client layer, you eliminate scattered fetch calls, ensure predictable error handling, and create a single source of truth for all server communication that scales from simple CRUD operations to complex multi-service architectures.

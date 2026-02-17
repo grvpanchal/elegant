@@ -6,6 +6,10 @@ slug: store
 
 # Store
 
+> - Centralized state container as single source of truth
+> - Eliminates prop drilling with global access
+> - Predictable data flow that scales to enterprise systems
+
 ## Key Insight
 
 A store is your application's single source of truth—a centralized state container that every component can access without prop drilling, ensuring consistent data across your entire application. By consolidating state in one predictable location with clear rules for updates, stores transform chaotic component communication into elegant, debuggable data flow that scales from small apps to enterprise systems.

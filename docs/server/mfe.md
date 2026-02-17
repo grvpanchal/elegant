@@ -6,6 +6,10 @@ slug: mfe
 
 # Micro Frontend
 
+> - Independently deployable, framework-agnostic UI modules
+> - Enables autonomous team deployments at scale
+> - Extends microservices architecture to the UI layer
+
 ## Key Insight
 
 Micro-frontends extend microservices architecture to the UI layer, decomposing monolithic frontends into independently deployable, framework-agnostic modules that communicate through well-defined contracts. This enables large-scale teams to ship features autonomously without coordinating releases, at the cost of increased orchestration complexity. The challenge lies in choosing the right integration strategy—Module Federation for zero-duplication shared dependencies, Web Components for framework-agnostic boundaries, or iframes for maximum isolation—while maintaining consistent UX, shared authentication, and performant bundle sizes. Success hinges on strict governance: versioned contracts prevent breakage, centralized design systems ensure consistency, and performance budgets (e.g., <200KB per MFE) prevent the tragedy of the commons where each team optimizes locally but degrades global load times.

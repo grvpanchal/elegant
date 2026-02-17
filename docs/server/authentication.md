@@ -6,6 +6,10 @@ slug: authentication
 
 # Authentication
 
+> - Verifies user identity before granting access
+> - Token-based systems (JWT) for SPAs
+> - Balances security between XSS and CSRF protection
+
 ## Key Insight
 
 **Authentication in SPAs uses token-based systems (JWT) stored in memory or httpOnly cookies**, where login returns an access token (short-lived, 15min) and refresh token (long-lived, 7days). The access token includes in Authorization header (`Bearer eyJ...`) proves identity for API requests, refresh token exchanges for new access token when expired, and logout clears all tokens preventing further API access. **The critical security trade-off**: localStorage is vulnerable to XSS attacks (JavaScript can steal tokens), httpOnly cookies prevent XSS but require CSRF protection, and memory storage (React state) is most secure but lost on page refresh unless combined with refresh token flow.

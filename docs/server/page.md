@@ -6,6 +6,10 @@ slug: page
 
 # Page
 
+> - Templates filled with real content and data
+> - Where abstract layouts meet actual user-facing content
+> - Enables massive scale through template reuse
+
 ## Key Insight
 
 Pages are the concrete instances of templates filled with real content—they're where abstract layout patterns meet actual data to create what users see and interact with. While a ProductTemplate defines "hero image slot + specs section + reviews area," a specific iPhone 15 page fills those slots with iPhone photos, A17 chip specs, and real customer reviews. This template-to-page relationship enables massive scale: Amazon serves millions of product pages from a single ProductTemplate by injecting different data, while maintaining consistent UX. The critical insight is that pages don't redefine layout—they provide props/data to templates. This separation enables parallel workflows (designers refine templates, content teams create data), automated page generation (10,000 product pages from a CMS), and A/B testing (same template, different content variations). In server-side rendering, pages are where data-fetching meets rendering—`getServerSideProps` or `getStaticProps` fetch data, pass to template as props, generate HTML.

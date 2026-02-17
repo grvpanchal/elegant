@@ -6,6 +6,10 @@ slug: ajax
 
 # AJAX
 
+> - Asynchronous requests without page reloads
+> - Updates specific page parts dynamically
+> - Foundation of modern interactive web applications
+
 AJAX (Asynchronous JavaScript and XML) is a technique used in web development to make asynchronous requests to a server without reloading the entire web page. It allows for dynamic updates of web content, improving user experience and interactivity.
 
 ## Key Characteristics of AJAX

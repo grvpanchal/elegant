@@ -6,6 +6,10 @@ slug: router
 
 # Router
 
+> - Enables SPA navigation without page reloads
+> - Intercepts links and updates URL via History API
+> - Creates app-like experience with component swapping
+
 ## Key Insight
 
 Client-side routers enable **Single Page Applications (SPAs) to navigate without full page reloads** by intercepting link clicks and updating the URL using the **History API**, then rendering the matching component for that route. This creates an **app-like experience** where clicking a link updates only the content area (component swap) instead of requesting a new HTML document from the server, preserving JavaScript state and avoiding the "white flash" of traditional multi-page navigation.
