@@ -1,0 +1,16 @@
+<header class="header">
+<div class="header-block">
+  <div>
+    <h1>{{ headerData.brandName }}</h1>
+  </div>
+  <div>
+    <h1
+      role="button"
+      (click)="events.onThemeChangeClick.emit()"
+      class="text-right pointer"
+    >
+      {{ headerData.theme === "dark" ? "☀️" : "🌙" }}
+    </h1>
+  </div>
+</div>
+</header>

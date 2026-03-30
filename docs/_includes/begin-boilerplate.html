@@ -1,0 +1,28 @@
+<div class="begin-boilerplate">
+  <h2>BEGIN</h2>
+  <div class="connected-steps">
+    <div class="step">
+      <img id="uiImg" src="{{ '/assets/img/brands/ui/chota.png' || | relative_url }}" />
+      <div class="text">UI</div>
+    </div>
+    <div class="connector"></div>
+    <div class="step">
+      <img id="serverImg" src="{{ '/assets/img/brands/server/react.png' || | relative_url }}"" />
+      <div class="text">server</div>
+    </div>
+    <div class="connector"></div>
+    <div class="step">
+      <img id="stateImg" src="{{ '/assets/img/brands/state/saga.png' || | relative_url }}"" onclick="var event = document.createEvent('MouseEvents');event.initMouseEvent('mousedown', true, true, window);stateSelect.dispatchEvent(event);" />
+      <div class="text">State</div>
+    </div>
+  </div>
+  <div class="select-box">
+    <select id="selectBoilerplate" name="selectBoilerplate" onchange="updateBoilerplate(this)">
+    </select>
+  </div>
+  <div class="code-box">
+    <pre id="codeBox">npx elegant chota-react-saga</pre>
+    <a id="demoLink" href="{{ '/demos/chota-react-saga' || | relative_url }}" class="btn"><img src="https://icongr.am/clarity/play.svg?size=24&color=ffffff"><span>Demo</span></a>
+    <a id="storybookLink" href="{{ '/demos/storybooks/chota-react-saga' || | relative_url }}" class="btn"><img src="./assets/img/storybook-icon.svg" height="24px"><span>Storybook</span></a>
+  </div>
+</div>

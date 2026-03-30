@@ -1,0 +1,7 @@
+.add-todo-form .grouped > * {
+  display: block;
+  width: 100%;
+}
+.add-todo-form .grouped > app-button {
+  width: auto;
+}

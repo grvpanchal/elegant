@@ -1,0 +1,231 @@
+// VS Code Dark+ Theme for Rouge Syntax Highlighting
+// Based on Visual Studio Code's default dark theme
+
+.highlight {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  
+  pre {
+    margin: 0;
+    background-color: transparent;
+  }
+  
+  code {
+    background-color: transparent;
+    color: inherit;
+  }
+}
+
+.highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+
+// Comments
+.highlight .c,    // Comment
+.highlight .cm,   // Comment.Multiline
+.highlight .c1,   // Comment.Single
+.highlight .cs {  // Comment.Special
+  color: #6a9955;
+  font-style: italic;
+}
+
+// Constants
+.highlight .kc,   // Keyword.Constant
+.highlight .kd {  // Keyword.Declaration
+  color: #569cd6;
+}
+
+// Keywords
+.highlight .k,    // Keyword
+.highlight .kn,   // Keyword.Namespace
+.highlight .kp,   // Keyword.Pseudo
+.highlight .kr,   // Keyword.Reserved
+.highlight .kt {  // Keyword.Type
+  color: #569cd6;
+}
+
+// Operators
+.highlight .o,    // Operator
+.highlight .ow {  // Operator.Word
+  color: #d4d4d4;
+}
+
+// Names
+.highlight .nb,   // Name.Builtin
+.highlight .bp {  // Name.Builtin.Pseudo
+  color: #4ec9b0;
+}
+
+.highlight .nc,   // Name.Class
+.highlight .nn {  // Name.Namespace
+  color: #4ec9b0;
+}
+
+.highlight .nf,   // Name.Function
+.highlight .fm {  // Name.Function.Magic
+  color: #dcdcaa;
+}
+
+.highlight .nv,   // Name.Variable
+.highlight .vc,   // Name.Variable.Class
+.highlight .vg,   // Name.Variable.Global
+.highlight .vi {  // Name.Variable.Instance
+  color: #9cdcfe;
+}
+
+.highlight .nx {  // Name.Other
+  color: #9cdcfe;
+}
+
+.highlight .na,   // Name.Attribute
+.highlight .nd {  // Name.Decorator
+  color: #9cdcfe;
+}
+
+.highlight .ne {  // Name.Exception
+  color: #4ec9b0;
+}
+
+.highlight .nl,   // Name.Label
+.highlight .nt {  // Name.Tag
+  color: #569cd6;
+}
+
+// Strings
+.highlight .s,    // String
+.highlight .sa,   // String.Affix
+.highlight .sb,   // String.Backtick
+.highlight .sc,   // String.Char
+.highlight .dl,   // String.Delimiter
+.highlight .sd,   // String.Doc
+.highlight .s2,   // String.Double
+.highlight .se,   // String.Escape
+.highlight .sh,   // String.Heredoc
+.highlight .si,   // String.Interpol
+.highlight .sx,   // String.Other
+.highlight .sr,   // String.Regex
+.highlight .s1 {  // String.Single
+  color: #ce9178;
+}
+
+// Numbers
+.highlight .m,    // Number
+.highlight .mb,   // Number.Bin
+.highlight .mf,   // Number.Float
+.highlight .mh,   // Number.Hex
+.highlight .mi,   // Number.Integer
+.highlight .il,   // Number.Integer.Long
+.highlight .mo {  // Number.Oct
+  color: #b5cea8;
+}
+
+// Literals
+.highlight .l,    // Literal
+.highlight .ld {  // Literal.Date
+  color: #ce9178;
+}
+
+// Punctuation
+.highlight .p,    // Punctuation
+.highlight .pi {  // Punctuation.Indicator
+  color: #d4d4d4;
+}
+
+// Generic
+.highlight .gd {  // Generic.Deleted
+  color: #f48771;
+  background-color: #2d1e1e;
+}
+
+.highlight .gi {  // Generic.Inserted
+  color: #b5cea8;
+  background-color: #1e2d1e;
+}
+
+.highlight .ge {  // Generic.Emph
+  font-style: italic;
+}
+
+.highlight .gs {  // Generic.Strong
+  font-weight: bold;
+}
+
+.highlight .gh {  // Generic.Heading
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.highlight .gu {  // Generic.Subheading
+  color: #4ec9b0;
+  font-weight: bold;
+}
+
+.highlight .gp {  // Generic.Prompt
+  color: #6a9955;
+}
+
+.highlight .go {  // Generic.Output
+  color: #808080;
+}
+
+.highlight .gr {  // Generic.Error
+  color: #f48771;
+}
+
+.highlight .gt {  // Generic.Traceback
+  color: #f48771;
+}
+
+// Error
+.highlight .err {
+  color: #f48771;
+  background-color: transparent;
+}
+
+// Language-specific tweaks
+
+// JavaScript/TypeScript
+.highlight .nx {  // Identifiers
+  color: #9cdcfe;
+}
+
+// CSS
+.highlight .nt {  // Tags
+  color: #d7ba7d;
+}
+
+.highlight .nc {  // Classes
+  color: #d7ba7d;
+}
+
+.highlight .nf {  // Functions
+  color: #dcdcaa;
+}
+
+// HTML
+.highlight .na {  // Attributes
+  color: #9cdcfe;
+}
+
+// Template strings
+.highlight .dl {  // Delimiters
+  color: #ce9178;
+}
+
+// Special
+.highlight .ss {  // Symbol
+  color: #ce9178;
+}
+
+// Diff
+.highlight .gd {
+  color: #f48771;
+  background-color: rgba(244, 135, 113, 0.15);
+}
+
+.highlight .gi {
+  color: #b5cea8;
+  background-color: rgba(181, 206, 168, 0.15);
+}

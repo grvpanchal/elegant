@@ -1,0 +1,11 @@
+<label [for]="id" class="sr-only"> {{ name || "Some Label" }}</label>
+<input
+  [id]="id"
+  [ngClass]="classes"
+  [type]="type"
+  [placeholder]="placeholder"
+  [(ngModel)]="value"
+  (ngModelChange)="onTextInput($event)"
+  [checked]="checked"
+  [disabled]="disabled"
+/>

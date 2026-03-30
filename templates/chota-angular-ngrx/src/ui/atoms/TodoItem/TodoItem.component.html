@@ -1,0 +1,32 @@
+<li
+    [attr.style]="styles"
+    class="todo-item"
+  >
+    <label [attr.for]="checkboxId">
+      <app-input
+        [attr.id]="checkboxId"
+        (onClick)="onToggleClick.emit($event)"
+        name="checkbox"
+        type="checkbox"
+        (onChange)="onChange.emit($event)"
+        [checked]="completed"
+      ></app-input>
+      {{text}}
+      <span class="icon-buttons">
+        <app-icon-button
+          variant="clear"
+          alt="edit"
+          iconName="edit"
+          size="16"
+          (onClick)="onEditClick.emit($event)"
+        ></app-icon-button>
+        <app-icon-button
+          variant="clear"
+          alt="remove"
+          iconName="trash-2"
+          size="16"
+          (onClick)="onDeleteClick.emit($event)"
+        ></app-icon-button>
+      </span>
+    </label>
+  </li>

@@ -1,0 +1,12 @@
+.header {
+  padding: 5rem 0 1rem 0;
+}
+.header-block {
+  display: flex;
+  justify-content: space-between;
+}
+.pointer {
+  cursor: pointer;  
+}
+
+/*# sourceMappingURL=ui-organisms-SiteHeader-SiteHeader-stories.0b63da9b.chunk.css.map*/

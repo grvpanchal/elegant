@@ -1,0 +1,38 @@
+{
+  "name": "elegant",
+  "version": "0.0.3",
+  "description": "a command line tool to build an Elegant Front End Architecture",
+  "main": "index.js",
+  "scripts": {
+    "build-demos": "bash demos.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "elegant": "./index.js"
+  },
+  "keywords": [
+    "elegant",
+    "cli",
+    "front-end",
+    "architecture",
+    "atomic design",
+    "storybook",
+    "react",
+    "vue",
+    "angular",
+    "web-components",
+    "design system",
+    "state management"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "fs-extra": "^11.1.1",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "eslint": "^10.1.0",
+    "prettier": "^3.8.1"
+  }
+}

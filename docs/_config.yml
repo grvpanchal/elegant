@@ -1,0 +1,8 @@
+theme: jekyll-theme-cayman
+
+title: Elegant
+markdown: kramdown
+highlighter: rouge
+author:
+  name:       Gaurav Panchal
+  url:        http://grvpanchal.ml/elegant

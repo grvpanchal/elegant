@@ -1,0 +1,9 @@
+.filter-loading {
+  display: flex;
+  gap: 1rem;
+}
+
+.filter-loading > * {
+  display: block;
+  width: 100%;
+}

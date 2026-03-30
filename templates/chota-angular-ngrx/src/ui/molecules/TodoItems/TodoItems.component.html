@@ -1,0 +1,18 @@
+<ng-template [ngIf]="todos && todos.length" [ngIfElse]="empty">
+  <ul class="todo-items">
+      <app-todo-item
+        *ngFor="let todo of todos"
+        [id]="todo.id"
+        [text]="todo.text"
+        [completed]="todo.completed"
+        isDisabled="isDisabled"
+        (onToggleClick)="onToggleClick.emit(todo)"
+        (onEditClick)="onEditClick.emit(todo)"
+        (onDeleteClick)="onDeleteClick.emit(todo.id)"
+      >
+      </app-todo-item>
+  </ul>
+</ng-template>
+<ng-template #empty>
+  <p class="text-center empty-text">Nothing to display here. Carry on.</p>
+</ng-template>

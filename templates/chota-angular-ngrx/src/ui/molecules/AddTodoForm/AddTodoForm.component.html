@@ -1,0 +1,13 @@
+<div>
+  <form
+    (onSubmit)="onSubmit"
+    class="add-todo-form"
+  >
+    <div class="grouped">
+      <app-input [value]="inputValue" [disabled]="isLoading" [placeholder]="placeholder" (onChange)="handleChange" ></app-input>
+      <app-button [classes]="buttonClasses" [isLoading]="isLoading" type="submit">
+        {{buttonInfo.label}}
+      </app-button>
+    </div>
+  </form>
+</div>
