@@ -1,18 +1,17 @@
-<ng-template [ngIf]="todos && todos.length" [ngIfElse]="empty">
+@if (todos && todos.length) {
   <ul class="todo-items">
+    @for (todo of todos; track todo.id) {
       <app-todo-item
-        *ngFor="let todo of todos"
         [id]="todo.id"
         [text]="todo.text"
         [completed]="todo.completed"
-        isDisabled="isDisabled"
+        [isDisabled]="isDisabled"
         (onToggleClick)="onToggleClick.emit(todo)"
         (onEditClick)="onEditClick.emit(todo)"
         (onDeleteClick)="onDeleteClick.emit(todo.id)"
-      >
-      </app-todo-item>
+      ></app-todo-item>
+    }
   </ul>
-</ng-template>
-<ng-template #empty>
+} @else {
   <p class="text-center empty-text">Nothing to display here. Carry on.</p>
-</ng-template>
+}

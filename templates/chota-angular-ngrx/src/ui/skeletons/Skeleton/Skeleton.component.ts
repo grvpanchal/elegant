@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: "app-skeleton",
-  templateUrl: "./Skeleton.component.html",
-  styleUrls: ["./Skeleton.style.css"],
+  selector: 'app-skeleton',
+  standalone: true,
+  templateUrl: './Skeleton.component.html',
+  styleUrls: ['./Skeleton.style.css'],
 })
 export default class SkeletonComponent {
   @Input()

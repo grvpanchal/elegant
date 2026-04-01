@@ -1,9 +1,7 @@
 <app-button
   [classes]="classes"
-  (click)="onClick.emit($event)"
+  (onClick)="onClick.emit($event)"
 >
-<app-image
-  [alt]="alt"
-  [src]="src"
-></app-image>
+  <app-image [alt]="alt" [src]="src"></app-image>
 </app-button>
+

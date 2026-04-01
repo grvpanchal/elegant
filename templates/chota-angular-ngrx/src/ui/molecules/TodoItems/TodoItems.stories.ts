@@ -1,43 +1,35 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import TodoItems from "./TodoItems.component";
-import { moduleMetadata } from "@storybook/angular";
-import ButtonComponent from "../../atoms/Button/Button.component";
-import LoaderComponent from "../../atoms/Loader/Loader.component";
-import TodoItemComponent from "../../atoms/TodoItem/TodoItem.component";
-import { CommonModule } from "@angular/common";
-import InputComponent from "../../atoms/Input/Input.component";
-import IconButtonComponent from "../../atoms/IconButton/IconButton.component";
-import ImageComponent from "../../atoms/Image/Image.component";
+import { applicationConfig, type Meta, type StoryObj } from '@storybook/angular';
+import { provideStore } from '@ngrx/store';
+import { reducers } from '../../../app/state/index';
+import TodoItemsComponent from './TodoItems.component';
+
+type Story = StoryObj<TodoItemsComponent>;
 
 export default {
-  title: "Molecules/TodoItems",
-  component: TodoItems,
+  title: 'Molecules/TodoItems',
+  component: TodoItemsComponent,
   decorators: [
-    moduleMetadata({
-      declarations: [
-        ButtonComponent,
-        LoaderComponent,
-        TodoItemComponent,
-        InputComponent,
-        IconButtonComponent,
-        ImageComponent,
-      ],
-      imports: [CommonModule],
+    applicationConfig({
+      providers: [provideStore(reducers)],
     }),
   ],
-} as Meta;
+} satisfies Meta<TodoItemsComponent>;
 
-const Template: Story<TodoItems> = (args: TodoItems) => ({
-  component: TodoItems,
-  props: args,
-});
-
-export const Default = Template.bind({});
-Default.args = {
-  todos: [
-    { id: 0, text: "apple", completed: false },
-    { id: 1, text: "mango", completed: false },
-    { id: 2, text: "oranges", completed: false },
-  ],
+export const Default: Story = {
+  args: {
+    todos: [
+      { id: 0, text: 'apple', completed: false },
+      { id: 1, text: 'mango', completed: false },
+      { id: 2, text: 'oranges', completed: false },
+    ],
+    isDisabled: false,
+  },
 };
+
+export const Empty: Story = {
+  args: {
+    todos: [],
+    isDisabled: false,
+  },
+};
+

@@ -1,19 +1,19 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: "app-site-header",
-  templateUrl: "./SiteHeader.component.html",
-  styleUrls: ["./SiteHeader.style.css"],
+  selector: 'app-site-header',
+  standalone: true,
+  templateUrl: './SiteHeader.component.html',
+  styleUrls: ['./SiteHeader.style.css'],
 })
 export default class SiteHeaderComponent {
-  @Input()
-  headerData = {
-    theme: "light",
-    brandName: "Todo App",
+  @Input() headerData: { brandName: string; theme: string } = {
+    brandName: 'Todo App',
+    theme: 'light',
   };
 
-  @Input()
-  events = {
-    onThemeChangeClick: new EventEmitter(),
+  @Input() events: { onThemeChangeClick: () => void } = {
+    onThemeChangeClick: () => {},
   };
 }
+

@@ -1,52 +1,32 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import TodoFilters from "./TodoFilters.component";
-import { moduleMetadata } from "@storybook/angular";
-import LinkComponent from "src/ui/atoms/Link/Link.component";
-import { CommonModule } from "@angular/common";
-import SkeletonComponent from "src/ui/skeletons/Skeleton/Skeleton.component";
-import FilterGroupComponent from "src/ui/molecules/FilterGroup/FilterGroup.component";
+import type { Meta, StoryObj } from '@storybook/angular';
+import TodoFiltersComponent from './TodoFilters.component';
 
-export default {
-  title: "Organisms/TodoFilters",
-  component: TodoFilters,
-  decorators: [
-    moduleMetadata({
-      declarations: [LinkComponent, SkeletonComponent, FilterGroupComponent],
-      imports: [CommonModule],
-    }),
-  ],
-} as Meta;
+type Story = StoryObj<TodoFiltersComponent>;
 
 const events = {
   onTodoFilterUpdate: () => {},
 };
 
-const Template: Story<TodoFilters> = (args: TodoFilters) => ({
-  component: TodoFilters,
-  props: args,
-});
+export default {
+  title: 'Organisms/TodoFilters',
+  component: TodoFiltersComponent,
+} satisfies Meta<TodoFiltersComponent>;
 
-export const Default = Template.bind({});
-Default.args = {
-  filtersData: [
-    { id: 0, label: "apple", selected: false },
-    { id: 1, label: "mango", selected: false },
-    { id: 2, label: "oranges", selected: false },
-  ],
-  events,
-};
-
-export const Empty = Template.bind({});
-Empty.args = {
-  filtersData: [],
-  events,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  filtersData: {
-    isContentLoading: true,
+export const Default: Story = {
+  args: {
+    filtersData: [
+      { id: 'SHOW_ALL', label: 'All', selected: true },
+      { id: 'SHOW_ACTIVE', label: 'Active', selected: false },
+      { id: 'SHOW_COMPLETED', label: 'Completed', selected: false },
+    ],
+    events,
   },
-  events,
 };
+
+export const Empty: Story = {
+  args: {
+    filtersData: [],
+    events,
+  },
+};
+

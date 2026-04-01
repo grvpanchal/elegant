@@ -1,58 +1,49 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import InputComponent from '../../atoms/Input/Input.component';
+import ButtonComponent from '../../atoms/Button/Button.component';
 
 @Component({
-  selector: "app-add-todo-form",
-  templateUrl: "./AddTodoForm.component.html",
-  styleUrls: ["./AddTodoForm.style.css"],
+  selector: 'app-add-todo-form',
+  standalone: true,
+  imports: [InputComponent, ButtonComponent],
+  templateUrl: './AddTodoForm.component.html',
+  styleUrls: ['./AddTodoForm.style.css'],
 })
-export default class AddTodoFormComponent {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  @Input()
-  buttonInfo = {
-    variant: "primary",
-    label: "Add",
-  };
+export default class AddTodoFormComponent implements OnChanges {
+  @Input() buttonInfo = { variant: 'primary', label: 'Add' };
+  @Input() placeholder = 'Add your task';
+  @Input() isLoading = false;
+  @Input() todoValue = '';
 
-  @Input()
-  placeholder = "Add your task";
+  @Output() onTodoAdd = new EventEmitter<string>();
+  @Output() onTodoUpdate = new EventEmitter<string>();
 
-  @Input()
-  isLoading = false;
-
-  @Input()
-  todoValue?: string;
-
-  /**
-   * Optional click handler
-   */
-  @Output()
-  onTodoAdd = new EventEmitter();
-
-  @Output()
-  onTodoUpdate = new EventEmitter();
-
-  inputValue: String;
+  inputValue = '';
 
   get buttonClasses() {
     return `button ${this.buttonInfo.variant}`;
   }
 
-  onSubmit(e) {
-    e.preventDefault();
-    if (!this.inputValue.trim()) {
-      return;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['todoValue']) {
+      this.inputValue = changes['todoValue'].currentValue || '';
     }
-    if (this.todoValue) {
-      this.onTodoUpdate.emit(this.inputValue);
-    } else {
-      this.onTodoAdd.emit(this.inputValue);
-    }
-    this.inputValue = "";
   }
 
-  handleChange(e) {
-    this.todoValue = e;
+  onSubmit(e: Event) {
+    e.preventDefault();
+    const trimmed = this.inputValue.trim();
+    if (!trimmed) return;
+    if (this.todoValue) {
+      this.onTodoUpdate.emit(trimmed);
+    } else {
+      this.onTodoAdd.emit(trimmed);
+    }
+    this.inputValue = '';
+  }
+
+  handleChange(value: string) {
+    this.inputValue = value;
   }
 }
+

@@ -1,4 +1,4 @@
-# TodosAppNgrx
+# Todos App Ngrx
 
 Is the example for use Angular + Ngrx (Redux) for a [TodoMV* App](http://todomvc.com/)
 
