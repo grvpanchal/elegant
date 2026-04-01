@@ -1,22 +1,19 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import TodoItemComponent from '../../atoms/TodoItem/TodoItem.component';
 
 @Component({
-  selector: "app-todo-items",
-  templateUrl: "./TodoItems.component.html",
-  styleUrls: ["./TodoItems.style.css"],
+  selector: 'app-todo-items',
+  standalone: true,
+  imports: [TodoItemComponent],
+  templateUrl: './TodoItems.component.html',
+  styleUrls: ['./TodoItems.style.css'],
 })
 export default class TodoItemsComponent {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  @Input()
-  todos = [];
+  @Input() todos: any[] = [];
+  @Input() isDisabled = false;
 
-  @Input()
-  isDisabled = false;
-
-  @Output()
-  onToggleClick = new EventEmitter();
-  onEditClick = new EventEmitter();
-  onDeleteClick = new EventEmitter();
+  @Output() onToggleClick = new EventEmitter<any>();
+  @Output() onEditClick = new EventEmitter<any>();
+  @Output() onDeleteClick = new EventEmitter<any>();
 }
+

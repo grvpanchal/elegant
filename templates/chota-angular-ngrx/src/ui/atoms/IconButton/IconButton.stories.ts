@@ -1,35 +1,35 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import IconButton from "./IconButton.component";
-import { moduleMetadata } from "@storybook/angular";
-import { CommonModule } from "@angular/common";
-import Image from "../Image/Image.component";
-import Button from "../Button/Button.component";
-import LoaderComponent from "../Loader/Loader.component";
+import { applicationConfig, type Meta, type StoryObj } from '@storybook/angular';
+import { provideStore } from '@ngrx/store';
+import { reducers } from '../../../app/state/index';
+import IconButtonComponent from './IconButton.component';
+
+type Story = StoryObj<IconButtonComponent>;
 
 export default {
-  title: "Atoms/IconButton",
-  component: IconButton,
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
+  title: 'Atoms/IconButton',
+  component: IconButtonComponent,
   decorators: [
-    moduleMetadata({
-      declarations: [Image, Button, LoaderComponent],
-      imports: [CommonModule],
+    applicationConfig({
+      providers: [provideStore(reducers)],
     }),
   ],
-} as Meta;
+} satisfies Meta<IconButtonComponent>;
 
-const Template: Story<IconButton> = (args: IconButton) => ({
-  component: IconButton,
-  props: args,
-});
-
-export const Default = Template.bind({});
-Default.args = {
-  variant: "clear",
-  alt: "remove",
-  iconName: "trash-2",
-  size: "16",
+export const Default: Story = {
+  args: {
+    variant: 'clear',
+    alt: 'remove',
+    iconName: 'trash-2',
+    size: '16',
+  },
 };
+
+export const Edit: Story = {
+  args: {
+    variant: 'clear',
+    alt: 'edit',
+    iconName: 'edit',
+    size: '16',
+  },
+};
+

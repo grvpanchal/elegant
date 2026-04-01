@@ -1,20 +1,17 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import Image from "./Image.component";
+import type { Meta, StoryObj } from '@storybook/angular';
+import ImageComponent from './Image.component';
+
+type Story = StoryObj<ImageComponent>;
 
 export default {
-  title: "Atoms/Image",
-  component: Image,
-} as Meta;
+  title: 'Atoms/Image',
+  component: ImageComponent,
+} satisfies Meta<ImageComponent>;
 
-const Template: Story<Image> = (args: Image) => ({
-  component: Image,
-  props: args,
-});
-
-export const Primary = Template.bind({});
-Primary.args = {
-  alt:"placeholder",
-  src: "https://placehold.co/600x400",
+export const Primary: Story = {
+  args: {
+    alt: 'placeholder',
+    src: 'https://placehold.co/600x400',
+  },
 };
 

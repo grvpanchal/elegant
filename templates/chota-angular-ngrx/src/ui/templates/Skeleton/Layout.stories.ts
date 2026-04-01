@@ -1,32 +1,15 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import Layout from "./Layout.component";
-import { moduleMetadata } from "@storybook/angular";
-import { CommonModule } from "@angular/common";
+import type { Meta, StoryObj } from '@storybook/angular';
+import LayoutComponent from './Layout.component';
+
+type Story = StoryObj<LayoutComponent>;
 
 export default {
-  title: "templates/Layout",
-  component: Layout,
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
-  decorators: [
-    moduleMetadata({
-      declarations: [Layout],
-      imports: [CommonModule],
-    }),
-  ],
-} as Meta;
+  title: 'Templates/Layout',
+  component: LayoutComponent,
+} satisfies Meta<LayoutComponent>;
 
-const Template: Story<Layout> = (args: Layout) => ({
-  component: Layout,
-  props: args,
-  template: `
-    <app-layout>{{label}}</app-layout>
-  `
-});
-
-export const Default = Template.bind({});
-Default.args = {
-  label: "Content within the container",
+export const Default: Story = {
+  render: () => ({
+    template: `<app-layout>Content within the container</app-layout>`,
+  }),
 };

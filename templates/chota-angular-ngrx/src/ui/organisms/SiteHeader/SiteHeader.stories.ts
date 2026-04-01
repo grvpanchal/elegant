@@ -1,22 +1,34 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import SiteHeader from "./SiteHeader.component";
+import type { Meta, StoryObj } from '@storybook/angular';
+import SiteHeaderComponent from './SiteHeader.component';
+
+type Story = StoryObj<SiteHeaderComponent>;
 
 export default {
-  title: "organisms/SiteHeader",
-  component: SiteHeader,
-} as Meta;
+  title: 'Organisms/SiteHeader',
+  component: SiteHeaderComponent,
+} satisfies Meta<SiteHeaderComponent>;
 
-const Template: Story<SiteHeader> = (args: SiteHeader) => ({
-  component: SiteHeader,
-  props: args,
-});
+export const Default: Story = {
+  args: {
+    headerData: {
+      theme: 'light',
+      brandName: 'Todo App',
+    },
+    events: {
+      onThemeChangeClick: () => {},
+    },
+  },
+};
 
-export const Default = Template.bind({});
-Default.args = {
-  headerData: {
-    theme: "light",
-    brandName: "Todo App",
-  }
+export const Dark: Story = {
+  args: {
+    headerData: {
+      theme: 'dark',
+      brandName: 'Todo App',
+    },
+    events: {
+      onThemeChangeClick: () => {},
+    },
+  },
 };
 

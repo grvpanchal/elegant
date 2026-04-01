@@ -1,49 +1,43 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import ImageComponent from '../Image/Image.component';
+import IconButtonComponent from '../IconButton/IconButton.component';
 
 @Component({
-  selector: "app-alert",
-  templateUrl: "./Alert.component.html",
-  // imports: [ImageComponent, IconButtonComponent],
-  styleUrls: ["./Alert.style.css"],
+  selector: 'app-alert',
+  standalone: true,
+  imports: [ImageComponent, IconButtonComponent],
+  templateUrl: './Alert.component.html',
+  styleUrls: ['./Alert.style.css'],
 })
-export default class AlertComponent {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  @Input()
-  show = false;
+export default class AlertComponent implements OnChanges {
+  @Input() show = false;
+  showAlert = false;
 
-  showAlert = this.show;
-
-  @Input()
-  variant?: string;
+  @Input() variant?: string;
 
   get classes() {
-    return `bg-${
-      this.variant === "error" ? "error" : "primary"
-    } text-white alert`;
+    return `bg-${this.variant === 'error' ? 'error' : 'primary'} text-white alert`;
   }
 
   get src() {
-    return `https://icongr.am/feather/${ this.variant === "error" ? "alert-triangle" : "info" }.svg?size=24&color=ffffff`
+    return `https://icongr.am/feather/${
+      this.variant === 'error' ? 'alert-triangle' : 'info'
+    }.svg?size=24&color=ffffff`;
   }
 
-  /**
-   * Alert contents
-   *
-   * @required
-   */
-  @Input()
-  message = "Alert";
+  @Input() message = 'Alert';
 
-  /**
-   * Optional click handler
-   */
-  @Output()
-  onCloseClick = new EventEmitter<Event>();
+  @Output() onCloseClick = new EventEmitter<Event>();
 
-  handleClose = (e) => {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['show']) {
+      this.showAlert = changes['show'].currentValue;
+    }
+  }
+
+  handleClose(e: Event) {
     this.showAlert = false;
     this.onCloseClick.emit(e);
-  };
+  }
 }
+

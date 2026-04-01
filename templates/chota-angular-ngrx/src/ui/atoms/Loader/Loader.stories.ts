@@ -1,19 +1,17 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import Loader from "./Loader.component";
+import type { Meta, StoryObj } from '@storybook/angular';
+import LoaderComponent from './Loader.component';
+
+type Story = StoryObj<LoaderComponent>;
 
 export default {
-  title: "Atoms/Loader",
-  component: Loader,
-} as Meta;
+  title: 'Atoms/Loader',
+  component: LoaderComponent,
+} satisfies Meta<LoaderComponent>;
 
-const Template: Story<Loader> = (args: Loader) => ({
-  component: Loader,
-  props: args,
-});
-
-export const Default = Template.bind({});
-Default.args = {
-  color: 'black',
-  size: '64px'
+export const Default: Story = {
+  args: {
+    color: 'black',
+    size: '64px',
+  },
 };
+

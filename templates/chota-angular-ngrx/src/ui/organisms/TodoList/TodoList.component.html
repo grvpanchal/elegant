@@ -1,32 +1,32 @@
-<ng-template [ngIf]="todoData.error">
+@if (todoData.error) {
   <app-alert
     variant="error"
     [show]="!!todoData.error"
     [message]="todoData.error"
   ></app-alert>
-</ng-template>
+}
 <app-add-todo-form
   [todoValue]="todoData.currentTodoItem.text || ''"
-  (onTodoAdd)="(onTodoCreate)"
-  (onTodoUpdate)="(onTodoUpdate)"
+  (onTodoAdd)="events.onTodoCreate($event)"
+  (onTodoUpdate)="events.onTodoUpdate($event)"
   placeholder="Add your task"
   [isLoading]="todoData.isActionLoading"
   [buttonInfo]="buttonInfo"
 ></app-add-todo-form>
-<ng-template [ngIf]="todoData.isContentLoading" [ngIfElse]="normal">
+@if (todoData.isContentLoading) {
   <br />
   <app-skeleton height="24px"></app-skeleton>
   <br />
   <app-skeleton height="24px"></app-skeleton>
   <br />
   <app-skeleton height="24px"></app-skeleton>
-</ng-template>
-<ng-template #normal>
+} @else {
   <app-todo-items
     [todos]="todoData.todoItems"
     [isDisabled]="todoData.isActionLoading"
-    (onToggleClick)="onTodoToggleUpdate.emit()"
-    (onDeleteClick)="onTodoDelete.emit()"
-    (onEditClick)="onTodoEdit.emit()"
+    (onToggleClick)="events.onTodoToggleUpdate($event)"
+    (onDeleteClick)="events.onTodoDelete($event)"
+    (onEditClick)="events.onTodoEdit($event)"
   ></app-todo-items>
-</ng-template>
+}
+

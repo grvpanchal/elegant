@@ -1,41 +1,26 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import InputComponent from '../Input/Input.component';
+import IconButtonComponent from '../IconButton/IconButton.component';
 
 @Component({
-  selector: "app-todo-item",
-  templateUrl: "./TodoItem.component.html",
-  styleUrls: ["./TodoItem.style.css"],
+  selector: 'app-todo-item',
+  standalone: true,
+  imports: [InputComponent, IconButtonComponent],
+  templateUrl: './TodoItem.component.html',
+  styleUrls: ['./TodoItem.style.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export default class TodoItemComponent {
-
-  @Input()
-  id = false;
-
-  @Input()
-  text = '';
-
-  @Input()
-  completed = false;
+  @Input() id: number | null = null;
+  @Input() text = '';
+  @Input() completed = false;
+  @Input() isDisabled = false;
 
   get checkboxId() {
     return `checkbox${this.id}`;
   }
 
-  get styles() {
-    return `textDecoration: ${this.completed ? "line-through" : "none"};`;
-  }
-
-  /**
-   * Optional click handler
-   */
-  @Output()
-  onToggleClick = new EventEmitter<Event>();
-
-  @Output()
-  onChange = new EventEmitter<Event>();
-
-  @Output()
-  onEditClick = new EventEmitter<Event>();
-
-  @Output()
-  onDeleteClick = new EventEmitter<Event>();
+  @Output() onToggleClick = new EventEmitter<any>();
+  @Output() onEditClick = new EventEmitter<any>();
+  @Output() onDeleteClick = new EventEmitter<any>();
 }

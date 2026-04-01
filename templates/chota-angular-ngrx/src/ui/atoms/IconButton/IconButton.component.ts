@@ -1,39 +1,25 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import ButtonComponent from '../Button/Button.component';
+import ImageComponent from '../Image/Image.component';
+import { AtomicService } from '../../../app/utils/providers/AtomicService';
 
 @Component({
   selector: 'app-icon-button',
+  standalone: true,
+  imports: [ButtonComponent, ImageComponent],
   templateUrl: './IconButton.component.html',
   styleUrls: ['./IconButton.style.css'],
 })
-export default class IconButtonComponent {
-  /**
-   * Is this the principal call to action on the page?
-   */
-
+export default class IconButtonComponent implements OnInit, OnDestroy {
   themeColor = '000000';
+  private sub?: Subscription;
 
-  @Input()
-  primary = false;
-
-  @Input()
-  variant?: string;
-
-  @Input()
-  alt?: string;
-  
-  @Input()
-  color = '000000';
-
-  @Input()
-  size = '16';
-
-  /**
-   * IconButton contents
-   *
-   * @required
-   */
-  @Input()
-  iconName = 'IconButton';
+  @Input() variant?: string;
+  @Input() alt = '';
+  @Input() color = '';
+  @Input() size = '16';
+  @Input() iconName = 'x';
 
   get classes() {
     return `button icon-only ${this.variant}`;
@@ -41,13 +27,21 @@ export default class IconButtonComponent {
 
   get src() {
     return `https://icongr.am/feather/${this.iconName}.svg?size=${this.size}&color=${
-    this.color ? this.color : this.themeColor
-  }`
+      this.color || this.themeColor
+    }`;
   }
 
-  /**
-   * Optional click handler
-   */
-  @Output()
-  onClick = new EventEmitter<Event>();
+  @Output() onClick = new EventEmitter<Event>();
+
+  constructor(private atomicService: AtomicService) {}
+
+  ngOnInit() {
+    this.sub = this.atomicService.theme$.subscribe((theme) => {
+      this.themeColor = theme === 'dark' ? 'ffffff' : '000000';
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
 }

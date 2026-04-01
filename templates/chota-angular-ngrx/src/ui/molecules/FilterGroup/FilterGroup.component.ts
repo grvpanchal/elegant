@@ -1,17 +1,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import LinkComponent from '../../atoms/Link/Link.component';
 
 @Component({
   selector: 'app-filter-group',
+  standalone: true,
+  imports: [LinkComponent],
   templateUrl: './FilterGroup.component.html',
   styleUrls: ['./FilterGroup.style.css'],
 })
 export default class FilterGroupComponent {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  @Input()
-  filterItems = [];
-
-  @Output()
-  onFilterClick = new EventEmitter();
+  @Input() filterItems: { id: string; label: string; selected: boolean }[] = [];
+  @Output() onFilterClick = new EventEmitter<string>();
 }
+

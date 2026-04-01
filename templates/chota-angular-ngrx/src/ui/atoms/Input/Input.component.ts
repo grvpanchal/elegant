@@ -1,55 +1,47 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
   HostBinding,
-} from "@angular/core";
+} from '@angular/core';
 
 @Component({
-  selector: "app-input",
-  templateUrl: "./Input.component.html",
-  styleUrls: ["./Input.style.css"],
+  selector: 'app-input',
+  standalone: true,
+  templateUrl: './Input.component.html',
+  styleUrls: ['./Input.style.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class InputComponent implements OnInit {
-  ngOnInit() {}
-
-  @HostBinding("attr.type")
-  externalType = "";
+export default class InputComponent {
+  @HostBinding('attr.type')
+  externalType: string | null = '';
 
   @Input()
   set type(value: string) {
-    this._Type = value;
+    this._type = value;
     this.externalType = null;
   }
-
   get type() {
-    return this._Type;
+    return this._type;
   }
+  private _type = '';
 
-  private _Type = "";
+  @Input() value = '';
+  @Input() checked = false;
+  @Input() disabled = false;
+  @Input() placeholder = '';
+  @Input() id = '';
+  @Input() name = '';
 
-  @Input()
-  value = "";
+  @Output() onChange = new EventEmitter<string>();
 
-  @Input()
-  checked = false;
-
-  @Input()
-  disabled = false;
-
-  @Input()
-  placeholder: String;
-
-  @Input()
-  id: String;
-
-  @Output() onChange: EventEmitter<string> = new EventEmitter();
-
-  onTextInput(e) {
-    this.onChange.emit(e);
+  onInput(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.onChange.emit(
+      input.type === 'checkbox' ? String(input.checked) : input.value
+    );
   }
 }
+

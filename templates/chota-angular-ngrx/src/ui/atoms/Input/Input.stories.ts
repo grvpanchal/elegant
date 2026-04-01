@@ -1,19 +1,25 @@
-// also exported from '@storybook/angular' if you can deal with breaking changes in 6.1
-import { Story, Meta } from "@storybook/angular/types-6-0";
-import Input from "./Input.component";
+import type { Meta, StoryObj } from '@storybook/angular';
+import InputComponent from './Input.component';
+
+type Story = StoryObj<InputComponent>;
 
 export default {
-  title: "Atoms/Input",
-  component: Input,
-} as Meta;
+  title: 'Atoms/Input',
+  component: InputComponent,
+} satisfies Meta<InputComponent>;
 
-const Template: Story<Input> = (args: Input) => ({
-  component: Input,
-  props: args,
-});
-
-export const Default = Template.bind({});
-Default.args = {
-  type: "text",
-  placeholder: "Template Input",
+export const Default: Story = {
+  args: {
+    type: 'text',
+    placeholder: 'Template Input',
+  },
 };
+
+export const Checkbox: Story = {
+  args: {
+    type: 'checkbox',
+    name: 'checkbox',
+    checked: false,
+  },
+};
+

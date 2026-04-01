@@ -1,9 +1,13 @@
+/** @type {import('@storybook/angular').Preview} */
+const preview = {
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i
+      }
+    }
+  }
+};
 
-import { setCompodocJson } from "@storybook/addon-docs/angular";
-import docJson from "../documentation.json";
-setCompodocJson(docJson);
-
-
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-}
+export default preview;
