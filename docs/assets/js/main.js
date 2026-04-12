@@ -103,6 +103,28 @@ loop(tabsNodes, (tabsNode) => {
   loop(nodes, (node, i) => onTabSelect(nodes, node, i));
 });
 
+// Scroll behaviour: non-home pages only — hide title, enlarge logo on scroll
+if (window.location.pathname !== '/') {
+  const siteNav = document.querySelector('.site-nav');
+  let ticking = false;
+
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 10) {
+          siteNav.classList.add('scrolled');
+        } else {
+          siteNav.classList.remove('scrolled');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
 // Add copy buttons to code blocks
 document.querySelectorAll('.highlight > .highlight').forEach((block) => {
   // Skip if already has a copy button
