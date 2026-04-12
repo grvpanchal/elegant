@@ -1,5 +1,9 @@
 <div class="site-nav {{ include.class }}">
-    <a class="brand-name" href="/">{{ site.title }}</a>
+    <a class="brand-name" href="/">
+        <img class="brand-logo logo-light" src="{{ '/assets/img/light-logo.png' | relative_url }}" alt="elegant logo">
+        <img class="brand-logo logo-dark" src="{{ '/assets/img/dark-logo.png' | relative_url }}" alt="elegant logo">
+        <span class="brand-title">{{ site.title }}</span>
+    </a>
     <ul class="navlist">
         <li>
             <a href="{{ '/ui' | relative_url }}">UI</a>
