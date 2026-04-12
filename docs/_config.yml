@@ -5,4 +5,11 @@ markdown: kramdown
 highlighter: rouge
 author:
   name:       Gaurav Panchal
-  url:        http://grvpanchal.ml/elegant
+  url:        https://elegantfrontend.training
+
+url: "https://elegantfrontend.training"
+baseurl: "/"
+google_analytics: "G-R8YKPS191K"
+
+plugins:
+  - jekyll-sitemap
