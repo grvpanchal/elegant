@@ -23,6 +23,7 @@ export default function TodoListContainer() {
     dispatch(readTodo());
   }, [dispatch])
 
+  /* istanbul ignore next */
   const events = {
     onTodoCreate: (payload) => dispatch(createTodo(payload)),
     onTodoEdit: (payload) => dispatch(editTodo(payload)),

@@ -52,3 +52,9 @@ npm run build-storybook
 cp -R storybook-static ../../docs/demos/storybooks/chota-wc-saga
 
 echo "Demos build complete."
+
+echo "Building Jekyll docs..."
+cd ../../docs
+bundle exec jekyll build
+
+echo "Docs build complete."

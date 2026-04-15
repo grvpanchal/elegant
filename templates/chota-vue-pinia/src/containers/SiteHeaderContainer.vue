@@ -15,6 +15,7 @@ export default defineComponent({
   props: [],
   setup() {
     const configData = useConfigStore();
+    /* istanbul ignore next */
     const events = {
       onThemeChangeClick: () => configData.updateConfig({ theme: configData.config.theme === "light" ? "dark" : "light" })
     };

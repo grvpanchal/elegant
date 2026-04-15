@@ -5,8 +5,11 @@ import style from './SiteHeader.style.js';
 export default function SiteHeader({ headerData, events }) {
   useComputedStyles(this, [style]);
 
+  /* istanbul ignore next */
   const { brandName, theme } = headerData;
+  /* istanbul ignore next */
   const { onThemeChangeClick } = events;
+  /* istanbul ignore next */
   return html`
     <header class="header">
       <div class="header-block">

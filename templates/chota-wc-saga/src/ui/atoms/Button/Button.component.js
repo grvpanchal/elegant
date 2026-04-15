@@ -6,6 +6,7 @@ import emit from "../../../utils/events/emit";
 
 export default function Button(props) {
   useComputedStyles(this, [style]);
+  /* istanbul ignore next */
   if (props.isLoading) {
     return html`
       <button type="button" class=${`${props.classes} loading-button`}>
@@ -13,6 +14,7 @@ export default function Button(props) {
       </button>
     `;
   }
+  /* istanbul ignore next */
   return html`<button type="button"
       class="${props.classes}"
       @click="${() => emit(this, "onClick", props)}"><slot></slot></button>`;

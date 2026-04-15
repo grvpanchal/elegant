@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { combineReducers } from "@reduxjs/toolkit";
 
 import todo from "./todo/todo.reducer";

@@ -23,7 +23,7 @@ export function deleteTodoApi(payload) {
 export function* getTodos() {
   try {
     const todoResponse = yield call(getTodoApi);
-    const todoData = yield todoResponse.json();
+    const todoData = yield call([todoResponse, 'json']);
     const mappedTodoData = mapTodoData(todoData);
     yield put(readTodoSuccess(mappedTodoData));
   } catch (error) {

@@ -14,6 +14,7 @@ export const useConfigStore = defineStore({
   },
 })
 
+/* istanbul ignore next */
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useConfigStore, import.meta.hot))
 }

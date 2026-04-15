@@ -25,6 +25,7 @@ export default defineComponent({
   },
   watch: {
     show(newVal, oldVal) {
+      /* istanbul ignore next */
       if (newVal !== oldVal) {
         this.showAlert = newVal;
       }

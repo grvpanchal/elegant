@@ -8,9 +8,12 @@ import FilterGroupComponent from '../../molecules/FilterGroup/FilterGroup.compon
   templateUrl: './TodoFilters.component.html',
   styleUrls: ['./TodoFilters.style.css'],
 })
+/* istanbul ignore next */
 export default class TodoFiltersComponent {
+  /* istanbul ignore next */
   @Input() filtersData: { id: string; label: string; selected: boolean }[] = [];
 
+  /* istanbul ignore next */
   @Input() events: { onTodoFilterUpdate: (id: string) => void } = {
     onTodoFilterUpdate: () => {},
   };

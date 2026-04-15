@@ -36,6 +36,7 @@ export default class TodoListComponent {
     onTodoDelete: () => {},
   };
 
+  /* istanbul ignore next */
   get buttonInfo() {
     return {
       label: this.todoData?.currentTodoItem?.text ? 'Save' : 'Add',

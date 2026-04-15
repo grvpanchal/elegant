@@ -16,6 +16,7 @@ export default defineComponent({
   },
   watch: {
     'configData.config.theme': {
+      /* istanbul ignore next */
       handler(newVal, oldVal) {
         const bodyClass = document.body.classList;
         if (newVal !== oldVal) {

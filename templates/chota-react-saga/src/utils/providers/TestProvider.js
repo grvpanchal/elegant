@@ -1,13 +1,29 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import store from "../../state";
 import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
+import rootReducer from "../../state/rootReducer";
+import rootSagas from "../../state/rootSagas";
 
 import AtomicProvider from "./AtomicProvider";
 
-export default function TestProvider({ children }) {
+export const createTestStore = (preloadedState = {}) => {
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    applyMiddleware(sagaMiddleware)
+  );
+  sagaMiddleware.run(rootSagas);
+  return store;
+};
+
+export default function TestProvider({ children, preloadedState = {} }) {
+  const testStore = createTestStore(preloadedState);
+
   return (
-    <Provider store={store}>
+    <Provider store={testStore}>
       <AtomicProvider components={{}} modules={{}}>
         {children}
       </AtomicProvider>

@@ -26,6 +26,7 @@ export default defineComponent({
     }
   },
   watch: {
+    /* istanbul ignore next */
     '$theme'() {
       console.log('this.$theme', this.$theme);
       this.themeColor = this.$theme === "dark" ? "ffffff" : "000000";

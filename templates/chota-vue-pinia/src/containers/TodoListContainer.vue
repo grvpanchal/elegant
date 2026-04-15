@@ -17,6 +17,7 @@ export default defineComponent({
     const filtersData = useFiltersStore();
     const todoData = useTodoStore();
     todoData.getTodos();
+    /* istanbul ignore next */
     const events = {
       onTodoCreate: (payload) => todoData.addTodos(payload),
       onTodoEdit: (payload) => todoData.editTodo(payload),

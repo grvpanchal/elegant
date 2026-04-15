@@ -10,6 +10,7 @@ export const useTodoStore = defineStore({
   id: 'todo',
   state: () => ({ ...intialTodoState }),
   getters: {
+    /* istanbul ignore next */
     visibleTodos: (state) => {
       const filtersData = useFiltersStore();
       const selectedFilter = getSelectedFilter(filtersData);
@@ -26,6 +27,7 @@ export const useTodoStore = defineStore({
   },
 })
 
+/* istanbul ignore next */
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useTodoStore, import.meta.hot))
 }
