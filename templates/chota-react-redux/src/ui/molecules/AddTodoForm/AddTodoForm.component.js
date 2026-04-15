@@ -15,10 +15,10 @@ const AddTodoForm = ({ buttonInfo, placeholder, isLoading, onTodoAdd, onTodoUpda
 
   return (
     <div>
-      <form
+      <form role="form"
         onSubmit={(e) => {
           e.preventDefault();
-          if (!inputValue.trim()) {
+          if (!inputValue || !inputValue.trim()) {
             return;
           }
           if(todoValue) {
@@ -30,7 +30,7 @@ const AddTodoForm = ({ buttonInfo, placeholder, isLoading, onTodoAdd, onTodoUpda
         }}
       >
         <div className="grouped">
-          <Input className="" value={inputValue} disabled={isLoading} placeholder={placeholder} onChange={handleChange} />
+          <Input className="" value={inputValue} defaultValue={inputValue} disabled={isLoading} placeholder={placeholder} onChange={handleChange} />
           <Button className={`button ${variant}`} isLoading={isLoading} type="submit">
             {label}
           </Button>

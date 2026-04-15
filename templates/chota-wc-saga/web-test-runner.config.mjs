@@ -1,17 +1,27 @@
-// import { playwrightLauncher } from '@web/test-runner-playwright';
+const filteredLogs = [
+  'Running in dev mode',
+  'lit-html is in dev mode',
+  'Unable to get Items',
+  'unable to modify Item',
+];
 
-const filteredLogs = ['Running in dev mode', 'lit-html is in dev mode'];
+export default {
+  files: ['test/**/*.test.js', 'src/**/*.test.js'],
+  group: 'unit',
 
-export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
-  /** Test files to run */
-  files: 'test/**/*.test.js',
-
-  /** Resolve bare module imports */
   nodeResolve: {
-    exportConditions: ['browser', 'development'],
+    exportConditions: ['browser', 'production'],
   },
 
-  /** Filter out lit dev mode logs */
+  testRunnerHtml: (testFramework) => `
+    <html>
+      <body>
+        <script>window.process = { env: { NODE_ENV: 'production' } };</script>
+        <script type="module" src="${testFramework}"></script>
+      </body>
+    </html>
+  `,
+
   filterBrowserLogs(log) {
     for (const arg of log.args) {
       if (typeof arg === 'string' && filteredLogs.some(l => arg.includes(l))) {
@@ -21,21 +31,18 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     return true;
   },
 
-  /** Compile JS for older browsers. Requires @web/dev-server-esbuild plugin */
-  // esbuildTarget: 'auto',
-
-  /** Amount of browsers to run concurrently */
-  // concurrentBrowsers: 2,
-
-  /** Amount of test files per browser to test concurrently */
-  // concurrency: 1,
-
-  /** Browsers to run tests on */
-  // browsers: [
-  //   playwrightLauncher({ product: 'chromium' }),
-  //   playwrightLauncher({ product: 'firefox' }),
-  //   playwrightLauncher({ product: 'webkit' }),
-  // ],
-
-  // See documentation for all available options
-});
+  coverage: true,
+  coverageConfig: {
+    exclude: [
+      'node_modules/**/*',
+      '**/*.stories.js',
+      '**/*.type.js',
+      '**/app-*.js',
+      'src/index.js',
+      'src/sw.js',
+      'src/styles.js',
+      'src/ui/**/*',
+      'src/views/**/*',
+    ],
+  },
+};

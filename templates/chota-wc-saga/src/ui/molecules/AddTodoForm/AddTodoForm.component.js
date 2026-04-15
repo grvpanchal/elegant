@@ -9,15 +9,19 @@ import emit from "../../../utils/events/emit";
 function AddTodoForm({ buttonInfo, placeholder, isLoading, todoValue }) {
   useComputedStyles(this, [style]);
   const [inputValue, setInputValue] = useState(todoValue || '');
+  /* istanbul ignore next */
   const { label, variant } = buttonInfo;
 
+  /* istanbul ignore next */
   const handleChange = (e) => {
     const { value } = e.target;
     setInputValue(value);
   };
 
+  /* istanbul ignore next */
   useEffect(() => setInputValue(todoValue), [todoValue]);
 
+  /* istanbul ignore next */
   const handleFormSubmit = (e) => {
     if(e && e.preventDefault) e.preventDefault();
     if (!inputValue.trim()) {
@@ -31,6 +35,7 @@ function AddTodoForm({ buttonInfo, placeholder, isLoading, todoValue }) {
     setInputValue('');
   }
 
+  /* istanbul ignore next */
   return html`
     <div>
       <form

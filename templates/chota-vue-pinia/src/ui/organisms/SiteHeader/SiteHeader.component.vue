@@ -22,7 +22,6 @@ export default defineComponent({
     updateTheme() {
       this.events.onThemeChangeClick();
       this.$theme = this.headerData.theme === "dark" ? "dark" : "light";
-      console.log('this.$theme', this.$theme);
     }
   }
 })

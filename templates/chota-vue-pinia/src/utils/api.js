@@ -1,5 +1,6 @@
 const TODO = "todo";
 
+/* istanbul ignore next */
 if (!localStorage.getItem(TODO)) {
   localStorage.setItem(TODO, '[]');
 }

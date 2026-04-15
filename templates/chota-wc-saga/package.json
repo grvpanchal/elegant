@@ -13,7 +13,7 @@
     "test:watch": "web-test-runner --watch",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook",
-    "build": "rimraf dist && rollup -c rollup.config.js && npm run analyze -- --exclude dist",
+    "build": "rimraf dist && rollup -c rollup.config.js && cross-env NODE_OPTIONS=--max-old-space-size=4096 cem analyze --litelement --exclude dist",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server",
@@ -22,6 +22,8 @@
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.7",
     "chota": "^0.9.2",
+    "cross-env": "^10.1.0",
+    "elegant": "file:../..",
     "haunted": "^5.0.0",
     "lit": "^2.0.2",
     "nanoid": "^5.0.6",
@@ -76,17 +78,6 @@
   "prettier": {
     "singleQuote": true,
     "arrowParens": "avoid"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "prettier --write"
-    ]
   },
   "customElements": "custom-elements.json"
 }

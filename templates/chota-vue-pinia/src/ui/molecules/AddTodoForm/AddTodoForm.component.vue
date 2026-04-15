@@ -39,7 +39,6 @@ export default defineComponent({
       return `button ${this.variant}`;
     },
     onSubmit(e) {
-      console.log('onSubmit', this.inputValue);
       e.preventDefault();
       if (!this.inputValue.trim()) {
         return;

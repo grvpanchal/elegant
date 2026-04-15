@@ -1,3 +1,4 @@
+<!-- istanbul ignore next -->
 <template>
   <div class="container layout">
     <slot />

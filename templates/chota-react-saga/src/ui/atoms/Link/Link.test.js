@@ -12,4 +12,31 @@ describe('<Link />', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('Renders children content', () => {
+    render(
+      <TestProvider>
+        <Link>Test Link</Link>
+      </TestProvider>,
+    );
+    expect(document.body).toHaveTextContent('Test Link');
+  });
+
+  it('Renders with isActive prop', () => {
+    render(
+      <TestProvider>
+        <Link isActive={true}>Active Link</Link>
+      </TestProvider>,
+    );
+    expect(document.body).toHaveTextContent('Active Link');
+  });
+
+  it('Renders without isActive prop', () => {
+    render(
+      <TestProvider>
+        <Link isActive={false}>Inactive Link</Link>
+      </TestProvider>,
+    );
+    expect(document.body).toHaveTextContent('Inactive Link');
+  });
 });

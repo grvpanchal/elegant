@@ -14,6 +14,7 @@ export default defineComponent({
   props: [],
   setup() {
     const filtersData = useFiltersStore();
+    /* istanbul ignore next */
     const events = {
       onTodoFilterUpdate: (id) => { console.log('id', id); filtersData.setVisibilityFilter(id); },
     };

@@ -58,4 +58,22 @@ describe('<Alert />', () => {
     
     await waitFor(() => expect(container).toBeEmptyDOMElement());
   });
+
+  it('Closes without error when onCloseClick is not provided', async () => {
+    const { container } = render(
+      <TestProvider>
+        <Alert
+          show={true}
+          variant="error"
+          message="Sample Error Alert"
+        />
+      </TestProvider>,
+    );
+    
+    const alertClose = await screen.findByTestId('onAlertCloseClick');
+    
+    fireEvent.click(alertClose);
+    
+    await waitFor(() => expect(container).toBeEmptyDOMElement());
+  });
 });
