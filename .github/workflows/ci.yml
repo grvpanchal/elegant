@@ -41,6 +41,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install template dependencies
+        run: |
+          npm install --legacy-peer-deps --prefix templates/chota-angular-ngrx
+          npm install --legacy-peer-deps --prefix templates/chota-react-redux
+          npm install --legacy-peer-deps --prefix templates/chota-react-rtk
+          npm install --legacy-peer-deps --prefix templates/chota-react-saga
+          npm install --legacy-peer-deps --prefix templates/chota-vue-pinia
+          npm install --legacy-peer-deps --prefix templates/chota-wc-saga
+
       # - name: Run tests
       #   run: npm test
 
