@@ -100,5 +100,5 @@ This demonstrates how templates can be used to structure different sections or p
 
 Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:
 
-## References:
+## References
 - [1] https://atomicdesign.bradfrost.com/chapter-2/

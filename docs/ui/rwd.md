@@ -281,127 +281,35 @@ h1 {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What's mobile-first vs desktop-first?</summary>
+{% include quiz.html id="rwd-1"
+   question="What's the practical difference between mobile-first and desktop-first responsive CSS?"
+   options="A|Mobile-first starts with the smallest layout and uses min-width media queries to layer on complexity as the viewport grows; desktop-first starts with the full layout and uses max-width queries to strip back features. Mobile-first generally ships less default CSS and better matches progressive-enhancement thinking;B|Mobile-first only works on iOS;C|Desktop-first is faster;D|They produce identical CSS"
+   correct="A"
+   explanation="Mobile-first makes the smallest-screen experience the baseline, which tends to force better hierarchy decisions and lighter initial styles." %}
 
-**Answer:** Mobile-first uses `min-width` queries; desktop-first uses `max-width`.
+{% include quiz.html id="rwd-2"
+   question="How should you choose breakpoints?"
+   options="A|Copy Bootstrap's values and never think about it again;B|Let the content and layout drive the breakpoints — add a breakpoint wherever the current layout starts to break, not at fixed device widths. Device-specific breakpoints age badly as new devices appear;C|One breakpoint per known device;D|Only one breakpoint at 768px"
+   correct="B"
+   explanation="Fixed-device breakpoints age with the hardware. Content-driven breakpoints stay correct." %}
 
-```css
-/* Mobile-First */
-.grid { grid-template-columns: 1fr; }  /* Base = mobile */
+{% include quiz.html id="rwd-3"
+   question="How do you implement fluid typography that scales smoothly between viewport sizes?"
+   options="A|Hard-code font-size per breakpoint;B|Use clamp(min, preferred, max) with a vw-based preferred value, e.g. font-size: clamp(1rem, 0.5rem + 1vw, 1.5rem) — the browser interpolates between min and max as the viewport grows, with bounds for accessibility;C|Use JavaScript to resize on scroll;D|Only rely on rem units"
+   correct="B"
+   explanation="clamp() gives you fluid scaling with explicit lower/upper bounds, avoiding unreadably small or huge text on extreme viewports." %}
 
-@media (min-width: 768px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }  /* Add for larger */
-}
+{% include quiz.html id="rwd-4"
+   question="What are container queries and how do they complement media queries?"
+   options="A|They are the same as media queries;B|Container queries let a component restyle based on the size of its containing element rather than the viewport, so a card can render differently in a narrow sidebar vs a wide hero without the page knowing — exactly what atomic-design components need;C|They only work on the body element;D|They are deprecated"
+   correct="B"
+   explanation="Media queries know about the viewport. Container queries finally give components true component-level responsiveness." %}
 
-/* Desktop-First */
-.grid { grid-template-columns: repeat(2, 1fr); }  /* Base = desktop */
-
-@media (max-width: 767px) {
-  .grid { grid-template-columns: 1fr; }  /* Override for smaller */
-}
-```
-
-**Why mobile-first wins:** Mobile users download less CSS.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> How do you choose breakpoints?</summary>
-
-**Answer:** Use content-driven breakpoints, not device-specific.
-
-```css
-/* ❌ WRONG: Device-specific */
-@media (min-width: 375px) { /* iPhone */ }
-@media (min-width: 768px) { /* iPad */ }
-
-/* ✅ RIGHT: Content-driven */
-@media (min-width: 640px) { /* When cards can fit 2 per row */ }
-@media (min-width: 1024px) { /* When cards can fit 3 per row */ }
-```
-
-**Why it matters:** Content-driven works on all devices, including future ones.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> How do you implement fluid typography?</summary>
-
-**Answer:** Use `clamp()`, viewport units, or media queries.
-
-```css
-/* Method 1: clamp() */
-h1 {
-  font-size: clamp(2rem, 5vw, 4rem);
-  /* Min: 2rem, Preferred: 5vw, Max: 4rem */
-}
-
-/* Method 2: Media queries */
-h1 { font-size: 2rem; }
-
-@media (min-width: 768px) {
-  h1 { font-size: 3rem; }
-}
-
-@media (min-width: 1024px) {
-  h1 { font-size: 4rem; }
-}
-```
-
-**Why it matters:** Fluid typography improves readability across screen sizes.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What are container queries?</summary>
-
-**Answer:** Container queries apply styles based on parent size, not viewport.
-
-```css
-/* Media Query (viewport-based) */
-@media (min-width: 768px) {
-  .card { display: flex; }
-}
-
-/* Container Query (container-based) */
-.card-container {
-  container-type: inline-size;
-}
-
-@container (min-width: 400px) {
-  .card { display: flex; }
-}
-```
-
-**Why it matters:** Container queries enable truly responsive components.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you handle responsive images?</summary>
-
-**Answer:** Use `srcset`, `sizes`, and `<picture>`.
-
-```html
-<!-- srcset with sizes -->
-<img
-  src="small.jpg"
-  srcset="small.jpg 400w,
-          medium.jpg 800w,
-          large.jpg 1200w"
-  sizes="(max-width: 600px) 100vw,
-         (max-width: 1200px) 50vw,
-         600px"
-  alt="Responsive image"
-  loading="lazy">
-
-<!-- Art direction with picture -->
-<picture>
-  <source media="(min-width: 1024px)" srcset="landscape.jpg">
-  <source media="(min-width: 768px)" srcset="square.jpg">
-  <img src="portrait.jpg" alt="Different crops for different sizes">
-</picture>
-```
-
-**Why it matters:** srcset saves bandwidth by serving appropriately sized images.
-</details>
+{% include quiz.html id="rwd-5"
+   question="What's the right way to serve responsive images?"
+   options="A|Always a single full-resolution image — browsers handle scaling;B|Use &lt;img srcset&gt; with sizes, or &lt;picture&gt; with &lt;source&gt; for art direction, so the browser downloads the best-sized image for the viewport and pixel density — plus loading=&quot;lazy&quot; for below-the-fold images;C|Only JPEG;D|Base64-encode everything"
+   correct="B"
+   explanation="srcset/sizes lets the browser pick the best bitmap; &lt;picture&gt; adds art-direction swaps. Combining with lazy loading and WebP/AVIF modern formats delivers the biggest perf wins." %}
 
 ## References
 

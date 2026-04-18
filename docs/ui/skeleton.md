@@ -20,7 +20,7 @@ Skeleton screens are a user interface design technique used in frontend developm
 
 Skeleton screens are visual placeholders that appear while the actual content of a webpage or application is loading. They mimic the layout and structure of the final content, typically using light gray boxes or shapes to represent various elements such as text, images, and other UI components.
 
-## Purpose and Benefits
+### Purpose and Benefits
 
 Skeleton screens serve several important purposes in frontend development:
 
@@ -32,7 +32,7 @@ Skeleton screens serve several important purposes in frontend development:
 
 4. **Lower Bounce Rates**: Users are less likely to abandon a site due to perceived slow loading times when skeleton screens are used[6].
 
-## Types of Skeleton Screens
+### Types of Skeleton Screens
 
 There are three main types of skeleton screens:
 
@@ -42,7 +42,7 @@ There are three main types of skeleton screens:
 
 3. **Frame-display skeleton screens**: Show the outline or frame of the content before filling in the details[1].
 
-## Implementation
+### Implementation
 
 Implementing skeleton screens in frontend development typically involves:
 
@@ -54,7 +54,7 @@ Implementing skeleton screens in frontend development typically involves:
 
 4. **Content Loading**: Progressively replacing placeholders with actual content as it becomes available[7].
 
-## Best Practices
+### Best Practices
 
 When implementing skeleton screens in frontend development:
 
@@ -454,291 +454,35 @@ const UserProfile = ({ userId }) => {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> Why are skeleton screens better than traditional loading spinners?</summary>
+{% include quiz.html id="skeleton-1"
+   question="Why do skeleton screens feel faster than traditional loading spinners?"
+   options="A|They literally fetch faster;B|They give the user a perceived structural preview of the content, so the wait feels like the content is almost here rather than an abstract delay — perceived performance, not actual latency;C|Skeletons disable caching;D|Spinners are technically slower to render"
+   correct="B"
+   explanation="Actual network time is unchanged, but a shape that matches the final layout keeps users anchored and reduces the feeling of being stuck." %}
 
-**Answer:** Skeleton screens provide several advantages:
+{% include quiz.html id="skeleton-2"
+   question="Should a skeleton exactly match the final rendered content?"
+   options="A|Yes — pixel-perfect or it's misleading;B|It should roughly match structure and rhythm (rows, avatar+text, image placeholders) so there's no jarring layout shift when real content arrives, but pixel-perfect matching is unnecessary and brittle;C|No — it should be completely generic;D|Skeletons should show actual content"
+   correct="B"
+   explanation="The goal is preventing CLS and setting expectations. Obsessing over pixel parity creates maintenance burden and couples the skeleton to details that change often." %}
 
-1. **Contextual feedback** - Shows what's coming, not just "loading"
-2. **Reduced perceived wait** - 20-30% improvement in perceived performance
-3. **Lower bounce rates** - Users less likely to leave
-4. **Cognitive priming** - Brain prepares for content structure
-5. **Smooth transitions** - No jarring content replacement
+{% include quiz.html id="skeleton-3"
+   question="When should you NOT use a skeleton screen?"
+   options="A|For very short loads (&lt; ~300ms — the flash is worse than nothing), for error states (use an error UI), or for indeterminate background work where a subtle spinner/progress bar is the right signal;B|Never — skeletons are always correct;C|Only on mobile;D|Only when JavaScript is disabled"
+   correct="A"
+   explanation="Skeletons shine for 300ms–few-seconds content loads. Sub-300ms shows a flicker; errors want actionable messaging; background work wants progress indication." %}
 
-**Comparison:**
-```jsx
-// Spinner: "Something is happening" (vague, anxious)
-<div className="spinner">Loading...</div>
+{% include quiz.html id="skeleton-4"
+   question="How do you implement a skeleton shimmer animation without hurting performance?"
+   options="A|JavaScript setInterval that repaints every 16ms;B|A CSS background gradient animated with transform or background-position, using will-change sparingly and preferring GPU-accelerated properties — no layout thrash, no JS;C|A hand-drawn GIF;D|Animate opacity of hundreds of individual pixels"
+   correct="B"
+   explanation="CSS animation on transform / background-position stays on the compositor thread. JS loops or layout-affecting animations cause unnecessary main-thread work." %}
 
-// Skeleton: "Article with image and text is coming" (specific, reassuring)
-<ArticleSkeleton />  // Shows image placeholder, title lines, text lines
-```
-
-**Why it works:** Human perception processes structure faster than interpreting absence. Skeleton = structure preview.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> Should skeleton screens exactly match the final content?</summary>
-
-**Answer:** **Yes, structural match is critical** for smooth UX:
-
-**Must match:**
-- Layout (grid, flex, spacing)
-- Element types (image, text, buttons)
-- Sizing (width, height of major elements)
-- Positioning (relative locations)
-
-**Can differ:**
-- Exact text length
-- Precise image dimensions
-- Minor spacing variations
-
-**Example:**
-{% raw %}
-```jsx
-// ✅ GOOD: Structural match
-<div className="card">
-  <div className="skeleton-image" style={{ height: '200px' }}></div>
-  <div className="skeleton-title" style={{ width: '70%' }}></div>
-  <div className="skeleton-text"></div>
-</div>
-
-// Becomes...
-<div className="card">
-  <img src="..." style={{ height: '200px' }} />
-  <h2>Actual Title</h2>
-  <p>Actual content...</p>
-</div>
-```
-{% endraw %}
-
-**Avoid:**
-```jsx
-// ❌ BAD: Structure mismatch
-<div className="skeleton-lines">  // Just lines
-  <div></div>
-  <div></div>
-</div>
-
-// Becomes...
-<div className="card">  // Complex card with image
-  <img />
-  <div><h3 /><p /></div>
-</div>
-// Causes layout shift!
-```
-
-**Why it matters:** Structural mismatch causes Cumulative Layout Shift (CLS), hurting Core Web Vitals and UX.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> When should you NOT use skeleton screens?</summary>
-
-**Answer:** **Avoid skeletons when:**
-
-1. **Content loads instantly (<200ms):**
-   ```jsx
-   // ❌ Don't show skeleton for cached/instant data
-   const cachedUser = getCachedUser();  // 10ms
-   if (!cachedUser) return <Skeleton />;  // Unnecessary flash
-   ```
-
-2. **Loading is genuinely instant:**
-   ```jsx
-   // ✅ Just show content directly
-   const localData = JSON.parse(localStorage.getItem('settings'));
-   return <Settings data={localData} />;  // No loading state needed
-   ```
-
-3. **Small UI elements:**
-   ```jsx
-   // ❌ Don't skeleton tiny elements
-   <ButtonSkeleton />  // Overkill for a button
-   
-   // ✅ Disable button instead
-   <Button disabled={loading}>Save</Button>
-   ```
-
-4. **Indeterminate wait times:**
-   ```jsx
-   // ❌ Don't use skeleton for uploads/processing
-   <FileSkeleton />  // User doesn't know when it'll finish
-   
-   // ✅ Use progress bar
-   <ProgressBar value={uploadProgress} />
-   ```
-
-5. **Interactive forms:**
-   ```jsx
-   // ❌ Don't skeleton active forms
-   // ✅ Show form immediately, disable submit until ready
-   ```
-
-**Rule of thumb:** Use skeletons for content-heavy pages with predictable structure loading over 200ms. Otherwise, use spinners, progress bars, or just show content.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How do you implement skeleton animations effectively?</summary>
-
-**Answer:** **Two main animation patterns:**
-
-**1. Shimmer/Wave effect (most common):**
-```css
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-```
-
-**2. Pulse effect:**
-```css
-.skeleton {
-  background: #f0f0f0;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-```
-
-**Best practices:**
-- **Duration:** 1-2 seconds (not too fast, not too slow)
-- **Easing:** ease-in-out for natural feel
-- **Subtle:** Don't distract from structure preview
-- **Respect motion preferences:**
-  ```css
-  @media (prefers-reduced-motion: reduce) {
-    .skeleton {
-      animation: none;  /* No animation for accessibility */
-    }
-  }
-  ```
-
-**Performance:**
-```css
-/* ✅ GOOD: GPU-accelerated properties */
-.skeleton {
-  animation: shimmer 1.5s infinite;
-  transform: translateZ(0);  /* Force GPU acceleration */
-  will-change: background-position;
-}
-
-/* ❌ BAD: Causes repaints */
-.skeleton {
-  animation: width-change 1s infinite;  /* Animating layout properties */
-}
-```
-
-**Why it matters:** Subtle animation indicates "loading in progress" while smooth performance prevents jank.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you handle skeleton screens in responsive designs?</summary>
-
-**Answer:** **Skeleton should adapt like actual content:**
-
-**Pattern 1: Responsive skeleton component:**
-```jsx
-const ResponsiveCardSkeleton = () => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
-  
-  return (
-    <div className={`card-skeleton ${isMobile ? 'card-skeleton--mobile' : ''}`}>
-      <div className="card-skeleton__image"></div>
-      {!isMobile && <div className="card-skeleton__sidebar"></div>}
-      <div className="card-skeleton__content">
-        <div className="card-skeleton__title"></div>
-        <div className="card-skeleton__text"></div>
-      </div>
-    </div>
-  );
-};
-```
-
-**Pattern 2: CSS-based responsive skeleton:**
-```css
-.card-skeleton {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 1rem;
-}
-
-.card-skeleton__image {
-  height: 200px;
-}
-
-@media (max-width: 768px) {
-  .card-skeleton {
-    grid-template-columns: 1fr;  /* Stack on mobile */
-  }
-  
-  .card-skeleton__image {
-    height: 150px;  /* Smaller image */
-  }
-}
-```
-
-**Pattern 3: Different skeleton counts:**
-```jsx
-const ProductGridSkeleton = () => {
-  const skeletonCount = useBreakpointValue({
-    base: 2,      // Mobile: 2 items
-    md: 4,        // Tablet: 4 items
-    lg: 6         // Desktop: 6 items
-  });
-  
-  return (
-    <div className="product-grid">
-      {Array(skeletonCount).fill(0).map((_, i) => (
-        <ProductCardSkeleton key={i} />
-      ))}
-    </div>
-  );
-};
-```
-
-**Match actual component behavior:**
-```jsx
-// Actual component hides sidebar on mobile
-const Article = ({ article }) => {
-  const showSidebar = useMediaQuery('(min-width: 1024px)');
-  
-  return (
-    <div>
-      <Content article={article} />
-      {showSidebar && <Sidebar />}
-    </div>
-  );
-};
-
-// Skeleton should match
-const ArticleSkeleton = () => {
-  const showSidebar = useMediaQuery('(min-width: 1024px)');
-  
-  return (
-    <div>
-      <ContentSkeleton />
-      {showSidebar && <SidebarSkeleton />}
-    </div>
-  );
-};
-```
-
-**Why it matters:** Responsive skeletons prevent layout shifts when content loads. They must adapt exactly like real content.
-</details>
+{% include quiz.html id="skeleton-5"
+   question="How should skeletons handle responsive layouts?"
+   options="A|Serve one static skeleton and accept the layout shift;B|Build the skeleton out of the same flex/grid layout primitives as the real component so it naturally follows breakpoints and container queries — that keeps the reserved space accurate at every viewport and avoids CLS when real content lands;C|Only render skeletons on desktop;D|Use JS to compute widths at runtime"
+   correct="B"
+   explanation="If the skeleton uses the same layout system as the real UI, it mirrors the real layout at every breakpoint automatically." %}
 
 ## References
 - [1] https://www.nngroup.com/articles/skeleton-screens/

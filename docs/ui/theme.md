@@ -28,7 +28,7 @@ In the Universal Frontend Architecture, theming intersects with component archit
 
 Modern frameworks offer different theming philosophies:
 
-## Theming Patterns
+### Theming Patterns
 
 ### Utility-First Approach
 
@@ -39,7 +39,7 @@ Frameworks like Tailwind CSS use a utility-first approach for theming:
 - Enables rapid prototyping and unique designs
 - Example: Tailwind CSS[2][10]
 
-## Component-Based Theming
+### Component-Based Theming
 
 Frameworks such as Bootstrap and Foundation use pre-designed components:
 
@@ -48,7 +48,7 @@ Frameworks such as Bootstrap and Foundation use pre-designed components:
 - Provides a cohesive look across the entire application
 - Examples: Bootstrap, Foundation[1][4]
 
-## CSS Variables and Custom Properties
+### CSS Variables and Custom Properties
 
 Modern frameworks leverage CSS variables for theming:
 
@@ -57,7 +57,7 @@ Modern frameworks leverage CSS variables for theming:
 - Supports creating multiple themes with minimal code
 - Example: Open Props[10]
 
-## Preprocessor-Based Theming
+### Preprocessor-Based Theming
 
 Some frameworks use preprocessors like Sass for advanced theming:
 
@@ -66,7 +66,7 @@ Some frameworks use preprocessors like Sass for advanced theming:
 - Enables creation of complex theme variations
 - Example: Bootstrap (with Sass)[1]
 
-## Classless Theming
+### Classless Theming
 
 Classless CSS themes provide styling without requiring specific classes:
 
@@ -75,7 +75,7 @@ Classless CSS themes provide styling without requiring specific classes:
 - Provides a good starting point for custom designs
 - Examples: Water.css, awsm.css[9]
 
-## Theme Switching
+### Theme Switching
 
 Many frameworks support easy theme switching:
 
@@ -584,162 +584,35 @@ initTheme();
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What are design tokens and why are they better than hardcoded values?</summary>
+{% include quiz.html id="theme-1"
+   question="What are design tokens and why are they preferable to hard-coded CSS values?"
+   options="A|They are the same as CSS variables in every way;B|Design tokens are named, platform-agnostic style primitives (color.brand.primary, space.md, type.heading.lg) defined once and shared across design tools and code — enabling consistency, easy theme changes, platform export (web/iOS/Android), and a shared vocabulary between design and engineering;C|Tokens are only for enterprise apps;D|Tokens replace the CSS cascade"
+   correct="B"
+   explanation="Hard-coded values scatter branding decisions everywhere. Tokens centralise them and make rebrands / dark mode / white-labelling a data change rather than a code change." %}
 
-**Answer:** Design tokens are named entities storing visual design attributes (colors, spacing, typography) as CSS custom properties or variables. They're better because:
+{% include quiz.html id="theme-2"
+   question="How do CSS custom properties differ from Sass/Less variables for theming?"
+   options="A|They are identical;B|Sass/Less variables are compile-time constants (fixed after build). CSS custom properties are runtime values that cascade, can be overridden by scope, and can be changed dynamically — which is why modern theming (and dark mode) relies on custom properties;C|Sass variables work in older browsers better;D|Custom properties cannot be nested"
+   correct="B"
+   explanation="You can't switch Sass variables at runtime — they've already been compiled away. CSS custom properties live in the CSSOM and can be swapped by updating a class on the root element." %}
 
-1. **Single source of truth:** Change `--color-primary` once, updates everywhere
-2. **Designer-developer bridge:** Design tools export tokens developers can import
-3. **Consistency:** Ensures same spacing/colors across app
-4. **Theming:** Switch entire theme by changing token values
-5. **Maintainability:** Easier to update than finding/replacing hex codes
+{% include quiz.html id="theme-3"
+   question="What's a robust way to implement dark mode?"
+   options="A|Hard-code a separate stylesheet per theme and swap the &lt;link&gt; tag;B|Define theme tokens as CSS custom properties on :root, override them under .dark (or [data-theme=&quot;dark&quot;]) and @media (prefers-color-scheme: dark) for the auto default, and let the rest of the CSS consume var(--...) — no component code needs to change;C|Use !important everywhere;D|Only inline styles"
+   correct="B"
+   explanation="A single source of truth (tokens) plus a root-level theme class means the whole app flips with one attribute toggle, and prefers-color-scheme gives users system-default support for free." %}
 
-Example: `var(--space-md)` instead of `16px` everywhere means changing spacing scale requires one edit, not hundreds.
-</details>
+{% include quiz.html id="theme-4"
+   question="Should themes be global or component-scoped?"
+   options="A|Always component-scoped — globals are evil;B|Typically global tokens at :root for consistency, with the option of scoped theme overrides on a subtree (e.g. a dark card on a light page) by re-declaring the same custom properties under a wrapper. The same tokens are consumed either way;C|Always global — scoped theming doesn't work;D|Themes must be per-component file"
+   correct="B"
+   explanation="Custom properties cascade, so scoped overrides are trivial. Global defaults keep the whole app coherent; scoped overrides handle the one-offs." %}
 
-<details>
-<summary><strong>Question 2:</strong> How do CSS custom properties differ from Sass/Less variables for theming?</summary>
-
-**Answer:**
-
-**CSS Custom Properties (runtime):**
-- Change at runtime via JavaScript
-- Can be scoped to elements
-- Enable dynamic theme switching
-- Pierce Shadow DOM boundaries
-- Example: `document.documentElement.style.setProperty('--color', '#000')`
-
-**Sass/Less Variables (build-time):**
-- Compiled to static values
-- Require rebuild to change
-- No runtime flexibility
-- Can't change based on user preference
-
-**When to use each:**
-- CSS custom properties: Dynamic themes, dark mode, user preferences
-- Sass variables: Computed values, DRY at build time
-
-Modern approach: Use both—Sass for preprocessing, output CSS custom properties for runtime flexibility.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> What's the best way to implement dark mode?</summary>
-
-**Answer:**
-
-**Best practice approach:**
-
-1. **Use data attribute:** `[data-theme="dark"]` (more explicit than classes)
-2. **Respect system preference:** Check `prefers-color-scheme`
-3. **Save user choice:** localStorage persists across sessions
-4. **Initialize before paint:** Inline script prevents flash
-5. **CSS custom properties:** All theme values as variables
-
-```javascript
-// Initialize immediately (in <head>)
-const theme = localStorage.getItem('theme') || 
-  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-document.documentElement.setAttribute('data-theme', theme);
-```
-
-**Avoid:**
-- Class toggling only (`.dark-mode`) - less semantic
-- Media query only - ignores user preference
-- JavaScript-only - causes flash
-- Separate stylesheets - performance cost
-
-**Why:** This approach prevents flash, respects preferences, and performs well.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> Should themes be global or component-scoped?</summary>
-
-**Answer:** **Both, depending on architecture:**
-
-**Global tokens (recommended for most):**
-```css
-:root {
-  --color-primary: #3b82f6;
-}
-/* All components use global tokens */
-.button { background: var(--color-primary); }
-```
-
-**Benefits:** Consistency, single source, easy theming
-
-**Component-scoped (Web Components with Shadow DOM):**
-```javascript
-class MyButton extends HTMLElement {
-  connectedCallback() {
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --button-bg: var(--color-primary, #3b82f6);  /* Fallback */
-        }
-        button { background: var(--button-bg); }
-      </style>
-      <button><slot></slot></button>
-    `;
-  }
-}
-```
-
-**Benefits:** Encapsulation, portability, isolation
-
-**Best practice:** Global tokens for app-wide consistency, component-scoped for overrides/customization. CSS custom properties inherit through Shadow DOM, enabling both patterns.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you handle theme-specific images or assets?</summary>
-
-**Answer:**
-
-**Pattern 1: CSS background images with custom properties:**
-```css
-:root {
-  --logo-url: url('/logo-light.svg');
-  --bg-pattern: url('/pattern-light.png');
-}
-
-[data-theme="dark"] {
-  --logo-url: url('/logo-dark.svg');
-  --bg-pattern: url('/pattern-dark.png');
-}
-
-.logo { background-image: var(--logo-url); }
-```
-
-**Pattern 2: CSS with theme selectors:**
-```css
-.hero-bg {
-  background-image: url('/hero-light.jpg');
-}
-
-[data-theme="dark"] .hero-bg {
-  background-image: url('/hero-dark.jpg');
-}
-```
-
-**Pattern 3: JavaScript-based switching:**
-```jsx
-const Logo = () => {
-  const { theme } = useTheme();
-  return <img src={`/logo-${theme}.svg`} alt="Logo" />;
-};
-```
-
-**Pattern 4: SVG with CSS variables (best for icons):**
-```html
-<svg>
-  <path fill="var(--color-text)" d="..." />
-</svg>
-<!-- Colors change with theme automatically -->
-```
-
-**Best practice:** Use SVG with CSS vars when possible (smallest, themeable). Use picture element for complex images with theme variants. Avoid JavaScript switching for performance.
-</details>
+{% include quiz.html id="theme-5"
+   question="How do you handle theme-specific images or icons (e.g. different logos for light/dark)?"
+   options="A|Hide/show two &lt;img&gt; tags with CSS;B|Use &lt;picture&gt; with &lt;source media=&quot;(prefers-color-scheme: dark)&quot;&gt; so the browser picks the right asset; or use SVG with currentColor so a single asset recolors via a CSS variable;C|Only use one image regardless of theme;D|Emit two entire CSS files"
+   correct="B"
+   explanation="&lt;picture&gt; + media queries fetches only the variant you need. currentColor on SVG icons is the lightest solution when the only change is tint." %}
 
 ## References
 - [1] https://blog.hubspot.com/website/css-frameworks
