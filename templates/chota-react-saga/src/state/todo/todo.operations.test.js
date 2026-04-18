@@ -26,12 +26,16 @@ import {
 import { mapTodoData, toggleCheckedState } from './todo.helper';
 import fetchApi from '../../utils/api';
 
-jest.mock('../../utils/api');
+vi.mock('../../utils/api');
 
 describe('todo saga generators', () => {
   beforeEach(() => {
     fetchApi.mockClear();
-    global.window.crypto = { randomUUID: () => 'test-uuid' };
+    vi.stubGlobal('crypto', { randomUUID: () => 'test-uuid' });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   describe('todo operations API wrappers', () => {

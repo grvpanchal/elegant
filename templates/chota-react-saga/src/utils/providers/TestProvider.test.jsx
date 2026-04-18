@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import TestProvider, { createTestStore } from './TestProvider';
 
-jest.mock('../../utils/api', () => ({
+vi.mock('../../utils/api', () => ({
   __esModule: true,
-  default: jest.fn(() => Promise.resolve({ json: () => Promise.resolve([]) })),
+  default: vi.fn(() => Promise.resolve({ json: () => Promise.resolve([]) })),
 }));
 
 describe('TestProvider', () => {

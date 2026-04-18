@@ -10,7 +10,7 @@ describe('<SiteHeader />', () => {
   };
 
   const events = {
-    onThemeChangeClick: jest.fn(),
+    onThemeChangeClick: vi.fn(),
   };
 
   beforeEach(() => {

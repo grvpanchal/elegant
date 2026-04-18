@@ -8,8 +8,8 @@ describe('<AddTodoForm />', () => {
     buttonInfo: { label: 'Add', variant: 'primary' },
     placeholder: 'Add your task',
     isLoading: false,
-    onTodoAdd: jest.fn(),
-    onTodoUpdate: jest.fn(),
+    onTodoAdd: vi.fn(),
+    onTodoUpdate: vi.fn(),
     todoValue: '',
   };
 
@@ -33,7 +33,7 @@ describe('<AddTodoForm />', () => {
   });
 
   it('Calls onTodoAdd when form is submitted with text', () => {
-    const onTodoAdd = jest.fn();
+    const onTodoAdd = vi.fn();
     render(
       <TestProvider>
         <AddTodoForm {...defaultProps} onTodoAdd={onTodoAdd} />
@@ -46,7 +46,7 @@ describe('<AddTodoForm />', () => {
   });
 
   it('Does not call onTodoAdd when form is submitted with empty text', () => {
-    const onTodoAdd = jest.fn();
+    const onTodoAdd = vi.fn();
     render(
       <TestProvider>
         <AddTodoForm {...defaultProps} onTodoAdd={onTodoAdd} />
@@ -58,7 +58,7 @@ describe('<AddTodoForm />', () => {
   });
 
   it('Does not call onTodoAdd when form is submitted with whitespace only', () => {
-    const onTodoAdd = jest.fn();
+    const onTodoAdd = vi.fn();
     render(
       <TestProvider>
         <AddTodoForm {...defaultProps} onTodoAdd={onTodoAdd} />
@@ -71,7 +71,7 @@ describe('<AddTodoForm />', () => {
   });
 
   it('Calls onTodoUpdate when todoValue is provided', () => {
-    const onTodoUpdate = jest.fn();
+    const onTodoUpdate = vi.fn();
     render(
       <TestProvider>
         <AddTodoForm {...defaultProps} onTodoUpdate={onTodoUpdate} todoValue="Existing todo" />

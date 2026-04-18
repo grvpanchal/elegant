@@ -8,9 +8,9 @@ describe('<TodoItem />', () => {
     id: 1,
     text: 'Test todo',
     completed: false,
-    onToggleClick: jest.fn(),
-    onEditClick: jest.fn(),
-    onDeleteClick: jest.fn(),
+    onToggleClick: vi.fn(),
+    onEditClick: vi.fn(),
+    onDeleteClick: vi.fn(),
   };
 
   it('Renders successfully without error', () => {
@@ -52,7 +52,7 @@ describe('<TodoItem />', () => {
   });
 
   it('Calls onToggleClick when checkbox is clicked', () => {
-    const onToggleClick = jest.fn();
+    const onToggleClick = vi.fn();
     render(
       <TestProvider>
         <TodoItem {...defaultProps} onToggleClick={onToggleClick} />
@@ -64,7 +64,7 @@ describe('<TodoItem />', () => {
   });
 
   it('Calls onEditClick when edit button is clicked', () => {
-    const onEditClick = jest.fn();
+    const onEditClick = vi.fn();
     render(
       <TestProvider>
         <TodoItem {...defaultProps} onEditClick={onEditClick} />
@@ -76,7 +76,7 @@ describe('<TodoItem />', () => {
   });
 
   it('Calls onDeleteClick when delete button is clicked', () => {
-    const onDeleteClick = jest.fn();
+    const onDeleteClick = vi.fn();
     render(
       <TestProvider>
         <TodoItem {...defaultProps} onDeleteClick={onDeleteClick} />

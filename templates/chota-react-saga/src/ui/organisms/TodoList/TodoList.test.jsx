@@ -16,11 +16,11 @@ describe('<TodoList />', () => {
   };
 
   const defaultEvents = {
-    onTodoCreate: jest.fn(),
-    onTodoEdit: jest.fn(),
-    onTodoUpdate: jest.fn(),
-    onTodoToggleUpdate: jest.fn(),
-    onTodoDelete: jest.fn(),
+    onTodoCreate: vi.fn(),
+    onTodoEdit: vi.fn(),
+    onTodoUpdate: vi.fn(),
+    onTodoToggleUpdate: vi.fn(),
+    onTodoDelete: vi.fn(),
   };
 
   it('Renders successfully without error', () => {

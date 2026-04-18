@@ -48,7 +48,7 @@ describe('<Alert />', () => {
       <TestProvider>
         <Alert
           show={true}
-          onCloseClick={jest.fn}
+          onCloseClick={vi.fn}
           variant="error"
           message="Sample Error Alert"
         />

@@ -12,9 +12,9 @@ describe('<TodoItems />', () => {
   const defaultProps = {
     todos,
     isDisabled: false,
-    onToggleClick: jest.fn(),
-    onEditClick: jest.fn(),
-    onDeleteClick: jest.fn(),
+    onToggleClick: vi.fn(),
+    onEditClick: vi.fn(),
+    onDeleteClick: vi.fn(),
   };
 
   it('Renders successfully without error', () => {
@@ -55,7 +55,7 @@ describe('<TodoItems />', () => {
   });
 
   it('Calls onToggleClick with correct todo when toggle is clicked', () => {
-    const onToggleClick = jest.fn();
+    const onToggleClick = vi.fn();
     render(
       <TestProvider>
         <TodoItems {...defaultProps} onToggleClick={onToggleClick} />
@@ -67,7 +67,7 @@ describe('<TodoItems />', () => {
   });
 
   it('Calls onEditClick with correct todo when edit is clicked', () => {
-    const onEditClick = jest.fn();
+    const onEditClick = vi.fn();
     render(
       <TestProvider>
         <TodoItems {...defaultProps} onEditClick={onEditClick} />
@@ -79,7 +79,7 @@ describe('<TodoItems />', () => {
   });
 
   it('Calls onDeleteClick with correct id when delete is clicked', () => {
-    const onDeleteClick = jest.fn();
+    const onDeleteClick = vi.fn();
     render(
       <TestProvider>
         <TodoItems {...defaultProps} onDeleteClick={onDeleteClick} />

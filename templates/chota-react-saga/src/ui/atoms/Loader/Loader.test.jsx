@@ -51,7 +51,8 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = container.querySelector('.loader');
-    expect(loader).toHaveStyle('border: 3px solid #000');
+    expect(loader).toHaveStyle({ borderWidth: '3px', borderStyle: 'solid' });
+    expect(loader.getAttribute('style')).toContain('rgb(0, 0, 0)');
   });
 
   it('Renders with transparent borderBottomColor', () => {
@@ -61,6 +62,6 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = container.querySelector('.loader');
-    expect(loader).toHaveStyle('border-bottom-color: transparent');
+    expect(loader.getAttribute('style')).toContain('transparent');
   });
 });
