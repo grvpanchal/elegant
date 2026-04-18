@@ -518,196 +518,35 @@ export default function BlogPost({ post }) {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What's the difference between Open Graph and Twitter Card meta tags?</summary>
+{% include quiz.html id="seo-1"
+   question="What's the difference between Open Graph and Twitter Card meta tags?"
+   options="A|They are the same thing;B|Open Graph (og:*) is Facebook/LinkedIn/Discord's standard for link preview; Twitter Card (twitter:*) is Twitter/X's. Most platforms fall back to og: if twitter: is missing, so you usually set og: for everyone and add a twitter:card type to control Twitter's layout;C|Only Open Graph is real;D|They only affect SEO rankings"
+   correct="B"
+   explanation="Share previews (not ranking) are driven by these tags. Set og: as the baseline; twitter: just customises the Twitter-specific appearance." %}
 
-**Answer:**
+{% include quiz.html id="seo-2"
+   question="How does JSON-LD structured data help SEO?"
+   options="A|It improves page load time;B|It describes page content in schema.org vocabulary, enabling rich results in search (stars for reviews, recipe cards, event info, product prices) — higher CTR from SERPs without changing the visible page;C|It is deprecated;D|It only works in Chrome"
+   correct="B"
+   explanation="Google's rich-results eligibility, Knowledge Graph, and voice-assistant answers all key off structured data. JSON-LD is the preferred format because it's non-intrusive (a &lt;script type=&quot;application/ld+json&quot;&gt; block)." %}
 
-**Open Graph (og:):**
-- Created by Facebook
-- Used by Facebook, LinkedIn, Pinterest, WhatsApp
-- Tags: `og:title`, `og:description`, `og:image`, `og:url`
+{% include quiz.html id="seo-3"
+   question="Why are Core Web Vitals important for SEO?"
+   options="A|They don't affect SEO;B|Google uses them as ranking signals (LCP, CLS, INP) via the Page Experience system — slow or janky pages are penalized in competitive queries, and good vitals also improve conversion independent of ranking;C|Only LCP matters;D|They only apply to mobile"
+   correct="B"
+   explanation="CWV are an official ranking signal and, crucially, a user-experience signal that correlates with bounce rate and conversion — optimising them helps both SEO and business metrics." %}
 
-**Twitter Cards (twitter:):**
-- Created by Twitter
-- Used exclusively by Twitter
-- Falls back to Open Graph if twitter: tags missing
-- Tags: `twitter:card`, `twitter:title`, `twitter:image`
+{% include quiz.html id="seo-4"
+   question="When should you use a canonical tag?"
+   options="A|On every page, always pointing at itself;B|Whenever the same (or substantially similar) content is reachable at multiple URLs — e.g. with/without trailing slash, with query params like ?ref=, printable/non-printable, localised duplicates — to tell search engines which URL is the preferred one and consolidate link equity;C|Only on 404 pages;D|To hide a page from search"
+   correct="B"
+   explanation="Self-referential canonicals on every page are the common safe default, plus explicit canonicals for known duplicates. rel=&quot;canonical&quot; is a hint, not a directive, but it's widely respected." %}
 
-**Best practice:** Include both for maximum compatibility
-
-```html
-<!-- Open Graph -->
-<meta property="og:title" content="Page Title" />
-<meta property="og:image" content="/og-image.jpg" />
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="/twitter-image.jpg" />
-```
-
-**Why it matters:** Proper social tags create rich previews when shared, increasing click-through rates by 40-50%.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> How does JSON-LD structured data improve SEO?</summary>
-
-**Answer:** JSON-LD enables **rich snippets** in search results:
-
-**Without structured data:**
-```
-Blue link: "Widget Pro 3000"
-Plain text: "Shop our premium widget..."
-```
-
-**With Product schema:**
-```
-Widget Pro 3000 - $99.99
-⭐⭐⭐⭐⭐ 234 reviews - In Stock
-Shop our premium widget...
-```
-
-**Benefits:**
-- Higher click-through rate (20-30% increase)
-- More prominent search appearance
-- Eligible for Google Shopping, price drops
-- Better voice search results
-
-**Implementation:**
-```javascript
-const productSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: product.name,
-  offers: {
-    '@type': 'Offer',
-    price: product.price,
-    priceCurrency: 'USD'
-  }
-};
-```
-
-**Validate:** Use Google's Rich Results Test to verify markup.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> Why are Core Web Vitals important for SEO?</summary>
-
-**Answer:** Core Web Vitals are **direct ranking factors** since Google's Page Experience update (June 2021):
-
-**Three metrics:**
-
-1. **LCP (Largest Contentful Paint):** <2.5s
-   - Measures loading performance
-   - Optimize: SSR/SSG, image optimization, CDN
-
-2. **FID (First Input Delay):** <100ms
-   - Measures interactivity responsiveness
-   - Optimize: Code splitting, reduce JavaScript
-
-3. **CLS (Cumulative Layout Shift):** <0.1
-   - Prevents layout jumps
-   - Optimize: Specify image dimensions, reserve space
-
-**Impact:**
-- Poor vitals = lower rankings
-- Good vitals = ranking boost
-- Mobile especially critical (mobile-first indexing)
-
-**Monitor:** Google Search Console → Core Web Vitals report
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> When should you use canonical tags?</summary>
-
-**Answer:** Use `<link rel="canonical">` to prevent duplicate content penalties:
-
-**Use cases:**
-
-1. **Multiple URLs, same content:**
-```html
-<!-- All these point to canonical version -->
-http://example.com/product
-https://example.com/product
-www.example.com/product
-example.com/product?ref=email
-
-<!-- Canonical tag on all versions: -->
-<link rel="canonical" href="https://example.com/product" />
-```
-
-2. **Pagination:**
-```html
-<!-- Page 2 of blog listing -->
-<link rel="canonical" href="https://example.com/blog" />
-```
-
-3. **Syndicated content:**
-```html
-<!-- Content republished from original source -->
-<link rel="canonical" href="https://originalsource.com/article" />
-```
-
-**Don't use when:** Content is actually different (product variations, localized versions use hreflang instead).
-
-**Why it matters:** Prevents Google from splitting ranking signals across duplicate URLs, concentrating authority on preferred version.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you implement SEO for client-side navigation in SPAs?</summary>
-
-**Answer:**
-
-**Problem:** SPA navigation doesn't reload page → meta tags don't update
-
-**Solution:** Dynamic meta tag updates on route change
-
-**Next.js approach:**
-```javascript
-// Automatic per-page meta via getStaticProps
-export async function getStaticProps() {
-  return {
-    props: {
-      seo: {
-        title: "Page Title",
-        description: "Page description"
-      }
-    }
-  };
-}
-
-function Page({ seo }) {
-  return (
-    <>
-      <Head>
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.description} />
-      </Head>
-      <Content />
-    </>
-  );
-}
-```
-
-**React Router approach:**
-```javascript
-import { Helmet } from 'react-helmet';
-
-function ProductPage({ product }) {
-  return (
-    <>
-      <Helmet>
-        <title>{product.name} | Shop</title>
-        <meta name="description" content={product.description} />
-      </Helmet>
-      <ProductView product={product} />
-    </>
-  );
-}
-```
-
-**Key:** Meta tags update on client navigation, maintaining SEO for deep links and social shares.
-</details>
+{% include quiz.html id="seo-5"
+   question="How do you make client-side-navigated SPA pages SEO-friendly?"
+   options="A|SEO doesn't work for SPAs — accept it;B|Render the initial request server-side (SSR) or at build time (SSG) so crawlers see real HTML + real metadata. On client-side navigation, update the document title and meta tags (react-helmet-async / next/head / &lt;svelte:head&gt;) so each logical &quot;page&quot; has the right SEO metadata even though the app didn't reload;C|Render an image of the page;D|Put keywords in data- attributes"
+   correct="B"
+   explanation="Modern crawlers execute some JS but SSR/SSG gives the best results, fastest and most reliable. Per-route head management ensures each SPA route has proper title/description/canonical." %}
 
 ## References
 
