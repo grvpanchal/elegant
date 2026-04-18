@@ -42,17 +42,6 @@ const Button = ({ onClick, label }) => {
 };
 
 export default Button;
-
-```jsx
-// Button.js
-
-import React from "react";
-
-const Button = ({ onClick, label }) => {
-  return <button onClick={onClick}>{label}</button>;
-};
-
-export default Button;
 ```
 
 In this example, the Button component is a basic building block (atom) that takes two props:
@@ -104,15 +93,15 @@ const ICON_PATHS = {
   check: "M5 13l4 4L19 7"
 };
 
-const Icon = ({ 
-  name, 
-  size = 24, 
-  color = "currentColor", 
+const Icon = ({
+  name,
+  size = 24,
+  color = "currentColor",
   className = "",
   ariaLabel
 }) => {
   const pathData = ICON_PATHS[name];
-  
+
   if (!pathData) {
     console.warn(`Icon "${name}" not found`);
     return null;
@@ -168,13 +157,13 @@ const SearchButton = ({ onClick }) => {
 // ❌ BAD: Atom with too much responsibility
 const Button = ({ userId }) => {
   const [loading, setLoading] = useState(false);
-  
+
   const handleClick = async () => {
     setLoading(true);
     await fetch(`/api/users/${userId}/activate`);
     setLoading(false);
   };
-  
+
   return <button onClick={handleClick}>{loading ? 'Loading...' : 'Activate'}</button>;
 };
 ```
@@ -226,8 +215,8 @@ const IconButton = ({ onClick, icon }) => (
 ```jsx
 // ✅ GOOD: Accessible implementation
 const IconButton = ({ onClick, icon, ariaLabel }) => (
-  <button 
-    onClick={onClick} 
+  <button
+    onClick={onClick}
     aria-label={ariaLabel}
     type="button"
   >
@@ -240,366 +229,36 @@ const IconButton = ({ onClick, icon, ariaLabel }) => (
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What is the primary characteristic that defines a component as an "atom" in Atomic Design?</summary>
+{% include quiz.html id="atom-1"
+   question="What is the primary characteristic that defines a component as an 'atom' in Atomic Design?"
+   options="A|It manages its own global state;B|It has a single responsibility and cannot be broken down into smaller functional components;C|It always wraps at least three child elements;D|It fetches its own data from an API"
+   correct="B"
+   explanation="Atoms are the smallest functional units of a UI — a button, an input, an icon. Keeping the responsibility single-purpose is what makes them reusable across contexts." %}
 
-**Answer:** Single responsibility and simplicity. An atom should perform one specific function (e.g., display a button, show an icon, capture text input) and cannot be broken down into smaller functional components. It's the smallest building block in your UI hierarchy.
+{% include quiz.html id="atom-2"
+   question="Should an atom component contain API calls and business logic to make it self-sufficient?"
+   options="A|Yes — self-sufficient atoms are easier to drop into any page;B|No — atoms should be purely presentational and receive data via props"
+   correct="B"
+   explanation="Business logic, API calls, and state management belong in containers or higher-level components. A button that makes an API call can only be used in one specific scenario; a pure atom can be used anywhere." %}
 
-**Why it matters:** Understanding this principle prevents over-engineering simple components and ensures your atoms remain reusable across different contexts.
-</details>
+{% include quiz.html id="atom-3"
+   question="Which of these is a well-designed atom?"
+   options="A|A LoginForm with email input, password input, and a submit button;B|A TextInput that accepts `value` and `onChange` props;C|A UserProfile that displays avatar, name, and bio"
+   correct="B"
+   explanation="A is a molecule/organism (combines multiple atoms + business logic). C is a molecule (several display elements bound to a specific data shape). B — a single-purpose text input with a simple interface — is the atom." %}
 
-<details>
-<summary><strong>Question 2:</strong> True or False: An atom component should contain API calls and business logic to make it self-sufficient.</summary>
+{% include quiz.html id="atom-4"
+   question="What's the main benefit of wrapping a native HTML element in an atom component instead of using it directly?"
+   options="A|It hides implementation details so callers can't misuse it;B|It centralises styling, accessibility, and design-token usage so every instance stays consistent;C|It makes the bundle smaller;D|It is required by React 19"
+   correct="B"
+   explanation="Atom components give you one place to set padding, colors, ARIA attributes, and hover states so that every button/input/icon in the app inherits them automatically — the 'slightly different button everywhere' problem goes away." %}
 
-**Answer:** **False.** Atoms should be purely presentational components that receive data via props and communicate user interactions through callback functions. Business logic, API calls, and state management belong in [containers](../server/container.html), molecules, or higher-level components.
-
-**Why it matters:** Keeping atoms pure makes them easier to test, reuse in different contexts, and maintain over time. A button that makes API calls can only be used in one specific scenario, but a pure button atom can be used anywhere.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> Which of these is a well-designed atom? (A) A LoginForm with email input, password input, and submit button (B) A TextInput that accepts value and onChange props (C) A UserProfile displaying avatar, name, and bio</summary>
-
-**Answer:** **(B) A TextInput that accepts value and onChange props** is a well-designed atom.
-
-**Explanation:**
-- **(A)** is a molecule or organism—it combines multiple atoms (inputs and button) with specific business logic
-- **(B)** is a proper atom—single purpose (text input), simple interface, highly reusable
-- **(C)** is a molecule or organism—combines multiple display elements with specific data structure
-
-**Why it matters:** Correctly identifying atomic components helps you build a scalable component hierarchy. Over-categorizing simple components as molecules/organisms or under-categorizing complex components as atoms leads to architectural confusion.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What's the benefit of creating separate atom components instead of using native HTML elements directly?</summary>
-
-**Answer:** Atom components provide:
-1. **Consistency:** Centralized styling and behavior (all buttons look and act the same)
-2. **Design System Integration:** Automatically apply design tokens (colors, spacing, typography)
-3. **Accessibility:** Baked-in ARIA attributes and keyboard support
-4. **Flexibility:** Easy to update all instances by modifying one component
-5. **Framework Abstraction:** Can swap underlying implementation without changing usage
-
-**Example:** Changing all button hover colors requires editing one file instead of searching through hundreds of components.
-
-**Why it matters:** This abstraction is core to the Universal Frontend Architecture—it creates a layer between design decisions and implementation, making large-scale changes manageable.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How should an atom handle different visual variants (e.g., primary button, secondary button, danger button)?</summary>
-
-**Answer:** Use props to control variants, not separate components:
-
-```jsx
-// ✅ GOOD: Single component with variant prop
-const Button = ({ variant = 'primary', label, onClick }) => (
-  <button className={`btn btn--${variant}`} onClick={onClick}>
-    {label}
-  </button>
-);
-
-// Usage
-<Button variant="primary" label="Save" />
-<Button variant="secondary" label="Cancel" />
-<Button variant="danger" label="Delete" />
-```
-
-Avoid creating `PrimaryButton`, `SecondaryButton`, `DangerButton` as separate atoms unless the behavior differs significantly (not just styling).
-
-**Why it matters:** This keeps your component library manageable, reduces duplication, and makes it easier to add new variants without creating new files. The variant prop pattern scales from 2 variants to 20.
-</details>
+{% include quiz.html id="atom-5"
+   question="How should an atom handle visual variants like `primary`, `secondary`, `danger`?"
+   options="A|Create separate `PrimaryButton`, `SecondaryButton`, `DangerButton` components;B|Expose a `variant` prop on a single atom and switch classNames/styles based on it;C|Duplicate the atom per theme and import the right one per route"
+   correct="B"
+   explanation="A single atom with a `variant` prop scales from 2 variants to 20 without proliferating files. Only split into separate components when the *behavior* (not just styling) differs significantly." %}
 
 ## References
 
-- https://atomicdesign.bradfrost.com/chapter-2/#atoms
-
-```jsx
-// Input.js
-
-import React from "react";
-import "./Input.css";
-
-const Input = ({ 
-  value, 
-  onChange, 
-  placeholder = "",
-  type = "text",
-  error = false,
-  errorMessage = "",
-  disabled = false,
-  ariaLabel
-}) => {
-  // Single responsibility: render an input with consistent styling and behavior
-  return (
-    <div className="input-wrapper">
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        disabled={disabled}
-        aria-label={ariaLabel}
-        aria-invalid={error}
-        className={`input ${error ? 'input--error' : ''} ${disabled ? 'input--disabled' : ''}`}
-      />
-      {error && errorMessage && (
-        <span className="input__error-message" role="alert">
-          {errorMessage}
-        </span>
-      )}
-    </div>
-  );
-};
-
-export default Input;
-```
-
-```css
-/* Input.css */
-.input {
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 4px;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #2196f3;
-}
-
-.input--error {
-  border-color: #f44336;
-}
-
-.input__error-message {
-  display: block;
-  color: #f44336;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-```
-
-### Advanced Example: Icon Atom with Dynamic SVG Loading
-
-A production-ready icon atom demonstrating flexibility and optimization:
-
-```jsx
-// Icon.js
-
-import React from "react";
-
-const ICON_PATHS = {
-  search: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
-  user: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
-  close: "M6 18L18 6M6 6l12 12",
-  check: "M5 13l4 4L19 7"
-};
-
-const Icon = ({ 
-  name, 
-  size = 24, 
-  color = "currentColor", 
-  className = "",
-  ariaLabel
-}) => {
-  const pathData = ICON_PATHS[name];
-  
-  if (!pathData) {
-    console.warn(`Icon "${name}" not found`);
-    return null;
-  }
-
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={`icon ${className}`}
-      role="img"
-      aria-label={ariaLabel || `${name} icon`}
-    >
-      <path d={pathData} />
-    </svg>
-  );
-};
-
-export default Icon;
-```
-
-Usage demonstrating composition:
-
-```jsx
-// SearchButton.js (Molecule composed of atoms)
-
-import React from "react";
-import Button from "./Button";
-import Icon from "./Icon";
-
-const SearchButton = ({ onClick }) => {
-  return (
-    <Button onClick={onClick} label="">
-      <Icon name="search" size={20} ariaLabel="Search" />
-      <span>Search</span>
-    </Button>
-  );
-};
-```
-
-## Common Mistakes
-
-### 1. Making Atoms Too Complex
-**Mistake:** Adding business logic, API calls, or state management to atom components.
-
-```jsx
-// ❌ BAD: Atom with too much responsibility
-const Button = ({ userId }) => {
-  const [loading, setLoading] = useState(false);
-  
-  const handleClick = async () => {
-    setLoading(true);
-    await fetch(`/api/users/${userId}/activate`);
-    setLoading(false);
-  };
-  
-  return <button onClick={handleClick}>{loading ? 'Loading...' : 'Activate'}</button>;
-};
-```
-
-```jsx
-// ✅ GOOD: Atom focused on presentation
-const Button = ({ onClick, label, loading = false, disabled = false }) => {
-  return (
-    <button onClick={onClick} disabled={disabled || loading}>
-      {loading ? 'Loading...' : label}
-    </button>
-  );
-};
-```
-
-**Why it matters:** Complex atoms become difficult to reuse, test, and maintain. Keep business logic in [containers](/docs/server/container.html) or parent components.
-
-### 2. Inconsistent Prop Interfaces
-**Mistake:** Using different prop names or patterns for similar atoms.
-
-```jsx
-// ❌ BAD: Inconsistent naming
-const Button = ({ clickHandler, text }) => { /* ... */ };
-const Input = ({ onChange, value }) => { /* ... */ };
-const Checkbox = ({ onUpdate, checked }) => { /* ... */ };
-```
-
-```jsx
-// ✅ GOOD: Consistent prop patterns
-const Button = ({ onClick, label, ...props }) => { /* ... */ };
-const Input = ({ onChange, value, ...props }) => { /* ... */ };
-const Checkbox = ({ onChange, checked, ...props }) => { /* ... */ };
-```
-
-**Why it matters:** Consistent interfaces reduce cognitive load and make atoms predictable across your codebase.
-
-### 3. Ignoring Accessibility
-**Mistake:** Building atoms without ARIA labels, keyboard support, or semantic HTML.
-
-```jsx
-// ❌ BAD: Not accessible
-const IconButton = ({ onClick, icon }) => (
-  <div onClick={onClick}>
-    <Icon name={icon} />
-  </div>
-);
-```
-
-```jsx
-// ✅ GOOD: Accessible implementation
-const IconButton = ({ onClick, icon, ariaLabel }) => (
-  <button 
-    onClick={onClick} 
-    aria-label={ariaLabel}
-    type="button"
-  >
-    <Icon name={icon} aria-hidden="true" />
-  </button>
-);
-```
-
-**Why it matters:** Atoms are used throughout your application. Accessibility issues in atoms multiply across every instance.
-
-## Quick Quiz
-
-<details>
-<summary><strong>Question 1:</strong> What is the primary characteristic that defines a component as an "atom" in Atomic Design?</summary>
-
-**Answer:** Single responsibility and simplicity. An atom should perform one specific function (e.g., display a button, show an icon, capture text input) and cannot be broken down into smaller functional components. It's the smallest building block in your UI hierarchy.
-
-**Why it matters:** Understanding this principle prevents over-engineering simple components and ensures your atoms remain reusable across different contexts.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> True or False: An atom component should contain API calls and business logic to make it self-sufficient.</summary>
-
-**Answer:** **False.** Atoms should be purely presentational components that receive data via props and communicate user interactions through callback functions. Business logic, API calls, and state management belong in [containers](/docs/server/container.html), molecules, or higher-level components.
-
-**Why it matters:** Keeping atoms pure makes them easier to test, reuse in different contexts, and maintain over time. A button that makes API calls can only be used in one specific scenario, but a pure button atom can be used anywhere.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> Which of these is a well-designed atom? (A) A LoginForm with email input, password input, and submit button (B) A TextInput that accepts value and onChange props (C) A UserProfile displaying avatar, name, and bio</summary>
-
-**Answer:** **(B) A TextInput that accepts value and onChange props** is a well-designed atom.
-
-**Explanation:**
-- **(A)** is a molecule or organism—it combines multiple atoms (inputs and button) with specific business logic
-- **(B)** is a proper atom—single purpose (text input), simple interface, highly reusable
-- **(C)** is a molecule or organism—combines multiple display elements with specific data structure
-
-**Why it matters:** Correctly identifying atomic components helps you build a scalable component hierarchy. Over-categorizing simple components as molecules/organisms or under-categorizing complex components as atoms leads to architectural confusion.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What's the benefit of creating separate atom components instead of using native HTML elements directly?</summary>
-
-**Answer:** Atom components provide:
-1. **Consistency:** Centralized styling and behavior (all buttons look and act the same)
-2. **Design System Integration:** Automatically apply design tokens (colors, spacing, typography)
-3. **Accessibility:** Baked-in ARIA attributes and keyboard support
-4. **Flexibility:** Easy to update all instances by modifying one component
-5. **Framework Abstraction:** Can swap underlying implementation without changing usage
-
-**Example:** Changing all button hover colors requires editing one file instead of searching through hundreds of components.
-
-**Why it matters:** This abstraction is core to the Universal Frontend Architecture—it creates a layer between design decisions and implementation, making large-scale changes manageable.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How should an atom handle different visual variants (e.g., primary button, secondary button, danger button)?</summary>
-
-**Answer:** Use props to control variants, not separate components:
-
-```jsx
-// ✅ GOOD: Single component with variant prop
-const Button = ({ variant = 'primary', label, onClick }) => (
-  <button className={`btn btn--${variant}`} onClick={onClick}>
-    {label}
-  </button>
-);
-
-// Usage
-<Button variant="primary" label="Save" />
-<Button variant="secondary" label="Cancel" />
-<Button variant="danger" label="Delete" />
-```
-
-Avoid creating `PrimaryButton`, `SecondaryButton`, `DangerButton` as separate atoms unless the behavior differs significantly (not just styling).
-
-**Why it matters:** This keeps your component library manageable, reduces duplication, and makes it easier to add new variants without creating new files. The variant prop pattern scales from 2 variants to 20.
-</details>
-
-## References
-
-- https://atomicdesign.bradfrost.com/chapter-2/#atoms
+- [Atoms — Atomic Design (Brad Frost)](https://atomicdesign.bradfrost.com/chapter-2/#atoms)

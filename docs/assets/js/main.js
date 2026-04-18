@@ -153,3 +153,50 @@ document.querySelectorAll('.highlight > .highlight').forEach((block) => {
   
   block.appendChild(copyBtn);
 });
+// MCQ quiz: on submit, mark the chosen option, reveal the correct answer + explanation.
+document.querySelectorAll('.quiz-mcq').forEach((form) => {
+  const result = form.querySelector('.quiz-mcq__result');
+  const verdict = form.querySelector('.quiz-mcq__verdict');
+  const submitBtn = form.querySelector('.quiz-mcq__submit');
+  const resetBtn = form.querySelector('.quiz-mcq__reset');
+  const correct = (form.dataset.correct || '').trim().toUpperCase();
+
+  const clearState = () => {
+    form.classList.remove('quiz-mcq--correct', 'quiz-mcq--incorrect');
+    form.removeAttribute('data-answered');
+    form.querySelectorAll('.quiz-mcq__option').forEach((o) => o.removeAttribute('data-state'));
+    if (result) result.hidden = true;
+    if (resetBtn) resetBtn.hidden = true;
+    if (submitBtn) submitBtn.hidden = false;
+  };
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const chosen = form.querySelector('input[type="radio"]:checked');
+    if (!chosen) {
+      if (verdict) verdict.textContent = 'Please select an answer first.';
+      if (result) result.hidden = false;
+      return;
+    }
+    const picked = chosen.value.toUpperCase();
+    const isRight = picked === correct;
+    form.dataset.answered = 'true';
+    form.classList.toggle('quiz-mcq--correct', isRight);
+    form.classList.toggle('quiz-mcq--incorrect', !isRight);
+    form.querySelectorAll('.quiz-mcq__option').forEach((label) => {
+      const input = label.querySelector('input[type="radio"]');
+      if (!input) return;
+      const value = input.value.toUpperCase();
+      if (value === picked) label.dataset.state = 'selected';
+      if (!isRight && value === correct) label.dataset.state = 'answer';
+    });
+    if (verdict) verdict.textContent = isRight ? 'Correct!' : 'Not quite.';
+    if (result) result.hidden = false;
+    if (resetBtn) resetBtn.hidden = false;
+  });
+
+  form.addEventListener('reset', () => {
+    // allow the native reset to clear the radio selection first, then wipe state
+    setTimeout(clearState, 0);
+  });
+});

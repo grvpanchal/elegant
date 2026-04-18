@@ -604,7 +604,7 @@ window.addEventListener('appinstalled', () => {
 });
 ```
 
-## Key Features of PWAs
+### Key Features of PWAs
 
 - **Installable**: Can be added to the device's home screen
 - **Offline Functionality**: Works with poor or no internet connection
@@ -612,7 +612,7 @@ window.addEventListener('appinstalled', () => {
 - **Push Notifications**: Can send updates to users even when the app is closed
 - **Cross-Platform**: Works on multiple devices and operating systems
 
-## Basic Setup for a PWA
+### Basic Setup for a PWA
 
 ### 1. Web App Manifest
 
@@ -832,404 +832,6 @@ self.addEventListener('install', (event) => {
 
 **Why it matters:** Users expect graceful degradation. Offline fallbacks provide branded experience instead of browser errors.
 
-## Quick Quiz
-
-<details>
-<summary><strong>Question 1:</strong> What are the four states of the Service Worker lifecycle?</summary>
-
-**Answer:**
-
-**Service Worker Lifecycle:**
-
-1. **Register:** Main thread calls `navigator.serviceWorker.register('/sw.js')`
-   ```javascript
-   navigator.serviceWorker.register('/sw.js')
-     .then(reg => console.log('Registered:', reg.scope));
-   ```
-
-2. **Install:** Browser downloads sw.js, fires `install` event (once per version)
-   ```javascript
-   self.addEventListener('install', (event) => {
-     event.waitUntil(
-       caches.open('v1').then(cache => cache.addAll(urls))
-     );
-   });
-   ```
-
-3. **Activate:** Fires when old SW terminates, cleanup old caches
-   ```javascript
-   self.addEventListener('activate', (event) => {
-     event.waitUntil(
-       caches.keys().then(names => 
-         Promise.all(names.filter(n => n !== 'v1').map(n => caches.delete(n)))
-       ).then(() => self.clients.claim())
-     );
-   });
-   ```
-
-4. **Fetch:** Intercepts network requests, implements caching
-   ```javascript
-   self.addEventListener('fetch', (event) => {
-     event.respondWith(
-       caches.match(event.request).then(r => r || fetch(event.request))
-     );
-   });
-   ```
-
-**Updating:** Change sw.js content → browser detects → installs new version → waits for all tabs to close → activates (unless `skipWaiting()`)
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> When should you use Cache First vs Network First strategies?</summary>
-
-**Answer:**
-
-**Cache First:** Serve from cache instantly, fallback to network
-
-**Use for:**
-- Static assets (CSS, JS, images)
-- Fonts, icons
-- Content that rarely changes
-- Resources with versioned URLs (/app.v2.js)
-
-```javascript
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached; // ⚡ Instant
-  
-  const response = await fetch(request);
-  cache.put(request, response.clone());
-  return response;
-}
-```
-
-**Pros:** ⚡ Fast (instant from cache)  
-**Cons:** Potentially stale data
-
----
-
-**Network First:** Try network with timeout, fallback to cache
-
-**Use for:**
-- API responses
-- User-generated content
-- Dynamic data
-- Content requiring freshness
-
-```javascript
-async function networkFirst(request, timeout = 3000) {
-  try {
-    const response = await Promise.race([
-      fetch(request),
-      new Promise((_, reject) => 
-        setTimeout(() => reject('timeout'), timeout)
-      )
-    ]);
-    cache.put(request, response.clone());
-    return response; // ✅ Fresh
-  } catch {
-    return caches.match(request); // 📦 Stale fallback
-  }
-}
-```
-
-**Pros:** ✅ Fresh data  
-**Cons:** Slower (network latency)
-
----
-
-**Stale While Revalidate:** Best of both
-
-**Use for:**
-- News feeds
-- Social media timelines
-- Product listings
-- Frequently updated content
-
-```javascript
-async function staleWhileRevalidate(request) {
-  const cached = await caches.match(request);
-  
-  const fetchPromise = fetch(request).then(r => {
-    cache.put(request, r.clone());
-    return r;
-  });
-  
-  return cached || fetchPromise; // Instant + background update
-}
-```
-
-**Pros:** ⚡ Fast + ✅ Updated next time
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> What are the minimum requirements for a PWA to be installable?</summary>
-
-**Answer:**
-
-**PWA Install Criteria:**
-
-**1. HTTPS Required**
-- Must be served over secure connection
-- Localhost exempt for development
-
-**2. Web App Manifest** (`manifest.json`)
-
-Required fields:
-```json
-{
-  "name": "My Progressive Web App",
-  "short_name": "MyPWA",
-  "start_url": "/",
-  "display": "standalone", // or "fullscreen"
-  "icons": [
-    {
-      "src": "/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-```
-
-Link in HTML:
-```html
-<link rel="manifest" href="/manifest.json">
-```
-
-**3. Service Worker**
-- Registered with `fetch` event handler
-- Provides basic offline functionality
-
-```javascript
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then(r => r || fetch(event.request))
-  );
-});
-```
-
-**4. User Engagement**
-- User visits PWA at least twice
-- With at least 5 minutes between visits
-
-**Result:** Browser shows "Add to Home Screen" prompt automatically
-
-**Custom Install Button:**
-```javascript
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallButton();
-});
-
-installButton.onclick = async () => {
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  console.log(outcome); // "accepted" or "dismissed"
-};
-```
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How does Background Sync work for offline form submissions?</summary>
-
-**Answer:**
-
-**Background Sync Flow:**
-
-**1. User submits form while offline**
-
-```javascript
-// app.js
-async function submitForm(formData) {
-  if (!navigator.onLine) {
-    // Save to IndexedDB
-    await saveToIndexedDB('pendingForms', {
-      id: Date.now(),
-      data: formData
-    });
-    
-    // Register sync event
-    const reg = await navigator.serviceWorker.ready;
-    await reg.sync.register('sync-forms');
-    
-    showMessage('Form saved. Will submit when online.');
-    return;
-  }
-  
-  // Online - submit immediately
-  await fetch('/api/submit', {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  });
-}
-```
-
-**2. Browser queues sync (even if app closed)**
-
-**3. Connection restored → fires sync event**
-
-```javascript
-// sw.js
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'sync-forms') {
-    event.waitUntil(syncForms());
-  }
-});
-
-async function syncForms() {
-  const db = await openDB();
-  const pendingForms = await db.getAll('pendingForms');
-  
-  for (const form of pendingForms) {
-    try {
-      const response = await fetch('/api/submit', {
-        method: 'POST',
-        body: JSON.stringify(form.data)
-      });
-      
-      if (response.ok) {
-        await db.delete('pendingForms', form.id);
-        console.log('Form synced!');
-      }
-    } catch (error) {
-      console.log('Sync failed, will retry');
-      // Browser automatically retries with exponential backoff
-    }
-  }
-}
-```
-
-**Benefits:**
-- ✅ Guaranteed delivery (browser retries until success)
-- ⚡ Works even if PWA closed
-- 🔄 Automatic retry with exponential backoff
-- 📱 Battery-efficient (waits for good connection)
-
-**Use cases:**
-- Form submissions (contact, orders, comments)
-- Analytics/telemetry
-- Chat messages
-- Social media posts
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> What's the difference between Push API and Notification API?</summary>
-
-**Answer:**
-
-**Two separate but related APIs:**
-
----
-
-**Push API:** Receives messages from server
-
-**Purpose:** Server → Browser communication (even when PWA closed)
-
-```javascript
-// Subscribe to push
-const registration = await navigator.serviceWorker.ready;
-const subscription = await registration.pushManager.subscribe({
-  userVisibleOnly: true,
-  applicationServerKey: vapidPublicKey
-});
-
-// Send subscription to server
-await fetch('/api/push-subscribe', {
-  method: 'POST',
-  body: JSON.stringify(subscription)
-});
-```
-
-**Server sends push:**
-```javascript
-// Node.js backend with web-push library
-const webpush = require('web-push');
-
-webpush.setVapidDetails(
-  'mailto:you@example.com',
-  vapidPublicKey,
-  vapidPrivateKey
-);
-
-webpush.sendNotification(subscription, JSON.stringify({
-  title: 'New Message',
-  body: 'You have 3 new messages'
-}));
-```
-
----
-
-**Notification API:** Displays visual notifications
-
-**Purpose:** Show system notifications to user
-
-```javascript
-// Service Worker receives push
-self.addEventListener('push', (event) => {
-  const data = event.data.json();
-  
-  // Use Notification API to show notification
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: '/icon-192x192.png',
-      badge: '/badge-72x72.png',
-      data: { url: data.url },
-      actions: [
-        { action: 'open', title: 'Open' },
-        { action: 'dismiss', title: 'Dismiss' }
-      ]
-    })
-  );
-});
-
-// Handle notification click
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  
-  if (event.action === 'open') {
-    clients.openWindow(event.notification.data.url);
-  }
-});
-```
-
-**Can also use Notification API without Push:**
-```javascript
-// Show local notification (no server involved)
-if (Notification.permission === 'granted') {
-  new Notification('Local Notification', {
-    body: 'This is a local notification',
-    icon: '/icon.png'
-  });
-}
-```
-
----
-
-**Summary:**
-- **Push API** = Server sends message → Service Worker receives
-- **Notification API** = Display visual notification → User sees
-- **Together** = Server → Push → Service Worker → Notification → User
-
-**Typical flow:**
-1. User grants notification permission
-2. PWA subscribes to Push API
-3. Server sends push message
-4. Service Worker receives push event
-5. Service Worker uses Notification API to show notification
-6. User clicks notification
-7. Service Worker handles click (open URL)
-</details>
-
 ## PRPL Pattern
 
 PRPL is a pattern for optimizing PWA performance, especially for mobile and low-network conditions:
@@ -1296,6 +898,38 @@ router.on('navigate', async (path) => {
   module.render();
 });
 ```
+
+## Quick Quiz
+
+{% include quiz.html id="pwa-1"
+   question="What are the states of a service worker's lifecycle?"
+   options="A|install -> run -> stop;B|install -> waiting -> activate -> active (and redundant if replaced or discarded). The waiting state is why new SW versions don't take over immediately — existing clients keep the old SW until it's safe to activate;C|fetch -> cache -> respond;D|new -> ready -> finished"
+   correct="B"
+   explanation="Knowing the lifecycle is how you implement &quot;new version available — reload?&quot; UX correctly. skipWaiting() and clients.claim() let you force takeover, at the cost of potentially interrupting the running page." %}
+
+{% include quiz.html id="pwa-2"
+   question="When should you use Cache First vs Network First caching?"
+   options="A|Cache First for everything;B|Cache First for immutable, hashed assets (JS/CSS/fonts/images) — serve instantly, update in the background (stale-while-revalidate). Network First for dynamic or time-sensitive data (API responses, user-specific content) — fall back to cache only when offline;C|Network First for all assets;D|Always go to the network and never cache"
+   correct="B"
+   explanation="Matching strategy to content is the whole point of a service worker. Immutable assets want Cache First; fresh data wants Network First with a cache fallback." %}
+
+{% include quiz.html id="pwa-3"
+   question="What are the minimum requirements for a site to be installable as a PWA?"
+   options="A|Just a manifest.json;B|Served over HTTPS (or localhost for dev), a valid web app manifest with at least name/short_name, start_url, display (standalone/fullscreen/etc), and icons (typically 192px + 512px), plus a registered service worker;C|Only a service worker;D|A native app in the store first"
+   correct="B"
+   explanation="Browsers gate the install prompt on these baseline signals. Missing any one (no HTTPS, missing icons, no service worker) typically suppresses the install affordance." %}
+
+{% include quiz.html id="pwa-4"
+   question="How does Background Sync help with offline form submissions?"
+   options="A|It disables the form offline;B|The page registers a sync tag when offline submission fails; the service worker listens for the 'sync' event, which the browser fires once connectivity is restored, and replays the queued request from IndexedDB. The user gets confirmation without reopening the app;C|It caches the final URL only;D|It is a server-side feature"
+   correct="B"
+   explanation="Background Sync (via Workbox queues or a manual IndexedDB queue) turns flaky networks from &quot;lost data&quot; into &quot;deferred success&quot; without the user doing anything." %}
+
+{% include quiz.html id="pwa-5"
+   question="What's the difference between the Push API and the Notifications API?"
+   options="A|They are the same thing;B|Push API delivers a message from a server to the service worker even when the app is closed (via a push service like FCM/APNS bridge + a VAPID-signed subscription). Notifications API displays a system-level notification. Push usually triggers a Notification, but each can be used without the other;C|Notifications are deprecated;D|Push only works on Android"
+   correct="B"
+   explanation="Push = transport (server -> SW). Notification = UI. Web push subscriptions require user permission; notifications can also be triggered from any page with the right permission." %}
 
 ## References
 - [1] https://www.techtarget.com/whatis/definition/progressive-web-app-PWA

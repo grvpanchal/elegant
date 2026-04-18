@@ -445,367 +445,6 @@ form.addEventListener('submit', (event) => {
 
 **Why it matters:** Without preventDefault(), forms trigger browser's default submit behavior (page refresh), breaking SPA user experience.
 
-## Quick Quiz
-
-<details>
-<summary><strong>Question 1:</strong> What's the difference between event bubbling and capturing?</summary>
-
-**Answer:** **Bubbling goes from target → root; capturing goes root → target:**
-
-```html
-<div id="outer">
-  <div id="middle">
-    <div id="inner">Click me</div>
-  </div>
-</div>
-```
-
-```javascript
-const outer = document.getElementById('outer');
-const middle = document.getElementById('middle');
-const inner = document.getElementById('inner');
-
-// Bubbling phase (default)
-outer.addEventListener('click', () => console.log('Outer'));
-middle.addEventListener('click', () => console.log('Middle'));
-inner.addEventListener('click', () => console.log('Inner'));
-
-// Click on inner outputs:
-// Inner   ← Target phase
-// Middle  ← Bubbling up
-// Outer   ← Bubbling up
-
-// Capturing phase (useCapture = true)
-outer.addEventListener('click', () => console.log('Outer (capture)'), true);
-middle.addEventListener('click', () => console.log('Middle (capture)'), true);
-inner.addEventListener('click', () => console.log('Inner (capture)'), true);
-
-// Click on inner now outputs:
-// Outer (capture)   ← Capturing down
-// Middle (capture)  ← Capturing down
-// Inner (capture)   ← Target phase
-// Inner             ← Bubbling up
-// Middle            ← Bubbling up
-// Outer             ← Bubbling up
-```
-
-**Event flow phases:**
-1. **Capturing phase** - Event travels from root to target (top → down)
-2. **Target phase** - Event reaches target element
-3. **Bubbling phase** - Event travels from target to root (bottom → up)
-
-**Why it matters:** Understanding propagation enables event delegation and prevents unwanted event handling.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> When should you use event delegation?</summary>
-
-**Answer:** **Use delegation for lists, dynamic content, and performance optimization:**
-
-**When to use delegation:**
-```javascript
-// ✅ Large lists (100+ items)
-const list = document.getElementById('productList');
-
-list.addEventListener('click', (e) => {
-  if (e.target.matches('.buy-button')) {
-    const productId = e.target.dataset.productId;
-    buyProduct(productId);
-  }
-});
-// One listener handles all 1000 product buttons
-
-// ✅ Dynamic content (items added/removed)
-const chat = document.getElementById('chatMessages');
-
-chat.addEventListener('click', (e) => {
-  if (e.target.matches('.delete-message')) {
-    e.target.closest('.message').remove();
-  }
-});
-// New messages automatically work without adding listeners
-
-// ✅ Multiple event types on container
-container.addEventListener('click', (e) => {
-  if (e.target.matches('.edit-btn')) handleEdit(e.target);
-  if (e.target.matches('.delete-btn')) handleDelete(e.target);
-  if (e.target.matches('.share-btn')) handleShare(e.target);
-});
-```
-
-**When NOT to use delegation:**
-```javascript
-// ❌ Single element (no benefit)
-const singleButton = document.getElementById('uniqueButton');
-singleButton.addEventListener('click', handleClick);  // Direct listener is fine
-
-// ❌ Events that don't bubble (focus, blur, scroll on elements)
-input.addEventListener('focus', handleFocus);  // Can't delegate focus
-
-// ❌ Need precise element reference
-const specificDiv = document.getElementById('specificDiv');
-specificDiv.addEventListener('click', function() {
-  this.classList.toggle('active');  // 'this' is the specific element
-});
-```
-
-**Why it matters:** Delegation improves performance (fewer listeners), handles dynamic content automatically, and reduces memory usage.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> What's the difference between stopPropagation() and preventDefault()?</summary>
-
-**Answer:** **stopPropagation() stops event flow; preventDefault() stops default browser action:**
-
-**stopPropagation() - Stops event bubbling/capturing:**
-```html
-<div id="outer">
-  <button id="inner">Click me</button>
-</div>
-```
-
-```javascript
-const outer = document.getElementById('outer');
-const inner = document.getElementById('inner');
-
-outer.addEventListener('click', () => {
-  console.log('Outer clicked');
-});
-
-inner.addEventListener('click', (e) => {
-  console.log('Inner clicked');
-  e.stopPropagation();  // Stops event from reaching outer
-});
-
-// Click on inner outputs:
-// Inner clicked
-// (Outer never receives event)
-```
-
-**preventDefault() - Stops default browser behavior:**
-```javascript
-// Example 1: Prevent link navigation
-const link = document.querySelector('a');
-
-link.addEventListener('click', (e) => {
-  e.preventDefault();  // Link doesn't navigate
-  console.log('Link clicked but not navigating');
-});
-
-// Example 2: Prevent form submission
-form.addEventListener('submit', (e) => {
-  e.preventDefault();  // Form doesn't submit (no page refresh)
-  
-  // Custom AJAX submission
-  fetch('/api/submit', { method: 'POST', body: formData });
-});
-
-// Example 3: Prevent context menu
-document.addEventListener('contextmenu', (e) => {
-  e.preventDefault();  // Right-click menu doesn't appear
-});
-```
-
-**Can use both together:**
-```javascript
-button.addEventListener('click', (e) => {
-  e.preventDefault();     // Stop default action
-  e.stopPropagation();    // Stop event bubbling
-  
-  // Custom handling
-  console.log('Custom click handler');
-});
-```
-
-**Why it matters:** stopPropagation() controls event flow through DOM; preventDefault() controls browser default actions. Different purposes.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How do you debounce and throttle event handlers?</summary>
-
-**Answer:** **Debounce delays execution until events stop; throttle limits execution rate:**
-
-**Debounce - Wait for pause:**
-```javascript
-function debounce(func, delay) {
-  let timeoutId;
-  
-  return function(...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
-// Usage: Search input
-const searchInput = document.getElementById('search');
-
-const handleSearch = debounce((event) => {
-  const query = event.target.value;
-  console.log('Searching for:', query);
-  // API call here
-}, 300);
-
-searchInput.addEventListener('input', handleSearch);
-
-// User types "hello":
-// h (start timer)
-// he (cancel timer, start new)
-// hel (cancel timer, start new)
-// hell (cancel timer, start new)
-// hello (cancel timer, start new)
-// ... 300ms pause ...
-// "Searching for: hello" (executes once)
-```
-
-**Throttle - Limit execution rate:**
-```javascript
-function throttle(func, limit) {
-  let inThrottle;
-  
-  return function(...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-}
-
-// Usage: Scroll event
-const handleScroll = throttle(() => {
-  console.log('Scroll position:', window.scrollY);
-  // Update UI based on scroll
-}, 100);
-
-window.addEventListener('scroll', handleScroll);
-
-// User scrolls continuously:
-// t=0ms: Executes (set throttle)
-// t=20ms: Ignored (in throttle)
-// t=50ms: Ignored (in throttle)
-// t=100ms: Throttle released
-// t=105ms: Executes (set throttle again)
-// t=150ms: Ignored
-// ...
-```
-
-**When to use each:**
-
-| Use Case | Pattern | Why |
-|----------|---------|-----|
-| Search input | Debounce | Wait for user to stop typing |
-| Window resize | Debounce | Wait for resize to finish |
-| Scroll updates | Throttle | Update UI at regular intervals |
-| Mousemove tracking | Throttle | Limit high-frequency events |
-| Auto-save | Debounce | Save after user stops editing |
-| Button click spam | Throttle | Prevent rapid re-clicking |
-
-**Using Lodash (production-ready):**
-```javascript
-import { debounce, throttle } from 'lodash';
-
-const debouncedSearch = debounce(handleSearch, 300);
-const throttledScroll = throttle(handleScroll, 100);
-```
-
-**Why it matters:** Debounce/throttle prevent performance issues from high-frequency events (scroll, resize, input), reducing API calls and UI updates.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> What are passive event listeners and when should you use them?</summary>
-
-**Answer:** **Passive listeners promise not to call preventDefault(), enabling browser scroll optimizations:**
-
-**Without passive (default):**
-```javascript
-// Browser must wait to see if preventDefault() is called
-document.addEventListener('touchstart', (e) => {
-  console.log('Touch started');
-  // Browser blocks scrolling until this function completes
-  // (in case preventDefault() is called)
-}, false);
-```
-
-**With passive:**
-```javascript
-// Tell browser we won't call preventDefault()
-document.addEventListener('touchstart', (e) => {
-  console.log('Touch started');
-  // Browser can scroll immediately without waiting
-}, { passive: true });
-
-// If you try to call preventDefault() with passive
-document.addEventListener('touchstart', (e) => {
-  e.preventDefault();  // ⚠️ Ignored! Console warning
-}, { passive: true });
-```
-
-**When to use passive:**
-```javascript
-// ✅ Scroll listeners (tracking only, not preventing)
-window.addEventListener('scroll', handleScroll, { passive: true });
-
-// ✅ Touch events (tracking gestures, not preventing scroll)
-element.addEventListener('touchmove', trackSwipe, { passive: true });
-
-// ✅ Wheel events (analytics, not preventing scroll)
-document.addEventListener('wheel', trackWheelEvents, { passive: true });
-
-// ❌ Don't use passive when you need preventDefault()
-document.addEventListener('touchmove', (e) => {
-  if (shouldPrevent) {
-    e.preventDefault();  // Need this to work
-  }
-}, { passive: false });  // Must be false (or omit)
-```
-
-**Performance impact:**
-```javascript
-// Passive listener performance test
-const passiveSupported = (() => {
-  let supported = false;
-  try {
-    const options = {
-      get passive() {
-        supported = true;
-        return false;
-      }
-    };
-    window.addEventListener('test', null, options);
-    window.removeEventListener('test', null, options);
-  } catch(err) {
-    supported = false;
-  }
-  return supported;
-})();
-
-if (passiveSupported) {
-  window.addEventListener('scroll', onScroll, { passive: true });
-} else {
-  window.addEventListener('scroll', onScroll);
-}
-```
-
-**Scroll performance comparison:**
-```javascript
-// ❌ Non-passive (blocks scrolling)
-document.addEventListener('touchstart', (e) => {
-  console.log('Touch');
-  // Browser waits 16ms to check for preventDefault()
-  // Scroll janky at 60fps
-});
-
-// ✅ Passive (smooth scrolling)
-document.addEventListener('touchstart', (e) => {
-  console.log('Touch');
-  // Browser scrolls immediately
-  // Smooth 60fps
-}, { passive: true });
-```
-
-**Why it matters:** Passive listeners enable smooth scrolling on mobile (60fps) by allowing browser to scroll immediately without waiting for JavaScript. Critical for scroll performance.
-</details>
-
 ## Types of HTML Element Events
 
 **Common Categories of HTML Element Events**
@@ -824,35 +463,6 @@ document.addEventListener('touchstart', (e) => {
 | Wheel/Scroll Events   | Triggered by scrolling or mouse wheel actions                  | scroll, wheel                 |
 | Animation/Transition  | Related to CSS animations and transitions                      | animationstart, animationend, transitionend |
 | Input Events          | Triggered by changes to input fields                           | input, change                 |
-
-## References
-- [MDN: Introduction to Events](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events)
-- [MDN: Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
-  ```
-- **Drag & Drop Events:**  
-  ```html
-  <div ondrop="dropHandler(event)" ondragover="allowDrop(event)"></div>
-  ```
-
-### How to Attach Event Handlers
-
-- **Inline HTML Attributes:**  
-  Use attributes like `onclick`, `onchange`, etc., directly in HTML[5].
-- **DOM Properties:**  
-  Assign a function to an element's event property, e.g., `element.onclick = handler;`[3][5].
-- **addEventListener Method:**  
-  Attach multiple event handlers or listen for events dynamically:
-  ```javascript
-  element.addEventListener('click', handler);
-  ```
-  This method is recommended for flexibility and scalability[3][7].
-
-### Comprehensive References
-
-- [W3Schools Event Attributes Reference](https://www.w3schools.com/tags/ref_eventattributes.asp)
-- [MDN Web Docs Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
-
-These sources provide exhaustive lists and documentation for all standard HTML events.
 
 ## Framework transformation of events
 
@@ -919,6 +529,38 @@ HTML elements support a rich set of event types, including mouse, keyboard, form
 - **Web Components** leverage standard DOM event APIs, with additional patterns for custom events and lifecycle management.
 
 Each approach reflects the framework's philosophy: React and Vue integrate events tightly with their component models, Angular provides declarative and expressive syntax with modifiers, and Web Components rely on native browser APIs for maximum flexibility and interoperability.
+
+## Quick Quiz
+
+{% include quiz.html id="events-1"
+   question="What is an HTML element event?"
+   options="A|A CSS pseudo-class;B|A server-side hook in the HTTP protocol;C|A signal the browser fires when something happens on a page (click, input change, load, keypress, etc.) that JS can listen to and respond to;D|A React lifecycle method"
+   correct="C"
+   explanation="Events are how the DOM surfaces user and system activity. JS subscribes via addEventListener or framework-specific binding to react to them." %}
+
+{% include quiz.html id="events-2"
+   question="Which is the most flexible way to attach an event handler in plain HTML/JS?"
+   options="A|Inline onclick attribute;B|Assigning element.onclick = fn, which overwrites any existing handler;C|element.addEventListener('click', fn), which supports multiple handlers and easy removal via removeEventListener;D|jQuery"
+   correct="C"
+   explanation="addEventListener lets you register multiple handlers, choose capture vs bubble, opt into passive/once, and cleanly remove listeners — properties on the element can only hold a single handler." %}
+
+{% include quiz.html id="events-3"
+   question="What is the difference between event capturing and event bubbling?"
+   options="A|They are the same thing;B|Capturing flows from the window DOWN to the target; bubbling flows from the target UP to the window. Listeners run during both phases;C|Capturing applies only to keyboard events;D|Bubbling is disabled by default"
+   correct="B"
+   explanation="The event travels in three phases: capture (top-down), target, then bubble (bottom-up). addEventListener defaults to bubble phase; pass `{ capture: true }` to run during capture." %}
+
+{% include quiz.html id="events-4"
+   question="What does React's SyntheticEvent give you over a raw DOM event?"
+   options="A|Nothing — it's a pass-through;B|A cross-browser normalized wrapper with consistent properties, event pooling (historically), and integration with React's update batching;C|It replaces addEventListener for non-React code too;D|It disables preventDefault"
+   correct="B"
+   explanation="SyntheticEvent smooths over browser differences and ties event dispatching into React's rendering model — that's why you write `onClick` in camelCase and pass a function, not a string." %}
+
+{% include quiz.html id="events-5"
+   question="When attaching a scroll or touchmove listener, why is `{ passive: true }` important?"
+   options="A|It prevents the event from firing twice;B|It tells the browser the handler will not call preventDefault, so it can start scrolling immediately without waiting for JS — critical for 60fps scrolling on mobile;C|It makes the listener run in a Web Worker;D|It automatically removes the listener after one call"
+   correct="B"
+   explanation="Passive listeners unblock the main thread's scroll handling. Non-passive scroll/touchmove handlers force the browser to wait for JS before scrolling, causing jank." %}
 
 ## References
 

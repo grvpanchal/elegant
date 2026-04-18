@@ -511,97 +511,35 @@ const ProductList = ({ products }) => {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What are the three core technologies that make up a Web Component?</summary>
+{% include quiz.html id="component-1"
+   question="What are the three core technologies that make up a Web Component?"
+   options="A|HTML, CSS, JavaScript;B|Custom Elements, Shadow DOM, HTML Templates;C|React, Vue, Angular;D|JSX, Virtual DOM, Fiber"
+   correct="B"
+   explanation="Custom Elements let you define new HTML tags, Shadow DOM encapsulates styling and markup, and &lt;template&gt;/&lt;slot&gt; provide reusable markup fragments. Together they are the framework-agnostic component model baked into the browser." %}
 
-**Answer:** The three core technologies are:
-1. **Custom Elements** - JavaScript APIs to define new HTML tags
-2. **Shadow DOM** - Encapsulated DOM tree with scoped styles
-3. **HTML Templates** - Reusable markup using `<template>` and `<slot>` tags
+{% include quiz.html id="component-2"
+   question="What is the primary difference between a presentational component and a container component?"
+   options="A|Presentational components own application state, containers only render UI;B|Presentational components render UI from props (no data fetching or global state); container components own data fetching, selectors, and dispatch — they pass that data down to presentational components;C|Presentational is React-only; containers are Angular-only;D|There is no real difference"
+   correct="B"
+   explanation="The split keeps UI reusable and testable. Presentational components are pure-ish (props -> UI). Containers are the glue between state management and the UI layer." %}
 
-**Why it matters:** Understanding these technologies helps you build framework-agnostic components and understand how modern frameworks abstract these concepts.
-</details>
+{% include quiz.html id="component-3"
+   question="Should components always manage their own state internally rather than receiving it via props?"
+   options="A|Yes — self-contained components are easier to reason about;B|No — components should receive what they display via props; local state is reserved for truly component-internal concerns (menu open/closed, input focus) while shared or persistent state lives in a store or parent"
+   correct="B"
+   explanation="Over-locating state inside components leads to duplication, poor reuse, and hard-to-test components. Lift state up or use a store for anything that multiple components need." %}
 
-<details>
-<summary><strong>Question 2:</strong> What is the primary difference between a presentational component and a container component?</summary>
+{% include quiz.html id="component-4"
+   question="What's the main benefit of component-scoped CSS (CSS Modules, styled-components, Vue scoped styles)?"
+   options="A|It makes the bundle smaller;B|Class names are automatically localised so styles from one component can't accidentally bleed into another — you stop fighting with global CSS specificity;C|It enables server-side rendering;D|It replaces accessibility"
+   correct="B"
+   explanation="Scoped CSS eliminates the &quot;why is my .button style getting overridden by that other .button&quot; class of bug and lets components be drop-in reusable across pages and apps." %}
 
-**Answer:** 
-- **Presentational components** focus on *how things look*—they receive data via props and render UI without managing state or business logic
-- **Container components** focus on *how things work*—they handle data fetching, state management, and business logic, then pass data to presentational components
-
-**Example:**
-```jsx
-// Presentational
-const UserCard = ({ name, email }) => <div>...</div>;
-
-// Container
-const UserCardContainer = () => {
-  const user = useFetchUser();
-  return <UserCard {...user} />;
-};
-```
-
-**Why it matters:** This separation makes presentational components highly reusable and testable. See the [Container pattern](../server/container.html) for implementation details.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> True or False: Components should always manage their own state internally rather than receiving it via props.</summary>
-
-**Answer:** **False.** Components should receive state via props when:
-- The state is shared with other components
-- Parent components need to control the state
-- The state represents external data (API responses, route params, etc.)
-
-Components should manage internal state only for UI-specific concerns (dropdown open/closed, input focus, animation states) that don't need to be shared.
-
-**Why it matters:** Proper state ownership prevents bugs, makes components more predictable, and enables better state management patterns. Mixing these concerns leads to hard-to-debug synchronization issues.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What's the benefit of component-scoped CSS (like CSS Modules, styled-components, or Vue scoped styles)?</summary>
-
-**Answer:** Component-scoped CSS provides:
-1. **No global namespace pollution** - Class names don't clash across components
-2. **True encapsulation** - Styles can't leak out or be affected from outside
-3. **Confident deletion** - Remove a component, remove its styles—no orphaned CSS
-4. **Co-location** - Styles live near the components they style, improving maintainability
-5. **Dead code elimination** - Unused styles are removed during build
-
-**Example:** Changing `.button` class in one component won't affect `.button` in another.
-
-**Why it matters:** This solves the cascading problem of traditional CSS, making large applications maintainable and preventing the "one change breaks everything" scenario.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> When should you break a component into smaller components?</summary>
-
-**Answer:** Break components into smaller pieces when:
-1. **Reusability** - Part of the component could be used elsewhere
-2. **Complexity** - Component exceeds ~200 lines or handles multiple concerns
-3. **Testing** - Difficult to test because of interdependent logic
-4. **Performance** - Part of the component re-renders unnecessarily
-5. **Readability** - Hard to understand what the component does at a glance
-
-**Signs it's time to split:**
-```jsx
-// Too complex - mixing concerns
-<UserPage>
-  {/* Authentication logic */}
-  {/* Profile display */}
-  {/* Posts feed */}
-  {/* Settings panel */}
-</UserPage>
-
-// Better - composed from focused components
-<UserPage>
-  <UserProfile user={user} />
-  <UserPosts posts={posts} />
-  <UserSettings settings={settings} />
-</UserPage>
-```
-
-**Why it matters:** Following the [Atomic Design](atomic-design.html) hierarchy (atoms → molecules → organisms → templates) naturally guides these decisions and creates a scalable component architecture.
-</details>
+{% include quiz.html id="component-5"
+   question="When should you split a component into smaller components?"
+   options="A|Only when a designer asks you to;B|When it exceeds 500 lines, as a hard rule;C|When a part of it is reused elsewhere, when responsibilities diverge (render vs fetch), when a piece is testable in isolation, or when naming the sub-part suddenly makes the parent clearer;D|Never — always keep components big"
+   correct="C"
+   explanation="Extraction should be driven by reuse, single-responsibility, or clarity gains — not by a line-count rule. Splitting that doesn't meet one of those bars just adds indirection." %}
 
 ## References
 

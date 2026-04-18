@@ -866,186 +866,25 @@ function Shell() {
 
 **Why it matters**: User navigating to `/dashboard` doesn't need Settings and Reports MFEs loaded. Lazy loading reduces initial bundle from 800KB to 50KB, achieving <1s load time on 3G.
 
-## Quiz
+## Quick Quiz
 
-### Question 1: App Shell vs Traditional MPA
+{% include quiz.html id="app-shell-1"
+   question="What is the App Shell architecture and when should you choose it over a traditional multi-page app?"
+   options="A|App Shell = a minimal HTML/CSS/JS shell cached aggressively (often by a service worker) with content loaded dynamically after. It shines for dashboards, SaaS, and mobile-first apps where users navigate frequently; an MPA with SSR is usually better for SEO-critical content sites;B|It always beats MPA;C|It is only for iOS;D|It disables caching"
+   correct="A"
+   explanation="Use App Shell when repeated navigation cost matters more than first-paint SEO. Use MPA/SSR when search-engine discoverability of every page is paramount." %}
 
-**Q**: What are the key differences between an App Shell architecture and a traditional Multi-Page Application (MPA), and when would you choose each?
+{% include quiz.html id="app-shell-2"
+   question="What is progressive hydration and what does it solve?"
+   options="A|Hydrating all components on DOMContentLoaded;B|Hydrating components in priority order as they become visible or idle, so TTI isn't blocked by a huge synchronous hydration pass over every component on every page load;C|Disabling hydration entirely;D|A Vue-only feature"
+   correct="B"
+   explanation="Naive hydration ties up the main thread and delays interactivity. Progressive hydration (islands, lazy boundaries, requestIdleCallback) spreads that work out." %}
 
-**A**:
-
-**App Shell Architecture**:
-- **Loading**: First visit downloads shell + content (~100KB), subsequent navigations load only data (~5KB JSON)
-- **Caching**: Service Worker caches shell assets permanently, instant repeated loads
-- **Performance**: Sub-200ms navigation after initial load (shell already parsed/ready)
-- **Offline**: Shell works offline, shows cached UI even without network
-- **SEO**: Requires SSR for initial crawl, client-side navigation after hydration
-
-**Traditional MPA**:
-- **Loading**: Every navigation requests full HTML document (~50KB) including redundant header/footer
-- **Caching**: Browser HTTP caching, but still parses/renders HTML on each page
-- **Performance**: 1-3s navigation (full page reload, parsing, rendering)
-- **Offline**: Doesn't work offline unless heavily cached
-- **SEO**: Each page fully server-rendered, excellent crawlability
-
-**When to choose App Shell**:
-- **Dashboard/SaaS applications** – Authenticated users navigate frequently between views (analytics dashboard, admin panel)
-- **Mobile-first apps** – Targeting mobile users on slow networks where instant navigation critical
-- **Offline-required** – Apps needing offline functionality (field service, travel apps)
-
-**When to choose MPA**:
-- **Content sites** – Blogs, news sites, documentation where SEO critical and navigation infrequent
-- **E-commerce** – Product pages need server-rendered content for crawlers, shopping cart can be App Shell
-- **Progressive enhancement** – Sites requiring no-JS fallback for accessibility
-
-**Hybrid**: Many apps use both—MPA for marketing pages (SEO), App Shell for logged-in dashboard (performance).
-
-### Question 2: Progressive Hydration
-
-**Q**: Explain progressive hydration in the context of an App Shell. How does it improve Time-to-Interactive (TTI)?
-
-**A**:
-
-**Traditional Hydration Problem**:
-
-Server renders full HTML (header, nav, content, footer). Client downloads 200KB JavaScript bundle, parses all modules, hydrates entire component tree at once—even off-screen footer and invisible modal dialogs. User waits 3-5 seconds before buttons become clickable.
-
-**Progressive Hydration Solution**:
-
-Prioritize hydrating visible, interactive components first, defer off-screen components until needed:
-
-```javascript
-// 1. Hydrate critical components immediately (above-fold)
-hydrate(<Header />, headerEl); // 10KB, 50ms
-hydrate(<Navigation />, navEl); // 15KB, 75ms
-hydrate(<CTAButton />, ctaEl); // 5KB, 20ms
-
-// User can interact with header/nav/CTA in ~150ms!
-
-// 2. Defer less critical components
-requestIdleCallback(() => {
-  hydrate(<SidebarWidget />, sidebarEl); // 30KB, 150ms
-});
-
-// 3. Lazy hydrate off-screen components on scroll
-observer.observe(footerEl, {
-  onVisible: () => hydrate(<Footer />, footerEl) // 20KB
-});
-
-// 4. Never hydrate until interaction
-commentSection.addEventListener('click', () => {
-  hydrate(<Comments />, commentSection); // 80KB only when user clicks
-}, { once: true });
-```
-
-**Benefits**:
-- **Faster TTI**: 150ms (critical components only) vs 5s (everything)
-- **Reduced JavaScript**: Only hydrate visible components, save mobile data
-- **Better UX**: User can interact with above-fold content while rest loads
-
-**Implementation Strategies**:
-
-1. **React 18 Server Components**: Only hydrate client components, server components stay static
-2. **Next.js Partial Hydration**: Mark components with `"use client"` directive for selective hydration
-3. **Astro Islands**: Framework-agnostic islands of interactivity in static ocean
-4. **Custom Implementation**: Use Intersection Observer + dynamic import
-
-**Tradeoffs**: More complex than full hydration, requires careful planning of interaction boundaries, potential for layout shift if deferred components alter layout.
-
-### Question 3: Providers in Micro-Frontend App Shell
-
-**Q**: How does the App Shell provide shared services (auth, theme, i18n) to multiple micro-frontends without tight coupling? Compare Context API vs Custom Events approaches.
-
-**A**:
-
-**Context API Approach** (React/Preact):
-
-{% raw %}
-```javascript
-// App Shell provides context
-<AuthContext.Provider value={{ user, login, logout }}>
-  <ThemeContext.Provider value={{ theme, setTheme }}>
-    <DashboardMFE />
-    <SettingsMFE />
-  </ThemeContext.Provider>
-</AuthContext.Provider>
-
-// Micro-frontends consume context
-function DashboardMFE() {
-  const { user } = useContext(AuthContext); // From shell
-  const { theme } = useContext(ThemeContext);
-  return <div className={`theme-${theme}`}>Hello {user.name}</div>;
-}
-```
-{% endraw %}
-
-**Pros**: (1) Type-safe with TypeScript, (2) Reactive updates (context changes trigger re-render), (3) Standard React pattern, (4) Easy testing (mock providers).
-
-**Cons**: (1) Framework lock-in (requires React), (2) MFEs must import shell's context definitions (coupling), (3) Context updates re-render entire tree if not optimized.
-
----
-
-**Custom Events Approach** (Framework-agnostic):
-
-```javascript
-// App Shell publishes events
-window.dispatchEvent(new CustomEvent('shell:auth', {
-  detail: { user, isAuthenticated: true }
-}));
-
-window.dispatchEvent(new CustomEvent('shell:theme', {
-  detail: { theme: 'dark' }
-}));
-
-// Micro-frontends subscribe to events
-class DashboardMFE {
-  constructor() {
-    window.addEventListener('shell:auth', (e) => {
-      this.user = e.detail.user;
-      this.render();
-    });
-    
-    window.addEventListener('shell:theme', (e) => {
-      this.theme = e.detail.theme;
-      this.updateTheme();
-    });
-  }
-}
-```
-
-**Pros**: (1) Framework-agnostic (React, Vue, Angular, Web Components all work), (2) Loose coupling (no imports needed), (3) MFEs can be written in different frameworks.
-
-**Cons**: (1) No type safety (events are strings), (2) Manual state management (no reactive updates), (3) More boilerplate, (4) Debugging harder (event bus complexity).
-
----
-
-**Hybrid Approach** (Best of both):
-
-```javascript
-// App Shell provides both Context and Events
-function Shell() {
-  const auth = useAuth();
-  
-  // Publish auth changes as events for non-React MFEs
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent('shell:auth', {
-      detail: auth
-    }));
-  }, [auth]);
-  
-  return (
-    <AuthContext.Provider value={auth}>
-      {/* React MFEs use context */}
-      <ReactMFE />
-      
-      {/* Non-React MFEs use events */}
-      <web-component-mfe></web-component-mfe>
-    </AuthContext.Provider>
-  );
-}
-```
-
-**Recommendation**: Use **Context API** if all MFEs use same framework (React). Use **Custom Events** for polyglot micro-frontends (mixing React, Vue, Web Components). Use **Hybrid** for mixed environments (most MFEs React, one legacy jQuery widget).
+{% include quiz.html id="app-shell-3"
+   question="Why do providers (theme, auth, router, store) live at the App Shell level in a micro-frontend setup?"
+   options="A|So each MFE ships its own provider copies;B|To establish shared context and services ONCE at the shell boundary, so the individual micro-frontends share theme/auth/router/store without each bundling their own and fighting over state;C|Providers are optional at the shell level;D|They don't — providers are per-MFE"
+   correct="B"
+   explanation="Elevating providers to the shell keeps the MFEs loosely coupled and avoids state or theme duplication when multiple MFEs render on the same page." %}
 
 ## References
 

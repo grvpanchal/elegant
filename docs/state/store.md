@@ -432,191 +432,35 @@ const state = {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What is the primary benefit of using a centralized store instead of passing props?</summary>
+{% include quiz.html id="store-1"
+   question="What&apos;s the main benefit of a centralised store over passing props?"
+   options="A|A store is faster on the CPU;B|The store is a single source of truth any component can subscribe to without prop-drilling through intermediate components. It makes data flow predictable (dispatch -&gt; reducer -&gt; new state -&gt; selective subscriber re-renders), decouples senders from receivers, and enables devtools time travel;C|Props were deprecated;D|It bypasses React"
+   correct="B"
+   explanation="For cross-cutting concerns (auth, theme, cart, feature flags) a store beats threading props through 6 layers. For local-only data, props are still the right tool." %}
 
-**Answer:** A centralized store eliminates **prop drilling**—the need to pass data through many intermediate components that don't use it:
+{% include quiz.html id="store-2"
+   question="What is a reducer and why is it called that?"
+   options="A|It reduces code size;B|It&apos;s the same shape as a function you&apos;d pass to Array.prototype.reduce — (accumulator, next) =&gt; newAccumulator. A Redux reducer is (state, action) =&gt; newState: you can conceptually .reduce the entire action history into the current state. That&apos;s the provenance of the name;C|It&apos;s a marketing term;D|It&apos;s unrelated to Array.reduce"
+   correct="B"
+   explanation="The naming isn&apos;t arbitrary — Redux&apos;s state at any moment equals all past actions reduced over the initial state via the reducer. That&apos;s also what enables time-travel debugging." %}
 
-**Without store (prop drilling):**
-```jsx
-<App user={user}>
-  <Layout user={user}>
-    <Sidebar user={user}>
-      <Menu user={user}>
-        <UserProfile user={user} /> {/* Finally used here */}
-      </Menu>
-    </Sidebar>
-  </Layout>
-</App>
-```
+{% include quiz.html id="store-3"
+   question="When should you reach for Redux vs lighter options like Context or Zustand?"
+   options="A|Always use Redux;B|Use Context for small, low-churn shared values (theme, auth user). Use Zustand/Jotai/Valtio for lightweight client state without middleware machinery. Use Redux (especially RTK) when you want opinionated structure, powerful devtools, middleware ecosystem, or cross-cutting async orchestration via sagas/listeners — particularly in larger apps and teams;C|Only Context works with server state;D|Zustand is deprecated"
+   correct="B"
+   explanation="Match the tool to the app&apos;s scale and team needs. RTK has dramatically narrowed the &quot;Redux is heavy&quot; gap; Zustand is ideal when you want less ceremony." %}
 
-**With store:**
-```jsx
-<App>
-  <Layout>
-    <Sidebar>
-      <Menu>
-        <UserProfile /> {/* Accesses user from store directly */}
-      </Menu>
-    </Sidebar>
-  </Layout>
-</App>
-```
+{% include quiz.html id="store-4"
+   question="What&apos;s the difference between calling dispatch(action) and calling a function that updates state directly?"
+   options="A|They are functionally identical;B|dispatch routes the action through all middleware (logging, thunks, analytics, crash reporting) and produces a serialized, time-travel-able event; a direct function call is opaque to devtools, un-replayable, and doesn&apos;t get middleware cross-cutting concerns. dispatch is the unified event bus;C|Direct function calls are faster and preferred;D|dispatch is a UI-only API"
+   correct="B"
+   explanation="Actions + dispatch are an event log. Direct state mutation is off-the-books. Devtools, replayability, and middleware ALL rely on going through dispatch." %}
 
-**Additional benefits:**
-- Components become decoupled (don't need to know about data they don't use)
-- Easier refactoring (move components without updating props)
-- Single source of truth (consistent data everywhere)
-
-**Why it matters:** Prop drilling makes code brittle and components tightly coupled. Stores provide clean access to shared state.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> What is a "reducer" and why is it called that?</summary>
-
-**Answer:** A reducer is a **pure function** that takes current state and an action, then returns new state:
-
-```javascript
-const reducer = (state, action) => newState;
-```
-
-**Called "reducer" because** it's the same concept as Array.reduce():
-
-```javascript
-// Array.reduce
-[1, 2, 3].reduce((sum, num) => sum + num, 0);
-//                 ↑accumulator  ↑current  ↑initial
-
-// Store reducer
-actions.reduce((state, action) => newState, initialState);
-//               ↑accumulator  ↑current     ↑initial
-```
-
-Both "reduce" a sequence of values into a single accumulated result. In Redux, the sequence is actions, and the result is the current state.
-
-**Key properties:**
-- **Pure:** Same input always produces same output
-- **No side effects:** No API calls, no mutations, no randomness
-- **Immutable:** Returns new state object, doesn't modify input
-
-**Why it matters:** Understanding reducers as pure functions helps you write predictable state updates and avoid common bugs.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> When should you use Redux vs simpler state management like Context or Zustand?</summary>
-
-**Answer:** Use this decision matrix:
-
-**Context API when:**
-- Simple global state (theme, locale, auth)
-- Infrequent updates
-- Small to medium apps
-- No complex state logic
-
-**Zustand/Jotai when:**
-- Want simpler API than Redux
-- Medium complexity
-- Don't need DevTools ecosystem
-- Prefer hooks-based API
-
-**Redux when:**
-- Large, complex applications
-- Need powerful DevTools (time-travel, action replay)
-- Team familiar with Redux patterns
-- Want extensive middleware ecosystem
-- Need predictable, traceable state changes
-
-**Example scenarios:**
-- Blog with theme toggle → **Context**
-- E-commerce site → **Zustand or Redux**
-- Enterprise dashboard with complex workflows → **Redux**
-- Personal project → **Zustand** (simpler)
-
-**Why it matters:** Over-engineering with Redux for simple apps adds unnecessary complexity. Under-engineering with Context for complex apps leads to performance issues and hard-to-debug code.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What is the difference between `dispatch` and directly calling a function to update state?</summary>
-
-**Answer:**
-
-**Direct function call (not using store):**
-```javascript
-const updateUser = (newName) => {
-  user.name = newName; // Direct mutation, no history
-};
-```
-
-**Dispatch (store pattern):**
-```javascript
-dispatch({ type: 'UPDATE_USER', payload: { name: newName } });
-```
-
-**Key differences:**
-
-1. **Traceability:** Dispatched actions are logged, direct calls aren't
-2. **Middleware:** Dispatched actions can be intercepted (logging, analytics, async)
-3. **DevTools:** Can inspect, time-travel, and replay dispatched actions
-4. **Predictability:** Action objects describe "what happened," making flow explicit
-5. **Debugging:** Can see every state change as a sequence of actions
-
-**Real benefit:**
-```javascript
-// Redux DevTools shows:
-// Action: UPDATE_USER { name: "Alice" }
-// State before: { user: { name: "Bob" } }
-// State after: { user: { name: "Alice" } }
-
-// Can click to jump to any previous state!
-```
-
-**Why it matters:** The dispatch pattern enables powerful debugging and makes state changes explicit and traceable, especially valuable in large applications.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> Can you have multiple stores in an application?</summary>
-
-**Answer:** **It depends on the library:**
-
-**Redux:** Officially recommends **single store** for the entire app
-- Easier to serialize state
-- Single subscription for whole app
-- Simpler debugging
-- But can use `combineReducers` to split logic
-
-**Zustand/Jotai:** Supports **multiple stores**
-```javascript
-const useUserStore = create(/* ... */);
-const useCartStore = create(/* ... */);
-const useUIStore = create(/* ... */);
-```
-- Better code splitting
-- Independent concerns
-- More flexible
-
-**When to use multiple stores:**
-- Distinct application domains (user, cart, products)
-- Code splitting requirements
-- Team separation (different teams own different stores)
-
-**When to use single store:**
-- Need to coordinate state across domains
-- Want centralized DevTools view
-- Prefer Redux patterns
-
-**Example:**
-```javascript
-// Multiple stores - domain separation
-const useAuthStore = create(/* auth logic */);
-const useDataStore = create(/* data fetching */);
-
-// Usage
-const auth = useAuthStore();
-const data = useDataStore();
-```
-
-**Why it matters:** Store architecture affects code organization, testing, and debugging. Choose based on app complexity and team structure.
-</details>
+{% include quiz.html id="store-5"
+   question="Can you have multiple stores in a single application?"
+   options="A|Yes, and you should — one per component;B|Technically yes (Redux allows multiple stores and NgRx supports feature stores), but the standard advice is a SINGLE app-wide store with slices. Multiple independent stores fragment devtools, complicate cross-slice logic, and usually indicate a design that would be cleaner as slices of one store. Exceptions: micro-frontends with isolated domains;C|No — Redux forbids multiple stores entirely;D|Multiple stores only work in Vue"
+   correct="B"
+   explanation="Pinia naturally has multiple stores by design. Redux philosophy is one store with slices. Either way, needing many independent stores usually means something should be a slice." %}
 
 ## References
 - [1] https://www.womenwhocode.com/blog/the-back-end-of-the-front-end-state-part-1

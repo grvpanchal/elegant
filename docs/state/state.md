@@ -18,7 +18,7 @@ State is the memory of your application—every piece of data that changes over 
 
 Frontend state management is a crucial aspect of modern web development, focusing on efficiently handling and organizing data within an application. At its core, state represents any data that can change during the lifetime of your application—it's what makes your app dynamic and interactive rather than static.
 
-## What is State?
+### What is State?
 
 State in frontend development refers to any information that an application needs to keep track of over time. This includes:
 
@@ -27,13 +27,13 @@ State in frontend development refers to any information that an application need
 - Data fetched from APIs
 - Application-wide settings
 
-## Types of State
+### Types of State
 
 1. **Local State**: Managed within individual components
 2. **Global State**: Shared across multiple components or routes
 3. **Server State**: Data fetched from external sources that needs synchronization
 
-## Core Concepts
+### Core Concepts
 
 ### Store
 
@@ -53,7 +53,7 @@ In the Universal Frontend Architecture, state management follows framework-agnos
 
 The evolution from manual state management to sophisticated solutions like Redux Toolkit and React Query reflects growing application complexity. Modern apps must handle optimistic updates, offline functionality, real-time synchronization, and complex derived data—challenges that simple `setState` cannot address. Understanding state fundamentals helps you choose the right tool for each scenario.
 
-## Goals of State Management
+### Goals of State Management
 
 - **Centralize** application state for easier tracking and management
 - **Simplify** data flow within the application through predictable patterns
@@ -268,8 +268,6 @@ export { initialState, selectAllUsers, selectFilteredUsers, selectUserStats };
 
 ## Common Mistakes
 
-## Common Mistakes
-
 ### 1. Storing Derived Data in State
 **Mistake:** Duplicating data that can be calculated from existing state.
 
@@ -348,153 +346,35 @@ const Dropdown = () => {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What is the difference between local state, global state, and server state?</summary>
+{% include quiz.html id="state-1"
+   question="What are the key differences between local, global, and server state?"
+   options="A|They are interchangeable;B|Local state belongs to a single component (input focus, modal open). Global state is shared across the app (auth user, theme, cart). Server state is remote data you cache on the client (API responses) — it has its own concerns: fetching, staleness, re-fetching, invalidation. Each typically wants a different tool;C|Only global state exists;D|Server state is a myth"
+   correct="B"
+   explanation="Local -&gt; useState. Global -&gt; Redux/Pinia/NgRx/Zustand/Context. Server -&gt; React Query/SWR/RTK Query — the last one has enough unique concerns (cache, invalidation, deduping) to warrant its own tool." %}
 
-**Answer:**
+{% include quiz.html id="state-2"
+   question="Should you always lift state to the highest common ancestor?"
+   options="A|Yes, always lift to the top;B|No. Lift only as high as the components that genuinely need to read or update it. Over-lifting causes unnecessary re-renders across the tree and forces prop-drilling. If many distant components need it, reach for context or a store instead of the highest ancestor;C|Never lift state;D|Only lift class components"
+   correct="B"
+   explanation="&quot;Lift to the closest common ancestor&quot; — not the root. If that ancestor is too far, a store or context is probably the right tool, not deeper lifting." %}
 
-- **Local State:** Data specific to a single component (e.g., form input value, modal open/closed). Managed with `useState` or component-level state.
-  - Example: `const [inputValue, setInputValue] = useState('')`
+{% include quiz.html id="state-3"
+   question="Why does state immutability matter?"
+   options="A|It&apos;s purely stylistic;B|Reference equality checks (Redux, React.memo, useMemo deps, Svelte stores) depend on new references for new values. Mutating state in place means consumers can&apos;t detect the change, dev-tools time-travel breaks, and concurrent rendering can observe inconsistent state. Immutability is the contract that makes those features work;C|Only strings can be immutable;D|Immutability is a performance regression"
+   correct="B"
+   explanation="Every framework relying on structural sharing / reference-equality shortcutting needs immutability. Immer and RTK let you write mutating-looking code while preserving the guarantee." %}
 
-- **Global State:** Data shared across multiple components (e.g., user authentication, app theme). Managed with Context API, Redux, or similar.
-  - Example: Current user logged in, accessible from header, sidebar, and profile page
+{% include quiz.html id="state-4"
+   question="What is normalised state and when is it useful?"
+   options="A|Flattening nested entities into { byId: {id: entity}, allIds: [id] } shapes so each entity lives in exactly one place, references are ids, and updates don&apos;t require deep mutation. Most useful for server-data heavy apps with cross-references (users, posts, comments);B|It&apos;s always wrong;C|It doubles your bundle;D|Normalisation is a Vue-only concept"
+   correct="A"
+   explanation="When the same entity appears in many places, nested state becomes a sync nightmare. Normalisation (see createEntityAdapter in RTK) keeps a single source of truth." %}
 
-- **Server State:** Data from external APIs that needs synchronization (e.g., user list, product catalog). Often managed with libraries like React Query or SWR.
-  - Example: List of products fetched from `/api/products`
-
-**Why it matters:** Choosing the right state type prevents over-engineering (local state in global store) and under-engineering (prop drilling for shared data).
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> True or False: You should always lift state to the highest common ancestor component.</summary>
-
-**Answer:** **False.** While lifting state to a common ancestor is sometimes necessary for sharing, you should:
-
-1. **Keep state as local as possible** - Only lift when actually needed
-2. **Use composition** - Pass components as children to avoid lifting
-3. **Use Context** - For deeply nested components that need shared state
-4. **Use global state management** - For truly application-wide data
-
-**Example of over-lifting:**
-```jsx
-// ❌ BAD: Lifting dropdown state to App unnecessarily
-<App> {/* dropdown state here */}
-  <Header />
-  <Sidebar>
-    <Menu>
-      <Dropdown /> {/* Only component that needs the state */}
-    </Menu>
-  </Sidebar>
-</App>
-
-// ✅ GOOD: Keep state in Dropdown
-<Dropdown> {/* state lives here */}
-```
-
-**Why it matters:** Over-lifting creates unnecessary re-renders and tight coupling. Lift state only when components actually need to share it.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> Why is state immutability important?</summary>
-
-**Answer:** Immutability is crucial because:
-
-1. **Change Detection:** React and state libraries detect changes by comparing object references. Mutations don't create new references.
-2. **Predictability:** Immutable updates make it clear when and where state changes
-3. **Time-Travel Debugging:** Tools like Redux DevTools can replay actions because previous states are preserved
-4. **Performance Optimization:** Shallow equality checks (used by React.memo, useMemo) only work with immutable updates
-
-**Example:**
-```javascript
-// With mutation (breaks React)
-const [users, setUsers] = useState([...]);
-users.push(newUser); // Mutation!
-setUsers(users); // Same reference, React won't update
-
-// With immutability (works correctly)
-setUsers([...users, newUser]); // New array, React detects change
-```
-
-**Why it matters:** Violating immutability causes subtle bugs where UI doesn't update even though data changed, or components re-render unnecessarily.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What is "normalized state" and when should you use it?</summary>
-
-**Answer:** Normalized state structures data by ID like a database, avoiding nested duplication:
-
-**Nested (not normalized):**
-```javascript
-{
-  posts: [
-    { id: 1, title: 'Post 1', author: { id: 5, name: 'Alice' } },
-    { id: 2, title: 'Post 2', author: { id: 5, name: 'Alice' } } // Duplicated author!
-  ]
-}
-```
-
-**Normalized:**
-```javascript
-{
-  posts: {
-    byId: {
-      1: { id: 1, title: 'Post 1', authorId: 5 },
-      2: { id: 2, title: 'Post 2', authorId: 5 }
-    },
-    allIds: [1, 2]
-  },
-  users: {
-    byId: {
-      5: { id: 5, name: 'Alice' }
-    },
-    allIds: [5]
-  }
-}
-```
-
-**Benefits:**
-- Single source of truth (update Alice once, reflects everywhere)
-- Efficient lookups (O(1) by ID)
-- Easier updates (no deep nesting)
-
-**When to use:** Complex relational data, entities referenced in multiple places, or when using Redux.
-
-**Why it matters:** Normalization prevents data inconsistency and makes updates easier in complex applications.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you decide between useState, Context API, Redux, and server state libraries?</summary>
-
-**Answer:** Use this decision tree:
-
-**useState (Local State):**
-- Used by: Single component
-- Examples: Form inputs, modal open/closed, accordion expanded
-- **Use when:** State doesn't need to be shared
-
-**Context API:**
-- Used by: Multiple components across the tree
-- Examples: Theme, locale, authenticated user
-- **Use when:** Simple global state without complex updates
-
-**Redux/MobX/Zustand:**
-- Used by: Entire application
-- Examples: Shopping cart, complex forms, UI state across routes
-- **Use when:** Complex state logic, many state transitions, need DevTools
-
-**React Query/SWR:**
-- Used by: Server data consumers
-- Examples: User lists, product catalogs, API data
-- **Use when:** Fetching and caching server data
-
-**Rule of thumb:**
-1. Start with `useState`
-2. If prop-drilling becomes painful → Context
-3. If Context gets complex → Redux/Zustand
-4. If fetching data from APIs → React Query/SWR
-
-**Why it matters:** Using the right tool simplifies code and improves performance. Over-engineering (Redux for everything) and under-engineering (prop drilling 10 levels) both create problems.
-</details>
+{% include quiz.html id="state-5"
+   question="How should you choose between useState, Context, Redux/Pinia/NgRx, and a server-state library?"
+   options="A|Always use the biggest tool;B|Start with useState for local component state. Use Context for small, rarely-changing shared values (theme, locale, auth user) — but not for high-churn data. Use a store (Redux/Pinia/NgRx) when global state is complex, cross-cutting, devtools matter, or many slices interact. Use a server-state library (React Query, RTK Query) for remote data caching, invalidation, and refetch;C|Always use Redux;D|Never use Context"
+   correct="B"
+   explanation="Match the tool to the actual problem. Context for infrequent shared config, a store for complex client state, a server-state lib for remote data — those three cover almost every need in a modern app." %}
 
 ## References
 - [1] https://blog.pixelfreestudio.com/ultimate-guide-to-state-management-in-frontend-applications/

@@ -464,93 +464,6 @@ console.log(user.name);  // Autocomplete works
 
 **Why it matters:** Types catch errors at compile time and provide documentation.
 
-## Quick Quiz
-
-<details>
-<summary><strong>Question 1:</strong> What is the purpose of request/response interceptors?</summary>
-
-**Answer:** Interceptors provide centralized middleware:
-- **Request:** Add auth tokens, log requests, modify headers
-- **Response:** Handle 401/500, refresh tokens, normalize errors
-
-Eliminates duplication and ensures consistency.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> REST HTTP methods and their purposes?</summary>
-
-**Answer:**
-- **GET:** Retrieve data (idempotent, cacheable)
-- **POST:** Create resources
-- **PUT/PATCH:** Update resources (PUT = full, PATCH = partial)
-- **DELETE:** Remove resources
-
-Understanding semantics affects caching and browser behavior.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> Should API services contain business logic?</summary>
-
-**Answer:** **No.** Services handle HTTP only:
-- Making requests
-- Transforming data
-- Network errors
-
-Business logic belongs in stores/containers.
-
-This separation makes services reusable.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How to handle authentication tokens?</summary>
-
-**Answer:** Use request interceptors:
-
-```javascript
-apiClient.interceptors.request.use(config => {
-  const token = getToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
-```
-
-Handle refresh in response interceptor for 401 errors.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> REST vs GraphQL vs WebSocket?</summary>
-
-**Answer:**
-- **REST:** Multiple endpoints, fixed responses, request-response
-- **GraphQL:** Single endpoint, client specifies data, solves over-fetching
-- **WebSocket:** Persistent connection, real-time bidirectional
-
-Choose based on use case (CRUD → REST, complex data → GraphQL, real-time → WebSocket).
-</details>
-
-## References
-
-### 1. **API Client Base**
-- A central module that handles all API requests.
-- Utilizes HTTP client libraries like `axios` or the Fetch API.
-- Manages common configurations such as base URLs, headers, and authentication tokens.
-
-### 2. **Service Layer**
-- Abstraction layer that defines methods for various API endpoints.
-- Each service corresponds to a specific backend resource (e.g., UserService, ProductService).
-
-### 3. **Request Interceptors**
-- Functions that modify requests before they are sent to the server.
-- Can add authorization headers, log requests, or modify request payloads.
-
-### 4. **Response Interceptors**
-- Functions that handle responses after they are received but before they are processed by the application.
-- Can handle common response status codes, refresh tokens, or log responses.
-
-### 5. **Error Handling**
-- Centralized error handling mechanism.
-- Can display user-friendly error messages, retry failed requests, or log errors.
-
 ## Benefits
 
 - **Consistency**: Centralizing API interactions ensures consistent handling of requests and responses.
@@ -693,231 +606,39 @@ XML-RPC (Extensible Markup Language-Remote Procedure Call) can be described as a
 
 ### 5. WebSocket
 A two-way interactive communication session between the user’s browser and a server can be made smoother and faster with the help of an organized set of APIs known as WebSockets. WebSocket APIs play a vital role in helping receive event-driven responses, and they also help in easier management of sending messages to a server. Plus, the entire process involving this doesn’t even require having to poll the server in order to receive a reply.
-## Common Mistakes
-
-### 1. Making API Calls Directly in Components
-**Mistake:** Scattering `fetch()` or `axios` calls throughout components without abstraction.
-
-```jsx
-// ❌ BAD: Direct API calls in components
-const UserProfile = ({ userId }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    fetch(`https://api.example.com/users/${userId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(setUser);
-  }, [userId]);
-};
-```
-
-```jsx
-// ✅ GOOD: Centralized API service
-const UserProfile = ({ userId }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    UserService.getUser(userId)
-      .then(response => setUser(response.data))
-      .catch(handleError);
-  }, [userId]);
-};
-```
-
-**Why it matters:** Direct calls duplicate configuration logic, make testing difficult, and create maintenance nightmares when API endpoints or authentication methods change.
-
-### 2. Ignoring Error Handling Consistency
-**Mistake:** Handling errors differently in every API call.
-
-```javascript
-// ❌ BAD: Inconsistent error handling
-fetch('/api/users').then(...).catch(err => console.log(err));
-fetch('/api/posts').then(...).catch(err => alert(err.message));
-fetch('/api/comments').then(...).catch(err => showToast(err));
-```
-
-```javascript
-// ✅ GOOD: Centralized error interceptor
-apiClient.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response?.status === 401) {
-      redirectToLogin();
-    } else if (error.response?.status >= 500) {
-      showErrorToast('Server error. Please try again.');
-    }
-    return Promise.reject(error);
-  }
-);
-```
-
-**Why it matters:** Centralized error handling ensures consistent user experience and makes it easy to add global behaviors like retry logic or offline detection.
-
-### 3. Not Using TypeScript Interfaces for API Responses
-**Mistake:** Working with untyped API responses.
-
-```typescript
-// ❌ BAD: No type safety
-const UserService = {
-  getUser(id) {
-    return apiClient.get(`/users/${id}`);
-  }
-};
-
-// Usage - no autocomplete, no type checking
-const user = await UserService.getUser(1);
-console.log(user.namee); // Typo not caught
-```
-
-```typescript
-// ✅ GOOD: Typed responses
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: 'admin' | 'user';
-}
-
-const UserService = {
-  getUser(id: number): Promise<AxiosResponse<User>> {
-    return apiClient.get<User>(`/users/${id}`);
-  }
-};
-
-// Usage - full type safety
-const response = await UserService.getUser(1);
-const user = response.data; // Type: User
-console.log(user.name); // Autocomplete works!
-```
-
-**Why it matters:** Type safety catches errors at compile time, provides autocomplete, and serves as documentation for API contracts.
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What is the primary purpose of request and response interceptors in an API client?</summary>
+{% include quiz.html id="api-1"
+   question="What is the primary purpose of request and response interceptors in an API client?"
+   options="A|To log every request;B|To centralise cross-cutting concerns — attaching auth tokens, logging, transforming payloads, handling errors, refreshing tokens — so individual call sites stay clean and consistent;C|To disable HTTP/2;D|To replace the fetch API"
+   correct="B"
+   explanation="Interceptors are the one place that knows about auth headers, retry logic, error normalisation — the rest of the codebase just calls api.get/api.post." %}
 
-**Answer:** Interceptors provide centralized middleware for all API requests/responses to:
-- **Request interceptors:** Add authentication tokens, modify headers, log requests, transform payloads
-- **Response interceptors:** Handle common status codes (401, 500), refresh tokens, transform data, log responses
+{% include quiz.html id="api-2"
+   question="Which HTTP method should be used for which REST operation?"
+   options="A|GET for everything;B|GET to read (safe, idempotent), POST to create (not idempotent), PUT to replace (idempotent), PATCH to partially update, DELETE to remove (idempotent);C|POST for reads;D|DELETE for updates"
+   correct="B"
+   explanation="Respecting method semantics makes APIs predictable, cacheable, and safe to retry. GET/PUT/DELETE are idempotent — safe to retry — POST is not." %}
 
-**Example:** Instead of adding `Authorization` header in every API call, a request interceptor adds it once for all requests automatically.
+{% include quiz.html id="api-3"
+   question="Should API services contain business logic and application state?"
+   options="A|Yes — keep everything in one place;B|No — API services should be thin, pure data-transport clients. Business logic and application state belong in the state layer (Redux/Saga/NgRx/Pinia). Keeping them separate makes the API layer reusable across stores and testable in isolation;C|Only for GraphQL;D|Only Redux can wrap APIs"
+   correct="B"
+   explanation="When the API client is pure, swapping state management, testing with fakes, or reusing the client in a different app are all trivial." %}
 
-**Why it matters:** Interceptors eliminate code duplication, enforce consistent patterns (auth, logging, error handling), and provide a single place to modify all API behavior.
-</details>
+{% include quiz.html id="api-4"
+   question="What's the safest way to store and attach auth tokens client-side?"
+   options="A|localStorage with a long expiry;B|Prefer httpOnly, Secure, SameSite cookies for session tokens so JS can't read them (mitigating XSS). If you must use memory/storage, keep short-lived access tokens in memory and use a rotating refresh token via an httpOnly cookie. Always use HTTPS;C|Put tokens in the URL;D|In a global variable on window"
+   correct="B"
+   explanation="localStorage is XSS-readable; cookies with httpOnly+Secure+SameSite are the defence-in-depth default. Token rotation limits blast radius if one leaks." %}
 
-<details>
-<summary><strong>Question 2:</strong> What are the four main HTTP methods used in RESTful APIs and their purposes?</summary>
+{% include quiz.html id="api-5"
+   question="How do REST, GraphQL, and WebSocket differ?"
+   options="A|They are the same protocol;B|REST is resource-oriented HTTP with multiple endpoints; GraphQL is a single endpoint where the client specifies exactly the fields it needs (reduces over-fetching/under-fetching); WebSocket is a persistent bidirectional connection for real-time pushes (chat, live updates). Pick per use case — they often coexist;C|GraphQL has replaced REST;D|WebSockets only work in Node"
+   correct="B"
+   explanation="REST wins for simple CRUD and cacheability, GraphQL for complex client-driven data needs, WebSockets (or SSE) for push — most large apps mix all three." %}
 
-**Answer:**
-1. **GET** - Retrieve/read resources (fetching user data, product lists)
-2. **POST** - Create new resources (user registration, creating posts)
-3. **PUT/PATCH** - Update existing resources (editing profile, updating settings)
-4. **DELETE** - Remove resources (deleting account, removing items)
-
-**REST principle:** These methods are idempotent (except POST), meaning multiple identical requests produce the same result.
-
-**Why it matters:** Understanding REST semantics ensures you use the right method for each operation, which affects caching, browser behavior, and API design.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> True or False: API services should contain business logic and state management.</summary>
-
-**Answer:** **False.** API services should focus solely on server communication:
-- Making HTTP requests
-- Transforming request/response data
-- Handling network-level errors
-
-Business logic belongs in:
-- **Store/State management** - Redux reducers, Vuex mutations
-- **Containers** - Components that orchestrate data flow
-- **Domain logic layers** - Separate business rules modules
-
-**Example:**
-```javascript
-// ❌ BAD: Business logic in API service
-UserService.createUser = async (userData) => {
-  if (userData.age < 18) throw new Error('Too young');
-  const response = await apiClient.post('/users', userData);
-  store.dispatch(addUser(response.data)); // State management
-  return response;
-};
-
-// ✅ GOOD: Pure API communication
-UserService.createUser = (userData) => {
-  return apiClient.post('/users', userData);
-};
-```
-
-**Why it matters:** Separation of concerns makes API services reusable across different state management patterns and easier to test in isolation.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How should you handle authentication tokens in an API client?</summary>
-
-**Answer:** Use request interceptors to inject tokens automatically:
-
-```javascript
-// ✅ Best practice
-apiClient.interceptors.request.use(config => {
-  const token = getAuthToken(); // From localStorage, cookie, or state
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Handle token refresh on 401
-apiClient.interceptors.response.use(
-  response => response,
-  async error => {
-    if (error.response?.status === 401) {
-      const newToken = await refreshToken();
-      error.config.headers.Authorization = `Bearer ${newToken}`;
-      return apiClient(error.config); // Retry original request
-    }
-    return Promise.reject(error);
-  }
-);
-```
-
-**Avoid:** Adding tokens manually to each request or storing them in component state.
-
-**Why it matters:** Centralized token management ensures all requests are authenticated, handles token refresh transparently, and prevents security issues from forgetting to add tokens.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> What's the difference between REST, GraphQL, and WebSocket APIs?</summary>
-
-**Answer:**
-
-**REST:**
-- Multiple endpoints (e.g., `/users`, `/posts`)
-- Fixed response structures
-- Request-response pattern
-- **Use when:** Standard CRUD operations, caching important, simple data fetching
-
-**GraphQL:**
-- Single endpoint
-- Client specifies exact data needed
-- Solves over-fetching/under-fetching
-- **Use when:** Complex data requirements, mobile apps needing bandwidth optimization
-
-**WebSocket:**
-- Persistent bidirectional connection
-- Real-time data push from server
-- Event-driven
-- **Use when:** Chat applications, live updates, collaborative editing
-
-**Example decision matrix:**
-- Todo app → REST
-- Social media feed → GraphQL (complex, nested data)
-- Live chat → WebSocket
-
-**Why it matters:** Choosing the right API pattern affects performance, complexity, and development speed. The Universal Frontend Architecture supports all three through abstracted service layers.
-</details>
 ## References
 
 - [Axios Documentation](https://axios-http.com/docs/intro)

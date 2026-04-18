@@ -471,199 +471,35 @@ export async function getStaticPaths() {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What's the difference between SSG, SSR, and CSR?</summary>
+{% include quiz.html id="ssg-1"
+   question="What's the difference between SSG, SSR, and CSR?"
+   options="A|They are three names for the same thing;B|CSR renders in the browser after JS loads (slow first paint, no SEO by default); SSR renders on every request on the server (fresh data, but server cost per request); SSG renders at build time into static HTML (fast, cacheable, CDN-friendly, but stale until rebuild). Modern stacks mix all three per route;C|SSG only works in Next.js;D|SSR has been deprecated"
+   correct="B"
+   explanation="Choose per page: product listings maybe SSR, marketing pages SSG, dashboards CSR. The big frameworks (Next, Nuxt, Astro, Remix) let you mix." %}
 
-**Answer:**
+{% include quiz.html id="ssg-2"
+   question="How does Incremental Static Regeneration (ISR) work?"
+   options="A|It disables caching;B|Pages are generated at build time like SSG, but with a revalidation window; the next request after that window triggers a background regeneration — visitors get the stale page immediately while the new one is produced and cached. You get SSG speed with near-SSR freshness;C|ISR regenerates the entire site on every request;D|ISR is the same as CSR"
+   correct="B"
+   explanation="&quot;Stale-while-revalidate for pages&quot; — visitors never wait for regeneration, and content updates without a full rebuild." %}
 
-**SSG (Static Site Generation):**
-- HTML generated at **build time**
-- Same HTML served to all users
-- Fastest TTFB (~20-50ms from CDN)
-- Stale data until rebuild
-- **Use:** Blogs, marketing sites, docs
+{% include quiz.html id="ssg-3"
+   question="In Next.js's getStaticPaths, what do the different fallback values mean?"
+   options="A|fallback: false -> only paths returned are rendered, others 404; fallback: true -> non-listed paths render a loading state then fetch data on demand; fallback: 'blocking' -> non-listed paths render on-demand SSR-style with no loading flash;B|They're all equivalent;C|Fallback is purely cosmetic;D|Only 'false' is real"
+   correct="A"
+   explanation="Pick based on the size and freshness of your path set: small/known paths = false; huge/long-tail paths = true or 'blocking' depending on UX needs." %}
 
-**SSR (Server-Side Rendering):**
-- HTML generated on **each request**
-- Fresh data for every user
-- Slower TTFB (~200-500ms server processing)
-- Higher server costs
-- **Use:** User dashboards, personalized content
+{% include quiz.html id="ssg-4"
+   question="When should you use on-demand revalidation vs time-based ISR?"
+   options="A|Always on-demand;B|Time-based is simpler but has a lag window (stale until the next request past the timer); on-demand (e.g. a webhook from your CMS calling res.revalidate) invalidates the cached page immediately after a content change — better for editorial content where staleness is user-visible;C|On-demand requires full rebuilds;D|They can't be combined"
+   correct="B"
+   explanation="Use time-based as a safety net (&quot;at most N hours stale&quot;) and on-demand for immediate freshness after a real edit. Most modern setups use both." %}
 
-**CSR (Client-Side Rendering):**
-- HTML generated in **browser** via JavaScript
-- Blank page until JS loads
-- Poor SEO (crawlers see empty HTML)
-- **Use:** Web apps, admin panels
-
-**Performance comparison:**
-- SSG TTFB: 50ms ⚡
-- SSR TTFB: 300ms
-- CSR TTFB: 100ms (but blank page + JS execution = 1000ms+ FCP)
-
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> How does Incremental Static Regeneration (ISR) work?</summary>
-
-**Answer:** ISR combines static speed with dynamic updates using stale-while-revalidate pattern:
-
-**Process:**
-1. Page generated at build time with `revalidate: 60` seconds
-2. User requests page at t=0s → Serve cached HTML (instant)
-3. User requests at t=70s → Serve stale cached HTML + trigger background regeneration
-4. Regeneration completes → New HTML cached
-5. Next request → Serve fresh HTML
-6. Cycle repeats every 60 seconds
-
-**Code:**
-```javascript
-export async function getStaticProps() {
-  const data = await fetchData();
-  return {
-    props: { data },
-    revalidate: 60  // Seconds
-  };
-}
-```
-
-**Benefits:**
-- Users always get fast response (cached HTML)
-- Content stays reasonably fresh (max 60s stale)
-- No build required for updates
-
-**Use when:** Content changes frequently but real-time updates not critical (product prices, blog posts).
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> What do the different fallback options mean in getStaticPaths?</summary>
-
-**Answer:**
-
-**`fallback: false`:**
-- Only paths returned from `getStaticPaths` exist
-- All other paths → 404 page
-- Use when: All possible paths known at build time (small, fixed set)
-
-**`fallback: true`:**
-- Pre-rendered paths served instantly
-- Non-pre-rendered paths generate on first request
-- Shows fallback UI while generating (check `router.isFallback`)
-- Use when: Many possible paths, want instant loading state
-
-**`fallback: 'blocking'`:**
-- Pre-rendered paths served instantly
-- Non-pre-rendered paths generate on first request
-- Browser waits for generation (no fallback UI)
-- Use when: Can't show loading state, prefer waiting
-
-**Example:**
-```javascript
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { id: '1' }}],
-    fallback: 'blocking'
-  };
-}
-
-// Visit /products/1 → Instant (pre-rendered)
-// Visit /products/999 → 3s wait (generates) → then cached
-```
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> When should you use on-demand revalidation vs time-based ISR?</summary>
-
-**Answer:**
-
-**Time-based ISR (revalidate):**
-- Automatic periodic updates
-- No manual trigger needed
-- Eventual consistency
-```javascript
-return { props: { data }, revalidate: 300 };
-```
-**Use when:** Content changes regularly but unpredictably (product inventory, blog posts)
-
-**On-demand Revalidation:**
-- Manual trigger via API route
-- Immediate updates
-- Controlled by events
-```javascript
-// API route
-await res.revalidate('/products/123');
-```
-**Use when:** Know exactly when content changes (CMS webhook, admin publish button)
-
-**Best practice:** Combine both
-```javascript
-export async function getStaticProps() {
-  return {
-    props: { data },
-    revalidate: 3600  // Fallback: hourly refresh
-  };
-}
-
-// PLUS webhook for immediate updates
-// POST /api/revalidate when CMS content changes
-```
-
-Result: Immediate updates when needed + guaranteed freshness hourly.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you optimize build times for large sites?</summary>
-
-**Answer:**
-
-**Strategies:**
-
-1. **Limit pre-rendered pages:**
-```javascript
-getStaticPaths() {
-  return {
-    paths: topProducts.slice(0, 100),
-    fallback: 'blocking'  // Generate rest on-demand
-  };
-}
-```
-
-2. **Parallel builds:**
-```javascript
-// next.config.js
-experimental: {
-  workerThreads: true,
-  cpus: 8
-}
-```
-
-3. **Incremental builds:**
-Only rebuild changed pages, not entire site
-
-4. **Separate static from dynamic:**
-- Homepage: SSG
-- Product listing: SSG with ISR
-- User dashboard: SSR (skip build)
-
-5. **Cache build artifacts:**
-```javascript
-// Vercel/Netlify automatically cache
-// _next/ folder between builds
-```
-
-6. **Optimize data fetching:**
-```javascript
-// BAD: N+1 queries
-for (const post of posts) {
-  await fetchComments(post.id);
-}
-
-// GOOD: Batch request
-const allComments = await fetchAllComments(postIds);
-```
-
-**Result:** 50,000-page site builds in 10 minutes instead of 2 hours.
-</details>
+{% include quiz.html id="ssg-5"
+   question="How do you keep build times manageable for large SSG sites?"
+   options="A|Rebuild everything on every deploy forever;B|Use ISR/on-demand generation for long-tail pages, incremental builds that only rebuild changed pages, parallel builds, a CDN with per-path invalidation, and content-hash caching for build artefacts. Avoid putting thousands of low-traffic pages into the synchronous build;C|Disable caching;D|Combine all pages into a single HTML"
+   correct="B"
+   explanation="The goal is: rebuild what changed, serve everything else from cache. Frameworks now do incremental builds and on-demand generation specifically so build time scales sub-linearly with site size." %}
 
 ## References
 

@@ -172,42 +172,35 @@ const newEl = <h1>Bye</h1>;
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What's the difference between a React element and a DOM element?</summary>
+{% include quiz.html id="element-1"
+   question="What is the difference between a React element and a DOM element?"
+   options="A|They are the same thing;B|A React element is a plain JS object describing what should be rendered (type, props, children) — it is immutable; a DOM element is the actual browser node in the document. React reconciles elements into DOM nodes;C|A React element is slower than a DOM element;D|React elements live on the server"
+   correct="B"
+   explanation="`React.createElement(...)` returns a description. React's reconciler then diffs and applies changes to real DOM nodes. The element itself is throwaway and cheap to recreate." %}
 
-**Answer:** React elements are plain JavaScript objects describing UI (`{ type: 'div', props: {...} }`), while DOM elements are actual browser objects (HTMLDivElement). React elements are cheap to create and immutable; DOM elements are expensive and mutable. React creates element trees, diffs them, then minimally updates the real DOM.
-</details>
+{% include quiz.html id="element-2"
+   question="Can you mutate a React element after creating it?"
+   options="A|Yes, you mutate its props directly;B|No — React elements are immutable. To &quot;change&quot; one you re-render, producing a new element, and the reconciler figures out the minimum DOM update"
+   correct="B"
+   explanation="Immutability is what enables efficient diffing. If you tried to mutate props, React wouldn't know what changed and couldn't apply the right updates." %}
 
-<details>
-<summary><strong>Question 2:</strong> Can you modify a React element after creating it?</summary>
+{% include quiz.html id="element-3"
+   question="Which is NOT a custom element state in Web Components?"
+   options="A|undefined (not yet defined);B|failed (upgrade threw);C|constructed (element upgraded);D|purged (destroyed) — there is no such state"
+   correct="D"
+   explanation="Standard states are undefined, failed, uncustomized, custom (sometimes called &quot;constructed&quot;). &quot;Purged&quot; is not in the spec — removal happens via disconnectedCallback." %}
 
-**Answer:** No, elements are immutable. Once created, you cannot change their type or props. Instead, create a new element or use `React.cloneElement()` to create a modified copy. This immutability enables React's efficient diffing algorithm and predictable behavior.
-</details>
+{% include quiz.html id="element-4"
+   question="How does the Virtual DOM use elements to improve performance?"
+   options="A|It skips the DOM entirely;B|It keeps a lightweight in-memory tree of elements, diffs the previous and next trees on update, and applies only the minimum set of real DOM mutations — amortising the cost of changes;C|It renders everything in a Web Worker;D|It disables reflow"
+   correct="B"
+   explanation="Real DOM mutations are expensive. By diffing cheap JS object trees first and batching writes, React (and similar libraries) avoid re-laying out the whole page on every state change." %}
 
-<details>
-<summary><strong>Question 3:</strong> What are the five custom element states in Web Components?</summary>
-
-**Answer:** 
-1. **undefined** - not defined yet
-2. **failed** - definition failed (e.g., missing super())
-3. **uncustomized** - standard HTML element
-4. **precustomized** - created before definition loaded
-5. **custom** - successfully defined and registered
-
-Use `customElements.whenDefined()` to handle async loading.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> How does React's Virtual DOM use elements for performance?</summary>
-
-**Answer:** React creates lightweight element objects instead of expensive DOM operations. When state changes, React creates a new element tree, compares it to the previous one (diffing), and calculates minimal DOM updates needed. Creating thousands of JavaScript objects (elements) is fast; React only touches the real DOM when necessary, making updates efficient.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> When should you use refs to access DOM elements?</summary>
-
-**Answer:** Use refs for imperative operations that React elements can't handle: focus management, measuring dimensions, triggering animations, integrating third-party libraries, or direct DOM manipulation. For data that affects rendering, use state/props instead. Rule: if it affects what's rendered → state; if it's a side effect → refs.
-</details>
+{% include quiz.html id="element-5"
+   question="When is it appropriate to use a ref to access a DOM element in React?"
+   options="A|Whenever you would write jQuery;B|Only for imperative operations that React can't express declaratively: focus/selection, measuring layout, integrating 3rd-party non-React libraries, and media playback control;C|For any state a component owns;D|Never — refs are deprecated"
+   correct="B"
+   explanation="Refs are an escape hatch. Reach for them when you genuinely need the underlying DOM node; don't use them to bypass state." %}
 
 ## References
 
