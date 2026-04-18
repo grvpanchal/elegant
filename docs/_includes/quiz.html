@@ -1,0 +1,44 @@
+{%- comment -%}
+Reusable MCQ quiz question.
+
+Usage (in a markdown page):
+  {% include quiz.html id="atom-1"
+     question="What defines an atom in Atomic Design?"
+     options="A|Manages its own state;B|Has a single responsibility and cannot be decomposed further;C|Always renders a button element;D|Contains at least three child components"
+     correct="B"
+     explanation="Atoms are the smallest functional units—single-purpose components that cannot be broken down without losing meaning." %}
+
+Required params:
+  id          — a page-unique slug used for the radio group name and aria ids.
+  question    — the prompt (plain text; HTML allowed).
+  options     — semicolon-separated list of "letter|text" pairs (letters A/B/C/D/E …).
+  correct     — the letter of the correct option.
+  explanation — markdown/plain-text shown after submit (HTML allowed).
+{%- endcomment -%}
+{%- assign _opts = include.options | split: ';' -%}
+<form class="quiz-mcq" data-correct="{{ include.correct }}" novalidate>
+  <p class="quiz-mcq__question"><strong>{{ include.question }}</strong></p>
+  <ul class="quiz-mcq__options" role="radiogroup" aria-labelledby="quiz-{{ include.id }}-q">
+    {%- for opt in _opts -%}
+      {%- assign parts = opt | split: '|' -%}
+      {%- assign letter = parts[0] | strip -%}
+      {%- assign text = parts[1] | strip -%}
+      <li>
+        <label class="quiz-mcq__option">
+          <input type="radio" name="quiz-{{ include.id }}" value="{{ letter }}" required>
+          <span class="quiz-mcq__letter">{{ letter }}</span>
+          <span class="quiz-mcq__text">{{ text }}</span>
+        </label>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <div class="quiz-mcq__actions">
+    <button type="submit" class="quiz-mcq__submit">Submit</button>
+    <button type="reset" class="quiz-mcq__reset" hidden>Try again</button>
+  </div>
+  <div class="quiz-mcq__result" role="status" aria-live="polite" hidden>
+    <p class="quiz-mcq__verdict"></p>
+    <p class="quiz-mcq__correct-line"><strong>Correct answer:</strong> {{ include.correct }}</p>
+    <div class="quiz-mcq__explanation">{{ include.explanation }}</div>
+  </div>
+</form>
