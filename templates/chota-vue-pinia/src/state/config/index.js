@@ -3,8 +3,7 @@ import { updateConfig } from './config.actions'
 import intialConfigState from './config.initial'
 import { getTheme } from './config.selectors'
 
-export const useConfigStore = defineStore({
-  id: 'config',
+export const useConfigStore = defineStore('config', {
   state: () => (intialConfigState),
   getters: {
     theme: getTheme,

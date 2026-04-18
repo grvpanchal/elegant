@@ -1,4 +1,4 @@
-import type { Preview } from "@storybook/vue3";
+import type { Preview } from '@storybook/vue3'
 import '../src/ui/theme.css'
 
 const preview: Preview = {
@@ -10,6 +10,7 @@ const preview: Preview = {
       },
     },
   },
-};
+  tags: ['autodocs'],
+}
 
-export default preview;
+export default preview

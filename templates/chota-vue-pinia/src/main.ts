@@ -1,20 +1,20 @@
+import { createApp, reactive } from 'vue'
 import { createPinia } from 'pinia'
-import { createApp } from 'vue'
-import * as Vue from 'vue'
+
 import App from './App.vue'
-import './ui/theme.css';
+import './ui/theme.css'
 
+const themeState = reactive({ theme: '' })
 
-const app = createApp(App);
-app.use(createPinia()).mount('#app');
+const app = createApp(App)
 
-const theme = Vue.observable({ theme: '' })
-
-Object.defineProperty(Vue.prototype, '$theme', {
-  get () {
-    return theme.theme
+Object.defineProperty(app.config.globalProperties, '$theme', {
+  get() {
+    return themeState.theme
   },
-  set (value) {
-    theme.theme = value
-  }
+  set(value: string) {
+    themeState.theme = value
+  },
 })
+
+app.use(createPinia()).mount('#app')
