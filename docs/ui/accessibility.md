@@ -56,8 +56,6 @@ Web accessibility means designing and developing websites, tools, and technologi
 - **Screen Readers**: NVDA, JAWS, VoiceOver, TalkBack
 - **Color Contrast**: WCAG AA (4.5:1 normal text, 3:1 large text)
 
-## References
-- [1] https://www.w3.org/WAI/fundamentals/accessibility-intro/
 ## Code Examples
 
 ### Basic Example: Semantic HTML vs Non-Semantic HTML
@@ -718,351 +716,35 @@ function submitForm() {
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What's the difference between semantic HTML and ARIA?</summary>
+{% include quiz.html id="accessibility-1"
+   question="What is the essential difference between semantic HTML and ARIA?"
+   options="A|ARIA is newer and should be preferred over HTML;B|Semantic HTML provides real behavior (keyboard, focus, AT semantics) automatically, while ARIA only adds meaning without behavior — you still have to add the keyboard handlers yourself;C|ARIA is used only in React apps;D|They are interchangeable"
+   correct="B"
+   explanation="The first rule of ARIA is &quot;don't use ARIA.&quot; &lt;button&gt; gets Tab/Enter/Space, focus, and role=button for free. A &lt;div role=&quot;button&quot;&gt; needs tabindex, keydown handlers, and the role all wired manually." %}
 
-**Answer:** **Semantic HTML adds functionality; ARIA only adds semantics for assistive technology.**
+{% include quiz.html id="accessibility-2"
+   question="Which of these is the correct way to make a custom dropdown usable by a screen reader and keyboard?"
+   options="A|Add a click handler and hope for the best;B|Wrap it in a &lt;details&gt; element;C|Use aria-haspopup / aria-expanded / aria-controls on the trigger, role=&quot;listbox&quot; on the menu, keyboard handlers for arrows/Enter/Escape, and proper focus management;D|Rely on CSS :focus-visible alone"
+   correct="C"
+   explanation="A custom dropdown needs ARIA states on trigger and list, keyboard handling for Up/Down/Enter/Escape, and focus moved into the listbox when open and back to the trigger on close." %}
 
-```html
-<!-- Semantic HTML -->
-<button onclick="handleClick()">Click me</button>
-<!-- Automatically gets:
-  - Keyboard navigation (Tab, Enter, Space)
-  - Focus visible
-  - Screen reader announces "Click me, button"
-  - Native button behavior
--->
+{% include quiz.html id="accessibility-3"
+   question="What three things must a modal dialog do to trap focus correctly?"
+   options="A|Save the previously focused element, move focus into the modal, and on close restore focus to the saved element (plus wrap Tab/Shift+Tab inside the modal);B|Nothing — browsers handle modals automatically;C|Disable Tab globally while the modal is open;D|Only prevent scroll"
+   correct="A"
+   explanation="Without this pattern, Tab leaks behind the overlay, users lose their place on close, and screen readers get disoriented." %}
 
-<!-- ARIA on div (you must add everything manually) -->
-<div
-  role="button"
-  tabindex="0"
-  onclick="handleClick()"
-  onkeydown="if(event.key==='Enter'||event.key===' ')handleClick()">
-  Click me
-</div>
-<!-- ARIA role="button" tells screen reader it's a button,
-     but YOU must add keyboard handlers, focus, etc. -->
-```
+{% include quiz.html id="accessibility-4"
+   question="When should you use aria-live=&quot;assertive&quot; vs aria-live=&quot;polite&quot;?"
+   options="A|Use assertive for everything so users never miss a message;B|Use assertive for urgent interruptions (form errors, auth failures) and polite for status updates (loading, counts, success toasts) so the screen reader finishes what it was saying first;C|They have no practical difference;D|Only use assertive for animations"
+   correct="B"
+   explanation="Assertive interrupts the current speech; overuse trains users to tune it out. Reserve it for things that change what the user should do right now." %}
 
-**When to use ARIA:**
-- Custom widgets without semantic HTML equivalent (tabs, accordions, tree views)
-- Enhanced semantics (`aria-current="page"`, `aria-expanded`, `aria-invalid`)
-- Live regions (`aria-live="polite"` for announcements)
-
-**First rule of ARIA: Don't use ARIA**
-- Use semantic HTML when possible
-- ARIA doesn't change behavior, only semantics
-- Incorrect ARIA is worse than no ARIA
-
-**Why it matters:** ARIA is a last resort. Semantic HTML is simpler and more robust.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> How do you make a custom dropdown accessible?</summary>
-
-**Answer:** **Use roles, keyboard navigation, focus management, and ARIA states.**
-
-```html
-<label id="fruit-label">Choose a fruit</label>
-
-<div class="dropdown">
-  <!-- Button to open dropdown -->
-  <button
-    id="fruit-button"
-    aria-labelledby="fruit-label"
-    aria-haspopup="listbox"
-    aria-expanded="false"
-    aria-controls="fruit-list">
-    Select fruit
-    <span aria-hidden="true">▼</span>
-  </button>
-  
-  <!-- Listbox (hidden by default) -->
-  <ul
-    id="fruit-list"
-    role="listbox"
-    aria-labelledby="fruit-label"
-    tabindex="-1"
-    hidden>
-    <li role="option" data-value="apple">Apple</li>
-    <li role="option" data-value="banana">Banana</li>
-    <li role="option" data-value="orange">Orange</li>
-  </ul>
-</div>
-
-<script>
-const button = document.getElementById('fruit-button');
-const listbox = document.getElementById('fruit-list');
-const options = listbox.querySelectorAll('[role="option"]');
-let selectedIndex = -1;
-
-// Open/close on click
-button.addEventListener('click', () => {
-  const expanded = button.getAttribute('aria-expanded') === 'true';
-  button.setAttribute('aria-expanded', !expanded);
-  listbox.hidden = expanded;
-  
-  if (!expanded) {
-    listbox.focus();  // Move focus to listbox
-  }
-});
-
-// Keyboard navigation in listbox
-listbox.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    selectedIndex = Math.min(selectedIndex + 1, options.length - 1);
-    focusOption(selectedIndex);
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    selectedIndex = Math.max(selectedIndex - 1, 0);
-    focusOption(selectedIndex);
-  } else if (e.key === 'Enter') {
-    selectOption(selectedIndex);
-  } else if (e.key === 'Escape') {
-    closeDropdown();
-  }
-});
-
-function focusOption(index) {
-  options.forEach((opt, i) => {
-    opt.setAttribute('aria-selected', i === index);
-  });
-  options[index].scrollIntoView({ block: 'nearest' });
-}
-
-function selectOption(index) {
-  button.textContent = options[index].textContent;
-  closeDropdown();
-}
-
-function closeDropdown() {
-  button.setAttribute('aria-expanded', 'false');
-  listbox.hidden = true;
-  button.focus();  // Return focus to button
-}
-</script>
-```
-
-**Why it matters:** Custom dropdowns without proper accessibility are unusable to keyboard and screen reader users.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> How do you trap focus in a modal dialog?</summary>
-
-**Answer:** **Save previous focus, move focus into modal, trap Tab key, restore focus on close.**
-
-```javascript
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  const previousFocus = document.activeElement;  // Save current focus
-  
-  modal.hidden = false;
-  modal.setAttribute('aria-hidden', 'false');
-  
-  // Get focusable elements in modal
-  const focusableElements = modal.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
-  
-  // Move focus to first element in modal
-  firstElement.focus();
-  
-  // Trap focus
-  function trapFocus(e) {
-    if (e.key === 'Tab') {
-      if (e.shiftKey) {  // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();  // Wrap to last element
-        }
-      } else {  // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();  // Wrap to first element
-        }
-      }
-    } else if (e.key === 'Escape') {
-      closeModal();
-    }
-  }
-  
-  modal.addEventListener('keydown', trapFocus);
-  
-  function closeModal() {
-    modal.hidden = true;
-    modal.setAttribute('aria-hidden', 'true');
-    modal.removeEventListener('keydown', trapFocus);
-    previousFocus.focus();  // Restore focus to trigger element
-  }
-  
-  // Close button
-  modal.querySelector('.close-button').addEventListener('click', closeModal);
-}
-```
-
-**Why it matters:** Without focus trap, Tab moves focus behind modal, confusing users and breaking keyboard navigation.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What are ARIA live regions and when should you use them?</summary>
-
-**Answer:** **ARIA live regions announce dynamic content changes to screen readers.**
-
-```html
-<!-- Polite announcements (wait for user to pause) -->
-<div aria-live="polite" aria-atomic="true" class="sr-only" id="status">
-  <!-- Screen reader announces when content changes -->
-</div>
-
-<!-- Assertive announcements (interrupt immediately) -->
-<div aria-live="assertive" aria-atomic="true" class="sr-only" id="alert">
-  <!-- For urgent messages -->
-</div>
-
-<script>
-// Use case 1: Form validation errors
-function showError(message) {
-  const alert = document.getElementById('alert');
-  alert.textContent = message;
-  // Screen reader announces immediately: "Error: Email is required"
-}
-
-// Use case 2: Search results loading
-function updateSearchStatus(count) {
-  const status = document.getElementById('status');
-  status.textContent = `Found ${count} results`;
-  // Screen reader announces when user pauses: "Found 42 results"
-}
-
-// Use case 3: Adding items to cart
-function addToCart(productName) {
-  const status = document.getElementById('status');
-  status.textContent = `${productName} added to cart`;
-  // Announces: "Laptop added to cart"
-}
-
-// Use case 4: Loading states
-async function loadData() {
-  const status = document.getElementById('status');
-  status.textContent = 'Loading...';
-  
-  const data = await fetch('/api/data');
-  status.textContent = 'Data loaded successfully';
-}
-</script>
-
-<!-- aria-atomic="true" vs "false" -->
-<div aria-live="polite" aria-atomic="true">
-  <span>Items:</span> <span id="count">5</span>
-  <!-- aria-atomic="true": Announces entire region ("Items: 5") -->
-</div>
-
-<div aria-live="polite" aria-atomic="false">
-  <span>Items:</span> <span id="count">5</span>
-  <!-- aria-atomic="false": Announces only changed node ("5") -->
-</div>
-
-<!-- role="alert" (shorthand for aria-live="assertive") -->
-<div role="alert">
-  Form submitted successfully!
-  <!-- Auto-announces immediately -->
-</div>
-
-<!-- role="status" (shorthand for aria-live="polite") -->
-<div role="status">
-  5 items in cart
-  <!-- Announces when user pauses -->
-</div>
-```
-
-**When to use:**
-- Form validation errors (assertive)
-- Loading states (polite)
-- Search result counts (polite)
-- Success messages (polite/assertive depending on urgency)
-
-**Why it matters:** Without live regions, screen reader users miss dynamic content updates.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you ensure sufficient color contrast?</summary>
-
-**Answer:** **Follow WCAG AA contrast ratios: 4.5:1 for normal text, 3:1 for large text.**
-
-```css
-/* ❌ BAD: Insufficient contrast */
-.bad-contrast {
-  color: #888;  /* Light gray text */
-  background: #fff;  /* White background */
-  /* Contrast: 2.85:1 (fails WCAG AA) */
-}
-
-/* ✅ GOOD: Sufficient contrast */
-.good-contrast {
-  color: #333;  /* Dark gray text */
-  background: #fff;  /* White background */
-  /* Contrast: 12.63:1 (passes WCAG AAA) */
-}
-
-/* Large text (18pt+ or 14pt+ bold) needs only 3:1 */
-.large-text {
-  font-size: 24px;
-  color: #767676;  /* Medium gray */
-  background: #fff;
-  /* Contrast: 4.54:1 (passes WCAG AA for large text) */
-}
-
-/* Button states must also have sufficient contrast */
-.button {
-  color: #fff;
-  background: #0066cc;  /* Blue background */
-  /* Contrast: 8.59:1 (passes) */
-}
-
-.button:hover {
-  background: #0052a3;  /* Darker blue */
-  /* Must still maintain 4.5:1 */
-}
-
-.button:focus {
-  outline: 2px solid #0066cc;
-  outline-offset: 2px;
-  /* Focus indicator must have 3:1 contrast with background */
-}
-
-/* ❌ BAD: Relying only on color */
-.error {
-  color: red;  /* Color-blind users can't distinguish */
-}
-
-/* ✅ GOOD: Color + icon/text */
-.error {
-  color: #d32f2f;
-  /* Also add icon or text label */
-}
-
-.error::before {
-  content: '⚠ ';
-  /* Icon provides additional cue */
-}
-
-/* Check contrast with browser DevTools or online tools:
-   - Chrome DevTools (Inspect > Accessibility pane)
-   - WebAIM Contrast Checker: https://webaim.org/resources/contrastchecker/
-   - Stark plugin for Figma/Sketch
-*/
-```
-
-**WCAG Levels:**
-- **AA (minimum)**: 4.5:1 normal text, 3:1 large text (18pt+ or 14pt+ bold)
-- **AAA (enhanced)**: 7:1 normal text, 4.5:1 large text
-
-**Why it matters:** Low contrast makes text unreadable for users with low vision or color blindness.
-</details>
+{% include quiz.html id="accessibility-5"
+   question="What is the WCAG AA minimum contrast ratio for normal body text?"
+   options="A|3 to 1;B|4.5 to 1;C|7 to 1;D|There is no minimum"
+   correct="B"
+   explanation="AA requires 4.5:1 for normal text and 3:1 for large text (18pt or 14pt bold). AAA bumps those to 7:1 and 4.5:1 respectively." %}
 
 ## References
 
