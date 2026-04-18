@@ -16,11 +16,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  ci:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +59,15 @@ jobs:
         with:
           path: docs/_site
 
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push'
         id: deployment
         uses: actions/deploy-pages@v4
