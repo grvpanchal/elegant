@@ -60,7 +60,7 @@ describe('<Skeleton />', () => {
       </TestProvider>,
     );
     const skeleton = document.querySelector('.skeleton');
-    expect(skeleton).toHaveStyle('background-color: red');
+    expect(skeleton.getAttribute('style')).toContain('background-color: red');
   });
 
   it('Merges style prop with height and width', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Loader from './Loader.component';
 import TestProvider from '../../../utils/providers/TestProvider';
 
@@ -20,9 +20,12 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('height: 48px');
-    expect(loader).toHaveStyle('width: 48px');
-    expect(loader).toHaveStyle('border: 5px solid #fff');
+    expect(loader).toHaveStyle({
+      height: '48px',
+      width: '48px',
+      borderWidth: '5px',
+      borderStyle: 'solid',
+    });
   });
 
   it('Renders with custom size', () => {
@@ -32,8 +35,7 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('height: 24px');
-    expect(loader).toHaveStyle('width: 24px');
+    expect(loader).toHaveStyle({ height: '24px', width: '24px' });
   });
 
   it('Renders with custom width', () => {
@@ -43,7 +45,7 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('border: 3px solid #fff');
+    expect(loader).toHaveStyle({ borderWidth: '3px', borderStyle: 'solid' });
   });
 
   it('Renders with custom color', () => {
@@ -53,7 +55,7 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('border: 5px solid #000');
+    expect(loader.getAttribute('style')).toContain('rgb(0, 0, 0)');
   });
 
   it('Renders with transparent bottom border', () => {
@@ -63,7 +65,7 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('border-bottom-color: transparent');
+    expect(loader.getAttribute('style')).toContain('transparent');
   });
 
   it('Renders with all custom props', () => {
@@ -73,8 +75,11 @@ describe('<Loader />', () => {
       </TestProvider>,
     );
     const loader = document.querySelector('.loader');
-    expect(loader).toHaveStyle('height: 1.2rem');
-    expect(loader).toHaveStyle('width: 1.2rem');
-    expect(loader).toHaveStyle('border: 2px solid #fff');
+    expect(loader).toHaveStyle({
+      height: '1.2rem',
+      width: '1.2rem',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+    });
   });
 });

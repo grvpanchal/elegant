@@ -3,7 +3,7 @@ import "./Loader.style.css";
 export default function Loader({ size, width, color }) {
   return (
     <span
-      class="loader"
+      className="loader"
       style={{
         height: size || "48px",
         width: size || "48px",

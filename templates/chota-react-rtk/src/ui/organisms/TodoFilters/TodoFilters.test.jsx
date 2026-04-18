@@ -11,7 +11,7 @@ describe('<TodoFilters />', () => {
   ];
 
   const events = {
-    onTodoFilterUpdate: jest.fn(),
+    onTodoFilterUpdate: vi.fn(),
   };
 
   it('Renders successfully without error', () => {

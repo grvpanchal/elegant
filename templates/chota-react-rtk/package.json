@@ -3,60 +3,42 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.9.7",
-    "chota": "^0.9.2",
-    "elegant": "file:../..",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.1.2",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:storybook/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "chota": "^0.9.2",
+    "elegant": "file:../..",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.4.5",
-    "@storybook/addon-interactions": "^7.4.5",
-    "@storybook/addon-links": "^7.4.5",
-    "@storybook/addon-onboarding": "^1.0.8",
-    "@storybook/blocks": "^7.4.5",
-    "@storybook/preset-create-react-app": "^7.4.5",
-    "@storybook/react": "^7.4.5",
-    "@storybook/react-webpack5": "^7.4.5",
-    "@storybook/testing-library": "^0.2.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "babel-plugin-named-exports-order": "^0.0.2",
-    "eslint-plugin-storybook": "^0.6.14",
+    "@storybook/addon-a11y": "^10.3.5",
+    "@storybook/addon-docs": "^10.3.5",
+    "@storybook/addon-links": "^10.3.5",
+    "@storybook/addon-onboarding": "^10.3.5",
+    "@storybook/react": "^10.3.5",
+    "@storybook/react-vite": "^10.3.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/coverage-v8": "^4.1.4",
+    "eslint-plugin-storybook": "^10.3.5",
+    "jsdom": "^29.0.2",
     "prop-types": "^15.8.1",
-    "storybook": "^7.4.5",
-    "webpack": "^5.88.2"
+    "storybook": "^10.3.5",
+    "vite": "^8.0.8",
+    "vitest": "^4.1.4"
   }
 }

@@ -40,7 +40,7 @@ describe('<FilterGroup />', () => {
   });
 
   it('Calls onFilterClick with correct id when a filter is clicked', () => {
-    const onFilterClick = jest.fn();
+    const onFilterClick = vi.fn();
     render(
       <TestProvider>
         <FilterGroup filterItems={filterItems} onFilterClick={onFilterClick} />

@@ -36,7 +36,7 @@ describe('<Link />', () => {
   });
 
   it('Calls onClick when clicked', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(
       <TestProvider>
         <Link isActive={false} onClick={onClick}>Click Me</Link>

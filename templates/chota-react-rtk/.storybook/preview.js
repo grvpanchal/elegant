@@ -3,7 +3,6 @@ import '../src/ui/theme.css';
 
 const preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -11,6 +10,7 @@ const preview = {
       },
     },
   },
+  tags: ['autodocs'],
 };
 
 export default preview;
