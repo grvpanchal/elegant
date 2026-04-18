@@ -354,331 +354,6 @@ console.log(div.dataset.userId);  // "123" ✓
 
 **Why it matters:** HTML attributes are case-insensitive. Use kebab-case in HTML, access as camelCase via dataset.
 
-## Quick Quiz
-
-<details>
-<summary><strong>Question 1:</strong> What's the difference between attributes and properties?</summary>
-
-**Answer:** **Attributes are in HTML; properties are in JavaScript DOM objects:**
-
-```html
-<input type="text" value="initial" class="input-field">
-
-<script>
-const input = document.querySelector('input');
-
-// ATTRIBUTES (in HTML, via getAttribute/setAttribute)
-console.log(input.getAttribute('value'));  // "initial"
-console.log(input.getAttribute('class'));  // "input-field"
-console.log(input.getAttribute('type'));   // "text"
-
-// PROPERTIES (in JavaScript DOM object)
-console.log(input.value);      // "initial" (initially)
-console.log(input.className);  // "input-field" (note: className not class)
-console.log(input.type);       // "text"
-
-// User types "hello"
-// Property changes, attribute doesn't
-console.log(input.value);               // "hello" (property updated)
-console.log(input.getAttribute('value'));  // "initial" (attribute unchanged)
-
-// Some properties sync both ways
-input.className = 'new-class';
-console.log(input.getAttribute('class'));  // "new-class" (synced)
-
-// Some are one-way (property → attribute)
-input.id = 'my-input';
-console.log(input.getAttribute('id'));  // "my-input" (synced)
-
-// Some don't sync (value, checked)
-input.value = 'changed';
-console.log(input.getAttribute('value'));  // Still "initial"
-</script>
-```
-
-**Key differences:**
-- **Attributes**: HTML strings, case-insensitive, initial values
-- **Properties**: JavaScript values (any type), case-sensitive, current values
-
-**Why it matters:** Frameworks use properties for data binding. Understanding attribute/property relationship prevents bugs.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> How do boolean attributes work?</summary>
-
-**Answer:** **Presence = true, absence = false. Value doesn't matter:**
-
-```html
-<!-- All these are TRUE (disabled) -->
-<button disabled>Button 1</button>
-<button disabled="">Button 2</button>
-<button disabled="disabled">Button 3</button>
-<button disabled="false">Button 4</button>  <!-- Still true! -->
-<button disabled="no">Button 5</button>     <!-- Still true! -->
-
-<!-- Only this is FALSE (enabled) -->
-<button>Button 6</button>  <!-- No disabled attribute -->
-
-<script>
-const button = document.querySelector('button');
-
-// Check boolean attribute
-if (button.hasAttribute('disabled')) {
-  console.log('Disabled!');
-}
-
-// Or use property (returns actual boolean)
-if (button.disabled) {
-  console.log('Disabled!');
-}
-
-// Setting boolean attributes
-
-// ❌ WRONG
-button.setAttribute('disabled', 'false');  // Still true! Attribute present
-button.setAttribute('disabled', false);    // Still true! Converts to string "false"
-
-// ✅ RIGHT
-button.removeAttribute('disabled');  // Now false (absent)
-button.setAttribute('disabled', '');  // Now true (present)
-
-// Or use property (recommended)
-button.disabled = true;   // Adds attribute
-button.disabled = false;  // Removes attribute
-
-console.log(button.hasAttribute('disabled'));  // false
-console.log(button.disabled);  // false
-</script>
-```
-
-**Common boolean attributes:**
-- `checked`, `disabled`, `readonly`, `required`
-- `selected`, `hidden`, `multiple`
-- `autofocus`, `autoplay`, `loop`, `muted`
-
-**Why it matters:** Setting boolean attribute to "false" string doesn't disable it. Use property or removeAttribute.
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> What are data attributes and when should you use them?</summary>
-
-**Answer:** **data-* attributes store custom data on elements without polluting namespace:**
-
-```html
-<!-- Store custom data -->
-<article
-  data-post-id="12345"
-  data-author="Alice"
-  data-published="2024-01-10"
-  data-tags="javascript,html,css"
-  data-likes="42">
-  <h2>Article Title</h2>
-</article>
-
-<script>
-const article = document.querySelector('article');
-
-// Access via dataset (camelCase)
-console.log(article.dataset.postId);     // "12345"
-console.log(article.dataset.author);     // "Alice"
-console.log(article.dataset.published);  // "2024-01-10"
-console.log(article.dataset.tags);       // "javascript,html,css"
-console.log(article.dataset.likes);      // "42" (string!)
-
-// Set data attributes
-article.dataset.likes = '43';
-article.dataset.viewCount = '100';
-// Creates: data-likes="43" data-view-count="100"
-
-// Parse data as needed
-const likes = parseInt(article.dataset.likes);
-const tags = article.dataset.tags.split(',');
-const publishedDate = new Date(article.dataset.published);
-
-// Delete data attribute
-delete article.dataset.likes;
-// Or
-article.removeAttribute('data-likes');
-</script>
-```
-
-**When to use data attributes:**
-
-**✅ Good use cases:**
-```javascript
-// 1. Store IDs for event delegation
-<button class="delete" data-item-id="123">Delete</button>
-
-// 2. Configuration for JavaScript
-<div data-carousel data-auto-play="true" data-interval="3000"></div>
-
-// 3. State management
-<div data-state="loading" data-progress="50"></div>
-
-// 4. Metadata for analytics
-<button data-track="click" data-category="cta" data-label="signup">Sign Up</button>
-```
-
-**❌ Avoid:**
-```javascript
-// Don't store large objects (use JavaScript variables)
-data-config='{"users":[...1000 items...]}'
-
-// Don't store sensitive data (visible in HTML)
-data-password="secret123"
-data-api-key="abc123xyz"
-
-// Don't use instead of semantic HTML
-<div data-link="/about">About</div>  // Use <a href="/about">
-```
-
-**Why it matters:** data-* attributes provide clean way to attach custom data without conflicts or invalid HTML.
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> What are ARIA attributes and why are they important?</summary>
-
-**Answer:** **ARIA (Accessible Rich Internet Applications) attributes improve accessibility for screen readers:**
-
-```html
-<!-- Button that toggles menu -->
-<button
-  id="menu-btn"
-  aria-expanded="false"
-  aria-controls="menu"
-  aria-label="Open navigation menu">
-  ☰
-</button>
-
-<nav id="menu" aria-labelledby="menu-btn" hidden>
-  <!-- Menu items -->
-</nav>
-
-<script>
-const menuBtn = document.getElementById('menu-btn');
-const menu = document.getElementById('menu');
-
-menuBtn.addEventListener('click', () => {
-  const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
-  
-  // Toggle state
-  menuBtn.setAttribute('aria-expanded', !expanded);
-  menu.hidden = expanded;
-  
-  // Screen reader announces: "Open navigation menu, button, collapsed/expanded"
-});
-</script>
-
-<!-- Form with validation -->
-<label for="email">Email</label>
-<input
-  type="email"
-  id="email"
-  aria-required="true"
-  aria-invalid="false"
-  aria-describedby="email-error">
-<span id="email-error" role="alert" aria-live="assertive"></span>
-
-<!-- Custom dropdown -->
-<div role="combobox" aria-expanded="false" aria-haspopup="listbox">
-  <input type="text" aria-autocomplete="list">
-  <ul role="listbox" hidden>
-    <li role="option">Option 1</li>
-    <li role="option" aria-selected="true">Option 2</li>
-  </ul>
-</div>
-
-<!-- Loading state -->
-<div aria-busy="true" aria-live="polite">
-  Loading content...
-</div>
-```
-
-**Common ARIA attributes:**
-
-**States and Properties:**
-- `aria-expanded` - Element is expanded/collapsed
-- `aria-selected` - Element is selected
-- `aria-checked` - Checkbox/radio state
-- `aria-disabled` - Element is disabled
-- `aria-invalid` - Input has validation error
-- `aria-busy` - Element is loading
-
-**Relationships:**
-- `aria-labelledby` - Labeled by another element
-- `aria-describedby` - Described by another element
-- `aria-controls` - Controls another element
-- `aria-owns` - Owns child elements
-
-**Live Regions:**
-- `aria-live="polite|assertive"` - Announces changes
-- `aria-atomic="true|false"` - Announce entire region or changes
-
-**Why it matters:** ARIA makes interactive JavaScript widgets accessible. Without ARIA, screen readers can't understand custom controls.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you avoid XSS vulnerabilities with attributes?</summary>
-
-**Answer:** **Sanitize user input; avoid innerHTML and eval-like attributes:**
-
-```javascript
-// ❌ DANGEROUS: XSS vulnerability
-const userInput = getUserInput();  // "<img src=x onerror=alert('XSS')>"
-
-element.innerHTML = `<div class="${userInput}"></div>`;
-// Executes script!
-
-element.setAttribute('onclick', userInput);
-// Executes script!
-
-// ✅ SAFE: Escape or use textContent
-function escapeHTML(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-const safe = escapeHTML(userInput);
-element.innerHTML = `<div class="${safe}"></div>`;
-// Renders: <div class="&lt;img src=x onerror=alert('XSS')&gt;"></div>
-
-// Or use textContent (safest)
-element.textContent = userInput;
-
-// Or create elements
-const div = document.createElement('div');
-div.className = userInput;  // Safe - treats as text
-element.appendChild(div);
-
-// Safe attribute setting
-element.setAttribute('data-user-name', userInput);  // Safe
-element.dataset.userName = userInput;  // Safe
-
-// ❌ NEVER use user input in these attributes
-element.setAttribute('onclick', userInput);  // Executes code!
-element.setAttribute('href', userInput);     // javascript: URLs execute
-element.setAttribute('src', userInput);      // Can load malicious scripts
-
-// ✅ Validate and sanitize URLs
-function isSafeURL(url) {
-  const allowed = ['http:', 'https:', 'mailto:'];
-  try {
-    const parsed = new URL(url, window.location.href);
-    return allowed.includes(parsed.protocol);
-  } catch {
-    return false;
-  }
-}
-
-if (isSafeURL(userInput)) {
-  link.href = userInput;
-}
-```
-
-**Why it matters:** Unsanitized attributes enable XSS attacks. Always escape user input or use safe DOM methods.
-</details>
-
 ## Boolean Attributes
 
 Boolean Attributes (e.g. `required`, `readonly`, `disabled`). If a boolean attribute is present, its value is true, and if it's absent, its value is false. HTML defines restrictions on the allowed values of boolean attributes: If the attribute is present, its value must either be the empty string (equivalently, the attribute may have an unassigned value), or a value that is an ASCII case-insensitive match for the attribute's canonical name, with no leading or trailing whitespace.
@@ -707,6 +382,38 @@ All event handler attributes accept a string. The string will be used to synthes
 <!-- The synthesized handler has a name; you can reference itself -->
 <div onclick="console.log(onclick)">Click me!</div>
 ```
+
+## Quick Quiz
+
+{% include quiz.html id="attributes-1"
+   question="What is the difference between an HTML attribute and a JS property on a DOM element?"
+   options="A|They are always the same thing;B|Attributes are declared in HTML and reflect the initial value; properties are live JS fields on the DOM node. For many (value, checked, href) they diverge after user interaction — the attribute stays at its initial value, the property tracks the current one;C|Attributes are slower to read;D|Properties only exist in React"
+   correct="B"
+   explanation="Use getAttribute()/setAttribute() when you need HTML semantics or data attributes. Use the property (element.value, element.checked) when you want current runtime state." %}
+
+{% include quiz.html id="attributes-2"
+   question="How do boolean attributes in HTML work?"
+   options="A|You set them to &quot;true&quot; or &quot;false&quot;;B|Their presence alone is truthy — &lt;input disabled&gt;, &lt;input disabled=&quot;&quot;&gt;, and &lt;input disabled=&quot;disabled&quot;&gt; all mean disabled. To turn them off, remove the attribute entirely;C|They don't exist in HTML;D|They only work on form elements"
+   correct="B"
+   explanation="`disabled=&quot;false&quot;` is a classic footgun — it's still disabled because the attribute is present. Use removeAttribute or the property (el.disabled = false) to clear it." %}
+
+{% include quiz.html id="attributes-3"
+   question="What are data-* attributes best used for?"
+   options="A|Styling;B|Storing small amounts of custom data on an element that JS can read via dataset.* — useful for component hooks, test ids, and feature flags without polluting the standard attribute namespace;C|Replacing global state;D|Replacing JSON APIs"
+   correct="B"
+   explanation="&lt;li data-id=&quot;42&quot;&gt; -> el.dataset.id === '42'. Great for delegation handlers and tests. Don't abuse them as a substitute for real state storage." %}
+
+{% include quiz.html id="attributes-4"
+   question="Why do ARIA attributes matter even when the UI looks fine visually?"
+   options="A|They add fancy animations;B|They convey role, state, and relationship info to assistive technology (screen readers, switch controls) that sighted mouse users never see — without them your nice-looking custom widget is unusable to many users;C|They make the bundle smaller;D|They only affect SEO"
+   correct="B"
+   explanation="A button made from &lt;div onclick&gt; looks fine but a screen reader can't announce it as a button without role=&quot;button&quot; plus keyboard wiring — or, better, just use &lt;button&gt;." %}
+
+{% include quiz.html id="attributes-5"
+   question="What's the safest way to set an href or src from user-controlled input?"
+   options="A|Concatenate it directly into innerHTML;B|Set via setAttribute, validate the URL (reject javascript: / data: schemes you don't intend), and encode untrusted pieces — innerHTML with untrusted strings is the standard XSS vector;C|Use eval();D|URL-encode then base64 it"
+   correct="B"
+   explanation="Always treat user input as untrusted. Use setAttribute / the property setter, validate the URL scheme, and never interpolate untrusted strings into innerHTML." %}
 
 ## References
 
