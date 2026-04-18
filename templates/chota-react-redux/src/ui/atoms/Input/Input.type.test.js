@@ -1,6 +1,6 @@
 import { propTypes } from './Input.type';
 
-jest.mock('./Input.type', () => ({
+vi.mock('./Input.type', () => ({
   propTypes: {
     className: require('prop-types').string,
     id: require('prop-types').string,

@@ -1,6 +1,6 @@
 import { propTypes } from './Image.type';
 
-jest.mock('./Image.type', () => ({
+vi.mock('./Image.type', () => ({
   propTypes: {
     className: require('prop-types').string,
     src: require('prop-types').string.isRequired,

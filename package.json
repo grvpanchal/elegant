@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-demos": "bash demos.sh",
-    "test": "cross-env CI=true concurrently --kill-others-on-fail \"npm install --legacy-peer-deps --prefix templates/chota-angular-ngrx && npm test --prefix templates/chota-angular-ngrx -- --watch=false\" \"npm install --legacy-peer-deps --prefix templates/chota-react-redux && npm test --prefix templates/chota-react-redux\" \"npm install --legacy-peer-deps --prefix templates/chota-react-rtk && npm test --prefix templates/chota-react-rtk\" \"npm install --legacy-peer-deps --prefix templates/chota-react-saga && npm test --prefix templates/chota-react-saga\" \"npm install --legacy-peer-deps --prefix templates/chota-vue-pinia && npm test --prefix templates/chota-vue-pinia\" \"npm install --legacy-peer-deps --prefix templates/chota-wc-saga && npm test --prefix templates/chota-wc-saga\""
+    "test": "cross-env CI=true concurrently --kill-others-on-fail \"npm install --prefix templates/chota-angular-ngrx && npm test --prefix templates/chota-angular-ngrx -- --watch=false\" \"npm install --prefix templates/chota-react-redux && npm test --prefix templates/chota-react-redux\" \"npm install --prefix templates/chota-react-rtk && npm test --prefix templates/chota-react-rtk\" \"npm install --prefix templates/chota-react-saga && npm test --prefix templates/chota-react-saga\" \"npm install --prefix templates/chota-vue-pinia && npm test --prefix templates/chota-vue-pinia\" \"npm install --prefix templates/chota-wc-saga && npm test --prefix templates/chota-wc-saga\""
   },
   "bin": {
     "elegant": "./index.js"

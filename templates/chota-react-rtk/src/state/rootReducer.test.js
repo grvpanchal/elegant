@@ -1,19 +1,10 @@
+import rootReducer from './rootReducer';
+import { createTodo } from './todo/todo.actions';
+import { setVisibilityFilter } from './filters/filters.action';
+import { updateConfig } from './config/config.actions';
+import { SHOW_ALL } from './filters/filters.type';
+
 describe('rootReducer', () => {
-  let rootReducer;
-  let createTodo;
-  let setVisibilityFilter;
-  let updateConfig;
-  let SHOW_ALL;
-
-  beforeEach(() => {
-    jest.resetModules();
-    rootReducer = require('./rootReducer').default;
-    createTodo = require('./todo/todo.actions').createTodo;
-    setVisibilityFilter = require('./filters/filters.action').setVisibilityFilter;
-    updateConfig = require('./config/config.actions').updateConfig;
-    SHOW_ALL = require('./filters/filters.type').SHOW_ALL;
-  });
-
   it('should combine all reducers', () => {
     const state = rootReducer(undefined, { type: 'INIT' });
     expect(state).toHaveProperty('todo');
@@ -47,7 +38,7 @@ describe('rootReducer', () => {
     state = rootReducer(state, updateConfig({ theme: 'dark' }));
 
     expect(state.todo.todoItems).toHaveLength(1);
-    expect(state.filters.find(f => f.id === SHOW_ALL).selected).toBe(true);
+    expect(state.filters.find((f) => f.id === SHOW_ALL).selected).toBe(true);
     expect(state.config.theme).toBe('dark');
   });
 });

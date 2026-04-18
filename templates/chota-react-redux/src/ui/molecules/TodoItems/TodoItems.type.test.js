@@ -1,6 +1,6 @@
 import { propTypes } from './TodoItems.type';
 
-jest.mock('./TodoItems.type', () => ({
+vi.mock('./TodoItems.type', () => ({
   propTypes: {
     todos: require('prop-types').array.isRequired,
     isDisabled: require('prop-types').bool,

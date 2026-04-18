@@ -1,6 +1,6 @@
 import { propTypes } from './Link.type';
 
-jest.mock('./Link.type', () => ({
+vi.mock('./Link.type', () => ({
   propTypes: {
     className: require('prop-types').string,
     isActive: require('prop-types').bool.isRequired,

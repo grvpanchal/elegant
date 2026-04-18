@@ -6,8 +6,7 @@ import { editTodo } from './todo.actions';
 import { useFiltersStore } from '../filters';
 import { getSelectedFilter } from '../filters/filters.selectors';
 
-export const useTodoStore = defineStore({
-  id: 'todo',
+export const useTodoStore = defineStore('todo', {
   state: () => ({ ...intialTodoState }),
   getters: {
     /* istanbul ignore next */
