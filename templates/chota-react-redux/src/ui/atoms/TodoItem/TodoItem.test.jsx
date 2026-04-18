@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/react';
 import TodoItem from './TodoItem.component';
 
 describe('<TodoItem />', () => {
-  const mockOnToggleClick = jest.fn();
-  const mockOnEditClick = jest.fn();
-  const mockOnDeleteClick = jest.fn();
+  const mockOnToggleClick = vi.fn();
+  const mockOnEditClick = vi.fn();
+  const mockOnDeleteClick = vi.fn();
 
   const defaultProps = {
     onToggleClick: mockOnToggleClick,

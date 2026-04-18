@@ -75,7 +75,7 @@ describe('<IconButton />', () => {
   });
 
   it('Calls onClick when clicked', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(
       <TestProvider>
         <IconButton iconName="edit" alt="edit" size="16" onClick={onClick} />

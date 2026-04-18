@@ -3,8 +3,8 @@ import { render, fireEvent } from '@testing-library/react';
 import AddTodoForm from './AddTodoForm.component';
 
 describe('<AddTodoForm />', () => {
-  const mockOnTodoAdd = jest.fn();
-  const mockOnTodoUpdate = jest.fn();
+  const mockOnTodoAdd = vi.fn();
+  const mockOnTodoUpdate = vi.fn();
 
   it('Renders successfully without error', () => {
     const { container } = render(

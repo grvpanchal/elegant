@@ -1,6 +1,6 @@
 import { propTypes } from './IconButton.type';
 
-jest.mock('./IconButton.type', () => ({
+vi.mock('./IconButton.type', () => ({
   propTypes: {
     className: require('prop-types').string,
     alt: require('prop-types').string.isRequired,

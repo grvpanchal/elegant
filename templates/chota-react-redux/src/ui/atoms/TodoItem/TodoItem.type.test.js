@@ -1,6 +1,6 @@
 import { propTypes } from './TodoItem.type';
 
-jest.mock('./TodoItem.type', () => ({
+vi.mock('./TodoItem.type', () => ({
   propTypes: {
     onToggleClick: require('prop-types').func.isRequired,
     completed: require('prop-types').bool.isRequired,

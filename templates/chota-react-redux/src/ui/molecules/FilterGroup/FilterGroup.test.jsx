@@ -4,7 +4,7 @@ import FilterGroup from './FilterGroup.component';
 import TestProvider from '../../../utils/providers/TestProvider';
 
 describe('<FilterGroup />', () => {
-  const mockOnFilterClick = jest.fn();
+  const mockOnFilterClick = vi.fn();
 
   it('Renders successfully without error', () => {
     const { container } = render(

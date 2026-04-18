@@ -3,9 +3,9 @@ import { render, fireEvent } from '@testing-library/react';
 import TodoItems from './TodoItems.component';
 
 describe('<TodoItems />', () => {
-  const mockOnToggleClick = jest.fn();
-  const mockOnEditClick = jest.fn();
-  const mockOnDeleteClick = jest.fn();
+  const mockOnToggleClick = vi.fn();
+  const mockOnEditClick = vi.fn();
+  const mockOnDeleteClick = vi.fn();
 
   const mockTodos = [
     { id: '1', text: 'Todo 1', completed: false },
