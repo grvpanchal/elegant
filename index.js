@@ -26,7 +26,7 @@ const installSuccessMessage = (projectName) => {
   We suggest that you begin by typing:
 
     ${"cd".cyan} ${projectName}
-    ${"npm install --legacy-peer-deps".cyan}
+    ${"npm install".cyan}
     ${"npm start".cyan}
   
   To run the Storybook:

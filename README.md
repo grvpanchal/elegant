@@ -40,7 +40,7 @@ npx elegant chota-wc-saga
 All Boilerplates are equiped with Storybook. So to begin after cloning, you have to
 ```sh
 cd {your-app-name}
-npm install --legacy-peer-deps
+npm install
 npm start
 ```
 To build a production build

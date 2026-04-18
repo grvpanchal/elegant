@@ -115,7 +115,7 @@ All templates include Storybook v7/v8:
 ### Environment Configuration
 - Angular: Separate environments (`environment.ts`, `environment.prod.ts`)
 - React/Vue/Web Components: Use process.env or Vite env files
-- Always use `--legacy-peer-deps` when installing dependencies in generated projects
+- Plain `npm install` works across every template; `--legacy-peer-deps` is no longer needed
 
 ## Cursor/Copilot Rules
 No existing `.cursor/rules/`, `.cursorrules`, or `.github/copilot-instructions.md` files were found in this repository.
