@@ -79,7 +79,7 @@ This document summarizes the comprehensive enhancements made to the Elegant Fron
 
 ### 3. Domain Instructions Files (1 file)
 
-- **[docs/ui/instructions.md](docs/ui/instructions.md)** ⭐ NEW
+- **[docs/ui/skills.md](docs/ui/skills.md)** ⭐ NEW
   - ✅ Navigation structure with quick links (18 UI terminology links)
   - ✅ Sequential learning path (Foundation → Atomic Design → Styling → Advanced)
   - ✅ Terminology entry cards with:
@@ -150,7 +150,7 @@ This document summarizes the comprehensive enhancements made to the Elegant Fron
 ### ✅ UI Domain
 - **Terminology:** atom.md ⭐, component.md ⭐
 - **Codelab:** atom-practical-mastery.md ⭐
-- **Instructions:** instructions.md ⭐
+- **Skills & Learning Path:** skills.md ⭐
 
 ### ✅ Server Domain
 - **Terminology:** api.md ⭐, ssr.md ⭐
@@ -195,8 +195,8 @@ Priority codelabs to create:
 - state-management-patterns.md (State)
 
 ### Phase 4: Complete Domain Instructions
-- **[docs/server/instructions.md](docs/server/instructions.md)** - Server domain learning path
-- **[docs/state/instructions.md](docs/state/instructions.md)** - State domain learning path
+- **[docs/server/skills.md](docs/server/skills.md)** - Server domain learning path
+- **[docs/state/skills.md](docs/state/skills.md)** - State domain learning path
 
 ### Phase 5: Master Navigation Update
 Update **[docs/terminology.md](docs/terminology.md)** with:
@@ -319,7 +319,7 @@ docs/
 ├── ui/
 │   ├── atom.md ⭐ ENHANCED
 │   ├── component.md ⭐ ENHANCED
-│   ├── instructions.md ⭐ NEW
+│   ├── skills.md ⭐ NEW
 │   └── (16 other files - to be enhanced in Phase 2)
 ├── server/
 │   ├── api.md ⭐ ENHANCED
