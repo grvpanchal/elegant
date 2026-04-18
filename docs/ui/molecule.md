@@ -538,233 +538,36 @@ const FormField = ({ label, value, onChange, error, required }) => (
 
 ## Quick Quiz
 
-<details>
-<summary><strong>Question 1:</strong> What is the primary difference between an atom and a molecule in Atomic Design?</summary>
+{% include quiz.html id="molecule-1"
+   question="What is the primary difference between an atom and a molecule in Atomic Design?"
+   options="A|Atoms render, molecules manage state;B|Atoms are single-purpose indivisible units, molecules are purposeful compositions of multiple atoms that form a functional UI pattern;C|Atoms are styled, molecules are unstyled;D|Molecules always fetch data, atoms never do"
+   correct="B"
+   explanation="Atoms (Button, Input, Icon) can't be broken down further without losing meaning. A molecule (SearchBar = Input + Button + Icon) assembles atoms into a reusable pattern with a cohesive purpose." %}
 
-**Answer:** 
-- **Atoms** are the smallest, indivisible UI components that serve a single purpose (Button, Input, Icon, Label)
-- **Molecules** are compositions of multiple atoms working together to form a functional UI pattern (SearchBar = Input + Button + Icon, FormField = Label + Input + ErrorMessage)
+{% include quiz.html id="molecule-2"
+   question="Which of these belongs inside a molecule, and which does NOT?"
+   options="A|UI-only state like dropdown open/closed is fine; data fetching and business logic do NOT belong;B|Everything belongs — molecules should be self-sufficient;C|Only pure markup; not even local UI state is allowed"
+   correct="A"
+   explanation="Molecules can own composition logic and local UI state (e.g., menu open/closed). Data fetching, global state mutations, and routing belong in containers or higher-level components." %}
 
-**Key distinction:** Atoms cannot be broken down further while maintaining meaning, whereas molecules are purposeful combinations of atoms (and sometimes other molecules) that create reusable interface patterns.
+{% include quiz.html id="molecule-3"
+   question="When should you extract a molecule instead of just composing atoms inline?"
+   options="A|As soon as two atoms are placed next to each other;B|Only when the product manager asks;C|When the same atom composition repeats across the app or encodes a cohesive, consistent pattern;D|Only for forms"
+   correct="C"
+   explanation="A molecule earns its keep when the pattern repeats and has a single purpose (FormField, SearchBar, NotificationItem). Extracting once-used combinations just adds files for no reuse gain." %}
 
-**Example:**
-- Atom: `<Button label="Search" />`
-- Molecule: `<SearchBar>` (contains Input atom + Button atom + Icon atom)
+{% include quiz.html id="molecule-4"
+   question="Can a molecule contain other molecules?"
+   options="A|No, molecules may only contain atoms;B|Yes — nested molecules (e.g. Card -> CardHeader) are encouraged when each has independent reuse value, but deep nesting usually signals an organism"
+   correct="B"
+   explanation="Hierarchical composition (Card -> CardHeader -> Image/Title/Badge atoms) is a core part of the methodology. Push to an organism when nesting stops being about cohesion and starts managing multiple concerns." %}
 
-**Why it matters:** Understanding this distinction helps you determine the right level of abstraction for components and prevents creating overly complex atoms or overly simple molecules.
-</details>
-
-<details>
-<summary><strong>Question 2:</strong> Should molecules contain state and logic, or should they be purely presentational?</summary>
-
-**Answer:** **It depends on the type of state and logic:**
-
-**Molecules CAN contain:**
-- **UI-only state** (dropdown open/closed, internal validation)
-- **Composition logic** (combining atoms, conditional rendering)
-- **Event handling** (calling callbacks passed via props)
-
-**Molecules SHOULD NOT contain:**
-- **Data fetching** (API calls, async operations)
-- **Business logic** (calculations, complex validation rules)
-- **Global state** (Redux actions, context mutations)
-- **Routing logic** (navigation, URL manipulation)
-
-**Example:**
-```jsx
-// ✅ GOOD: UI state in molecule
-const Dropdown = ({ options, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false); // UI state OK
-  
-  return (
-    <div>
-      <Button onClick={() => setIsOpen(!isOpen)} />
-      {isOpen && <Menu options={options} onSelect={onSelect} />}
-    </div>
-  );
-};
-
-// ❌ BAD: Business logic in molecule
-const UserDropdown = () => {
-  const [users, setUsers] = useState([]);
-  
-  useEffect(() => {
-    fetch('/api/users').then(/* ... */); // Fetching - should be in container
-  }, []);
-};
-```
-
-**Why it matters:** Keeping molecules focused on presentation and composition makes them reusable, testable, and easier to maintain. Complex logic belongs in [containers](../server/container.html).
-</details>
-
-<details>
-<summary><strong>Question 3:</strong> When should you create a molecule versus using atoms directly?</summary>
-
-**Answer:** Create a molecule when:
-
-1. **The pattern repeats** - You're composing the same atoms together multiple times
-   - Example: Label + Input + ErrorMessage appears in 10+ places → Create FormField molecule
-
-2. **The composition has cohesive purpose** - The atoms work together as a functional unit
-   - Example: Icon + Text + Badge = NotificationItem (not just random atoms)
-
-3. **You want consistent behavior** - The pattern should always work the same way
-   - Example: All search bars should submit on Enter, show icon, have same layout
-
-4. **Atoms alone aren't sufficient** - Single atoms don't provide enough functionality
-   - Example: Just an Input atom doesn't show validation errors or labels
-
-**Don't create a molecule when:**
-- It's used only once (just compose atoms inline)
-- Atoms are unrelated (arbitrary grouping)
-- It would be simpler as an organism or template
-
-**Example decision:**
-```jsx
-// Used once - DON'T make a molecule
-<div>
-  <Button onClick={handleSave} />
-  <Icon name="info" />  // Unrelated, happens to be near button
-</div>
-
-// Repeated pattern - DO make a molecule
-// Pattern: Image + Title + Subtitle appears 20 times
-const MediaItem = ({ image, title, subtitle }) => (
-  <div className="media-item">
-    <Image src={image} size="small" />
-    <div>
-      <Heading level={3}>{title}</Heading>
-      <Text variant="secondary">{subtitle}</Text>
-    </div>
-  </div>
-);
-```
-
-**Why it matters:** Creating molecules at the right granularity prevents both under-abstraction (duplicated code) and over-abstraction (too many single-use components).
-</details>
-
-<details>
-<summary><strong>Question 4:</strong> Can molecules contain other molecules, or only atoms?</summary>
-
-**Answer:** **Yes, molecules can (and often should) contain other molecules.** This creates hierarchical composition:
-
-**Example hierarchy:**
-```
-Card (Molecule)
-├── CardHeader (Molecule)
-│   ├── Image (Atom)
-│   ├── Title (Atom)
-│   └── Badge (Atom)
-├── CardBody (content slot)
-└── CardFooter (Molecule)
-    └── Button (Atom) × multiple
-```
-
-**Benefits of nested molecules:**
-1. **Reusability** - CardHeader can be used in Card, Modal, Drawer
-2. **Testability** - Test CardHeader independently
-3. **Maintainability** - Change header layout in one place
-4. **Clarity** - Clear component boundaries
-
-**Guidelines:**
-- Nest when sub-molecules have independent value
-- Don't nest more than 2-3 levels (becomes organism territory)
-- Each nested molecule should have clear purpose
-
-**When nesting gets too deep, promote to [Organism](organism.html):**
-```jsx
-// This is actually an organism, not a molecule:
-const ComplexDataTable = () => (
-  <Table>
-    <TableHeader />
-    <TableFilters>
-      <SearchBar />
-      <FilterDropdown />
-      <DateRangePicker />
-    </TableFilters>
-    <TableBody>
-      <TableRow /> {/* repeated */}
-    </TableBody>
-    <TablePagination />
-  </Table>
-);
-```
-
-**Why it matters:** Understanding composition depth helps you organize components appropriately and know when to move from molecules to organisms.
-</details>
-
-<details>
-<summary><strong>Question 5:</strong> How do you decide what props a molecule should accept?</summary>
-
-**Answer:** Molecule props should:
-
-**1. Expose atom props that vary:**
-```jsx
-// ✅ GOOD: Expose varying props
-const FormField = ({ 
-  label,           // Varies per field
-  value,           // Varies
-  onChange,        // Varies
-  type = 'text',   // Sometimes varies
-  required = false,// Sometimes varies
-  error            // Varies
-}) => (
-  <div>
-    <Label text={label} required={required} />
-    <Input type={type} value={value} onChange={onChange} />
-    {error && <ErrorMessage text={error} />}
-  </div>
-);
-```
-
-**2. Provide composition options:**
-```jsx
-const Card = ({
-  showHeader = true,    // Toggle sections
-  showFooter = true,
-  variant = 'default',  // Visual variants
-  actions = []          // Flexible action buttons
-}) => { /* ... */ };
-```
-
-**3. Accept callbacks for interactions:**
-```jsx
-const SearchBar = ({
-  onSearch,    // Required callback
-  onChange,    // Required callback
-  onClear      // Optional callback
-}) => { /* ... */ };
-```
-
-**Avoid:**
-- Passing through every possible atom prop (prop explosion)
-- Complex object structures (harder to use)
-- Global state as props (tight coupling)
-
-**Pattern - use rest props for flexibility:**
-```jsx
-const FormField = ({ label, error, ...inputProps }) => (
-  <div>
-    <Label text={label} />
-    <Input {...inputProps} /> {/* Flexible */}
-    {error && <ErrorMessage text={error} />}
-  </div>
-);
-
-// Usage
-<FormField 
-  label="Email" 
-  type="email"
-  value={email}
-  onChange={setEmail}
-  placeholder="you@example.com"  // Passed to Input
-  autoComplete="email"           // Passed to Input
-/>
-```
-
-**Why it matters:** Well-designed props make molecules flexible without being overwhelming. Balance between explicit control and simplicity.
-</details>
+{% include quiz.html id="molecule-5"
+   question="What's the best strategy for molecule props?"
+   options="A|Expose every possible atom prop so nothing is hidden;B|Expose only what varies, accept interaction callbacks, and use rest-props spread onto the inner atom for flexibility;C|Accept the whole Redux state as a prop so the molecule is self-contained"
+   correct="B"
+   explanation="Well-scoped props (label, value, onChange, error, variant) plus a rest-spread onto the core atom keep molecules flexible without prop explosion. Passing global state tightly couples the molecule to your store." %}
 
 ## References
 
-- https://atomicdesign.bradfrost.com/chapter-2/#molecules
+- [Molecules — Atomic Design (Brad Frost)](https://atomicdesign.bradfrost.com/chapter-2/#molecules)
