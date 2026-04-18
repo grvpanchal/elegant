@@ -1,3 +1,5 @@
+import { playwrightLauncher } from '@web/test-runner-playwright';
+
 const filteredLogs = [
   'Running in dev mode',
   'lit-html is in dev mode',
@@ -13,6 +15,15 @@ export default {
     exportConditions: ['browser', 'production'],
   },
 
+  browsers: [
+    playwrightLauncher({
+      product: 'chromium',
+      launchOptions: process.env.WTR_CHROMIUM_PATH
+        ? { executablePath: process.env.WTR_CHROMIUM_PATH }
+        : undefined,
+    }),
+  ],
+
   testRunnerHtml: (testFramework) => `
     <html>
       <body>
@@ -24,7 +35,7 @@ export default {
 
   filterBrowserLogs(log) {
     for (const arg of log.args) {
-      if (typeof arg === 'string' && filteredLogs.some(l => arg.includes(l))) {
+      if (typeof arg === 'string' && filteredLogs.some((l) => arg.includes(l))) {
         return false;
       }
     }
