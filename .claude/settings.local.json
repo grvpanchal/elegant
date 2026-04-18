@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep *)",
+      "WebFetch(domain:skills.sh)",
+      "WebFetch(domain:docs.claude.com)"
+    ]
+  }
+}
