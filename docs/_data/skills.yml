@@ -1,0 +1,38 @@
+# Auto-maintained list of skill slugs that exist under /skills/.
+# Used by _includes/doc-skill-download.html to only render the
+# download widget on docs whose matching SKILL.md exists.
+- server-api
+- server-app-shell
+- server-authentication
+- server-container
+- server-mfe
+- server-page
+- server-protocol
+- server-proxy
+- server-router
+- server-ssg
+- server-ssr
+- state-actions
+- state-ajax
+- state-crud
+- state-middleware
+- state-operations
+- state-reducer
+- state-selectors
+- state-state
+- state-store
+- ui-accessibility
+- ui-atom
+- ui-atomic-design
+- ui-attributes
+- ui-component
+- ui-dom
+- ui-element
+- ui-events
+- ui-molecule
+- ui-organism
+- ui-props
+- ui-skeleton
+- ui-story
+- ui-template
+- ui-theme

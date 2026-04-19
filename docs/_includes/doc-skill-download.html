@@ -1,5 +1,7 @@
 {% assign domain = page.url | split: "/" | slice: 1 | first %}
+{% assign skill_slug = domain | append: "-" | append: page.slug %}
 {% if domain == "ui" or domain == "server" or domain == "state" %}
+{% if site.data.skills contains skill_slug %}
 <div class="skill-alert">
   <div class="skill-alert__content">
     <svg class="skill-alert__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -10,9 +12,9 @@
       <span>Download this Agent Skill (SKILL.md) to drop into <code>~/.claude/skills/</code> or any Agent-Skills-compatible runtime for AI-assisted {{ page.title }} work.</span>
     </div>
   </div>
-  <a href="{{ site.github.repository_url }}/raw/master/skills/{{ domain }}-{{ page.slug }}/SKILL.md"
+  <a href="{{ '/skills/' | append: skill_slug | append: '/SKILL.md' | relative_url }}"
      class="skill-alert__download"
-     download="{{ domain }}-{{ page.slug }}-SKILL.md"
+     download="{{ skill_slug }}-SKILL.md"
      title="Download {{ page.title }} Skill">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
       <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
@@ -20,4 +22,5 @@
     <span>Download</span>
   </a>
 </div>
+{% endif %}
 {% endif %}
