@@ -14,7 +14,7 @@ function updateBoilerplate(e) {
 
 if (window.location.pathname === '/') {
   var textArray = [
-    "Context Engineer",
+    "Context Engineered",
     "SDLC Harnessed",
     "UI UX Oriented",
     "Framework Agnostic",
