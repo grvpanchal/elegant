@@ -1020,31 +1020,31 @@ function RegistrationForm() {
 
 {% include quiz.html id="forms-1"
    question="What's the difference between a controlled and an uncontrolled component in React?"
-   options="A|Controlled components manage their own state internally; uncontrolled receive it via props;B|Controlled components drive the input value from React state (onChange updates state which drives value); uncontrolled components let the DOM hold the value and you read it via ref. Controlled gives fine-grained validation/formatting; uncontrolled has less re-render overhead;C|They are the same;D|Uncontrolled is deprecated"
+   options="A|Controlled components manage their own state internally; uncontrolled receive it via props;;B|Controlled components drive the input value from React state (onChange updates state which drives value); uncontrolled components let the DOM hold the value and you read it via ref. Controlled gives fine-grained validation/formatting; uncontrolled has less re-render overhead;;C|They are the same;;D|Uncontrolled is deprecated"
    correct="B"
    explanation="Controlled = React is the single source of truth. Uncontrolled = the DOM is. Controlled is the default for most forms; uncontrolled shines for large/perf-sensitive forms via libraries like React Hook Form." %}
 
 {% include quiz.html id="forms-2"
    question="What's the most robust client-side validation strategy?"
-   options="A|Only inline onChange checks;B|Validate on blur for per-field feedback, on submit for the whole form, surface errors via aria-describedby/role=alert, and ALWAYS re-validate on the server — client validation is UX, not security;C|Rely only on HTML5 required/pattern;D|Validate only after submit"
+   options="A|Only inline onChange checks;;B|Validate on blur for per-field feedback, on submit for the whole form, surface errors via aria-describedby/role=alert, and ALWAYS re-validate on the server — client validation is UX, not security;;C|Rely only on HTML5 required/pattern;;D|Validate only after submit"
    correct="B"
    explanation="On-blur + on-submit gives the best UX (no noisy errors while typing, clear errors at the moment of intent). Server-side validation is non-negotiable because anyone can bypass the client." %}
 
 {% include quiz.html id="forms-3"
    question="How do you implement async validation (e.g. &quot;is this username taken?&quot;) without hammering the server?"
-   options="A|Fire a request on every keystroke;B|Debounce user input (e.g. 300ms), cancel in-flight requests when the value changes, show a pending state in the UI, and require a final server check on submit;C|Disable the input until submit;D|Only validate on form submit"
+   options="A|Fire a request on every keystroke;;B|Debounce user input (e.g. 300ms), cancel in-flight requests when the value changes, show a pending state in the UI, and require a final server check on submit;;C|Disable the input until submit;;D|Only validate on form submit"
    correct="B"
    explanation="Debounce + abortable fetch prevents request storms and race conditions where an old response overwrites a newer result. Always gate the final action on the server's response." %}
 
 {% include quiz.html id="forms-4"
    question="How should you build a multi-step form?"
-   options="A|Put every field on one page and hide with CSS;B|Model it as a state machine with per-step validation, keep form data in a single parent (lifted state or form-library store), persist progress to localStorage or a draft endpoint so refresh doesn't lose data, and provide clear progress indication + back navigation;C|Submit each step separately;D|Use multiple &lt;form&gt; elements without shared state"
+   options="A|Put every field on one page and hide with CSS;;B|Model it as a state machine with per-step validation, keep form data in a single parent (lifted state or form-library store), persist progress to localStorage or a draft endpoint so refresh doesn't lose data, and provide clear progress indication + back navigation;;C|Submit each step separately;;D|Use multiple <form> elements without shared state"
    correct="B"
    explanation="A single source of truth for the data + step-level validation + draft persistence is the pattern that scales from 3-step sign-ups to 20-step onboarding." %}
 
 {% include quiz.html id="forms-5"
    question="When should you use a form library (React Hook Form, Formik) vs rolling your own?"
-   options="A|Always roll your own for full control;B|For a 2-3 field form, custom is fine and cheaper; for anything with conditional fields, dynamic arrays, async/cross-field validation, or accessibility rigor, a library pays back quickly. React Hook Form is often chosen for performance (uncontrolled under the hood);C|Form libraries are obsolete;D|Only use libraries in Angular"
+   options="A|Always roll your own for full control;;B|For a 2-3 field form, custom is fine and cheaper; for anything with conditional fields, dynamic arrays, async/cross-field validation, or accessibility rigor, a library pays back quickly. React Hook Form is often chosen for performance (uncontrolled under the hood);;C|Form libraries are obsolete;;D|Only use libraries in Angular"
    correct="B"
    explanation="Don't reach for a library reflexively, but don't reinvent validation, field arrays, and accessibility on every project either. The crossover point is typically around 5 fields or any conditional logic." %}
 

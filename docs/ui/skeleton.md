@@ -456,31 +456,31 @@ const UserProfile = ({ userId }) => {
 
 {% include quiz.html id="skeleton-1"
    question="Why do skeleton screens feel faster than traditional loading spinners?"
-   options="A|They literally fetch faster;B|They give the user a perceived structural preview of the content, so the wait feels like the content is almost here rather than an abstract delay — perceived performance, not actual latency;C|Skeletons disable caching;D|Spinners are technically slower to render"
+   options="A|They literally fetch faster;;B|They give the user a perceived structural preview of the content, so the wait feels like the content is almost here rather than an abstract delay — perceived performance, not actual latency;;C|Skeletons disable caching;;D|Spinners are technically slower to render"
    correct="B"
    explanation="Actual network time is unchanged, but a shape that matches the final layout keeps users anchored and reduces the feeling of being stuck." %}
 
 {% include quiz.html id="skeleton-2"
    question="Should a skeleton exactly match the final rendered content?"
-   options="A|Yes — pixel-perfect or it's misleading;B|It should roughly match structure and rhythm (rows, avatar+text, image placeholders) so there's no jarring layout shift when real content arrives, but pixel-perfect matching is unnecessary and brittle;C|No — it should be completely generic;D|Skeletons should show actual content"
+   options="A|Yes — pixel-perfect or it's misleading;;B|It should roughly match structure and rhythm (rows, avatar+text, image placeholders) so there's no jarring layout shift when real content arrives, but pixel-perfect matching is unnecessary and brittle;;C|No — it should be completely generic;;D|Skeletons should show actual content"
    correct="B"
    explanation="The goal is preventing CLS and setting expectations. Obsessing over pixel parity creates maintenance burden and couples the skeleton to details that change often." %}
 
 {% include quiz.html id="skeleton-3"
    question="When should you NOT use a skeleton screen?"
-   options="A|For very short loads (&lt; ~300ms — the flash is worse than nothing), for error states (use an error UI), or for indeterminate background work where a subtle spinner/progress bar is the right signal;B|Never — skeletons are always correct;C|Only on mobile;D|Only when JavaScript is disabled"
+   options="A|For very short loads (< ~300ms — the flash is worse than nothing), for error states (use an error UI), or for indeterminate background work where a subtle spinner/progress bar is the right signal;;B|Never — skeletons are always correct;;C|Only on mobile;;D|Only when JavaScript is disabled"
    correct="A"
    explanation="Skeletons shine for 300ms–few-seconds content loads. Sub-300ms shows a flicker; errors want actionable messaging; background work wants progress indication." %}
 
 {% include quiz.html id="skeleton-4"
    question="How do you implement a skeleton shimmer animation without hurting performance?"
-   options="A|JavaScript setInterval that repaints every 16ms;B|A CSS background gradient animated with transform or background-position, using will-change sparingly and preferring GPU-accelerated properties — no layout thrash, no JS;C|A hand-drawn GIF;D|Animate opacity of hundreds of individual pixels"
+   options="A|JavaScript setInterval that repaints every 16ms;;B|A CSS background gradient animated with transform or background-position, using will-change sparingly and preferring GPU-accelerated properties — no layout thrash, no JS;;C|A hand-drawn GIF;;D|Animate opacity of hundreds of individual pixels"
    correct="B"
    explanation="CSS animation on transform / background-position stays on the compositor thread. JS loops or layout-affecting animations cause unnecessary main-thread work." %}
 
 {% include quiz.html id="skeleton-5"
    question="How should skeletons handle responsive layouts?"
-   options="A|Serve one static skeleton and accept the layout shift;B|Build the skeleton out of the same flex/grid layout primitives as the real component so it naturally follows breakpoints and container queries — that keeps the reserved space accurate at every viewport and avoids CLS when real content lands;C|Only render skeletons on desktop;D|Use JS to compute widths at runtime"
+   options="A|Serve one static skeleton and accept the layout shift;;B|Build the skeleton out of the same flex/grid layout primitives as the real component so it naturally follows breakpoints and container queries — that keeps the reserved space accurate at every viewport and avoids CLS when real content lands;;C|Only render skeletons on desktop;;D|Use JS to compute widths at runtime"
    correct="B"
    explanation="If the skeleton uses the same layout system as the real UI, it mirrors the real layout at every breakpoint automatically." %}
 

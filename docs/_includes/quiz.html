@@ -4,18 +4,21 @@ Reusable MCQ quiz question.
 Usage (in a markdown page):
   {% include quiz.html id="atom-1"
      question="What defines an atom in Atomic Design?"
-     options="A|Manages its own state;B|Has a single responsibility and cannot be decomposed further;C|Always renders a button element;D|Contains at least three child components"
+     options="A|Manages its own state;;B|Has a single responsibility and cannot be decomposed further;;C|Always renders a button element;;D|Contains at least three child components"
      correct="B"
      explanation="Atoms are the smallest functional units—single-purpose components that cannot be broken down without losing meaning." %}
 
 Required params:
   id          — a page-unique slug used for the radio group name and aria ids.
   question    — the prompt (plain text; HTML allowed).
-  options     — semicolon-separated list of "letter|text" pairs (letters A/B/C/D/E …).
+  options     — `;;`-separated list of "letter|text" pairs (letters A/B/C/D/E …).
+                `;;` is used instead of a single `;` so option text can safely
+                contain HTML entities (`&quot;`, `&amp;`, `&lt;`, `&gt;`) and
+                natural-language semicolons without breaking the split.
   correct     — the letter of the correct option.
   explanation — markdown/plain-text shown after submit (HTML allowed).
 {%- endcomment -%}
-{%- assign _opts = include.options | split: ';' -%}
+{%- assign _opts = include.options | split: ';;' -%}
 <form class="quiz-mcq" data-correct="{{ include.correct }}" novalidate>
   <p class="quiz-mcq__question"><strong>{{ include.question }}</strong></p>
   <ul class="quiz-mcq__options" role="radiogroup" aria-labelledby="quiz-{{ include.id }}-q">

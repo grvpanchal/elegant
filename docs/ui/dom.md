@@ -368,31 +368,31 @@ button.remove();
 
 {% include quiz.html id="dom-1"
    question="What is the key difference between textContent and innerHTML when updating a DOM element?"
-   options="A|They are identical;B|textContent sets plain text and is safe for untrusted input; innerHTML parses the value as HTML, so passing untrusted input can lead to XSS and also triggers more expensive parsing/reflow;C|innerHTML is faster for all content;D|textContent runs JavaScript embedded in strings"
+   options="A|They are identical;;B|textContent sets plain text and is safe for untrusted input; innerHTML parses the value as HTML, so passing untrusted input can lead to XSS and also triggers more expensive parsing/reflow;;C|innerHTML is faster for all content;;D|textContent runs JavaScript embedded in strings"
    correct="B"
    explanation="Use textContent for text. Only use innerHTML when you genuinely need to insert markup, and never with unsanitised user input — that's the classic XSS vector." %}
 
 {% include quiz.html id="dom-2"
    question="Which of these actions does NOT cause a DOM reflow?"
-   options="A|Reading element.offsetWidth;B|Changing an element's width in px;C|Toggling `display: none`;D|Changing only the color property"
+   options="A|Reading element.offsetWidth;;B|Changing an element's width in px;;C|Toggling `display: none`;;D|Changing only the color property"
    correct="D"
    explanation="Reflow is triggered by layout-affecting changes (size, position, display) and by layout-reading properties (offset*, getBoundingClientRect). Pure paint changes like color just repaint, not reflow." %}
 
 {% include quiz.html id="dom-3"
    question="What's the practical difference between document.querySelector('#id') and document.getElementById('id')?"
-   options="A|getElementById is faster and returns only an Element or null; querySelector accepts any CSS selector (more flexible, slightly slower) and returns the first match or null;B|They are identical;C|getElementById can match by class too;D|querySelector only works inside React"
+   options="A|getElementById is faster and returns only an Element or null; querySelector accepts any CSS selector (more flexible, slightly slower) and returns the first match or null;;B|They are identical;;C|getElementById can match by class too;;D|querySelector only works inside React"
    correct="A"
    explanation="Use getElementById when you already have the id — it's direct lookup. querySelector is the Swiss-army version when you need a broader selector." %}
 
 {% include quiz.html id="dom-4"
    question="How does event delegation reduce the number of event listeners you need?"
-   options="A|It attaches one listener on a common ancestor and uses event.target to identify which descendant actually triggered the event, so dynamically added children are handled automatically;B|It silently dedupes listeners on the same element;C|It disables bubbling;D|It is a React-only concept"
+   options="A|It attaches one listener on a common ancestor and uses event.target to identify which descendant actually triggered the event, so dynamically added children are handled automatically;;B|It silently dedupes listeners on the same element;;C|It disables bubbling;;D|It is a React-only concept"
    correct="A"
-   explanation="Especially useful for long or dynamic lists — one listener on the &lt;ul&gt; beats a listener per &lt;li&gt;, and new items don't need to be wired up." %}
+   explanation="Especially useful for long or dynamic lists — one listener on the <ul> beats a listener per <li>, and new items don't need to be wired up." %}
 
 {% include quiz.html id="dom-5"
    question="What is a DocumentFragment good for?"
-   options="A|Only for SVG;B|Batching DOM nodes off-DOM and appending them in a single operation, so you pay the reflow/paint cost once instead of once per node;C|Replacing the whole document;D|Loading HTML from a URL"
+   options="A|Only for SVG;;B|Batching DOM nodes off-DOM and appending them in a single operation, so you pay the reflow/paint cost once instead of once per node;;C|Replacing the whole document;;D|Loading HTML from a URL"
    correct="B"
    explanation="Build your subtree in a DocumentFragment, then appendChild it. The fragment itself isn't rendered; the child nodes get moved into the document in a single operation." %}
 

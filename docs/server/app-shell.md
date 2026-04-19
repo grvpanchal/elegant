@@ -870,19 +870,19 @@ function Shell() {
 
 {% include quiz.html id="app-shell-1"
    question="What is the App Shell architecture and when should you choose it over a traditional multi-page app?"
-   options="A|App Shell = a minimal HTML/CSS/JS shell cached aggressively (often by a service worker) with content loaded dynamically after. It shines for dashboards, SaaS, and mobile-first apps where users navigate frequently; an MPA with SSR is usually better for SEO-critical content sites;B|It always beats MPA;C|It is only for iOS;D|It disables caching"
+   options="A|App Shell = a minimal HTML/CSS/JS shell cached aggressively (often by a service worker) with content loaded dynamically after. It shines for dashboards, SaaS, and mobile-first apps where users navigate frequently; an MPA with SSR is usually better for SEO-critical content sites;;B|It always beats MPA;;C|It is only for iOS;;D|It disables caching"
    correct="A"
    explanation="Use App Shell when repeated navigation cost matters more than first-paint SEO. Use MPA/SSR when search-engine discoverability of every page is paramount." %}
 
 {% include quiz.html id="app-shell-2"
    question="What is progressive hydration and what does it solve?"
-   options="A|Hydrating all components on DOMContentLoaded;B|Hydrating components in priority order as they become visible or idle, so TTI isn't blocked by a huge synchronous hydration pass over every component on every page load;C|Disabling hydration entirely;D|A Vue-only feature"
+   options="A|Hydrating all components on DOMContentLoaded;;B|Hydrating components in priority order as they become visible or idle, so TTI isn't blocked by a huge synchronous hydration pass over every component on every page load;;C|Disabling hydration entirely;;D|A Vue-only feature"
    correct="B"
    explanation="Naive hydration ties up the main thread and delays interactivity. Progressive hydration (islands, lazy boundaries, requestIdleCallback) spreads that work out." %}
 
 {% include quiz.html id="app-shell-3"
    question="Why do providers (theme, auth, router, store) live at the App Shell level in a micro-frontend setup?"
-   options="A|So each MFE ships its own provider copies;B|To establish shared context and services ONCE at the shell boundary, so the individual micro-frontends share theme/auth/router/store without each bundling their own and fighting over state;C|Providers are optional at the shell level;D|They don't — providers are per-MFE"
+   options="A|So each MFE ships its own provider copies;;B|To establish shared context and services ONCE at the shell boundary, so the individual micro-frontends share theme/auth/router/store without each bundling their own and fighting over state;;C|Providers are optional at the shell level;;D|They don't — providers are per-MFE"
    correct="B"
    explanation="Elevating providers to the shell keeps the MFEs loosely coupled and avoids state or theme duplication when multiple MFEs render on the same page." %}
 

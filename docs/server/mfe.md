@@ -968,19 +968,19 @@ function Dashboard() {
 
 {% include quiz.html id="mfe-1"
    question="Compare Module Federation and Web Components for integrating micro-frontends. When would you pick each?"
-   options="A|They are identical;B|Module Federation (Webpack/Rspack) dynamically loads ESM at runtime and shares dependencies (React, lodash) as singletons to avoid duplication — best for teams on the same framework version aligned on shared deps. Web Components wrap each MFE as a custom element with its own internal stack — best for framework-heterogeneous teams that need strict isolation at the cost of some bundle duplication;C|Web Components are deprecated;D|Only Module Federation works in production"
+   options="A|They are identical;;B|Module Federation (Webpack/Rspack) dynamically loads ESM at runtime and shares dependencies (React, lodash) as singletons to avoid duplication — best for teams on the same framework version aligned on shared deps. Web Components wrap each MFE as a custom element with its own internal stack — best for framework-heterogeneous teams that need strict isolation at the cost of some bundle duplication;;C|Web Components are deprecated;;D|Only Module Federation works in production"
    correct="B"
    explanation="Module Federation optimises for sharing (less duplication, tighter coupling on deps). Web Components optimise for isolation (more duplication, looser coupling). Pick based on org structure and framework diversity." %}
 
 {% include quiz.html id="mfe-2"
    question="How should authentication be handled across multiple micro-frontends?"
-   options="A|Each MFE ships its own login form and token storage;B|Hoist auth to the shell — shell owns sign-in, token storage (httpOnly refresh cookie + in-memory access token), and exposes an auth context / event bus to MFEs. MFEs read the current user and react to logout broadcasts, but don&apos;t duplicate the login flow. Refresh and rotation happen once, centrally;C|Use cookies only and hope;D|Auth can&apos;t be shared"
+   options="A|Each MFE ships its own login form and token storage;;B|Hoist auth to the shell — shell owns sign-in, token storage (httpOnly refresh cookie + in-memory access token), and exposes an auth context / event bus to MFEs. MFEs read the current user and react to logout broadcasts, but don't duplicate the login flow. Refresh and rotation happen once, centrally;;C|Use cookies only and hope;;D|Auth can't be shared"
    correct="B"
    explanation="Centralising auth prevents inconsistent sessions (logged in here, out there), coordinates token refresh, and keeps the single-sign-on UX coherent across MFEs." %}
 
 {% include quiz.html id="mfe-3"
    question="How do you prevent MFE bundle bloat from killing performance?"
-   options="A|Ship every MFE at once regardless of route;B|Set per-MFE performance budgets; deduplicate shared deps via Module Federation singletons or import maps; lazy-load MFEs on route entry; preload the next likely MFE on hover/idle; audit with tools like bundlewatch / webpack-bundle-analyzer per MFE; treat an MFE&apos;s bundle size as a cross-team contract;C|Only use Web Components;D|Budgets don&apos;t matter"
+   options="A|Ship every MFE at once regardless of route;;B|Set per-MFE performance budgets; deduplicate shared deps via Module Federation singletons or import maps; lazy-load MFEs on route entry; preload the next likely MFE on hover/idle; audit with tools like bundlewatch / webpack-bundle-analyzer per MFE; treat an MFE's bundle size as a cross-team contract;;C|Only use Web Components;;D|Budgets don't matter"
    correct="B"
    explanation="Without per-MFE budgets and shared-dep deduplication, every MFE ships its own React + its own utils — bundle cost scales linearly with MFE count. Lazy loading + preloading + dedup keeps cost sub-linear." %}
 

@@ -231,31 +231,31 @@ const IconButton = ({ onClick, icon, ariaLabel }) => (
 
 {% include quiz.html id="atom-1"
    question="What is the primary characteristic that defines a component as an 'atom' in Atomic Design?"
-   options="A|It manages its own global state;B|It has a single responsibility and cannot be broken down into smaller functional components;C|It always wraps at least three child elements;D|It fetches its own data from an API"
+   options="A|It manages its own global state;;B|It has a single responsibility and cannot be broken down into smaller functional components;;C|It always wraps at least three child elements;;D|It fetches its own data from an API"
    correct="B"
    explanation="Atoms are the smallest functional units of a UI — a button, an input, an icon. Keeping the responsibility single-purpose is what makes them reusable across contexts." %}
 
 {% include quiz.html id="atom-2"
    question="Should an atom component contain API calls and business logic to make it self-sufficient?"
-   options="A|Yes — self-sufficient atoms are easier to drop into any page;B|No — atoms should be purely presentational and receive data via props"
+   options="A|Yes — self-sufficient atoms are easier to drop into any page;;B|No — atoms should be purely presentational and receive data via props"
    correct="B"
    explanation="Business logic, API calls, and state management belong in containers or higher-level components. A button that makes an API call can only be used in one specific scenario; a pure atom can be used anywhere." %}
 
 {% include quiz.html id="atom-3"
    question="Which of these is a well-designed atom?"
-   options="A|A LoginForm with email input, password input, and a submit button;B|A TextInput that accepts `value` and `onChange` props;C|A UserProfile that displays avatar, name, and bio"
+   options="A|A LoginForm with email input, password input, and a submit button;;B|A TextInput that accepts `value` and `onChange` props;;C|A UserProfile that displays avatar, name, and bio"
    correct="B"
    explanation="A is a molecule/organism (combines multiple atoms + business logic). C is a molecule (several display elements bound to a specific data shape). B — a single-purpose text input with a simple interface — is the atom." %}
 
 {% include quiz.html id="atom-4"
    question="What's the main benefit of wrapping a native HTML element in an atom component instead of using it directly?"
-   options="A|It hides implementation details so callers can't misuse it;B|It centralises styling, accessibility, and design-token usage so every instance stays consistent;C|It makes the bundle smaller;D|It is required by React 19"
+   options="A|It hides implementation details so callers can't misuse it;;B|It centralises styling, accessibility, and design-token usage so every instance stays consistent;;C|It makes the bundle smaller;;D|It is required by React 19"
    correct="B"
    explanation="Atom components give you one place to set padding, colors, ARIA attributes, and hover states so that every button/input/icon in the app inherits them automatically — the 'slightly different button everywhere' problem goes away." %}
 
 {% include quiz.html id="atom-5"
    question="How should an atom handle visual variants like `primary`, `secondary`, `danger`?"
-   options="A|Create separate `PrimaryButton`, `SecondaryButton`, `DangerButton` components;B|Expose a `variant` prop on a single atom and switch classNames/styles based on it;C|Duplicate the atom per theme and import the right one per route"
+   options="A|Create separate `PrimaryButton`, `SecondaryButton`, `DangerButton` components;;B|Expose a `variant` prop on a single atom and switch classNames/styles based on it;;C|Duplicate the atom per theme and import the right one per route"
    correct="B"
    explanation="A single atom with a `variant` prop scales from 2 variants to 20 without proliferating files. Only split into separate components when the *behavior* (not just styling) differs significantly." %}
 

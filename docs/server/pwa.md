@@ -903,31 +903,31 @@ router.on('navigate', async (path) => {
 
 {% include quiz.html id="pwa-1"
    question="What are the states of a service worker's lifecycle?"
-   options="A|install -> run -> stop;B|install -> waiting -> activate -> active (and redundant if replaced or discarded). The waiting state is why new SW versions don't take over immediately — existing clients keep the old SW until it's safe to activate;C|fetch -> cache -> respond;D|new -> ready -> finished"
+   options="A|install -> run -> stop;;B|install -> waiting -> activate -> active (and redundant if replaced or discarded). The waiting state is why new SW versions don't take over immediately — existing clients keep the old SW until it's safe to activate;;C|fetch -> cache -> respond;;D|new -> ready -> finished"
    correct="B"
    explanation="Knowing the lifecycle is how you implement &quot;new version available — reload?&quot; UX correctly. skipWaiting() and clients.claim() let you force takeover, at the cost of potentially interrupting the running page." %}
 
 {% include quiz.html id="pwa-2"
    question="When should you use Cache First vs Network First caching?"
-   options="A|Cache First for everything;B|Cache First for immutable, hashed assets (JS/CSS/fonts/images) — serve instantly, update in the background (stale-while-revalidate). Network First for dynamic or time-sensitive data (API responses, user-specific content) — fall back to cache only when offline;C|Network First for all assets;D|Always go to the network and never cache"
+   options="A|Cache First for everything;;B|Cache First for immutable, hashed assets (JS/CSS/fonts/images) — serve instantly, update in the background (stale-while-revalidate). Network First for dynamic or time-sensitive data (API responses, user-specific content) — fall back to cache only when offline;;C|Network First for all assets;;D|Always go to the network and never cache"
    correct="B"
    explanation="Matching strategy to content is the whole point of a service worker. Immutable assets want Cache First; fresh data wants Network First with a cache fallback." %}
 
 {% include quiz.html id="pwa-3"
    question="What are the minimum requirements for a site to be installable as a PWA?"
-   options="A|Just a manifest.json;B|Served over HTTPS (or localhost for dev), a valid web app manifest with at least name/short_name, start_url, display (standalone/fullscreen/etc), and icons (typically 192px + 512px), plus a registered service worker;C|Only a service worker;D|A native app in the store first"
+   options="A|Just a manifest.json;;B|Served over HTTPS (or localhost for dev), a valid web app manifest with at least name/short_name, start_url, display (standalone/fullscreen/etc), and icons (typically 192px + 512px), plus a registered service worker;;C|Only a service worker;;D|A native app in the store first"
    correct="B"
    explanation="Browsers gate the install prompt on these baseline signals. Missing any one (no HTTPS, missing icons, no service worker) typically suppresses the install affordance." %}
 
 {% include quiz.html id="pwa-4"
    question="How does Background Sync help with offline form submissions?"
-   options="A|It disables the form offline;B|The page registers a sync tag when offline submission fails; the service worker listens for the 'sync' event, which the browser fires once connectivity is restored, and replays the queued request from IndexedDB. The user gets confirmation without reopening the app;C|It caches the final URL only;D|It is a server-side feature"
+   options="A|It disables the form offline;;B|The page registers a sync tag when offline submission fails; the service worker listens for the 'sync' event, which the browser fires once connectivity is restored, and replays the queued request from IndexedDB. The user gets confirmation without reopening the app;;C|It caches the final URL only;;D|It is a server-side feature"
    correct="B"
    explanation="Background Sync (via Workbox queues or a manual IndexedDB queue) turns flaky networks from &quot;lost data&quot; into &quot;deferred success&quot; without the user doing anything." %}
 
 {% include quiz.html id="pwa-5"
    question="What's the difference between the Push API and the Notifications API?"
-   options="A|They are the same thing;B|Push API delivers a message from a server to the service worker even when the app is closed (via a push service like FCM/APNS bridge + a VAPID-signed subscription). Notifications API displays a system-level notification. Push usually triggers a Notification, but each can be used without the other;C|Notifications are deprecated;D|Push only works on Android"
+   options="A|They are the same thing;;B|Push API delivers a message from a server to the service worker even when the app is closed (via a push service like FCM/APNS bridge + a VAPID-signed subscription). Notifications API displays a system-level notification. Push usually triggers a Notification, but each can be used without the other;;C|Notifications are deprecated;;D|Push only works on Android"
    correct="B"
    explanation="Push = transport (server -> SW). Notification = UI. Web push subscriptions require user permission; notifications can also be triggered from any page with the right permission." %}
 

@@ -789,32 +789,32 @@ function AspectRatioImage({ src, alt, aspectRatio = '16/9' }) {
 ## Quick Quiz
 
 {% include quiz.html id="images-1"
-   question="What's the difference between srcset and sizes on an &lt;img&gt;?"
-   options="A|They're synonyms;B|srcset lists candidate image URLs with their intrinsic widths (w) or pixel densities (x); sizes tells the browser how wide the image will actually be rendered at different breakpoints so it can pick the best srcset candidate. Both are needed for responsive resolution switching;C|sizes only affects the aspect ratio;D|srcset is for retina only"
+   question="What's the difference between srcset and sizes on an <img>?"
+   options="A|They're synonyms;;B|srcset lists candidate image URLs with their intrinsic widths (w) or pixel densities (x); sizes tells the browser how wide the image will actually be rendered at different breakpoints so it can pick the best srcset candidate. Both are needed for responsive resolution switching;;C|sizes only affects the aspect ratio;;D|srcset is for retina only"
    correct="B"
    explanation="Without sizes, the browser assumes 100vw and picks a larger image than needed. Give it both (srcset=&quot;a.jpg 480w, b.jpg 1200w&quot; + sizes=&quot;(max-width: 768px) 100vw, 50vw&quot;) for optimal downloads." %}
 
 {% include quiz.html id="images-2"
    question="How do you implement progressive image loading with a blur placeholder?"
-   options="A|Preload the full-resolution image;B|Inline a tiny base64 blurred thumbnail (LQIP) as src or background, then swap to the full image once loaded and fade/unblur via CSS — or use the native blur-up technique frameworks like Next/Image / Gatsby-image provide out of the box;C|Use only a loading spinner;D|Lazy-loading alone"
+   options="A|Preload the full-resolution image;;B|Inline a tiny base64 blurred thumbnail (LQIP) as src or background, then swap to the full image once loaded and fade/unblur via CSS — or use the native blur-up technique frameworks like Next/Image / Gatsby-image provide out of the box;;C|Use only a loading spinner;;D|Lazy-loading alone"
    correct="B"
    explanation="LQIP + blur fade gives an instant visual placeholder that smoothly resolves into the full image once it arrives, improving perceived performance and LCP stability." %}
 
 {% include quiz.html id="images-3"
-   question="When should you use &lt;picture&gt; vs &lt;img srcset&gt;?"
-   options="A|They are interchangeable;B|Use srcset+sizes for resolution switching (same image, different sizes). Use &lt;picture&gt; with &lt;source&gt; for art direction or format fallbacks — different crops per breakpoint, or WebP/AVIF with a JPEG fallback;C|&lt;picture&gt; is deprecated;D|&lt;picture&gt; only works in Safari"
+   question="When should you use <picture> vs <img srcset>?"
+   options="A|They are interchangeable;;B|Use srcset+sizes for resolution switching (same image, different sizes). Use <picture> with <source> for art direction or format fallbacks — different crops per breakpoint, or WebP/AVIF with a JPEG fallback;;C|<picture> is deprecated;;D|<picture> only works in Safari"
    correct="B"
-   explanation="srcset = size switching. &lt;picture&gt; = change image, crop, or format. You often combine them: &lt;picture&gt; with WebP/AVIF sources + a &lt;img srcset&gt; fallback." %}
+   explanation="srcset = size switching. <picture> = change image, crop, or format. You often combine them: <picture> with WebP/AVIF sources + a <img srcset> fallback." %}
 
 {% include quiz.html id="images-4"
    question="How should you optimise images for Core Web Vitals (especially LCP and CLS)?"
-   options="A|Add more animations;B|Set explicit width/height (or CSS aspect-ratio) to prevent CLS; mark the LCP hero image with fetchpriority=&quot;high&quot; and preload it; lazy-load below-the-fold images (loading=&quot;lazy&quot;); serve AVIF/WebP via &lt;picture&gt;; use srcset+sizes for correct downloads;C|Always lazy-load the hero image;D|Inline every image as base64"
+   options="A|Add more animations;;B|Set explicit width/height (or CSS aspect-ratio) to prevent CLS; mark the LCP hero image with fetchpriority=&quot;high&quot; and preload it; lazy-load below-the-fold images (loading=&quot;lazy&quot;); serve AVIF/WebP via <picture>; use srcset+sizes for correct downloads;;C|Always lazy-load the hero image;;D|Inline every image as base64"
    correct="B"
    explanation="Explicit dimensions prevent layout shift, priority hints accelerate the LCP image, lazy-loading saves bandwidth below the fold, and modern formats cut bytes dramatically." %}
 
 {% include quiz.html id="images-5"
    question="How do image CDNs help automate optimisation?"
-   options="A|They only cache JPEGs;B|They transform images on demand — resizing, reformatting to WebP/AVIF via Accept headers, compressing, and serving from edge caches — so you ship one source asset and the CDN delivers the right size/format per request. Many also add DPR-aware URLs and client-hint integration;C|They only work in enterprise;D|They disable caching"
+   options="A|They only cache JPEGs;;B|They transform images on demand — resizing, reformatting to WebP/AVIF via Accept headers, compressing, and serving from edge caches — so you ship one source asset and the CDN delivers the right size/format per request. Many also add DPR-aware URLs and client-hint integration;;C|They only work in enterprise;;D|They disable caching"
    correct="B"
    explanation="Cloudinary, Imgix, imagekit, and the CDN arms of Cloudflare/Vercel/Netlify all do content-aware transformation at the edge so you don't hand-generate 12 size variants per image." %}
 

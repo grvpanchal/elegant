@@ -433,32 +433,32 @@ const state = {
 ## Quick Quiz
 
 {% include quiz.html id="store-1"
-   question="What&apos;s the main benefit of a centralised store over passing props?"
-   options="A|A store is faster on the CPU;B|The store is a single source of truth any component can subscribe to without prop-drilling through intermediate components. It makes data flow predictable (dispatch -&gt; reducer -&gt; new state -&gt; selective subscriber re-renders), decouples senders from receivers, and enables devtools time travel;C|Props were deprecated;D|It bypasses React"
+   question="What's the main benefit of a centralised store over passing props?"
+   options="A|A store is faster on the CPU;;B|The store is a single source of truth any component can subscribe to without prop-drilling through intermediate components. It makes data flow predictable (dispatch -> reducer -> new state -> selective subscriber re-renders), decouples senders from receivers, and enables devtools time travel;;C|Props were deprecated;;D|It bypasses React"
    correct="B"
    explanation="For cross-cutting concerns (auth, theme, cart, feature flags) a store beats threading props through 6 layers. For local-only data, props are still the right tool." %}
 
 {% include quiz.html id="store-2"
    question="What is a reducer and why is it called that?"
-   options="A|It reduces code size;B|It&apos;s the same shape as a function you&apos;d pass to Array.prototype.reduce — (accumulator, next) =&gt; newAccumulator. A Redux reducer is (state, action) =&gt; newState: you can conceptually .reduce the entire action history into the current state. That&apos;s the provenance of the name;C|It&apos;s a marketing term;D|It&apos;s unrelated to Array.reduce"
+   options="A|It reduces code size;;B|It's the same shape as a function you'd pass to Array.prototype.reduce — (accumulator, next) => newAccumulator. A Redux reducer is (state, action) => newState: you can conceptually .reduce the entire action history into the current state. That's the provenance of the name;;C|It's a marketing term;;D|It's unrelated to Array.reduce"
    correct="B"
-   explanation="The naming isn&apos;t arbitrary — Redux&apos;s state at any moment equals all past actions reduced over the initial state via the reducer. That&apos;s also what enables time-travel debugging." %}
+   explanation="The naming isn't arbitrary — Redux's state at any moment equals all past actions reduced over the initial state via the reducer. That's also what enables time-travel debugging." %}
 
 {% include quiz.html id="store-3"
    question="When should you reach for Redux vs lighter options like Context or Zustand?"
-   options="A|Always use Redux;B|Use Context for small, low-churn shared values (theme, auth user). Use Zustand/Jotai/Valtio for lightweight client state without middleware machinery. Use Redux (especially RTK) when you want opinionated structure, powerful devtools, middleware ecosystem, or cross-cutting async orchestration via sagas/listeners — particularly in larger apps and teams;C|Only Context works with server state;D|Zustand is deprecated"
+   options="A|Always use Redux;;B|Use Context for small, low-churn shared values (theme, auth user). Use Zustand/Jotai/Valtio for lightweight client state without middleware machinery. Use Redux (especially RTK) when you want opinionated structure, powerful devtools, middleware ecosystem, or cross-cutting async orchestration via sagas/listeners — particularly in larger apps and teams;;C|Only Context works with server state;;D|Zustand is deprecated"
    correct="B"
-   explanation="Match the tool to the app&apos;s scale and team needs. RTK has dramatically narrowed the &quot;Redux is heavy&quot; gap; Zustand is ideal when you want less ceremony." %}
+   explanation="Match the tool to the app's scale and team needs. RTK has dramatically narrowed the &quot;Redux is heavy&quot; gap; Zustand is ideal when you want less ceremony." %}
 
 {% include quiz.html id="store-4"
-   question="What&apos;s the difference between calling dispatch(action) and calling a function that updates state directly?"
-   options="A|They are functionally identical;B|dispatch routes the action through all middleware (logging, thunks, analytics, crash reporting) and produces a serialized, time-travel-able event; a direct function call is opaque to devtools, un-replayable, and doesn&apos;t get middleware cross-cutting concerns. dispatch is the unified event bus;C|Direct function calls are faster and preferred;D|dispatch is a UI-only API"
+   question="What's the difference between calling dispatch(action) and calling a function that updates state directly?"
+   options="A|They are functionally identical;;B|dispatch routes the action through all middleware (logging, thunks, analytics, crash reporting) and produces a serialized, time-travel-able event; a direct function call is opaque to devtools, un-replayable, and doesn't get middleware cross-cutting concerns. dispatch is the unified event bus;;C|Direct function calls are faster and preferred;;D|dispatch is a UI-only API"
    correct="B"
    explanation="Actions + dispatch are an event log. Direct state mutation is off-the-books. Devtools, replayability, and middleware ALL rely on going through dispatch." %}
 
 {% include quiz.html id="store-5"
    question="Can you have multiple stores in a single application?"
-   options="A|Yes, and you should — one per component;B|Technically yes (Redux allows multiple stores and NgRx supports feature stores), but the standard advice is a SINGLE app-wide store with slices. Multiple independent stores fragment devtools, complicate cross-slice logic, and usually indicate a design that would be cleaner as slices of one store. Exceptions: micro-frontends with isolated domains;C|No — Redux forbids multiple stores entirely;D|Multiple stores only work in Vue"
+   options="A|Yes, and you should — one per component;;B|Technically yes (Redux allows multiple stores and NgRx supports feature stores), but the standard advice is a SINGLE app-wide store with slices. Multiple independent stores fragment devtools, complicate cross-slice logic, and usually indicate a design that would be cleaner as slices of one store. Exceptions: micro-frontends with isolated domains;;C|No — Redux forbids multiple stores entirely;;D|Multiple stores only work in Vue"
    correct="B"
    explanation="Pinia naturally has multiple stores by design. Redux philosophy is one store with slices. Either way, needing many independent stores usually means something should be a slice." %}
 
