@@ -790,20 +790,20 @@ function AspectRatioImage({ src, alt, aspectRatio = '16/9' }) {
 
 {% include quiz.html id="images-1"
    question="What's the difference between srcset and sizes on an <img>?"
-   options="A|They're synonyms;;B|srcset lists candidate image URLs with their intrinsic widths (w) or pixel densities (x); sizes tells the browser how wide the image will actually be rendered at different breakpoints so it can pick the best srcset candidate. Both are needed for responsive resolution switching;;C|sizes only affects the aspect ratio;;D|srcset is for retina only"
+   options="A|CDNs only cache JPEGs — other formats bypass the cache and are served directly from origin, which is why Cloudinary dropped WebP support in 2023;;B|They transform images on demand: resizing via URL params, reformatting to WebP / AVIF based on the Accept header, compressing per DPR via client hints, and serving everything from edge caches. You ship one source asset and the CDN delivers the right size / format / quality per request. Cloudinary, Imgix, imagekit and the CDN arms of Cloudflare / Vercel / Netlify all do this, so you don't hand-generate 12 variants per image;;C|They regenerate every image on every request, so nothing is cached — this is how CDNs guarantee freshness;;D|They are a marketing term for a fancy HTTP cache — no actual transformation happens"
    correct="B"
    explanation="Without sizes, the browser assumes 100vw and picks a larger image than needed. Give it both (srcset=&quot;a.jpg 480w, b.jpg 1200w&quot; + sizes=&quot;(max-width: 768px) 100vw, 50vw&quot;) for optimal downloads." %}
 
 {% include quiz.html id="images-2"
    question="How do you implement progressive image loading with a blur placeholder?"
-   options="A|Preload the full-resolution image;;B|Inline a tiny base64 blurred thumbnail (LQIP) as src or background, then swap to the full image once loaded and fade/unblur via CSS — or use the native blur-up technique frameworks like Next/Image / Gatsby-image provide out of the box;;C|Use only a loading spinner;;D|Lazy-loading alone"
-   correct="B"
+   options="A|Use only a loading spinner;;B|Preload the full-resolution image;;C|Lazy-loading alone;;D|Inline a tiny base64 blurred thumbnail (LQIP) as src or background, then swap to the full image once loaded and fade/unblur via CSS — or use the native blur-up technique frameworks like Next/Image / Gatsby-image provide out of the box"
+   correct="D"
    explanation="LQIP + blur fade gives an instant visual placeholder that smoothly resolves into the full image once it arrives, improving perceived performance and LCP stability." %}
 
 {% include quiz.html id="images-3"
    question="When should you use <picture> vs <img srcset>?"
-   options="A|They are interchangeable;;B|Use srcset+sizes for resolution switching (same image, different sizes). Use <picture> with <source> for art direction or format fallbacks — different crops per breakpoint, or WebP/AVIF with a JPEG fallback;;C|<picture> is deprecated;;D|<picture> only works in Safari"
-   correct="B"
+   options="A|Use srcset+sizes for resolution switching (same image, different sizes). Use <picture> with <source> for art direction or format fallbacks — different crops per breakpoint, or WebP/AVIF with a JPEG fallback;;B|<picture> only works in Safari;;C|<picture> is deprecated;;D|They are interchangeable"
+   correct="A"
    explanation="srcset = size switching. <picture> = change image, crop, or format. You often combine them: <picture> with WebP/AVIF sources + a <img srcset> fallback." %}
 
 {% include quiz.html id="images-4"
@@ -814,8 +814,8 @@ function AspectRatioImage({ src, alt, aspectRatio = '16/9' }) {
 
 {% include quiz.html id="images-5"
    question="How do image CDNs help automate optimisation?"
-   options="A|They only cache JPEGs;;B|They transform images on demand — resizing, reformatting to WebP/AVIF via Accept headers, compressing, and serving from edge caches — so you ship one source asset and the CDN delivers the right size/format per request. Many also add DPR-aware URLs and client-hint integration;;C|They only work in enterprise;;D|They disable caching"
-   correct="B"
+   options="A|They transform images on demand — resizing, reformatting to WebP/AVIF via Accept headers, compressing, and serving from edge caches — so you ship one source asset and the CDN delivers the right size/format per request. Many also add DPR-aware URLs and client-hint integration;;B|They only work in enterprise;;C|They only cache JPEGs;;D|They disable caching"
+   correct="A"
    explanation="Cloudinary, Imgix, imagekit, and the CDN arms of Cloudflare/Vercel/Netlify all do content-aware transformation at the edge so you don't hand-generate 12 size variants per image." %}
 
 ## References

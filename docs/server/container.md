@@ -783,31 +783,31 @@ function ProductCard({ product, onAddToCart }) {
 
 {% include quiz.html id="container-1"
    question="What's the main difference between a container component and a presentational component?"
-   options="A|Containers render UI, presentational components fetch data;;B|Containers own data/state concerns (subscribing to a store, fetching, orchestrating dispatch); presentational components take data via props and render UI. The split keeps UI reusable and testable;;C|They're the same thing;;D|Containers only exist in Angular"
-   correct="B"
+   options="A|Only end-to-end tests matter; unit tests for components are wasted effort once a container sits on top of real infrastructure;;B|Use the same test for both — render the container with a real store, assert on the rendered DOM, and skip isolating the presentational layer because duplication in tests is a smell;;C|Test presentational components by passing props and asserting rendered DOM / emitted callbacks — they are pure UI. Test containers by providing a mocked store (or query client) and asserting that the correct selectors are read and the correct actions are dispatched. Most teams unit-test presentationals and integration-test containers;;D|Snapshot-test the container; the presentational layer will be covered transitively by the snapshot diffs"
+   correct="C"
    explanation="The &quot;smart vs dumb&quot; split lets the UI layer be prop-driven and portable, while the container wires state + side effects in one place." %}
 
 {% include quiz.html id="container-2"
    question="How do React hooks (useSelector, useDispatch, useQuery) change the classic container pattern?"
-   options="A|They eliminate the need for containers entirely;;B|They blur the container/presentational line — you can co-locate store access inside a component via hooks. The atomic-design discipline is still useful: keep low-level atoms/molecules pure and put hooks in a wrapper (the &quot;container&quot;) so the UI stays framework- and store-agnostic;;C|They only work with MobX;;D|Hooks make containers mandatory"
-   correct="B"
+   options="A|They only work with MobX;;B|They eliminate the need for containers entirely;;C|Hooks make containers mandatory;;D|They blur the container/presentational line — you can co-locate store access inside a component via hooks. The atomic-design discipline is still useful: keep low-level atoms/molecules pure and put hooks in a wrapper (the &quot;container&quot;) so the UI stays framework- and store-agnostic"
+   correct="D"
    explanation="Hooks don't remove the pattern, they make it cheaper. A small hook-using wrapper around a presentational component is still a container; it just doesn't need connect()." %}
 
 {% include quiz.html id="container-3"
    question="When would you reach for a Redux-connected container vs a custom hook?"
-   options="A|Redux containers are always better;;B|Use a custom hook when one slice of state is consumed locally by one or two components; use a Redux container (or useSelector in a container component) when multiple containers share the same derived data, memoized via selectors, to avoid duplicating subscriptions and re-renders;;C|Custom hooks are deprecated;;D|It's purely stylistic"
-   correct="B"
+   options="A|Use a custom hook when one slice of state is consumed locally by one or two components; use a Redux container (or useSelector in a container component) when multiple containers share the same derived data, memoized via selectors, to avoid duplicating subscriptions and re-renders;;B|It's purely stylistic;;C|Redux containers are always better;;D|Custom hooks are deprecated"
+   correct="A"
    explanation="Custom hooks are great for colocation; selectors-in-a-container shine when the derivation is shared and expensive." %}
 
 {% include quiz.html id="container-4"
    question="How should you test a container vs a presentational component?"
-   options="A|Only snapshot-test both;;B|Test presentational components by passing props and asserting on the rendered DOM or events; test containers by providing a mocked store / data layer and asserting that the right actions are dispatched or the right selectors used. Many teams mostly integration-test containers and unit-test presentational components;;C|Never test containers;;D|Tests are irrelevant"
-   correct="B"
+   options="A|Test presentational components by passing props and asserting on the rendered DOM or events; test containers by providing a mocked store / data layer and asserting that the right actions are dispatched or the right selectors used. Many teams mostly integration-test containers and unit-test presentational components;;B|Only snapshot-test both;;C|Tests are irrelevant;;D|Never test containers"
+   correct="A"
    explanation="Keeping the two layers separate makes the presentational tests fast and pure, and the container tests focused on wiring and side effects." %}
 
 {% include quiz.html id="container-5"
    question="How do containers interact with Storybook?"
-   options="A|Containers go in Storybook too with a real production store;;B|Storybook usually renders the PRESENTATIONAL component with handcrafted props — sometimes wrapping in decorators that provide a mock Redux/Pinia/NgRx store or Router so a container can be shown in isolation without the real backend. Containers shine in tests, presentationals shine in Storybook;;C|Storybook doesn't support state-management decorators;;D|You must disable Storybook for container components"
+   options="A|Storybook doesn't support state-management decorators;;B|Storybook usually renders the PRESENTATIONAL component with handcrafted props — sometimes wrapping in decorators that provide a mock Redux/Pinia/NgRx store or Router so a container can be shown in isolation without the real backend. Containers shine in tests, presentationals shine in Storybook;;C|You must disable Storybook for container components;;D|Containers go in Storybook too with a real production store"
    correct="B"
    explanation="Presentational components take props, which Storybook's Controls can drive directly. Containers, if shown at all, get mock context via decorators." %}
 

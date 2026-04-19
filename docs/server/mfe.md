@@ -974,14 +974,14 @@ function Dashboard() {
 
 {% include quiz.html id="mfe-2"
    question="How should authentication be handled across multiple micro-frontends?"
-   options="A|Each MFE ships its own login form and token storage;;B|Hoist auth to the shell — shell owns sign-in, token storage (httpOnly refresh cookie + in-memory access token), and exposes an auth context / event bus to MFEs. MFEs read the current user and react to logout broadcasts, but don't duplicate the login flow. Refresh and rotation happen once, centrally;;C|Use cookies only and hope;;D|Auth can't be shared"
-   correct="B"
+   options="A|Auth can't be shared;;B|Use cookies only and hope;;C|Hoist auth to the shell — shell owns sign-in, token storage (httpOnly refresh cookie + in-memory access token), and exposes an auth context / event bus to MFEs. MFEs read the current user and react to logout broadcasts, but don't duplicate the login flow. Refresh and rotation happen once, centrally;;D|Each MFE ships its own login form and token storage"
+   correct="C"
    explanation="Centralising auth prevents inconsistent sessions (logged in here, out there), coordinates token refresh, and keeps the single-sign-on UX coherent across MFEs." %}
 
 {% include quiz.html id="mfe-3"
    question="How do you prevent MFE bundle bloat from killing performance?"
-   options="A|Ship every MFE at once regardless of route;;B|Set per-MFE performance budgets; deduplicate shared deps via Module Federation singletons or import maps; lazy-load MFEs on route entry; preload the next likely MFE on hover/idle; audit with tools like bundlewatch / webpack-bundle-analyzer per MFE; treat an MFE's bundle size as a cross-team contract;;C|Only use Web Components;;D|Budgets don't matter"
-   correct="B"
+   options="A|Only use Web Components;;B|Ship every MFE at once regardless of route;;C|Set per-MFE performance budgets; deduplicate shared deps via Module Federation singletons or import maps; lazy-load MFEs on route entry; preload the next likely MFE on hover/idle; audit with tools like bundlewatch / webpack-bundle-analyzer per MFE; treat an MFE's bundle size as a cross-team contract;;D|Budgets don't matter"
+   correct="C"
    explanation="Without per-MFE budgets and shared-dep deduplication, every MFE ships its own React + its own utils — bundle cost scales linearly with MFE count. Lazy loading + preloading + dedup keeps cost sub-linear." %}
 
 ## References

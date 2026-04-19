@@ -520,31 +520,31 @@ export default function BlogPost({ post }) {
 
 {% include quiz.html id="seo-1"
    question="What's the difference between Open Graph and Twitter Card meta tags?"
-   options="A|They are the same thing;;B|Open Graph (og:*) is Facebook/LinkedIn/Discord's standard for link preview; Twitter Card (twitter:*) is Twitter/X's. Most platforms fall back to og: if twitter: is missing, so you usually set og: for everyone and add a twitter:card type to control Twitter's layout;;C|Only Open Graph is real;;D|They only affect SEO rankings"
-   correct="B"
+   options="A|Only Open Graph is real;;B|They are the same thing;;C|Open Graph (og:*) is Facebook/LinkedIn/Discord's standard for link preview; Twitter Card (twitter:*) is Twitter/X's. Most platforms fall back to og: if twitter: is missing, so you usually set og: for everyone and add a twitter:card type to control Twitter's layout;;D|They only affect SEO rankings"
+   correct="C"
    explanation="Share previews (not ranking) are driven by these tags. Set og: as the baseline; twitter: just customises the Twitter-specific appearance." %}
 
 {% include quiz.html id="seo-2"
    question="How does JSON-LD structured data help SEO?"
-   options="A|It improves page load time;;B|It describes page content in schema.org vocabulary, enabling rich results in search (stars for reviews, recipe cards, event info, product prices) — higher CTR from SERPs without changing the visible page;;C|It is deprecated;;D|It only works in Chrome"
-   correct="B"
+   options="A|It is deprecated;;B|It only works in Chrome;;C|It describes page content in schema.org vocabulary, enabling rich results in search (stars for reviews, recipe cards, event info, product prices) — higher CTR from SERPs without changing the visible page;;D|It improves page load time"
+   correct="C"
    explanation="Google's rich-results eligibility, Knowledge Graph, and voice-assistant answers all key off structured data. JSON-LD is the preferred format because it's non-intrusive (a <script type=&quot;application/ld+json&quot;> block)." %}
 
 {% include quiz.html id="seo-3"
    question="Why are Core Web Vitals important for SEO?"
-   options="A|They don't affect SEO;;B|Google uses them as ranking signals (LCP, CLS, INP) via the Page Experience system — slow or janky pages are penalized in competitive queries, and good vitals also improve conversion independent of ranking;;C|Only LCP matters;;D|They only apply to mobile"
-   correct="B"
+   options="A|Google uses them as ranking signals (LCP, CLS, INP) via the Page Experience system — slow or janky pages are penalized in competitive queries, and good vitals also improve conversion independent of ranking;;B|They only apply to mobile;;C|They don't affect SEO;;D|Only LCP matters"
+   correct="A"
    explanation="CWV are an official ranking signal and, crucially, a user-experience signal that correlates with bounce rate and conversion — optimising them helps both SEO and business metrics." %}
 
 {% include quiz.html id="seo-4"
    question="When should you use a canonical tag?"
-   options="A|On every page, always pointing at itself;;B|Whenever the same (or substantially similar) content is reachable at multiple URLs — e.g. with/without trailing slash, with query params like ?ref=, printable/non-printable, localised duplicates — to tell search engines which URL is the preferred one and consolidate link equity;;C|Only on 404 pages;;D|To hide a page from search"
+   options="A|On every page, always pointing at itself;;B|Whenever the same (or substantially similar) content is reachable at multiple URLs — e.g. with/without trailing slash, with query params like ?ref=, printable/non-printable, localised duplicates — to tell search engines which URL is the preferred one and consolidate link equity;;C|To hide a page from search;;D|Only on 404 pages"
    correct="B"
    explanation="Self-referential canonicals on every page are the common safe default, plus explicit canonicals for known duplicates. rel=&quot;canonical&quot; is a hint, not a directive, but it's widely respected." %}
 
 {% include quiz.html id="seo-5"
    question="How do you make client-side-navigated SPA pages SEO-friendly?"
-   options="A|SEO doesn't work for SPAs — accept it;;B|Render the initial request server-side (SSR) or at build time (SSG) so crawlers see real HTML + real metadata. On client-side navigation, update the document title and meta tags (react-helmet-async / next/head / <svelte:head>) so each logical &quot;page&quot; has the right SEO metadata even though the app didn't reload;;C|Render an image of the page;;D|Put keywords in data- attributes"
+   options="A|SEO doesn't work for SPAs — accept it;;B|Render the initial request server-side (SSR) or at build time (SSG) so crawlers see real HTML + real metadata. On client-side navigation, update the document title and meta tags (react-helmet-async / next/head / <svelte:head>) so each logical &quot;page&quot; has the right SEO metadata even though the app didn't reload;;C|Put keywords in data- attributes;;D|Render an image of the page"
    correct="B"
    explanation="Modern crawlers execute some JS but SSR/SSG gives the best results, fastest and most reliable. Per-route head management ensures each SPA route has proper title/description/canonical." %}
 

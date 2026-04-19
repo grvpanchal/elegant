@@ -309,32 +309,32 @@ function TodoList() {
 
 {% include quiz.html id="selectors-1"
    question="What problem does memoization (e.g. via Reselect/createSelector) solve in selectors?"
-   options="A|It makes selectors async;;B|Expensive derivations (filtering, sorting, shaping) would re-run on every render. A memoized selector caches the last (inputs -> output) pair and only recomputes when one of its input selectors returns a new reference — same inputs, same cached result, same reference, no downstream re-render;;C|It's purely cosmetic;;D|It caches HTTP responses"
+   options="A|It caches HTTP responses, so subsequent selector calls skip the network round-trip — this is why Reselect is often described as a selector-side fetch cache;;B|Expensive derivations (filter / sort / shape) would re-run on every store update, and returning a new array/object each time causes consumers to re-render unnecessarily. A memoized selector caches (inputs -> output); when its input selectors return the same references, it returns the SAME cached output reference — no recomputation, no downstream re-render;;C|It makes selectors run asynchronously so expensive work moves off the main thread automatically;;D|It replaces the reducer — the selector becomes the source of truth for state, and the reducer only deals with actions that didn't match a selector"
    correct="B"
    explanation="Without memoization, a component subscribing to a derived array or object would re-render after every store update because selector() returns a new array/object each time." %}
 
 {% include quiz.html id="selectors-2"
    question="How do you compose selectors?"
-   options="A|Inline them inside useSelector;;B|Build small input selectors (state => slice.field), then use createSelector(input1, input2, ..., (a, b, ...) => derived) to compose them into output selectors. Output selectors can themselves be inputs to further selectors, so derivations stack in a dependency graph;;C|Selectors cannot be composed;;D|Only by copying code"
-   correct="B"
+   options="A|Build small input selectors (state => slice.field), then use createSelector(input1, input2, ..., (a, b, ...) => derived) to compose them into output selectors. Output selectors can themselves be inputs to further selectors, so derivations stack in a dependency graph;;B|Selectors cannot be composed;;C|Inline them inside useSelector;;D|Only by copying code"
+   correct="A"
    explanation="Composition keeps each selector tiny and reusable. The dependency graph is what lets Reselect memoize correctly." %}
 
 {% include quiz.html id="selectors-3"
    question="When do you need a selector factory (createSelector inside a creator fn) vs a shared selector?"
-   options="A|Always use a factory;;B|A plain memoized selector has ONE cache slot — if two components call it with different props (e.g. selectItemById(state, id) for two ids), the cache thrashes. A selector FACTORY returns a fresh memoized selector per component instance, so each instance has its own cache;;C|Factories are a Redux 5 deprecation;;D|They are identical"
+   options="A|Factories are a Redux 5 deprecation;;B|A plain memoized selector has ONE cache slot — if two components call it with different props (e.g. selectItemById(state, id) for two ids), the cache thrashes. A selector FACTORY returns a fresh memoized selector per component instance, so each instance has its own cache;;C|They are identical;;D|Always use a factory"
    correct="B"
    explanation="Reselect's default cache size is 1. Per-instance memoization via a factory is the fix when a selector takes component-specific arguments." %}
 
 {% include quiz.html id="selectors-4"
    question="How do selectors help decouple components from the store shape?"
-   options="A|They don't — components still need to know the shape;;B|Components call a selector by name (selectVisibleTodos) instead of reaching into state.todo.items.filter(...). If the state shape changes, only the selector file changes — every component keeps working. That's the key refactor-safety win;;C|Selectors generate components;;D|They replace containers"
-   correct="B"
+   options="A|They don't — components still need to know the shape;;B|Selectors generate components;;C|They replace containers;;D|Components call a selector by name (selectVisibleTodos) instead of reaching into state.todo.items.filter(...). If the state shape changes, only the selector file changes — every component keeps working. That's the key refactor-safety win"
+   correct="D"
    explanation="Selectors are the abstraction barrier over state shape. A slice rename is a one-file refactor with selectors, a grep-and-pray refactor without them." %}
 
 {% include quiz.html id="selectors-5"
    question="What's the difference between input selectors and output selectors in Reselect?"
-   options="A|There is no difference;;B|Input selectors are simple state-readers (state => state.users). Output selectors are built via createSelector from one or more input selectors and a combiner function that produces the derived value. Keeping them separate maximizes reuse — the same input selectors feed many output selectors;;C|Only output selectors can be memoized;;D|Input selectors mutate state"
-   correct="B"
+   options="A|Input selectors mutate state;;B|Only output selectors can be memoized;;C|Input selectors are simple state-readers (state => state.users). Output selectors are built via createSelector from one or more input selectors and a combiner function that produces the derived value. Keeping them separate maximizes reuse — the same input selectors feed many output selectors;;D|There is no difference"
+   correct="C"
    explanation="Shared input selectors + focused output selectors is the composition pattern that lets a small set of primitives drive many derivations without duplicating work." %}
 
 ## References

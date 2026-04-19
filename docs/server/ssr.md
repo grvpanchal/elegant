@@ -377,14 +377,14 @@ hydrateRoot(
 
 {% include quiz.html id="ssr-1"
    question="What's the difference between Server-Side Rendering (SSR) and Static Site Generation (SSG)?"
-   options="A|SSG renders on every request, SSR renders at build time;;B|SSR renders HTML on each request on the server (fresh data, per-user); SSG pre-renders HTML at build time into static files (fast, cacheable, cheap to serve, but stale until rebuilt). ISR is the middle ground — SSG with background revalidation;;C|They're identical;;D|SSR only works in Node"
-   correct="B"
+   options="A|No — SSR means zero JS ships to the client, which is its main perf benefit and why framework teams are moving away from hydration entirely;;B|Only for form submissions — the initial page is fully static and the first interaction triggers a one-time JS bundle fetch, but nothing runs before that;;C|Yes — server-rendered HTML is static until hydration runs. Interactivity (onClick, state, client-side routing) needs the same React/Vue/Angular bundle on the client. React Server Components, partial hydration, and islands reduce the JS footprint, but not to zero for interactive regions;;D|JS is optional; it only boots if the user explicitly enables JavaScript in the browser settings"
+   correct="C"
    explanation="Pick per-route: per-user personalised pages -> SSR; marketing/blog/docs -> SSG; near-real-time content -> ISR (SSG + revalidate)." %}
 
 {% include quiz.html id="ssr-2"
    question="What is hydration?"
-   options="A|Fetching data from the server;;B|The process where the client-side JS &quot;takes over&quot; the server-rendered HTML: the same component tree renders on the client, attaches event handlers, and wires up state so the static markup becomes interactive;;C|A type of caching;;D|A lifecycle hook"
-   correct="B"
+   options="A|A lifecycle hook;;B|A type of caching;;C|Fetching data from the server;;D|The process where the client-side JS &quot;takes over&quot; the server-rendered HTML: the same component tree renders on the client, attaches event handlers, and wires up state so the static markup becomes interactive"
+   correct="D"
    explanation="SSR sends HTML for fast first paint; hydration turns it into a live app. Mismatches between server and client markup (time-dependent content, locale mismatches) cause hydration errors." %}
 
 {% include quiz.html id="ssr-3"
@@ -395,14 +395,14 @@ hydrateRoot(
 
 {% include quiz.html id="ssr-4"
    question="What are the main SEO benefits of SSR over pure client-side rendering?"
-   options="A|SSR makes your site rank higher automatically;;B|The HTML returned contains actual content and metadata — crawlers (including those with limited JS execution), social link-preview bots, and tooling get real content without waiting on JS. That improves discoverability, LCP, and share-preview quality;;C|SSR is the only way to get Google to index a site;;D|SSR has no SEO effect"
-   correct="B"
+   options="A|SSR is the only way to get Google to index a site;;B|SSR makes your site rank higher automatically;;C|SSR has no SEO effect;;D|The HTML returned contains actual content and metadata — crawlers (including those with limited JS execution), social link-preview bots, and tooling get real content without waiting on JS. That improves discoverability, LCP, and share-preview quality"
+   correct="D"
    explanation="Modern Googlebot does execute JS, but SSR still wins for robustness, speed, non-Google crawlers, and non-browser fetchers (Twitter, LinkedIn, Slack, etc.)." %}
 
 {% include quiz.html id="ssr-5"
    question="What's the purpose of renderToString vs renderToPipeableStream in React?"
-   options="A|They do the same thing;;B|renderToString renders the whole tree into a single HTML string before responding — simple, but the client waits for the slowest data. renderToPipeableStream streams HTML in chunks as components resolve, unblocking TTFB and letting Suspense boundaries resolve progressively;;C|renderToPipeableStream is deprecated;;D|Only one works in Node"
-   correct="B"
+   options="A|Only one works in Node;;B|renderToPipeableStream is deprecated;;C|They do the same thing;;D|renderToString renders the whole tree into a single HTML string before responding — simple, but the client waits for the slowest data. renderToPipeableStream streams HTML in chunks as components resolve, unblocking TTFB and letting Suspense boundaries resolve progressively"
+   correct="D"
    explanation="Streaming rendering (with Suspense) gets content to the user earlier. renderToString is still fine for small/simple pages where streaming setup isn't worth it." %}
 
 ## References
