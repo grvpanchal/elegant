@@ -1004,31 +1004,31 @@ If enabled, users will be prompted for an additional form of authentication, suc
 
 {% include quiz.html id="authentication-1"
    question="Where should a JWT access token be stored on the client?"
-   options="A|localStorage with a long expiry;B|In memory (variable or short-lived cache) with a rotating refresh token in an httpOnly, Secure, SameSite cookie — localStorage is readable by any XSS-injected script, which is a critical token exfiltration vector;C|Hardcoded in a data attribute;D|In the URL hash"
+   options="A|localStorage with a long expiry;;B|In memory (variable or short-lived cache) with a rotating refresh token in an httpOnly, Secure, SameSite cookie — localStorage is readable by any XSS-injected script, which is a critical token exfiltration vector;;C|Hardcoded in a data attribute;;D|In the URL hash"
    correct="B"
    explanation="Memory + httpOnly refresh cookie is the defence-in-depth default. A stored access token is as good as compromised the moment XSS lands." %}
 
 {% include quiz.html id="authentication-2"
    question="How do you implement silent token refresh without logging users out mid-session?"
-   options="A|Ask the user to re-log in whenever the token expires;B|When the API returns 401, an interceptor pauses in-flight requests, calls the refresh endpoint (using a refresh token in an httpOnly cookie), swaps in the new access token, and retries the queued requests — transparent to the UI;C|Poll the refresh endpoint every second;D|Never expire tokens"
+   options="A|Ask the user to re-log in whenever the token expires;;B|When the API returns 401, an interceptor pauses in-flight requests, calls the refresh endpoint (using a refresh token in an httpOnly cookie), swaps in the new access token, and retries the queued requests — transparent to the UI;;C|Poll the refresh endpoint every second;;D|Never expire tokens"
    correct="B"
    explanation="Coalescing in-flight requests during refresh avoids stampedes, and the httpOnly refresh cookie means JS never touches the long-lived secret." %}
 
 {% include quiz.html id="authentication-3"
    question="What's the cleanest way to protect routes in a React app?"
-   options="A|Check auth in every page component individually;B|Wrap protected routes in a ProtectedRoute / RequireAuth component (or a layout route) that reads auth state and redirects to /login when unauthenticated, preserving the intended destination so the user lands back there after signing in;C|Use window.location everywhere;D|Redirect in useEffect on every page"
+   options="A|Check auth in every page component individually;;B|Wrap protected routes in a ProtectedRoute / RequireAuth component (or a layout route) that reads auth state and redirects to /login when unauthenticated, preserving the intended destination so the user lands back there after signing in;;C|Use window.location everywhere;;D|Redirect in useEffect on every page"
    correct="B"
    explanation="A route-level guard keeps auth logic in one spot, handles return-to-URL cleanly, and composes with role-based guards for authorization." %}
 
 {% include quiz.html id="authentication-4"
    question="What is the difference between authentication and authorization?"
-   options="A|They are synonyms;B|Authentication answers &quot;who are you?&quot; (login, MFA, SSO); authorization answers &quot;what are you allowed to do?&quot; (roles, permissions, ACLs). You need the first before you can meaningfully enforce the second;C|Authorization happens first;D|Authorization is a UI concern only"
+   options="A|They are synonyms;;B|Authentication answers &quot;who are you?&quot; (login, MFA, SSO); authorization answers &quot;what are you allowed to do?&quot; (roles, permissions, ACLs). You need the first before you can meaningfully enforce the second;;C|Authorization happens first;;D|Authorization is a UI concern only"
    correct="B"
    explanation="AuthN proves identity; AuthZ enforces policy. Many security bugs come from conflating the two or from checking only one at the wrong layer." %}
 
 {% include quiz.html id="authentication-5"
    question="Which of these is NOT a standard production hardening for auth?"
-   options="A|HTTPS everywhere and Secure+SameSite+httpOnly cookies;B|Short-lived access tokens with rotating refresh tokens;C|Rate-limiting login and refresh endpoints, plus MFA for sensitive actions;D|Logging plaintext passwords in audit trails so you can debug"
+   options="A|HTTPS everywhere and Secure+SameSite+httpOnly cookies;;B|Short-lived access tokens with rotating refresh tokens;;C|Rate-limiting login and refresh endpoints, plus MFA for sensitive actions;;D|Logging plaintext passwords in audit trails so you can debug"
    correct="D"
    explanation="Never log plaintext credentials — it turns every log aggregator into a secondary credentials breach risk. A/B/C are the usual defence-in-depth stack." %}
 

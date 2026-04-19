@@ -639,31 +639,31 @@ export default {
 
 {% include quiz.html id="story-1"
    question="What's the practical difference between args and argTypes in Storybook CSF?"
-   options="A|They are synonyms;B|args are the actual values you pass to a story's component props (what renders), while argTypes declare the shape/controls/descriptions for those args (how they appear in the Controls panel, docs, and which editor widget is used);C|argTypes are only for TypeScript;D|args are deprecated"
+   options="A|They are synonyms;;B|args are the actual values you pass to a story's component props (what renders), while argTypes declare the shape/controls/descriptions for those args (how they appear in the Controls panel, docs, and which editor widget is used);;C|argTypes are only for TypeScript;;D|args are deprecated"
    correct="B"
    explanation="You can override args per story. argTypes configure the experience around those args — control type, options, descriptions, categories." %}
 
 {% include quiz.html id="story-2"
    question="What's the modern, framework-friendly way to test user interactions in a story?"
-   options="A|Render manually with your test runner and ignore Storybook;B|Write a `play` function that uses @storybook/test (userEvent, fireEvent, expect) — it runs automatically in Storybook's interactions addon and also in CI via the test-runner, giving you one source of truth for interaction tests and visual examples;C|Copy the tests into a separate .test.js file only;D|Rely on manual QA"
+   options="A|Render manually with your test runner and ignore Storybook;;B|Write a `play` function that uses @storybook/test (userEvent, fireEvent, expect) — it runs automatically in Storybook's interactions addon and also in CI via the test-runner, giving you one source of truth for interaction tests and visual examples;;C|Copy the tests into a separate .test.js file only;;D|Rely on manual QA"
    correct="B"
    explanation="`play` functions turn stories into executable interaction tests, and running them in the test-runner catches regressions in CI." %}
 
 {% include quiz.html id="story-3"
    question="When should you reach for a decorator vs a parameter?"
-   options="A|Always use parameters;B|Decorators wrap stories in additional markup or context (ThemeProvider, Router, mock Redux store); parameters configure story/addon behavior (layout, backgrounds, a11y options, docs overrides). Use decorators for wiring, parameters for configuration;C|Parameters are only for Vue;D|They are interchangeable"
+   options="A|Always use parameters;;B|Decorators wrap stories in additional markup or context (ThemeProvider, Router, mock Redux store); parameters configure story/addon behavior (layout, backgrounds, a11y options, docs overrides). Use decorators for wiring, parameters for configuration;;C|Parameters are only for Vue;;D|They are interchangeable"
    correct="B"
    explanation="If it needs to render around the component, it's a decorator. If it's knobs for Storybook itself, it's a parameter." %}
 
 {% include quiz.html id="story-4"
    question="How can you share setup across multiple stories of different components?"
-   options="A|Copy-paste the setup into each story file;B|Export reusable decorators and args/argTypes from a shared module and apply them at the story, meta, or `.storybook/preview` level — preview-level applies to everything, meta-level to one component, story-level to one story;C|Use localStorage;D|Storybook doesn't support sharing"
+   options="A|Copy-paste the setup into each story file;;B|Export reusable decorators and args/argTypes from a shared module and apply them at the story, meta, or `.storybook/preview` level — preview-level applies to everything, meta-level to one component, story-level to one story;;C|Use localStorage;;D|Storybook doesn't support sharing"
    correct="B"
    explanation="Storybook has three scopes — global (preview), per-component (meta), per-story — for decorators, parameters, and args. Put shared wiring at the highest scope that applies." %}
 
 {% include quiz.html id="story-5"
    question="How should stories be organised for a large component library?"
-   options="A|Flat — all stories at the root;B|Follow the atomic-design hierarchy or your domain structure in story titles (&quot;Atoms/Button&quot;, &quot;Molecules/FormField&quot;, &quot;Pages/Dashboard&quot;) so the Storybook sidebar mirrors the component hierarchy and stays navigable as the library grows;C|One file per design system version;D|Alphabetical only"
+   options="A|Flat — all stories at the root;;B|Follow the atomic-design hierarchy or your domain structure in story titles (&quot;Atoms/Button&quot;, &quot;Molecules/FormField&quot;, &quot;Pages/Dashboard&quot;) so the Storybook sidebar mirrors the component hierarchy and stays navigable as the library grows;;C|One file per design system version;;D|Alphabetical only"
    correct="B"
    explanation="Titles are just strings with `/` as a separator, which Storybook renders as a tree. Keep the tree shallow but meaningful — Atoms/Molecules/Organisms/Pages is a proven default." %}
 

@@ -485,33 +485,33 @@ const Button: React.FC<ButtonProps> = ({
 
 {% include quiz.html id="props-1"
    question="What happens if you mutate a prop inside a component?"
-   options="A|Nothing — it works fine;B|In React (strict mode) it's a bug: props are expected to be immutable from the component's perspective. Mutating them breaks the one-way data flow, won't trigger re-renders reliably, and can silently corrupt the parent's state;C|The framework auto-saves the mutation to the parent;D|It is encouraged"
+   options="A|Nothing — it works fine;;B|In React (strict mode) it's a bug: props are expected to be immutable from the component's perspective. Mutating them breaks the one-way data flow, won't trigger re-renders reliably, and can silently corrupt the parent's state;;C|The framework auto-saves the mutation to the parent;;D|It is encouraged"
    correct="B"
    explanation="Treat props as read-only. If you need to derive or transform, copy into local state or use a memoized derivation. Mutating is almost always a bug." %}
 
 {% include quiz.html id="props-2"
    question="In Web Components, what's the difference between an attribute and a property?"
-   options="A|None — they're synonyms;B|Attributes are always strings (set in HTML or via setAttribute); properties are typed JS fields on the element instance. Libraries like Lit commonly reflect certain properties to attributes for interop, but complex values (objects, arrays, functions) should only be passed via properties;C|Properties only work server-side;D|Attributes are faster to read"
+   options="A|None — they're synonyms;;B|Attributes are always strings (set in HTML or via setAttribute); properties are typed JS fields on the element instance. Libraries like Lit commonly reflect certain properties to attributes for interop, but complex values (objects, arrays, functions) should only be passed via properties;;C|Properties only work server-side;;D|Attributes are faster to read"
    correct="B"
    explanation="This is the big web-components gotcha: if you need to pass an object or a function, use the property. Attributes stringify everything." %}
 
 {% include quiz.html id="props-3"
    question="Should you pass individual values or a whole object as a prop?"
-   options="A|Always pass the whole object — fewer props;B|Prefer individual, explicit props for clarity and targeted memoization; pass an object only when it's genuinely cohesive (e.g. a user record whose fields travel together) — and remember the consumer then re-renders whenever any field on the object changes;C|Always spread the entire store;D|It doesn't matter"
+   options="A|Always pass the whole object — fewer props;;B|Prefer individual, explicit props for clarity and targeted memoization; pass an object only when it's genuinely cohesive (e.g. a user record whose fields travel together) — and remember the consumer then re-renders whenever any field on the object changes;;C|Always spread the entire store;;D|It doesn't matter"
    correct="B"
    explanation="Explicit props make components self-documenting and enable precise memoization. Pass objects when the fields are conceptually one thing, not as a shortcut." %}
 
 {% include quiz.html id="props-4"
    question="What's an effective modern approach to type-checking props in a React codebase?"
-   options="A|Ship no types and hope;B|TypeScript interfaces/types on component props give compile-time checking with editor completion; PropTypes can still add runtime validation in plain-JS projects but is largely superseded by TS in new work;C|JSDoc only;D|Rely on eslint alone"
+   options="A|Ship no types and hope;;B|TypeScript interfaces/types on component props give compile-time checking with editor completion; PropTypes can still add runtime validation in plain-JS projects but is largely superseded by TS in new work;;C|JSDoc only;;D|Rely on eslint alone"
    correct="B"
    explanation="TS catches misuse at the call site before the code ships. PropTypes are useful runtime belt-and-braces in JS-only codebases but React 19 has dropped the auto-extraction treatment they used to get." %}
 
 {% include quiz.html id="props-5"
    question="What is the React `children` prop for?"
-   options="A|It is deprecated;B|It lets a parent pass JSX markup into a slot inside the child component, enabling composition patterns like layouts, wrappers, and customisable containers without reinventing a prop API per case;C|It stores animation frames;D|It is only used for tables"
+   options="A|It is deprecated;;B|It lets a parent pass JSX markup into a slot inside the child component, enabling composition patterns like layouts, wrappers, and customisable containers without reinventing a prop API per case;;C|It stores animation frames;;D|It is only used for tables"
    correct="B"
-   explanation="&lt;Card&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/Card&gt; passes the &lt;p&gt; as `props.children` so Card can render it in a slot. Vue/WC use &lt;slot&gt;; Angular uses ng-content — same idea." %}
+   explanation="<Card><p>Hello</p></Card> passes the <p> as `props.children` so Card can render it in a slot. Vue/WC use <slot>; Angular uses ng-content — same idea." %}
 
 ## References
 

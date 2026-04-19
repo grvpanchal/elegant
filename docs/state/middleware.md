@@ -431,31 +431,31 @@ const goodMiddleware = (store) => (next) => (action) => {
 
 {% include quiz.html id="middleware-1"
    question="What is the Redux middleware function signature?"
-   options="A|action => dispatch;B|({ getState, dispatch }) => next => action => { /* pre */ const result = next(action); /* post */ return result; } — a curried function that receives store API, the next middleware, and each dispatched action, and can inspect / transform / suppress / delay it before passing to next;C|store => void;D|It has no signature"
+   options="A|action => dispatch;;B|({ getState, dispatch }) => next => action => { /* pre */ const result = next(action); /* post */ return result; } — a curried function that receives store API, the next middleware, and each dispatched action, and can inspect / transform / suppress / delay it before passing to next;;C|store => void;;D|It has no signature"
    correct="B"
    explanation="That 3-level curry lets middlewares be composed with applyMiddleware. The double return lets you wrap async work around the next() call." %}
 
 {% include quiz.html id="middleware-2"
    question="Inside middleware, when should you call next(action) vs store.dispatch(action)?"
-   options="A|They&apos;re the same;B|next(action) continues the current pipeline past this middleware — use it for the action you&apos;re currently processing. store.dispatch(action) restarts the pipeline from the top — use it to emit a NEW action (e.g. dispatching a success action after an async call). Mixing them up causes infinite loops;C|Only use next;D|Only use dispatch"
+   options="A|They're the same;;B|next(action) continues the current pipeline past this middleware — use it for the action you're currently processing. store.dispatch(action) restarts the pipeline from the top — use it to emit a NEW action (e.g. dispatching a success action after an async call). Mixing them up causes infinite loops;;C|Only use next;;D|Only use dispatch"
    correct="B"
    explanation="next = forward the current action. dispatch = fire a fresh action through all middleware again. Dispatching the same action from middleware is the classic infinite-loop bug." %}
 
 {% include quiz.html id="middleware-3"
    question="Which is NOT a typical middleware use case?"
-   options="A|Logging every action for debugging;B|Attaching auth tokens / request IDs to async calls;C|Handling thunks, sagas, promises, observables (async orchestration);D|Storing component DOM refs"
+   options="A|Logging every action for debugging;;B|Attaching auth tokens / request IDs to async calls;;C|Handling thunks, sagas, promises, observables (async orchestration);;D|Storing component DOM refs"
    correct="D"
    explanation="Middleware is for cross-cutting concerns on the action pipeline: logging, auth, analytics, async orchestration, crash reporting. DOM refs have nothing to do with the action stream." %}
 
 {% include quiz.html id="middleware-4"
    question="Does middleware order matter?"
-   options="A|No — composition is commutative;B|Yes — each middleware wraps the next one. A logger placed BEFORE thunk logs the raw thunk function; placed AFTER thunk it logs the resolved action. Crash reporters belong last to catch errors thrown by earlier middleware. Order = pipeline order;C|Order only matters in production;D|Order only matters for sagas"
+   options="A|No — composition is commutative;;B|Yes — each middleware wraps the next one. A logger placed BEFORE thunk logs the raw thunk function; placed AFTER thunk it logs the resolved action. Crash reporters belong last to catch errors thrown by earlier middleware. Order = pipeline order;;C|Order only matters in production;;D|Order only matters for sagas"
    correct="B"
    explanation="applyMiddleware(a, b, c) means a wraps b wraps c. Shifting order changes which middleware sees the &quot;raw&quot; action vs already-transformed results." %}
 
 {% include quiz.html id="middleware-5"
    question="How do you unit-test a middleware?"
-   options="A|Boot a real app and interact with the UI;B|Construct fake store API ({ getState, dispatch }), a fake next spy, invoke middleware(storeAPI)(next)(action), then assert on what next was called with and what dispatch was called with. Pure function in, observable effects out;C|Middleware can&apos;t be tested;D|Only e2e tests work"
+   options="A|Boot a real app and interact with the UI;;B|Construct fake store API ({ getState, dispatch }), a fake next spy, invoke middleware(storeAPI)(next)(action), then assert on what next was called with and what dispatch was called with. Pure function in, observable effects out;;C|Middleware can't be tested;;D|Only e2e tests work"
    correct="B"
    explanation="Middleware is three nested functions — all pure. Mock the inputs, assert the outputs. No DOM, no real store needed." %}
 

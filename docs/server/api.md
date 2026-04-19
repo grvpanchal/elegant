@@ -611,31 +611,31 @@ A two-way interactive communication session between the user’s browser and a s
 
 {% include quiz.html id="api-1"
    question="What is the primary purpose of request and response interceptors in an API client?"
-   options="A|To log every request;B|To centralise cross-cutting concerns — attaching auth tokens, logging, transforming payloads, handling errors, refreshing tokens — so individual call sites stay clean and consistent;C|To disable HTTP/2;D|To replace the fetch API"
+   options="A|To log every request;;B|To centralise cross-cutting concerns — attaching auth tokens, logging, transforming payloads, handling errors, refreshing tokens — so individual call sites stay clean and consistent;;C|To disable HTTP/2;;D|To replace the fetch API"
    correct="B"
    explanation="Interceptors are the one place that knows about auth headers, retry logic, error normalisation — the rest of the codebase just calls api.get/api.post." %}
 
 {% include quiz.html id="api-2"
    question="Which HTTP method should be used for which REST operation?"
-   options="A|GET for everything;B|GET to read (safe, idempotent), POST to create (not idempotent), PUT to replace (idempotent), PATCH to partially update, DELETE to remove (idempotent);C|POST for reads;D|DELETE for updates"
+   options="A|GET for everything;;B|GET to read (safe, idempotent), POST to create (not idempotent), PUT to replace (idempotent), PATCH to partially update, DELETE to remove (idempotent);;C|POST for reads;;D|DELETE for updates"
    correct="B"
    explanation="Respecting method semantics makes APIs predictable, cacheable, and safe to retry. GET/PUT/DELETE are idempotent — safe to retry — POST is not." %}
 
 {% include quiz.html id="api-3"
    question="Should API services contain business logic and application state?"
-   options="A|Yes — keep everything in one place;B|No — API services should be thin, pure data-transport clients. Business logic and application state belong in the state layer (Redux/Saga/NgRx/Pinia). Keeping them separate makes the API layer reusable across stores and testable in isolation;C|Only for GraphQL;D|Only Redux can wrap APIs"
+   options="A|Yes — keep everything in one place;;B|No — API services should be thin, pure data-transport clients. Business logic and application state belong in the state layer (Redux/Saga/NgRx/Pinia). Keeping them separate makes the API layer reusable across stores and testable in isolation;;C|Only for GraphQL;;D|Only Redux can wrap APIs"
    correct="B"
    explanation="When the API client is pure, swapping state management, testing with fakes, or reusing the client in a different app are all trivial." %}
 
 {% include quiz.html id="api-4"
    question="What's the safest way to store and attach auth tokens client-side?"
-   options="A|localStorage with a long expiry;B|Prefer httpOnly, Secure, SameSite cookies for session tokens so JS can't read them (mitigating XSS). If you must use memory/storage, keep short-lived access tokens in memory and use a rotating refresh token via an httpOnly cookie. Always use HTTPS;C|Put tokens in the URL;D|In a global variable on window"
+   options="A|localStorage with a long expiry;;B|Prefer httpOnly, Secure, SameSite cookies for session tokens so JS can't read them (mitigating XSS). If you must use memory/storage, keep short-lived access tokens in memory and use a rotating refresh token via an httpOnly cookie. Always use HTTPS;;C|Put tokens in the URL;;D|In a global variable on window"
    correct="B"
    explanation="localStorage is XSS-readable; cookies with httpOnly+Secure+SameSite are the defence-in-depth default. Token rotation limits blast radius if one leaks." %}
 
 {% include quiz.html id="api-5"
    question="How do REST, GraphQL, and WebSocket differ?"
-   options="A|They are the same protocol;B|REST is resource-oriented HTTP with multiple endpoints; GraphQL is a single endpoint where the client specifies exactly the fields it needs (reduces over-fetching/under-fetching); WebSocket is a persistent bidirectional connection for real-time pushes (chat, live updates). Pick per use case — they often coexist;C|GraphQL has replaced REST;D|WebSockets only work in Node"
+   options="A|They are the same protocol;;B|REST is resource-oriented HTTP with multiple endpoints; GraphQL is a single endpoint where the client specifies exactly the fields it needs (reduces over-fetching/under-fetching); WebSocket is a persistent bidirectional connection for real-time pushes (chat, live updates). Pick per use case — they often coexist;;C|GraphQL has replaced REST;;D|WebSockets only work in Node"
    correct="B"
    explanation="REST wins for simple CRUD and cacheability, GraphQL for complex client-driven data needs, WebSockets (or SSE) for push — most large apps mix all three." %}
 

@@ -948,31 +948,31 @@ async function logout() {
 
 {% include quiz.html id="session-1"
    question="What's the purpose of having both an access token AND a refresh token?"
-   options="A|It's just historical;B|Short-lived access tokens limit the damage if one leaks; a longer-lived refresh token (stored more securely, usually in an httpOnly cookie) lets the client exchange for new access tokens without asking the user to re-log in. Separation of duties;C|Refresh tokens are deprecated;D|They are the same token"
+   options="A|It's just historical;;B|Short-lived access tokens limit the damage if one leaks; a longer-lived refresh token (stored more securely, usually in an httpOnly cookie) lets the client exchange for new access tokens without asking the user to re-log in. Separation of duties;;C|Refresh tokens are deprecated;;D|They are the same token"
    correct="B"
    explanation="Compromise an access token and the window of misuse is minutes. Compromise the refresh token and you need a different, harder attack (XSS can't read httpOnly cookies) — defence in depth." %}
 
 {% include quiz.html id="session-2"
    question="How does token rotation prevent replay attacks?"
-   options="A|By making tokens longer;B|Every refresh exchanges the current refresh token for a new one and invalidates the old one. If an attacker replays an old refresh token, the server detects the collision and can revoke the whole family — confining the compromise and forcing a genuine re-auth;C|Rotation is purely cosmetic;D|It disables token expiry"
+   options="A|By making tokens longer;;B|Every refresh exchanges the current refresh token for a new one and invalidates the old one. If an attacker replays an old refresh token, the server detects the collision and can revoke the whole family — confining the compromise and forcing a genuine re-auth;;C|Rotation is purely cosmetic;;D|It disables token expiry"
    correct="B"
    explanation="Rotation + detection of reused refresh tokens is the OAuth 2.1 recommendation. It turns a silent replay into a visible anomaly the server can respond to." %}
 
 {% include quiz.html id="session-3"
    question="What's a clean way to implement cross-tab session sync (so logging out in one tab logs out in all)?"
-   options="A|Poll localStorage every 500ms;B|Use BroadcastChannel or the 'storage' event to notify other tabs of login/logout/refresh events, and have each tab react (clear state, redirect to /login, retry requests with the new token);C|Only open one tab;D|Reload every tab on any click"
+   options="A|Poll localStorage every 500ms;;B|Use BroadcastChannel or the 'storage' event to notify other tabs of login/logout/refresh events, and have each tab react (clear state, redirect to /login, retry requests with the new token);;C|Only open one tab;;D|Reload every tab on any click"
    correct="B"
    explanation="BroadcastChannel is the modern API; the 'storage' event is a fallback for older browsers. Either way: one tab publishes session events, all tabs subscribe." %}
 
 {% include quiz.html id="session-4"
    question="What's the difference between a sliding and an absolute session timeout?"
-   options="A|They're identical;B|Sliding timeout extends the expiry on every activity (&quot;idle for 30 minutes&quot; logs you out); absolute timeout expires a session N hours after login regardless of activity — so even an active session periodically forces re-auth. Most systems combine both: sliding for idle, absolute for hard cap;C|Absolute timeout only applies server-side;D|Sliding timeout is insecure"
+   options="A|They're identical;;B|Sliding timeout extends the expiry on every activity (&quot;idle for 30 minutes&quot; logs you out); absolute timeout expires a session N hours after login regardless of activity — so even an active session periodically forces re-auth. Most systems combine both: sliding for idle, absolute for hard cap;;C|Absolute timeout only applies server-side;;D|Sliding timeout is insecure"
    correct="B"
    explanation="Sliding = user-friendly, limits idle risk. Absolute = security-friendly, caps session lifetime even for active users. Combine them for the best of both." %}
 
 {% include quiz.html id="session-5"
    question="How should you persist session state across page reloads?"
-   options="A|In-memory only, so refresh always logs the user out;B|Keep the access token (or session id) in httpOnly cookie for the server to read, or in memory with a refresh cookie that re-hydrates on boot; avoid localStorage for tokens (XSS-readable). Put non-sensitive UI state in sessionStorage;C|Put tokens in the URL;D|Only use cookies for everything"
+   options="A|In-memory only, so refresh always logs the user out;;B|Keep the access token (or session id) in httpOnly cookie for the server to read, or in memory with a refresh cookie that re-hydrates on boot; avoid localStorage for tokens (XSS-readable). Put non-sensitive UI state in sessionStorage;;C|Put tokens in the URL;;D|Only use cookies for everything"
    correct="B"
    explanation="httpOnly cookies for secrets, memory (or ephemeral store) for the access token, and sessionStorage for non-sensitive UI state is the battle-tested combo." %}
 

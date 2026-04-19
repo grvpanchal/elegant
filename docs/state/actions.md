@@ -403,32 +403,32 @@ const usersSlice = createSlice({
 
 {% include quiz.html id="actions-1"
    question="What's the difference between an action type and an action creator?"
-   options="A|They are the same thing;B|An action type is a constant string that identifies what happened (&apos;todo/added&apos;, CREATE_TODO); an action creator is a function that builds and returns an action object with that type (plus payload, meta). Types keep reducers/middleware matching consistent; creators keep dispatch sites uniform;C|Types are runtime, creators are compile-time;D|Action creators are deprecated"
+   options="A|They are the same thing;;B|An action type is a constant string that identifies what happened ('todo/added', CREATE_TODO); an action creator is a function that builds and returns an action object with that type (plus payload, meta). Types keep reducers/middleware matching consistent; creators keep dispatch sites uniform;;C|Types are runtime, creators are compile-time;;D|Action creators are deprecated"
    correct="B"
    explanation="Types are the wire format. Creators encapsulate payload shaping, default fields, and any input coercion so callers just pass raw data." %}
 
 {% include quiz.html id="actions-2"
-   question="When should you reach for a thunk (or RTK&apos;s createAsyncThunk) vs a plain action creator?"
-   options="A|Always use thunks;B|Plain action creators return a bare action object (sync, pure). Thunks return a function that receives (dispatch, getState) so you can sequence async work, read state, and dispatch multiple actions — use them when an action needs to fetch, branch, or dispatch more actions. For complex async flows a saga/epic may suit better;C|Thunks are only for Angular;D|Plain action creators can&apos;t return objects"
+   question="When should you reach for a thunk (or RTK's createAsyncThunk) vs a plain action creator?"
+   options="A|Always use thunks;;B|Plain action creators return a bare action object (sync, pure). Thunks return a function that receives (dispatch, getState) so you can sequence async work, read state, and dispatch multiple actions — use them when an action needs to fetch, branch, or dispatch more actions. For complex async flows a saga/epic may suit better;;C|Thunks are only for Angular;;D|Plain action creators can't return objects"
    correct="B"
-   explanation="Thunks are the simplest way to add async to Redux. If you find thunks getting complex (cancellation, retries, race conditions) that&apos;s the signal to step up to sagas/epics or RTK Query." %}
+   explanation="Thunks are the simplest way to add async to Redux. If you find thunks getting complex (cancellation, retries, race conditions) that's the signal to step up to sagas/epics or RTK Query." %}
 
 {% include quiz.html id="actions-3"
    question="What is the Flux Standard Action (FSA) shape?"
-   options="A|{ name, data };B|{ type, payload, error?, meta? } — a consistent envelope where type identifies the action, payload carries the data, error flags failure (in which case payload is the Error), and meta holds cross-cutting info (requestId, timestamp). Keeps reducers/middleware predictable;C|{ op, args };D|Any object shape at all"
+   options="A|{ name, data };;B|{ type, payload, error?, meta? } — a consistent envelope where type identifies the action, payload carries the data, error flags failure (in which case payload is the Error), and meta holds cross-cutting info (requestId, timestamp). Keeps reducers/middleware predictable;;C|{ op, args };;D|Any object shape at all"
    correct="B"
-   explanation="FSA is the de-facto contract the Redux ecosystem agrees on. RTK&apos;s createAction produces FSA-compliant creators by default." %}
+   explanation="FSA is the de-facto contract the Redux ecosystem agrees on. RTK's createAction produces FSA-compliant creators by default." %}
 
 {% include quiz.html id="actions-4"
    question="How should you unit-test an action creator?"
-   options="A|You can&apos;t test action creators;B|Call the creator with input and assert the returned action object equals the expected shape (type + payload + any meta). For thunk creators, call the returned function with mocked dispatch/getState and assert the sequence of dispatches. Pure inputs in, asserted outputs out;C|Wrap it in a component and render;D|Integration-test via the UI only"
+   options="A|You can't test action creators;;B|Call the creator with input and assert the returned action object equals the expected shape (type + payload + any meta). For thunk creators, call the returned function with mocked dispatch/getState and assert the sequence of dispatches. Pure inputs in, asserted outputs out;;C|Wrap it in a component and render;;D|Integration-test via the UI only"
    correct="B"
    explanation="Action creators are pure fns (even thunks are fns), which makes them the easiest thing to test in the whole stack — a few expect(creator(args)).toEqual(...) calls." %}
 
 {% include quiz.html id="actions-5"
    question="Why keep action-type constants separate from action creators?"
-   options="A|It&apos;s a historical quirk;B|The constants are imported by reducers, middleware, sagas, devtools, and tests — centralising them prevents typos, makes rename refactors safe, and keeps the &quot;string catalog&quot; discoverable. In RTK, createSlice generates both for you so the concern is automated away;C|They must be in separate files for performance;D|Creators can&apos;t reference constants"
+   options="A|It's a historical quirk;;B|The constants are imported by reducers, middleware, sagas, devtools, and tests — centralising them prevents typos, makes rename refactors safe, and keeps the &quot;string catalog&quot; discoverable. In RTK, createSlice generates both for you so the concern is automated away;;C|They must be in separate files for performance;;D|Creators can't reference constants"
    correct="B"
-   explanation="A typo&apos;d string in one place is a bug that slips past TypeScript; a typo&apos;d imported constant is a compile error. RTK hides this by auto-deriving types from slice names." %}
+   explanation="A typo'd string in one place is a bug that slips past TypeScript; a typo'd imported constant is a compile error. RTK hides this by auto-deriving types from slice names." %}
 
 ## References
