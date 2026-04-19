@@ -63,4 +63,12 @@ echo "Building Jekyll docs..."
 cd ../../docs
 bundle exec jekyll build
 
+# Copy Agent Skills into the built site so the download widget links
+# resolve same-origin (the browser's `download` attribute is ignored
+# cross-origin, so linking at github.com/raw would not actually
+# trigger a download).
+echo "Copying skills into _site..."
+mkdir -p _site/skills
+cp -R ../skills/* _site/skills/
+
 echo "Docs build complete."
