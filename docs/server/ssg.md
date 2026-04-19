@@ -473,32 +473,32 @@ export async function getStaticPaths() {
 
 {% include quiz.html id="ssg-1"
    question="What's the difference between SSG, SSR, and CSR?"
-   options="A|They are three names for the same thing;;B|CSR renders in the browser after JS loads (slow first paint, no SEO by default); SSR renders on every request on the server (fresh data, but server cost per request); SSG renders at build time into static HTML (fast, cacheable, CDN-friendly, but stale until rebuild). Modern stacks mix all three per route;;C|SSG only works in Next.js;;D|SSR has been deprecated"
-   correct="B"
+   options="A|SSG only works in Next.js;;B|SSR has been deprecated;;C|CSR renders in the browser after JS loads (slow first paint, no SEO by default); SSR renders on every request on the server (fresh data, but server cost per request); SSG renders at build time into static HTML (fast, cacheable, CDN-friendly, but stale until rebuild). Modern stacks mix all three per route;;D|They are three names for the same thing"
+   correct="C"
    explanation="Choose per page: product listings maybe SSR, marketing pages SSG, dashboards CSR. The big frameworks (Next, Nuxt, Astro, Remix) let you mix." %}
 
 {% include quiz.html id="ssg-2"
    question="How does Incremental Static Regeneration (ISR) work?"
-   options="A|It disables caching;;B|Pages are generated at build time like SSG, but with a revalidation window; the next request after that window triggers a background regeneration — visitors get the stale page immediately while the new one is produced and cached. You get SSG speed with near-SSR freshness;;C|ISR regenerates the entire site on every request;;D|ISR is the same as CSR"
-   correct="B"
+   options="A|Pages are generated at build time like SSG, but with a revalidation window; the next request after that window triggers a background regeneration — visitors get the stale page immediately while the new one is produced and cached. You get SSG speed with near-SSR freshness;;B|ISR regenerates the entire site on every request;;C|It disables caching;;D|ISR is the same as CSR"
+   correct="A"
    explanation="&quot;Stale-while-revalidate for pages&quot; — visitors never wait for regeneration, and content updates without a full rebuild." %}
 
 {% include quiz.html id="ssg-3"
    question="In Next.js's getStaticPaths, what do the different fallback values mean?"
-   options="A|fallback: false -> only paths returned are rendered, others 404; fallback: true -> non-listed paths render a loading state then fetch data on demand; fallback: 'blocking' -> non-listed paths render on-demand SSR-style with no loading flash;;B|They're all equivalent;;C|Fallback is purely cosmetic;;D|Only 'false' is real"
-   correct="A"
+   options="A|They're all equivalent;;B|Only 'false' is real;;C|fallback: false -> only paths returned are rendered, others 404; fallback: true -> non-listed paths render a loading state then fetch data on demand; fallback: 'blocking' -> non-listed paths render on-demand SSR-style with no loading flash;;D|Fallback is purely cosmetic"
+   correct="C"
    explanation="Pick based on the size and freshness of your path set: small/known paths = false; huge/long-tail paths = true or 'blocking' depending on UX needs." %}
 
 {% include quiz.html id="ssg-4"
    question="When should you use on-demand revalidation vs time-based ISR?"
-   options="A|Always on-demand;;B|Time-based is simpler but has a lag window (stale until the next request past the timer); on-demand (e.g. a webhook from your CMS calling res.revalidate) invalidates the cached page immediately after a content change — better for editorial content where staleness is user-visible;;C|On-demand requires full rebuilds;;D|They can't be combined"
-   correct="B"
+   options="A|On-demand requires full rebuilds;;B|They can't be combined;;C|Always on-demand;;D|Time-based is simpler but has a lag window (stale until the next request past the timer); on-demand (e.g. a webhook from your CMS calling res.revalidate) invalidates the cached page immediately after a content change — better for editorial content where staleness is user-visible"
+   correct="D"
    explanation="Use time-based as a safety net (&quot;at most N hours stale&quot;) and on-demand for immediate freshness after a real edit. Most modern setups use both." %}
 
 {% include quiz.html id="ssg-5"
    question="How do you keep build times manageable for large SSG sites?"
-   options="A|Rebuild everything on every deploy forever;;B|Use ISR/on-demand generation for long-tail pages, incremental builds that only rebuild changed pages, parallel builds, a CDN with per-path invalidation, and content-hash caching for build artefacts. Avoid putting thousands of low-traffic pages into the synchronous build;;C|Disable caching;;D|Combine all pages into a single HTML"
-   correct="B"
+   options="A|Disable caching;;B|Combine all pages into a single HTML;;C|Use ISR/on-demand generation for long-tail pages, incremental builds that only rebuild changed pages, parallel builds, a CDN with per-path invalidation, and content-hash caching for build artefacts. Avoid putting thousands of low-traffic pages into the synchronous build;;D|Rebuild everything on every deploy forever"
+   correct="C"
    explanation="The goal is: rebuild what changed, serve everything else from cache. Frameworks now do incremental builds and on-demand generation specifically so build time scales sub-linearly with site size." %}
 
 ## References

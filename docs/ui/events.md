@@ -534,32 +534,32 @@ Each approach reflects the framework's philosophy: React and Vue integrate event
 
 {% include quiz.html id="events-1"
    question="What is an HTML element event?"
-   options="A|A CSS pseudo-class;;B|A server-side hook in the HTTP protocol;;C|A signal the browser fires when something happens on a page (click, input change, load, keypress, etc.) that JS can listen to and respond to;;D|A React lifecycle method"
+   options="A|A server-side hook in the HTTP protocol;;B|A CSS pseudo-class;;C|A signal the browser fires when something happens on a page (click, input change, load, keypress, etc.) that JS can listen to and respond to;;D|A React lifecycle method"
    correct="C"
    explanation="Events are how the DOM surfaces user and system activity. JS subscribes via addEventListener or framework-specific binding to react to them." %}
 
 {% include quiz.html id="events-2"
    question="Which is the most flexible way to attach an event handler in plain HTML/JS?"
-   options="A|Inline onclick attribute;;B|Assigning element.onclick = fn, which overwrites any existing handler;;C|element.addEventListener('click', fn), which supports multiple handlers and easy removal via removeEventListener;;D|jQuery"
-   correct="C"
+   options="A|Assigning element.onclick = fn, which overwrites any existing handler;;B|Inline onclick attribute;;C|jQuery;;D|element.addEventListener('click', fn), which supports multiple handlers and easy removal via removeEventListener"
+   correct="D"
    explanation="addEventListener lets you register multiple handlers, choose capture vs bubble, opt into passive/once, and cleanly remove listeners — properties on the element can only hold a single handler." %}
 
 {% include quiz.html id="events-3"
    question="What is the difference between event capturing and event bubbling?"
-   options="A|They are the same thing;;B|Capturing flows from the window DOWN to the target; bubbling flows from the target UP to the window. Listeners run during both phases;;C|Capturing applies only to keyboard events;;D|Bubbling is disabled by default"
+   options="A|They are the same thing;;B|Capturing flows from the window DOWN to the target; bubbling flows from the target UP to the window. Listeners run during both phases;;C|Bubbling is disabled by default;;D|Capturing applies only to keyboard events"
    correct="B"
    explanation="The event travels in three phases: capture (top-down), target, then bubble (bottom-up). addEventListener defaults to bubble phase; pass `{ capture: true }` to run during capture." %}
 
 {% include quiz.html id="events-4"
    question="What does React's SyntheticEvent give you over a raw DOM event?"
-   options="A|Nothing — it's a pass-through;;B|A cross-browser normalized wrapper with consistent properties, event pooling (historically), and integration with React's update batching;;C|It replaces addEventListener for non-React code too;;D|It disables preventDefault"
-   correct="B"
+   options="A|A cross-browser normalized wrapper with consistent properties, event pooling (historically), and integration with React's update batching;;B|It disables preventDefault;;C|Nothing — it's a pass-through;;D|It replaces addEventListener for non-React code too"
+   correct="A"
    explanation="SyntheticEvent smooths over browser differences and ties event dispatching into React's rendering model — that's why you write `onClick` in camelCase and pass a function, not a string." %}
 
 {% include quiz.html id="events-5"
    question="When attaching a scroll or touchmove listener, why is `{ passive: true }` important?"
-   options="A|It prevents the event from firing twice;;B|It tells the browser the handler will not call preventDefault, so it can start scrolling immediately without waiting for JS — critical for 60fps scrolling on mobile;;C|It makes the listener run in a Web Worker;;D|It automatically removes the listener after one call"
-   correct="B"
+   options="A|It prevents the event from firing twice;;B|It makes the listener run in a Web Worker;;C|It tells the browser the handler will not call preventDefault, so it can start scrolling immediately without waiting for JS — critical for 60fps scrolling on mobile;;D|It automatically removes the listener after one call"
+   correct="C"
    explanation="Passive listeners unblock the main thread's scroll handling. Non-passive scroll/touchmove handlers force the browser to wait for JS before scrolling, causing jank." %}
 
 ## References

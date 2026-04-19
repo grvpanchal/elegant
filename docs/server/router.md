@@ -667,32 +667,32 @@ const router = createBrowserRouter([
 
 {% include quiz.html id="router-1"
    question="How does client-side routing avoid a full page reload?"
-   options="A|It disables browser history;;B|The router intercepts link clicks, uses history.pushState to update the URL without reloading, and swaps the rendered view component based on the new URL — the shell, providers, and JS context stay live;;C|It requires a service worker;;D|It makes an AJAX call that returns a new HTML document"
+   options="A|They are synonyms — each returns the current location object, and React Router picks whichever name matches your framework version;;B|useParams returns the matched dynamic segments (:id -> { id }); useLocation returns the Location object (pathname, search, hash, state) — useful for reading query strings and router-carried state; useNavigate returns an imperative navigate(path, { replace, state }) fn for programmatic navigation. Each is a narrow tool for one job;;C|They are all identical wrappers around window.location — React Router v6 only kept three names for backwards compatibility with v4 class components;;D|useParams is server-only (runs on the SSR server), useLocation runs only during hydration, and useNavigate is the only browser-safe one"
    correct="B"
    explanation="pushState + a matching popstate listener is the core primitive every SPA router (React Router, Vue Router, @angular/router) builds on." %}
 
 {% include quiz.html id="router-2"
    question="In React Router, what's the difference between useParams, useLocation, and useNavigate?"
-   options="A|They're synonyms;;B|useParams returns the dynamic segments matched by the current route (e.g. :id -> { id }); useLocation returns the current Location object (pathname, search, hash, state) for reading query strings or router state; useNavigate returns an imperative fn to programmatically navigate (push/replace);;C|They only work in Remix;;D|useParams is server-only"
-   correct="B"
+   options="A|They're synonyms;;B|useParams is server-only;;C|useParams returns the dynamic segments matched by the current route (e.g. :id -> { id }); useLocation returns the current Location object (pathname, search, hash, state) for reading query strings or router state; useNavigate returns an imperative fn to programmatically navigate (push/replace);;D|They only work in Remix"
+   correct="C"
    explanation="Params = the matched dynamic bits. Location = everything about the current URL. navigate() = the go-somewhere verb. Each is a narrow tool with one job." %}
 
 {% include quiz.html id="router-3"
    question="How do nested routes work in React Router v6+?"
-   options="A|Each route must be a sibling at the top level;;B|Parent routes render an <Outlet /> where matched child routes render, enabling shared layout/chrome (sidebar, header) across child pages without re-mounting. Relative paths and nested route config build the tree;;C|Nested routes are deprecated;;D|You must use window.location"
+   options="A|You must use window.location;;B|Parent routes render an <Outlet /> where matched child routes render, enabling shared layout/chrome (sidebar, header) across child pages without re-mounting. Relative paths and nested route config build the tree;;C|Each route must be a sibling at the top level;;D|Nested routes are deprecated"
    correct="B"
    explanation="The Outlet pattern is how you implement layouts, dashboards with subpages, and auth-guarded sections that share context without each child managing its own chrome." %}
 
 {% include quiz.html id="router-4"
    question="What's the cleanest way to protect routes that require authentication?"
-   options="A|Check auth inside every page component;;B|Use a layout/guard route (ProtectedRoute, RequireAuth) that checks auth state and either renders its <Outlet /> or redirects to /login with the intended destination saved so the user returns there after signing in;;C|Intercept in server middleware only;;D|Use try/catch around routes"
-   correct="B"
+   options="A|Intercept in server middleware only;;B|Check auth inside every page component;;C|Use a layout/guard route (ProtectedRoute, RequireAuth) that checks auth state and either renders its <Outlet /> or redirects to /login with the intended destination saved so the user returns there after signing in;;D|Use try/catch around routes"
+   correct="C"
    explanation="A single guard layer keeps auth logic in one place, handles return-to-URL, and composes with role-based guards cleanly." %}
 
 {% include quiz.html id="router-5"
    question="How does React.lazy() + Suspense improve SPA performance with routing?"
-   options="A|It makes rendering synchronous;;B|It code-splits a route's component into its own chunk so it's fetched only when that route is visited — cutting the initial bundle. Suspense boundaries show a fallback while the chunk loads. Combined with route-level preloading on hover you get lazy routes with snappy feel;;C|It replaces the router;;D|It only works at build time"
-   correct="B"
+   options="A|It only works at build time;;B|It replaces the router;;C|It makes rendering synchronous;;D|It code-splits a route's component into its own chunk so it's fetched only when that route is visited — cutting the initial bundle. Suspense boundaries show a fallback while the chunk loads. Combined with route-level preloading on hover you get lazy routes with snappy feel"
+   correct="D"
    explanation="Per-route code splitting is one of the highest-leverage perf wins — the visitor of /home never downloads the JS for /settings." %}
 
 ## References

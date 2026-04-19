@@ -604,19 +604,19 @@ const DashboardPanel = ({ title, subtitle, actions, children }) => (
 
 {% include quiz.html id="organism-1"
    question="What distinguishes an organism from a molecule in Atomic Design?"
-   options="A|Organisms must use TypeScript;;B|Organisms are complex, self-contained UI sections composed of multiple molecules (and atoms) that represent a meaningful region — header, product card, comment thread — whereas molecules are smaller single-purpose compositions;;C|There is no difference;;D|Organisms render on the server"
+   options="A|There is no difference;;B|Organisms are complex, self-contained UI sections composed of multiple molecules (and atoms) that represent a meaningful region — header, product card, comment thread — whereas molecules are smaller single-purpose compositions;;C|Organisms must use TypeScript;;D|Organisms render on the server"
    correct="B"
    explanation="If a component is orchestrating several molecules to form a distinct region of the page, it has graduated to organism level." %}
 
 {% include quiz.html id="organism-2"
    question="Should organisms contain business logic and data fetching, or stay purely presentational?"
-   options="A|They should fetch data directly for convenience;;B|Organisms can own UI-level state (dropdown open/closed, filter selection) but business logic, data fetching, and global state mutations belong in containers — the container wires a fetched data shape into the organism via props;;C|Organisms must be stateless;;D|They replace Redux"
-   correct="B"
+   options="A|They should fetch data directly for convenience;;B|Organisms must be stateless;;C|They replace Redux;;D|Organisms can own UI-level state (dropdown open/closed, filter selection) but business logic, data fetching, and global state mutations belong in containers — the container wires a fetched data shape into the organism via props"
+   correct="D"
    explanation="Keeping organisms presentational makes them reusable across pages and testable in Storybook. The container/organism split is how large apps scale." %}
 
 {% include quiz.html id="organism-3"
    question="When should you create a new organism rather than extending an existing one?"
-   options="A|When the purpose of the UI section is meaningfully different from any existing organism, when reuse of the current organism would require many conditional props/branches, or when the responsibilities differ;;B|Every time a designer changes a color;;C|Never — always extend;;D|When you run out of file names"
+   options="A|When the purpose of the UI section is meaningfully different from any existing organism, when reuse of the current organism would require many conditional props/branches, or when the responsibilities differ;;B|Never — always extend;;C|Every time a designer changes a color;;D|When you run out of file names"
    correct="A"
    explanation="Forking into a new organism beats piling variant props onto the old one past the point where the code reads as &quot;two different things pretending to be one.&quot;" %}
 
@@ -628,8 +628,8 @@ const DashboardPanel = ({ title, subtitle, actions, children }) => (
 
 {% include quiz.html id="organism-5"
    question="What is the typical relationship between organisms and state management (Redux, Context, etc.)?"
-   options="A|Organisms are the only layer allowed to subscribe to the store;;B|Organisms stay pure and receive what they need via props; a surrounding container subscribes to the store, derives data with selectors, and passes it down — keeping the organism decoupled from the specific store tech;;C|Organisms must import the Redux store directly;;D|State managers were deprecated"
-   correct="B"
+   options="A|Organisms stay pure and receive what they need via props; a surrounding container subscribes to the store, derives data with selectors, and passes it down — keeping the organism decoupled from the specific store tech;;B|State managers were deprecated;;C|Organisms must import the Redux store directly;;D|Organisms are the only layer allowed to subscribe to the store"
+   correct="A"
    explanation="Subscribing inside organisms ties their reuse to one specific app. Pushing subscriptions up to a container lets the same organism live in Storybook, tests, or a different app without rewiring." %}
 
 ## References

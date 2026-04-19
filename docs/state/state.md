@@ -348,32 +348,32 @@ const Dropdown = () => {
 
 {% include quiz.html id="state-1"
    question="What are the key differences between local, global, and server state?"
-   options="A|They are interchangeable;;B|Local state belongs to a single component (input focus, modal open). Global state is shared across the app (auth user, theme, cart). Server state is remote data you cache on the client (API responses) — it has its own concerns: fetching, staleness, re-fetching, invalidation. Each typically wants a different tool;;C|Only global state exists;;D|Server state is a myth"
-   correct="B"
+   options="A|Local state lives in a component; global state lives in a store; server state is data fetched from the backend — the three tools (useState, Redux, React Query) map one-to-one with no overlap, and you pick exactly one per app;;B|They are interchangeable labels for the same concept — all three are handled with useState and prop-drilling in modern React;;C|Local state is component-private (input focus, modal open) and belongs in useState. Global state is shared across the app (auth, theme, cart) and belongs in a client-state store or Context. Server state is a cached slice of remote data with its own concerns (fetching, staleness, refetch, invalidation) and deserves a dedicated server-state library;;D|Only global state matters — local and server state are anti-patterns that were deprecated when hooks were introduced"
+   correct="C"
    explanation="Local -> useState. Global -> Redux/Pinia/NgRx/Zustand/Context. Server -> React Query/SWR/RTK Query — the last one has enough unique concerns (cache, invalidation, deduping) to warrant its own tool." %}
 
 {% include quiz.html id="state-2"
    question="Should you always lift state to the highest common ancestor?"
-   options="A|Yes, always lift to the top;;B|No. Lift only as high as the components that genuinely need to read or update it. Over-lifting causes unnecessary re-renders across the tree and forces prop-drilling. If many distant components need it, reach for context or a store instead of the highest ancestor;;C|Never lift state;;D|Only lift class components"
-   correct="B"
+   options="A|Yes, always lift to the top;;B|Only lift class components;;C|Never lift state;;D|No. Lift only as high as the components that genuinely need to read or update it. Over-lifting causes unnecessary re-renders across the tree and forces prop-drilling. If many distant components need it, reach for context or a store instead of the highest ancestor"
+   correct="D"
    explanation="&quot;Lift to the closest common ancestor&quot; — not the root. If that ancestor is too far, a store or context is probably the right tool, not deeper lifting." %}
 
 {% include quiz.html id="state-3"
    question="Why does state immutability matter?"
-   options="A|It's purely stylistic;;B|Reference equality checks (Redux, React.memo, useMemo deps, Svelte stores) depend on new references for new values. Mutating state in place means consumers can't detect the change, dev-tools time-travel breaks, and concurrent rendering can observe inconsistent state. Immutability is the contract that makes those features work;;C|Only strings can be immutable;;D|Immutability is a performance regression"
-   correct="B"
+   options="A|Reference equality checks (Redux, React.memo, useMemo deps, Svelte stores) depend on new references for new values. Mutating state in place means consumers can't detect the change, dev-tools time-travel breaks, and concurrent rendering can observe inconsistent state. Immutability is the contract that makes those features work;;B|Only strings can be immutable;;C|It's purely stylistic;;D|Immutability is a performance regression"
+   correct="A"
    explanation="Every framework relying on structural sharing / reference-equality shortcutting needs immutability. Immer and RTK let you write mutating-looking code while preserving the guarantee." %}
 
 {% include quiz.html id="state-4"
    question="What is normalised state and when is it useful?"
-   options="A|Flattening nested entities into { byId: {id: entity}, allIds: [id] } shapes so each entity lives in exactly one place, references are ids, and updates don't require deep mutation. Most useful for server-data heavy apps with cross-references (users, posts, comments);;B|It's always wrong;;C|It doubles your bundle;;D|Normalisation is a Vue-only concept"
+   options="A|Flattening nested entities into { byId: {id: entity}, allIds: [id] } shapes so each entity lives in exactly one place, references are ids, and updates don't require deep mutation. Most useful for server-data heavy apps with cross-references (users, posts, comments);;B|Normalisation is a Vue-only concept;;C|It doubles your bundle;;D|It's always wrong"
    correct="A"
    explanation="When the same entity appears in many places, nested state becomes a sync nightmare. Normalisation (see createEntityAdapter in RTK) keeps a single source of truth." %}
 
 {% include quiz.html id="state-5"
    question="How should you choose between useState, Context, Redux/Pinia/NgRx, and a server-state library?"
-   options="A|Always use the biggest tool;;B|Start with useState for local component state. Use Context for small, rarely-changing shared values (theme, locale, auth user) — but not for high-churn data. Use a store (Redux/Pinia/NgRx) when global state is complex, cross-cutting, devtools matter, or many slices interact. Use a server-state library (React Query, RTK Query) for remote data caching, invalidation, and refetch;;C|Always use Redux;;D|Never use Context"
-   correct="B"
+   options="A|Start with useState for local component state. Use Context for small, rarely-changing shared values (theme, locale, auth user) — but not for high-churn data. Use a store (Redux/Pinia/NgRx) when global state is complex, cross-cutting, devtools matter, or many slices interact. Use a server-state library (React Query, RTK Query) for remote data caching, invalidation, and refetch;;B|Never use Context;;C|Always use Redux;;D|Always use the biggest tool"
+   correct="A"
    explanation="Match the tool to the actual problem. Context for infrequent shared config, a store for complex client state, a server-state lib for remote data — those three cover almost every need in a modern app." %}
 
 ## References

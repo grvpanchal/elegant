@@ -660,31 +660,31 @@ function ItemCount({ count }) {
 
 {% include quiz.html id="localization-1"
    question="What is the difference between i18n (internationalization) and L10n (localization)?"
-   options="A|They are the same term;;B|i18n is the one-time engineering work of making a product capable of being localised (extracting strings, locale-aware formatting, RTL support, bidi-safe layouts). L10n is the per-locale work of actually translating content and adapting it culturally. i18n is the platform, L10n is the payload;;C|L10n comes first;;D|Only i18n applies to React apps"
-   correct="B"
+   options="A|They are the same term;;B|L10n comes first;;C|i18n is the one-time engineering work of making a product capable of being localised (extracting strings, locale-aware formatting, RTL support, bidi-safe layouts). L10n is the per-locale work of actually translating content and adapting it culturally. i18n is the platform, L10n is the payload;;D|Only i18n applies to React apps"
+   correct="C"
    explanation="Get i18n right once and adding a new locale (L10n) is mostly translation + QA. Skip i18n and every locale requires new engineering." %}
 
 {% include quiz.html id="localization-2"
    question="Why can't you just use &quot;{n} items&quot; for pluralisation?"
-   options="A|You can — English and French work the same way;;B|Languages have different plural categories (English: one/other; Russian: one/few/many/other; Arabic: zero/one/two/few/many/other). Use a CLDR-driven API like Intl.PluralRules or an i18n library's plural syntax — hand-rolling breaks most non-English locales;;C|Pluralisation is deprecated;;D|JavaScript can't count"
+   options="A|Pluralisation is deprecated;;B|Languages have different plural categories (English: one/other; Russian: one/few/many/other; Arabic: zero/one/two/few/many/other). Use a CLDR-driven API like Intl.PluralRules or an i18n library's plural syntax — hand-rolling breaks most non-English locales;;C|You can — English and French work the same way;;D|JavaScript can't count"
    correct="B"
    explanation="Intl.PluralRules (or ICU MessageFormat via i18next/FormatJS) knows each language's categories. &quot;1 item / 2 items&quot; is an English assumption most of the world doesn't share." %}
 
 {% include quiz.html id="localization-3"
    question="Which URL strategy is best for SEO of localised content?"
-   options="A|Query string (?lang=fr) — Google treats these as the same URL;;B|Subdirectory (/fr/...) or subdomain (fr.example.com) with hreflang link tags telling search engines which locale each page is for — give each localised page a stable, crawlable URL;;C|Cookie-only, so all locales share one URL;;D|JavaScript redirects"
-   correct="B"
+   options="A|Subdirectory (/fr/...) or subdomain (fr.example.com) with hreflang link tags telling search engines which locale each page is for — give each localised page a stable, crawlable URL;;B|Cookie-only, so all locales share one URL;;C|Query string (?lang=fr) — Google treats these as the same URL;;D|JavaScript redirects"
+   correct="A"
    explanation="Cookie/query-based switches give search engines nothing to index per locale. Stable URL + hreflang is the standard recommendation from Google's i18n docs." %}
 
 {% include quiz.html id="localization-4"
    question="What does RTL (right-to-left) language support require beyond translation?"
-   options="A|Only translating strings;;B|Setting dir=&quot;rtl&quot; on the root, using logical CSS properties (margin-inline-start, padding-inline-end, text-align: start) so layout mirrors correctly, auditing icons/arrows for directionality, and handling mixed-direction text with bidi controls where needed;;C|Using a bigger font;;D|Reversing the JavaScript array"
+   options="A|Using a bigger font;;B|Setting dir=&quot;rtl&quot; on the root, using logical CSS properties (margin-inline-start, padding-inline-end, text-align: start) so layout mirrors correctly, auditing icons/arrows for directionality, and handling mixed-direction text with bidi controls where needed;;C|Reversing the JavaScript array;;D|Only translating strings"
    correct="B"
    explanation="CSS logical properties flip automatically with dir=&quot;rtl&quot;. Physical properties (left/right, margin-left) don't — they're the source of most RTL bugs." %}
 
 {% include quiz.html id="localization-5"
    question="How do you keep i18n from bloating the bundle?"
-   options="A|Ship every locale's JSON in the main bundle;;B|Load only the active locale's messages (dynamic import by locale code), lazy-load additional locales on language switch, split messages per route where possible, and consider server-side locale negotiation so you never ship other-locale text to the client at all;;C|Inline all translations as strings;;D|Use one giant JSON for every language"
+   options="A|Inline all translations as strings;;B|Load only the active locale's messages (dynamic import by locale code), lazy-load additional locales on language switch, split messages per route where possible, and consider server-side locale negotiation so you never ship other-locale text to the client at all;;C|Ship every locale's JSON in the main bundle;;D|Use one giant JSON for every language"
    correct="B"
    explanation="Locale-split bundles scale linearly per-locale instead of adding every locale's cost to every visitor. CDN-served localised JSON loaded on demand is the standard pattern." %}
 

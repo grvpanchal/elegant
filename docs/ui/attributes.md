@@ -387,31 +387,31 @@ All event handler attributes accept a string. The string will be used to synthes
 
 {% include quiz.html id="attributes-1"
    question="What is the difference between an HTML attribute and a JS property on a DOM element?"
-   options="A|They are always the same thing;;B|Attributes are declared in HTML and reflect the initial value; properties are live JS fields on the DOM node. For many (value, checked, href) they diverge after user interaction — the attribute stays at its initial value, the property tracks the current one;;C|Attributes are slower to read;;D|Properties only exist in React"
-   correct="B"
+   options="A|They are always the same thing;;B|Attributes are slower to read;;C|Properties only exist in React;;D|Attributes are declared in HTML and reflect the initial value; properties are live JS fields on the DOM node. For many (value, checked, href) they diverge after user interaction — the attribute stays at its initial value, the property tracks the current one"
+   correct="D"
    explanation="Use getAttribute()/setAttribute() when you need HTML semantics or data attributes. Use the property (element.value, element.checked) when you want current runtime state." %}
 
 {% include quiz.html id="attributes-2"
    question="How do boolean attributes in HTML work?"
-   options="A|You set them to the string 'true' or 'false';;B|Their presence alone is truthy — <input disabled>, <input disabled=''>, and <input disabled='disabled'> all mean disabled. To turn them off, remove the attribute entirely;;C|They don't exist in HTML;;D|They only work on form elements"
+   options="A|You set them to the string 'true' or 'false';;B|Their presence alone is truthy — <input disabled>, <input disabled=''>, and <input disabled='disabled'> all mean disabled. To turn them off, remove the attribute entirely;;C|They only work on form elements;;D|They don't exist in HTML"
    correct="B"
    explanation="`disabled=&quot;false&quot;` is a classic footgun — it's still disabled because the attribute is present. Use removeAttribute or the property (el.disabled = false) to clear it." %}
 
 {% include quiz.html id="attributes-3"
    question="What are data-* attributes best used for?"
-   options="A|Styling;;B|Storing small amounts of custom data on an element that JS can read via dataset.* — useful for component hooks, test ids, and feature flags without polluting the standard attribute namespace;;C|Replacing global state;;D|Replacing JSON APIs"
-   correct="B"
+   options="A|Styling;;B|Replacing global state;;C|Replacing JSON APIs;;D|Storing small amounts of custom data on an element that JS can read via dataset.* — useful for component hooks, test ids, and feature flags without polluting the standard attribute namespace"
+   correct="D"
    explanation="<li data-id=&quot;42&quot;> -> el.dataset.id === '42'. Great for delegation handlers and tests. Don't abuse them as a substitute for real state storage." %}
 
 {% include quiz.html id="attributes-4"
    question="Why do ARIA attributes matter even when the UI looks fine visually?"
-   options="A|They add fancy animations;;B|They convey role, state, and relationship info to assistive technology (screen readers, switch controls) that sighted mouse users never see — without them your nice-looking custom widget is unusable to many users;;C|They make the bundle smaller;;D|They only affect SEO"
-   correct="B"
+   options="A|They convey role, state, and relationship info to assistive technology (screen readers, switch controls) that sighted mouse users never see — without them your nice-looking custom widget is unusable to many users;;B|They only affect SEO;;C|They make the bundle smaller;;D|They add fancy animations"
+   correct="A"
    explanation="A button made from <div onclick> looks fine but a screen reader can't announce it as a button without role=&quot;button&quot; plus keyboard wiring — or, better, just use <button>." %}
 
 {% include quiz.html id="attributes-5"
    question="What's the safest way to set an href or src from user-controlled input?"
-   options="A|Concatenate it directly into innerHTML;;B|Set via setAttribute, validate the URL (reject javascript: / data: schemes you don't intend), and encode untrusted pieces — innerHTML with untrusted strings is the standard XSS vector;;C|Use eval();;D|URL-encode then base64 it"
+   options="A|Use eval();;B|Set via setAttribute, validate the URL (reject javascript: / data: schemes you don't intend), and encode untrusted pieces — innerHTML with untrusted strings is the standard XSS vector;;C|Concatenate it directly into innerHTML;;D|URL-encode then base64 it"
    correct="B"
    explanation="Always treat user input as untrusted. Use setAttribute / the property setter, validate the URL scheme, and never interpolate untrusted strings into innerHTML." %}
 

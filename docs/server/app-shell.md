@@ -870,20 +870,20 @@ function Shell() {
 
 {% include quiz.html id="app-shell-1"
    question="What is the App Shell architecture and when should you choose it over a traditional multi-page app?"
-   options="A|App Shell = a minimal HTML/CSS/JS shell cached aggressively (often by a service worker) with content loaded dynamically after. It shines for dashboards, SaaS, and mobile-first apps where users navigate frequently; an MPA with SSR is usually better for SEO-critical content sites;;B|It always beats MPA;;C|It is only for iOS;;D|It disables caching"
-   correct="A"
+   options="A|App Shell uses Web Workers to render every page off the main thread — it is always faster than MPA, and you should use it for every project unless legal constraints forbid service workers;;B|App Shell = a minimal, aggressively-cached HTML/CSS/JS shell with content loaded on navigation. It wins for dashboards / SaaS / mobile-first apps where users navigate frequently; a SSR MPA is usually a better fit for SEO-critical content sites where each page has unique metadata;;C|App Shell means server-side rendering every route on demand — it improves SEO for all pages, and should replace MPA for news and e-commerce sites;;D|They are the same thing with different marketing names"
+   correct="B"
    explanation="Use App Shell when repeated navigation cost matters more than first-paint SEO. Use MPA/SSR when search-engine discoverability of every page is paramount." %}
 
 {% include quiz.html id="app-shell-2"
    question="What is progressive hydration and what does it solve?"
-   options="A|Hydrating all components on DOMContentLoaded;;B|Hydrating components in priority order as they become visible or idle, so TTI isn't blocked by a huge synchronous hydration pass over every component on every page load;;C|Disabling hydration entirely;;D|A Vue-only feature"
+   options="A|Hydrating all components on DOMContentLoaded;;B|Hydrating components in priority order as they become visible or idle, so TTI isn't blocked by a huge synchronous hydration pass over every component on every page load;;C|A Vue-only feature;;D|Disabling hydration entirely"
    correct="B"
    explanation="Naive hydration ties up the main thread and delays interactivity. Progressive hydration (islands, lazy boundaries, requestIdleCallback) spreads that work out." %}
 
 {% include quiz.html id="app-shell-3"
    question="Why do providers (theme, auth, router, store) live at the App Shell level in a micro-frontend setup?"
-   options="A|So each MFE ships its own provider copies;;B|To establish shared context and services ONCE at the shell boundary, so the individual micro-frontends share theme/auth/router/store without each bundling their own and fighting over state;;C|Providers are optional at the shell level;;D|They don't — providers are per-MFE"
-   correct="B"
+   options="A|Providers are optional at the shell level;;B|They don't — providers are per-MFE;;C|To establish shared context and services ONCE at the shell boundary, so the individual micro-frontends share theme/auth/router/store without each bundling their own and fighting over state;;D|So each MFE ships its own provider copies"
+   correct="C"
    explanation="Elevating providers to the shell keeps the MFEs loosely coupled and avoids state or theme duplication when multiple MFEs render on the same page." %}
 
 ## References

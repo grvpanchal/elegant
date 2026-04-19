@@ -174,32 +174,32 @@ const newEl = <h1>Bye</h1>;
 
 {% include quiz.html id="element-1"
    question="What is the difference between a React element and a DOM element?"
-   options="A|They are the same thing;;B|A React element is a plain JS object describing what should be rendered (type, props, children) — it is immutable; a DOM element is the actual browser node in the document. React reconciles elements into DOM nodes;;C|A React element is slower than a DOM element;;D|React elements live on the server"
+   options="A|A React element is slower than a DOM element;;B|A React element is a plain JS object describing what should be rendered (type, props, children) — it is immutable; a DOM element is the actual browser node in the document. React reconciles elements into DOM nodes;;C|React elements live on the server;;D|They are the same thing"
    correct="B"
    explanation="`React.createElement(...)` returns a description. React's reconciler then diffs and applies changes to real DOM nodes. The element itself is throwaway and cheap to recreate." %}
 
 {% include quiz.html id="element-2"
    question="Can you mutate a React element after creating it?"
-   options="A|Yes, you mutate its props directly;;B|No — React elements are immutable. To &quot;change&quot; one you re-render, producing a new element, and the reconciler figures out the minimum DOM update"
-   correct="B"
+   options="A|No — React elements are immutable. To &quot;change&quot; one you re-render, producing a new element, and the reconciler figures out the minimum DOM update;;B|Yes, you mutate its props directly"
+   correct="A"
    explanation="Immutability is what enables efficient diffing. If you tried to mutate props, React wouldn't know what changed and couldn't apply the right updates." %}
 
 {% include quiz.html id="element-3"
    question="Which is NOT a custom element state in Web Components?"
-   options="A|undefined (not yet defined);;B|failed (upgrade threw);;C|constructed (element upgraded);;D|purged (destroyed) — there is no such state"
-   correct="D"
+   options="A|constructed (element upgraded);;B|purged (destroyed) — there is no such state;;C|failed (upgrade threw);;D|undefined (not yet defined)"
+   correct="B"
    explanation="Standard states are undefined, failed, uncustomized, custom (sometimes called &quot;constructed&quot;). &quot;Purged&quot; is not in the spec — removal happens via disconnectedCallback." %}
 
 {% include quiz.html id="element-4"
    question="How does the Virtual DOM use elements to improve performance?"
-   options="A|It skips the DOM entirely;;B|It keeps a lightweight in-memory tree of elements, diffs the previous and next trees on update, and applies only the minimum set of real DOM mutations — amortising the cost of changes;;C|It renders everything in a Web Worker;;D|It disables reflow"
-   correct="B"
+   options="A|It renders everything in a Web Worker;;B|It skips the DOM entirely;;C|It keeps a lightweight in-memory tree of elements, diffs the previous and next trees on update, and applies only the minimum set of real DOM mutations — amortising the cost of changes;;D|It disables reflow"
+   correct="C"
    explanation="Real DOM mutations are expensive. By diffing cheap JS object trees first and batching writes, React (and similar libraries) avoid re-laying out the whole page on every state change." %}
 
 {% include quiz.html id="element-5"
    question="When is it appropriate to use a ref to access a DOM element in React?"
-   options="A|Whenever you would write jQuery;;B|Only for imperative operations that React can't express declaratively: focus/selection, measuring layout, integrating 3rd-party non-React libraries, and media playback control;;C|For any state a component owns;;D|Never — refs are deprecated"
-   correct="B"
+   options="A|For any state a component owns;;B|Whenever you would write jQuery;;C|Only for imperative operations that React can't express declaratively: focus/selection, measuring layout, integrating 3rd-party non-React libraries, and media playback control;;D|Never — refs are deprecated"
+   correct="C"
    explanation="Refs are an escape hatch. Reach for them when you genuinely need the underlying DOM node; don't use them to bypass state." %}
 
 ## References

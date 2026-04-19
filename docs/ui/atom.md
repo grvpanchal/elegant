@@ -231,8 +231,8 @@ const IconButton = ({ onClick, icon, ariaLabel }) => (
 
 {% include quiz.html id="atom-1"
    question="What is the primary characteristic that defines a component as an 'atom' in Atomic Design?"
-   options="A|It manages its own global state;;B|It has a single responsibility and cannot be broken down into smaller functional components;;C|It always wraps at least three child elements;;D|It fetches its own data from an API"
-   correct="B"
+   options="A|It manages its own global state;;B|It always wraps at least three child elements;;C|It has a single responsibility and cannot be broken down into smaller functional components;;D|It fetches its own data from an API"
+   correct="C"
    explanation="Atoms are the smallest functional units of a UI — a button, an input, an icon. Keeping the responsibility single-purpose is what makes them reusable across contexts." %}
 
 {% include quiz.html id="atom-2"
@@ -249,13 +249,13 @@ const IconButton = ({ onClick, icon, ariaLabel }) => (
 
 {% include quiz.html id="atom-4"
    question="What's the main benefit of wrapping a native HTML element in an atom component instead of using it directly?"
-   options="A|It hides implementation details so callers can't misuse it;;B|It centralises styling, accessibility, and design-token usage so every instance stays consistent;;C|It makes the bundle smaller;;D|It is required by React 19"
-   correct="B"
+   options="A|It is required by React 19;;B|It hides implementation details so callers can't misuse it;;C|It centralises styling, accessibility, and design-token usage so every instance stays consistent;;D|It makes the bundle smaller"
+   correct="C"
    explanation="Atom components give you one place to set padding, colors, ARIA attributes, and hover states so that every button/input/icon in the app inherits them automatically — the 'slightly different button everywhere' problem goes away." %}
 
 {% include quiz.html id="atom-5"
    question="How should an atom handle visual variants like `primary`, `secondary`, `danger`?"
-   options="A|Create separate `PrimaryButton`, `SecondaryButton`, `DangerButton` components;;B|Expose a `variant` prop on a single atom and switch classNames/styles based on it;;C|Duplicate the atom per theme and import the right one per route"
+   options="A|Duplicate the atom per theme and import the right one per route;;B|Expose a `variant` prop on a single atom and switch classNames/styles based on it;;C|Create separate `PrimaryButton`, `SecondaryButton`, `DangerButton` components"
    correct="B"
    explanation="A single atom with a `variant` prop scales from 2 variants to 20 without proliferating files. Only split into separate components when the *behavior* (not just styling) differs significantly." %}
 
