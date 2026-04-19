@@ -540,20 +540,20 @@ const FormField = ({ label, value, onChange, error, required }) => (
 
 {% include quiz.html id="molecule-1"
    question="What is the primary difference between an atom and a molecule in Atomic Design?"
-   options="A|Atoms render, molecules manage state;;B|Atoms are single-purpose indivisible units, molecules are purposeful compositions of multiple atoms that form a functional UI pattern;;C|Atoms are styled, molecules are unstyled;;D|Molecules always fetch data, atoms never do"
-   correct="B"
+   options="A|Atoms are single-purpose indivisible units, molecules are purposeful compositions of multiple atoms that form a functional UI pattern;;B|Molecules always fetch data, atoms never do;;C|Atoms are styled, molecules are unstyled;;D|Atoms render, molecules manage state"
+   correct="A"
    explanation="Atoms (Button, Input, Icon) can't be broken down further without losing meaning. A molecule (SearchBar = Input + Button + Icon) assembles atoms into a reusable pattern with a cohesive purpose." %}
 
 {% include quiz.html id="molecule-2"
    question="Which of these belongs inside a molecule, and which does NOT?"
-   options="A|UI-only state like dropdown open/closed is fine; data fetching and business logic do NOT belong;;B|Everything belongs — molecules should be self-sufficient;;C|Only pure markup; not even local UI state is allowed"
-   correct="A"
+   options="A|Only pure markup; not even local UI state is allowed;;B|UI-only state like dropdown open/closed is fine; data fetching and business logic do NOT belong;;C|Everything belongs — molecules should be self-sufficient"
+   correct="B"
    explanation="Molecules can own composition logic and local UI state (e.g., menu open/closed). Data fetching, global state mutations, and routing belong in containers or higher-level components." %}
 
 {% include quiz.html id="molecule-3"
    question="When should you extract a molecule instead of just composing atoms inline?"
-   options="A|As soon as two atoms are placed next to each other;;B|Only when the product manager asks;;C|When the same atom composition repeats across the app or encodes a cohesive, consistent pattern;;D|Only for forms"
-   correct="C"
+   options="A|When the same atom composition repeats across the app or encodes a cohesive, consistent pattern;;B|Only for forms;;C|As soon as two atoms are placed next to each other;;D|Only when the product manager asks"
+   correct="A"
    explanation="A molecule earns its keep when the pattern repeats and has a single purpose (FormField, SearchBar, NotificationItem). Extracting once-used combinations just adds files for no reuse gain." %}
 
 {% include quiz.html id="molecule-4"
@@ -564,8 +564,8 @@ const FormField = ({ label, value, onChange, error, required }) => (
 
 {% include quiz.html id="molecule-5"
    question="What's the best strategy for molecule props?"
-   options="A|Expose every possible atom prop so nothing is hidden;;B|Expose only what varies, accept interaction callbacks, and use rest-props spread onto the inner atom for flexibility;;C|Accept the whole Redux state as a prop so the molecule is self-contained"
-   correct="B"
+   options="A|Accept the whole Redux state as a prop so the molecule is self-contained;;B|Expose every possible atom prop so nothing is hidden;;C|Expose only what varies, accept interaction callbacks, and use rest-props spread onto the inner atom for flexibility"
+   correct="C"
    explanation="Well-scoped props (label, value, onChange, error, variant) plus a rest-spread onto the core atom keep molecules flexible without prop explosion. Passing global state tightly couples the molecule to your store." %}
 
 ## References

@@ -513,32 +513,32 @@ const ProductList = ({ products }) => {
 
 {% include quiz.html id="component-1"
    question="What are the three core technologies that make up a Web Component?"
-   options="A|HTML, CSS, JavaScript;;B|Custom Elements, Shadow DOM, HTML Templates;;C|React, Vue, Angular;;D|JSX, Virtual DOM, Fiber"
-   correct="B"
+   options="A|HTML, CSS, JavaScript;;B|React, Vue, Angular;;C|Custom Elements, Shadow DOM, HTML Templates;;D|JSX, Virtual DOM, Fiber"
+   correct="C"
    explanation="Custom Elements let you define new HTML tags, Shadow DOM encapsulates styling and markup, and <template>/<slot> provide reusable markup fragments. Together they are the framework-agnostic component model baked into the browser." %}
 
 {% include quiz.html id="component-2"
    question="What is the primary difference between a presentational component and a container component?"
-   options="A|Presentational components own application state, containers only render UI;;B|Presentational components render UI from props (no data fetching or global state); container components own data fetching, selectors, and dispatch — they pass that data down to presentational components;;C|Presentational is React-only; containers are Angular-only;;D|There is no real difference"
-   correct="B"
+   options="A|Presentational components render UI from props (no data fetching or global state); container components own data fetching, selectors, and dispatch — they pass that data down to presentational components;;B|Presentational components own application state, containers only render UI;;C|There is no real difference;;D|Presentational is React-only; containers are Angular-only"
+   correct="A"
    explanation="The split keeps UI reusable and testable. Presentational components are pure-ish (props -> UI). Containers are the glue between state management and the UI layer." %}
 
 {% include quiz.html id="component-3"
    question="Should components always manage their own state internally rather than receiving it via props?"
-   options="A|Yes — self-contained components are easier to reason about;;B|No — components should receive what they display via props; local state is reserved for truly component-internal concerns (menu open/closed, input focus) while shared or persistent state lives in a store or parent"
-   correct="B"
+   options="A|No — components should receive what they display via props; local state is reserved for truly component-internal concerns (menu open/closed, input focus) while shared or persistent state lives in a store or parent;;B|Yes — self-contained components are easier to reason about"
+   correct="A"
    explanation="Over-locating state inside components leads to duplication, poor reuse, and hard-to-test components. Lift state up or use a store for anything that multiple components need." %}
 
 {% include quiz.html id="component-4"
    question="What's the main benefit of component-scoped CSS (CSS Modules, styled-components, Vue scoped styles)?"
-   options="A|It makes the bundle smaller;;B|Class names are automatically localised so styles from one component can't accidentally bleed into another — you stop fighting with global CSS specificity;;C|It enables server-side rendering;;D|It replaces accessibility"
+   options="A|It enables server-side rendering;;B|Class names are automatically localised so styles from one component can't accidentally bleed into another — you stop fighting with global CSS specificity;;C|It makes the bundle smaller;;D|It replaces accessibility"
    correct="B"
    explanation="Scoped CSS eliminates the &quot;why is my .button style getting overridden by that other .button&quot; class of bug and lets components be drop-in reusable across pages and apps." %}
 
 {% include quiz.html id="component-5"
    question="When should you split a component into smaller components?"
-   options="A|Only when a designer asks you to;;B|When it exceeds 500 lines, as a hard rule;;C|When a part of it is reused elsewhere, when responsibilities diverge (render vs fetch), when a piece is testable in isolation, or when naming the sub-part suddenly makes the parent clearer;;D|Never — always keep components big"
-   correct="C"
+   options="A|Never — always keep components big;;B|When a part of it is reused elsewhere, when responsibilities diverge (render vs fetch), when a piece is testable in isolation, or when naming the sub-part suddenly makes the parent clearer;;C|When it exceeds 500 lines, as a hard rule;;D|Only when a designer asks you to"
+   correct="B"
    explanation="Extraction should be driven by reuse, single-responsibility, or clarity gains — not by a line-count rule. Splitting that doesn't meet one of those bars just adds indirection." %}
 
 ## References

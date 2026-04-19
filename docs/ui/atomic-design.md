@@ -894,31 +894,31 @@ function CategoryPage() {
 
 {% include quiz.html id="atomic-design-1"
    question="What are the five levels of Atomic Design, in order from smallest to largest?"
-   options="A|Pages -> Templates -> Organisms -> Molecules -> Atoms;;B|Atoms -> Molecules -> Organisms -> Templates -> Pages;;C|Components -> Containers -> Layouts -> Screens -> Apps;;D|Elements -> Modules -> Features -> Routes -> Sites"
-   correct="B"
+   options="A|Pages -> Templates -> Organisms -> Molecules -> Atoms;;B|Components -> Containers -> Layouts -> Screens -> Apps;;C|Elements -> Modules -> Features -> Routes -> Sites;;D|Atoms -> Molecules -> Organisms -> Templates -> Pages"
+   correct="D"
    explanation="Brad Frost's hierarchy moves from the smallest indivisible pieces up to full content-bearing pages: Atoms, Molecules, Organisms, Templates, Pages." %}
 
 {% include quiz.html id="atomic-design-2"
    question="What is the key difference between a Template and a Page?"
-   options="A|Templates have styling, pages do not;;B|Templates are content-agnostic layout skeletons (placeholders); pages are specific instances of templates with real representative content;;C|Templates live on the server, pages live on the client;;D|They are the same thing"
-   correct="B"
+   options="A|Templates live on the server, pages live on the client;;B|Templates have styling, pages do not;;C|They are the same thing;;D|Templates are content-agnostic layout skeletons (placeholders); pages are specific instances of templates with real representative content"
+   correct="D"
    explanation="Templates define the layout and component wiring using placeholders; pages plug in realistic content so you can validate how the UI behaves with real data and edge cases." %}
 
 {% include quiz.html id="atomic-design-3"
    question="Which of these is the most accurate definition of a molecule?"
-   options="A|Anything bigger than an atom;;B|A purposeful grouping of atoms (and sometimes smaller molecules) that forms a single reusable UI pattern;;C|A stateful component;;D|A component containing HTTP calls"
+   options="A|A component containing HTTP calls;;B|A purposeful grouping of atoms (and sometimes smaller molecules) that forms a single reusable UI pattern;;C|A stateful component;;D|Anything bigger than an atom"
    correct="B"
    explanation="Molecules combine atoms into cohesive, reusable patterns (SearchBar = Input + Button + Icon). They should still be largely presentational." %}
 
 {% include quiz.html id="atomic-design-4"
    question="When does it make sense to promote a molecule to an organism?"
-   options="A|Once it has any state;;B|When it starts composing multiple molecules and represents a distinct, self-contained section of the UI (e.g. SiteHeader with Logo + Nav + Search);;C|When it needs to be styled with CSS;;D|Never — organisms are legacy"
-   correct="B"
+   options="A|Once it has any state;;B|When it needs to be styled with CSS;;C|When it starts composing multiple molecules and represents a distinct, self-contained section of the UI (e.g. SiteHeader with Logo + Nav + Search);;D|Never — organisms are legacy"
+   correct="C"
    explanation="Organisms are where multiple molecules come together to form meaningful UI sections. If a &quot;molecule&quot; is orchestrating several other molecules, it has earned organism status." %}
 
 {% include quiz.html id="atomic-design-5"
    question="Why is a shared atomic-design vocabulary useful across a team?"
-   options="A|It lets you skip design reviews;;B|It gives designers, developers and PMs a common chemistry-based language — &quot;this is a molecule, not an organism&quot; — which speeds up communication and prevents accidental duplication;;C|It forces everyone to use React;;D|It is required by WCAG"
+   options="A|It is required by WCAG;;B|It gives designers, developers and PMs a common chemistry-based language — &quot;this is a molecule, not an organism&quot; — which speeds up communication and prevents accidental duplication;;C|It lets you skip design reviews;;D|It forces everyone to use React"
    correct="B"
    explanation="The naming hierarchy is the whole point: once everyone uses the same words for the same scopes, architectural discussions and PR reviews get dramatically shorter." %}
 

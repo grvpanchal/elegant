@@ -467,32 +467,32 @@ console.log(state);  // { count: 5 } - state preserved
 
 {% include quiz.html id="reducer-1"
    question="Why must reducers be pure functions?"
-   options="A|Purity is just a style preference;;B|Reducers must be deterministic given (state, action), with no mutations or side effects, so that: Redux dev-tools can time-travel by replaying actions, Redux can rely on reference equality to know what changed, SSR returns consistent output, and tests only need inputs to assert outputs;;C|Pure functions are faster at runtime;;D|It's required by TypeScript"
-   correct="B"
+   options="A|It's required by TypeScript;;B|Purity is just a style preference;;C|Pure functions are faster at runtime;;D|Reducers must be deterministic given (state, action), with no mutations or side effects, so that: Redux dev-tools can time-travel by replaying actions, Redux can rely on reference equality to know what changed, SSR returns consistent output, and tests only need inputs to assert outputs"
+   correct="D"
    explanation="Impurity (mutation, side effects, random, now()) breaks time travel, reference equality checks, and predictability — the core guarantees Redux is built on." %}
 
 {% include quiz.html id="reducer-2"
    question="What's the idiomatic way to update a deeply-nested property immutably?"
-   options="A|Mutate it in place and call setState;;B|Return a new outer object with spread, a new middle object with spread, a new inner object with the changed field — or use Immer (or RTK which uses Immer under the hood) to write mutating-looking code that produces an immutable update;;C|JSON.parse(JSON.stringify(state));;D|Reassign state.x.y directly"
-   correct="B"
+   options="A|JSON.parse(JSON.stringify(state));;B|Reassign state.x.y directly;;C|Mutate it in place and call setState;;D|Return a new outer object with spread, a new middle object with spread, a new inner object with the changed field — or use Immer (or RTK which uses Immer under the hood) to write mutating-looking code that produces an immutable update"
+   correct="D"
    explanation="Manual spreads get verbose quickly, which is why RTK's createSlice is so popular — it lets you write state.todo.items.push(x) and Immer produces the immutable result." %}
 
 {% include quiz.html id="reducer-3"
    question="What does combineReducers do?"
-   options="A|Nothing — decorative;;B|Takes an object of slice reducers { todo, filters, config } and returns a single root reducer that calls each slice reducer with its slice of state and the same action, then assembles the results into { todo, filters, config }. That's how you scale from one reducer to many;;C|Merges two states into one reducer;;D|Deprecated in Redux 5"
-   correct="B"
+   options="A|Takes an object of slice reducers { todo, filters, config } and returns a single root reducer that calls each slice reducer with its slice of state and the same action, then assembles the results into { todo, filters, config }. That's how you scale from one reducer to many;;B|Nothing — decorative;;C|Deprecated in Redux 5;;D|Merges two states into one reducer"
+   correct="A"
    explanation="It's pure scaffolding that lets each slice own its key in the state tree. RTK's configureStore accepts the same object form." %}
 
 {% include quiz.html id="reducer-4"
    question="How should reducers handle async work (fetches, timeouts, etc.)?"
-   options="A|Reducers should do the fetch themselves;;B|Reducers stay pure and only react to actions. The async work lives in thunks / sagas / epics / listeners, which dispatch request/success/fail actions that the reducer handles predictably — often into an { status, data, error } shape;;C|Reducers should call setTimeout;;D|Redux can't do async"
-   correct="B"
+   options="A|Reducers should call setTimeout;;B|Redux can't do async;;C|Reducers should do the fetch themselves;;D|Reducers stay pure and only react to actions. The async work lives in thunks / sagas / epics / listeners, which dispatch request/success/fail actions that the reducer handles predictably — often into an { status, data, error } shape"
+   correct="D"
    explanation="Keep reducers deterministic. Async -> actions -> reducer. The request/success/fail triple is the shared pattern across the Redux family." %}
 
 {% include quiz.html id="reducer-5"
    question="Which of these is a legitimate reducer composition pattern?"
-   options="A|Nothing — all reducers must be one giant switch;;B|combineReducers for slice composition, calling a shared sub-reducer for a nested shape, a higher-order reducer that wraps another reducer to add behavior (e.g. undo/redo, reset-on-logout), and RTK's extraReducers letting slices respond to other slices' actions;;C|Just copy-paste reducers;;D|Reducer composition is impossible"
-   correct="B"
+   options="A|Nothing — all reducers must be one giant switch;;B|Just copy-paste reducers;;C|combineReducers for slice composition, calling a shared sub-reducer for a nested shape, a higher-order reducer that wraps another reducer to add behavior (e.g. undo/redo, reset-on-logout), and RTK's extraReducers letting slices respond to other slices' actions;;D|Reducer composition is impossible"
+   correct="C"
    explanation="Reducers are functions — they compose. combineReducers, sub-reducers, higher-order wrappers, and cross-slice listeners are the standard tools for keeping each reducer focused." %}
 
 ## References

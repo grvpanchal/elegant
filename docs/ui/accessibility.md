@@ -718,32 +718,32 @@ function submitForm() {
 
 {% include quiz.html id="accessibility-1"
    question="What is the essential difference between semantic HTML and ARIA?"
-   options="A|ARIA is newer and should be preferred over HTML;;B|Semantic HTML provides real behavior (keyboard, focus, AT semantics) automatically, while ARIA only adds meaning without behavior — you still have to add the keyboard handlers yourself;;C|ARIA is used only in React apps;;D|They are interchangeable"
-   correct="B"
+   options="A|ARIA is used only in React apps;;B|ARIA is newer and should be preferred over HTML;;C|Semantic HTML provides real behavior (keyboard, focus, AT semantics) automatically, while ARIA only adds meaning without behavior — you still have to add the keyboard handlers yourself;;D|They are interchangeable"
+   correct="C"
    explanation="The first rule of ARIA is &quot;don't use ARIA.&quot; <button> gets Tab/Enter/Space, focus, and role=button for free. A <div role=&quot;button&quot;> needs tabindex, keydown handlers, and the role all wired manually." %}
 
 {% include quiz.html id="accessibility-2"
    question="Which of these is the correct way to make a custom dropdown usable by a screen reader and keyboard?"
-   options="A|Add a click handler and hope for the best;;B|Wrap it in a <details> element;;C|Use aria-haspopup / aria-expanded / aria-controls on the trigger, role=&quot;listbox&quot; on the menu, keyboard handlers for arrows/Enter/Escape, and proper focus management;;D|Rely on CSS :focus-visible alone"
-   correct="C"
+   options="A|Wrap it in a <details> element;;B|Use aria-haspopup / aria-expanded / aria-controls on the trigger, role=&quot;listbox&quot; on the menu, keyboard handlers for arrows/Enter/Escape, and proper focus management;;C|Rely on CSS :focus-visible alone;;D|Add a click handler and hope for the best"
+   correct="B"
    explanation="A custom dropdown needs ARIA states on trigger and list, keyboard handling for Up/Down/Enter/Escape, and focus moved into the listbox when open and back to the trigger on close." %}
 
 {% include quiz.html id="accessibility-3"
    question="What three things must a modal dialog do to trap focus correctly?"
-   options="A|Save the previously focused element, move focus into the modal, and on close restore focus to the saved element (plus wrap Tab/Shift+Tab inside the modal);;B|Nothing — browsers handle modals automatically;;C|Disable Tab globally while the modal is open;;D|Only prevent scroll"
-   correct="A"
+   options="A|Disable Tab globally while the modal is open;;B|Save the previously focused element, move focus into the modal, and on close restore focus to the saved element (plus wrap Tab/Shift+Tab inside the modal);;C|Nothing — browsers handle modals automatically;;D|Only prevent scroll"
+   correct="B"
    explanation="Without this pattern, Tab leaks behind the overlay, users lose their place on close, and screen readers get disoriented." %}
 
 {% include quiz.html id="accessibility-4"
    question="When should you use aria-live=&quot;assertive&quot; vs aria-live=&quot;polite&quot;?"
-   options="A|Use assertive for everything so users never miss a message;;B|Use assertive for urgent interruptions (form errors, auth failures) and polite for status updates (loading, counts, success toasts) so the screen reader finishes what it was saying first;;C|They have no practical difference;;D|Only use assertive for animations"
-   correct="B"
+   options="A|They have no practical difference;;B|Use assertive for everything so users never miss a message;;C|Only use assertive for animations;;D|Use assertive for urgent interruptions (form errors, auth failures) and polite for status updates (loading, counts, success toasts) so the screen reader finishes what it was saying first"
+   correct="D"
    explanation="Assertive interrupts the current speech; overuse trains users to tune it out. Reserve it for things that change what the user should do right now." %}
 
 {% include quiz.html id="accessibility-5"
    question="What is the WCAG AA minimum contrast ratio for normal body text?"
-   options="A|3 to 1;;B|4.5 to 1;;C|7 to 1;;D|There is no minimum"
-   correct="B"
+   options="A|3 to 1;;B|7 to 1;;C|There is no minimum;;D|4.5 to 1"
+   correct="D"
    explanation="AA requires 4.5:1 for normal text and 3:1 for large text (18pt or 14pt bold). AAA bumps those to 7:1 and 4.5:1 respectively." %}
 
 ## References

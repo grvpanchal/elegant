@@ -431,7 +431,7 @@ const goodMiddleware = (store) => (next) => (action) => {
 
 {% include quiz.html id="middleware-1"
    question="What is the Redux middleware function signature?"
-   options="A|action => dispatch;;B|({ getState, dispatch }) => next => action => { /* pre */ const result = next(action); /* post */ return result; } — a curried function that receives store API, the next middleware, and each dispatched action, and can inspect / transform / suppress / delay it before passing to next;;C|store => void;;D|It has no signature"
+   options="A|Always use store.dispatch — next() was deprecated when Redux Toolkit added the listener middleware, and calling next() is a legacy pattern that skips middleware ordering guarantees;;B|next(action) forwards the CURRENT action past this middleware; store.dispatch(action) sends a NEW action back through the entire middleware chain from the top. Dispatching the same action you just received (instead of calling next) is the classic infinite-loop bug;;C|They are identical — both forward to the reducer. next() is just a shorthand;;D|next(action) synchronously returns the next state tree, while dispatch(action) is asynchronous and returns a Promise of the new state"
    correct="B"
    explanation="That 3-level curry lets middlewares be composed with applyMiddleware. The double return lets you wrap async work around the next() call." %}
 
@@ -443,20 +443,20 @@ const goodMiddleware = (store) => (next) => (action) => {
 
 {% include quiz.html id="middleware-3"
    question="Which is NOT a typical middleware use case?"
-   options="A|Logging every action for debugging;;B|Attaching auth tokens / request IDs to async calls;;C|Handling thunks, sagas, promises, observables (async orchestration);;D|Storing component DOM refs"
+   options="A|Logging every action for debugging;;B|Handling thunks, sagas, promises, observables (async orchestration);;C|Attaching auth tokens / request IDs to async calls;;D|Storing component DOM refs"
    correct="D"
    explanation="Middleware is for cross-cutting concerns on the action pipeline: logging, auth, analytics, async orchestration, crash reporting. DOM refs have nothing to do with the action stream." %}
 
 {% include quiz.html id="middleware-4"
    question="Does middleware order matter?"
-   options="A|No — composition is commutative;;B|Yes — each middleware wraps the next one. A logger placed BEFORE thunk logs the raw thunk function; placed AFTER thunk it logs the resolved action. Crash reporters belong last to catch errors thrown by earlier middleware. Order = pipeline order;;C|Order only matters in production;;D|Order only matters for sagas"
-   correct="B"
+   options="A|Yes — each middleware wraps the next one. A logger placed BEFORE thunk logs the raw thunk function; placed AFTER thunk it logs the resolved action. Crash reporters belong last to catch errors thrown by earlier middleware. Order = pipeline order;;B|No — composition is commutative;;C|Order only matters in production;;D|Order only matters for sagas"
+   correct="A"
    explanation="applyMiddleware(a, b, c) means a wraps b wraps c. Shifting order changes which middleware sees the &quot;raw&quot; action vs already-transformed results." %}
 
 {% include quiz.html id="middleware-5"
    question="How do you unit-test a middleware?"
-   options="A|Boot a real app and interact with the UI;;B|Construct fake store API ({ getState, dispatch }), a fake next spy, invoke middleware(storeAPI)(next)(action), then assert on what next was called with and what dispatch was called with. Pure function in, observable effects out;;C|Middleware can't be tested;;D|Only e2e tests work"
-   correct="B"
+   options="A|Only e2e tests work;;B|Boot a real app and interact with the UI;;C|Middleware can't be tested;;D|Construct fake store API ({ getState, dispatch }), a fake next spy, invoke middleware(storeAPI)(next)(action), then assert on what next was called with and what dispatch was called with. Pure function in, observable effects out"
+   correct="D"
    explanation="Middleware is three nested functions — all pure. Mock the inputs, assert the outputs. No DOM, no real store needed." %}
 
 ## References
