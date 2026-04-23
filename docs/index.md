@@ -80,4 +80,4 @@ title: Frontend Architecture Principles
 
 # Development Process with Atomic Design
 
-<img style="display: block; margin: 0 auto;" src="{{ '/assets/img/elegant-devlopment-flow.jpeg' | relative_url }}">
+<img style="display: block; margin: 0 auto;" src="{{ '/assets/img/ai-sdlc-flow.png' | relative_url }}">
