@@ -29,70 +29,102 @@ Key characteristics of events:
 
 ## Code Examples
 
-### Basic Example: Event Listeners and Handlers
+### Basic Example: Click + form events across frameworks
+
+A click event is one idea with four spellings. Here is the same "dispatch an `onClick` when the user presses the Button atom" wiring taken straight from each `chota-*` template.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
+```jsx
+// templates/chota-react-redux/src/ui/atoms/Button/Button.component.jsx
+// React passes handlers as props. camelCase `onClick` is the React-specific
+// synthetic event; native DOM behaviour still bubbles underneath.
+export default function Button(props) {
+  const transformedProps = { ...props };
+  delete transformedProps.isLoading;
+  if (props.isLoading) { /* loading state */ }
+  return <button {...transformedProps}>{props.children}</button>;
+}
+
+// Usage:
+<Button onClick={(e) => handleClick(e)}>Save</Button>
+```
+
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Button/Button.component.ts
+// @Output + EventEmitter is Angular's way of exposing "custom events"
+// to the parent. The template binds (click) to call emit.
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({ selector: 'app-button', /* ... */ })
+export default class ButtonComponent {
+  @Input() isLoading = false;
+  @Output() onClick = new EventEmitter<Event>();
+}
+```
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JavaScript Event Example</title>
-  </head>
-  <body>
-    <button id="myButton">Click me</button>
-    <input type="text" id="myInput" placeholder="Type something..." />
-    
-    <script>
-      // Click event
-      const button = document.getElementById("myButton");
-      
-      function handleClick(event) {
-        console.log('Button clicked!');
-        console.log('Event type:', event.type);
-        console.log('Target element:', event.target);
-        console.log('Timestamp:', event.timeStamp);
-      }
-      
-      button.addEventListener("click", handleClick);
-      
-      // Keyboard events
-      const input = document.getElementById("myInput");
-      
-      input.addEventListener("keydown", (event) => {
-        console.log('Key pressed:', event.key);
-        console.log('Key code:', event.code);
-        
-        // Detect special keys
-        if (event.key === 'Enter') {
-          console.log('Enter key pressed!');
-        }
-        
-        if (event.ctrlKey && event.key === 's') {
-          event.preventDefault();  // Prevent browser save dialog
-          console.log('Ctrl+S pressed - custom save action');
-        }
-      });
-      
-      // Input event (fires on every change)
-      input.addEventListener("input", (event) => {
-        console.log('Current value:', event.target.value);
-      });
-      
-      // Focus and blur events
-      input.addEventListener("focus", () => {
-        console.log('Input focused');
-        input.style.borderColor = 'blue';
-      });
-      
-      input.addEventListener("blur", () => {
-        console.log('Input lost focus');
-        input.style.borderColor = '';
-      });
-    </script>
-  </body>
-</html>
+<!-- Button.component.html -->
+<button [type]="type || 'button'"
+        (click)="onClick.emit($event)"
+        [class]="computedClasses">
+  <ng-content></ng-content>
+</button>
+
+<!-- Parent usage -->
+<app-button (onClick)="handleClick($event)">Save</app-button>
 ```
+
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Button/Button.component.vue -->
+<template>
+  <button :disabled="disabled" :type="type"
+          @click="$emit('onClick')"
+          :class="getButtonClass()">
+    <slot />
+  </button>
+</template>
+
+<!-- Parent usage -->
+<!-- <Button @onClick="handleClick">Save</Button> -->
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/atoms/Button/Button.component.js
+// The WC templates use a tiny emit() helper that dispatches a CustomEvent.
+// Parents listen with addEventListener or Lit's @onClick= directive.
+import { html } from "lit";
+import emit from "../../../utils/events/emit";
+
+export default function Button(props) {
+  return html`
+    <button type="button"
+      class="${props.classes}"
+      @click="${() => emit(this, "onClick", props)}">
+      <slot></slot>
+    </button>
+  `;
+}
+
+// utils/events/emit.js (simplified):
+// export default function emit(host, name, detail) {
+//   host.dispatchEvent(new CustomEvent(name, {
+//     detail, bubbles: true, composed: true,
+//   }));
+// }
+
+// Parent usage:
+// <app-button @onClick=${(e) => handleClick(e.detail)}>Save</app-button>
+```
+
+{::nomarkdown}</div>{:/}
+
+The conceptual model is the same in every tab: the button's native `click` listener calls something that re-broadcasts to the parent under a framework-specific conduit. React uses the synthetic event system + prop functions. Angular wraps RxJS around `EventEmitter`. Vue uses a named `$emit`. Web Components use the browser's own `CustomEvent` bus. Parents subscribe in their respective idioms (`onClick={...}` / `(onClick)="..."` / `@onClick="..."` / `@onClick=${...}`) — but every one of those resolves to the same DOM click bubble under the hood.
+
 ### Practical Example: Event Propagation and Delegation
 
 ```html

@@ -27,71 +27,130 @@ Props serve as the component's API, and like any API, should be designed with ca
 
 ## Code Examples
 
-### Basic Example: Simple Props Usage
+### Basic Example: Loader props across frameworks
 
-Fundamental props demonstration showing data flow:
+The Loader atom has three props: `size`, `width`, `color`. That's it — a pure, read-only, defaultable input surface. Here's the same atom in every `chota-*` template, showing how each framework declares props, applies defaults, and derives a value from them.
 
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```jsx
-// Button.js - Component receiving props
+// templates/chota-react-redux/src/ui/atoms/Loader/Loader.component.jsx
+// Props are plain destructured arguments. Defaults are applied inline
+// via ||. No PropTypes needed for a three-prop atom.
+import "./Loader.style.css";
 
-import React from 'react';
-
-const Button = ({ label, onClick, variant = 'primary', disabled = false }) => {
-  // Props are read-only - cannot modify them
-  // variant and disabled have default values
-  
+export default function Loader({ size, width, color }) {
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`btn btn--${variant}`}
-    >
-      {label}
-    </button>
+    <span
+      className="loader"
+      style={{
+        height: size || "48px",
+        width: size || "48px",
+        border: `${width || "5px"} solid ${color || "#fff"}`,
+        borderBottomColor: "transparent",
+      }}
+    ></span>
   );
-};
+}
 
-export default Button;
+// <Loader size="24px" width="3px" color="#333" />
 ```
 
-Usage showing prop passing:
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Loader/Loader.component.ts
+// @Input() declares each prop. Defaults live next to the declaration.
+// A getter derives the inline style string at render time.
+import { Component, Input } from '@angular/core';
 
-```jsx
-// App.js - Parent component passing props
+@Component({
+  selector: 'app-loader',
+  standalone: true,
+  templateUrl: './Loader.component.html',
+  styleUrls: ['./Loader.style.css'],
+})
+export default class LoaderComponent {
+  @Input() size = '48px';
+  @Input() width = '5px';
+  @Input() color = '#fff';
 
-import React from 'react';
-import Button from './Button';
+  get styles() {
+    return `height:${this.size};width:${this.size};`
+         + `border:${this.width} solid ${this.color};`
+         + `border-bottom-color:transparent;`;
+  }
+}
 
-const App = () => {
-  const handleClick = () => {
-    console.log('Button clicked!');
-  };
-
-  return (
-    <div>
-      {/* Passing different props to same component */}
-      <Button 
-        label="Save" 
-        onClick={handleClick} 
-        variant="primary" 
-      />
-      
-      <Button 
-        label="Cancel" 
-        onClick={() => console.log('Cancelled')} 
-        variant="secondary" 
-      />
-      
-      <Button 
-        label="Delete" 
-        onClick={() => console.log('Deleted')} 
-        variant="danger"
-        disabled={true}
-      />
-    </div>
-  );
-};
+// Usage: <app-loader size="24px" width="3px" color="#333"></app-loader>
 ```
+
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Loader/Loader.component.vue -->
+<!-- Props live in the `props:` array (or an object with types/defaults).
+     A method on the component derives the style string. -->
+<template>
+  <span class="loader" :style="getLoaderStyle()"></span>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: ['size', 'width', 'color'],
+  methods: {
+    getLoaderStyle() {
+      return `
+        height: ${this.size || '48px'};
+        width: ${this.size || '48px'};
+        border: ${this.width || '5px'} solid ${this.color || '#fff'};
+        border-bottom-color: transparent;
+      `;
+    },
+  },
+});
+</script>
+
+<!-- Usage: <Loader size="24px" width="3px" color="#333" /> -->
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/atoms/Loader/Loader.component.js
+// The haunted function receives props as its first argument, the same as
+// a React function component. Lit-html template tagging builds the DOM.
+import { html } from "lit";
+import style from "./Loader.style.js";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+
+export default function Loader({ size, width, color }) {
+  useComputedStyles(this, [style]);
+  return html`
+    <span
+      class="loader"
+      style=${`
+        height: ${size || "48px"};
+        width: ${size || "48px"};
+        border: ${`${width || "5px"} solid ${color || "#fff"}`};
+        border-bottom-color: transparent;
+      `}
+    ></span>
+  `;
+}
+
+// Usage: <app-loader size="24px" width="3px" color="#333"></app-loader>
+// Complex values (objects, functions) must be passed as properties with `.`:
+//   <app-loader .size=${size} .color=${color}></app-loader>
+```
+
+{::nomarkdown}</div>{:/}
+
+Three takeaways the tabs make obvious:
+
+- **Where defaults live.** React puts them inline (`size || "48px"`). Angular puts them on the `@Input()` declaration. Vue's array form forces them into the method body; its object form would let you declare defaults on the prop. Haunted/WC uses the same inline-`||` pattern React does.
+- **How the DOM reads props.** React / Vue / haunted bind them directly. Angular separates template (`Loader.component.html`) from class — the getter is consumed by the template via `[style]="styles"`.
+- **HTML attributes vs JS properties in WC.** Strings work as attributes (`size="24px"`). Complex values (functions, objects) need the `.prop=${value}` form, or Lit will stringify them.
 
 ### Practical Example: Props with TypeScript and Validation
 

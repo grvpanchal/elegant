@@ -50,138 +50,222 @@ References
 - [1] https://medium.com/@learnreact/container-components-c0e67432e005
 ## Code Examples
 
-### Basic Example: TodoList Container Pattern
+### Basic Example: TodoListContainer across frameworks
 
-```javascript
-// ===== PRESENTATIONAL COMPONENT =====
-// TodoList.js - Pure presentational component
+The same container pulled from each `chota-*` template: it subscribes to the store, derives a filtered view of todos via selectors, and fans `{ todoData, events }` into the presentational `TodoList` organism. Identical interface out the top, framework-native wiring down the side.
 
-import React from 'react';
-import PropTypes from 'prop-types';
+{::nomarkdown}<div class="code-tabs">{:/}
 
-function TodoList({ todos, onToggle, onDelete, isLoading, error }) {
-  if (isLoading) {
-    return <div className="loading">Loading todos...</div>;
-  }
-  
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
-  
-  if (todos.length === 0) {
-    return <div className="empty">No todos yet. Add one!</div>;
-  }
-  
-  return (
-    <ul className="todo-list">
-      {todos.map(todo => (
-        <li key={todo.id} className={todo.completed ? 'completed' : ''}>
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => onToggle(todo.id)}
-            aria-label={`Mark "${todo.text}" as ${todo.completed ? 'incomplete' : 'complete'}`}
-          />
-          <span>{todo.text}</span>
-          <button 
-            onClick={() => onDelete(todo.id)}
-            aria-label={`Delete "${todo.text}"`}>
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
+React + Redux
+```jsx
+// templates/chota-react-redux/src/containers/TodoListContainer.jsx
+// (The chota-react-rtk variant is identical — RTK's slice-generated
+// actions plug into useDispatch the same way.)
+import TodoList from "../ui/organisms/TodoList/TodoList.component";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createTodo, deleteTodo, editTodo, toggleTodo, updateTodo,
+} from "../state/todo/todo.actions";
+import { getSelectedFilter } from "../state/filters/filters.selectors";
+import { getVisibleTodos } from "../state/todo/todo.selectors";
+
+export default function TodoListContainer() {
+  const dispatch = useDispatch();
+  const selectedFilter = useSelector(getSelectedFilter);
+  const todoData = useSelector((state) =>
+    getVisibleTodos(state.todo, selectedFilter.id)
   );
+
+  const events = {
+    onTodoCreate: (payload) => dispatch(createTodo(payload)),
+    onTodoEdit: (payload) => dispatch(editTodo(payload)),
+    onTodoUpdate: (text) =>
+      dispatch(updateTodo({ id: todoData.currentTodoItem.id, text })),
+    onTodoToggleUpdate: (id) => dispatch(toggleTodo(id)),
+    onTodoDelete: (payload) => dispatch(deleteTodo(payload)),
+  };
+
+  return <TodoList todoData={todoData} events={events} />;
 }
-
-// PropTypes document data expectations
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      text: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired
-    })
-  ).isRequired,
-  onToggle: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-  error: PropTypes.string
-};
-
-export default TodoList;
-
-
-// ===== CONTAINER COMPONENT (Class Component) =====
-// TodoListContainer.js - Handles data fetching and state
-
-import React, { Component } from 'react';
-import TodoList from './TodoList';
-import { fetchTodos, updateTodo, deleteTodo } from '../api/todos';
-
-class TodoListContainer extends Component {
-  state = {
-    todos: [],
-    isLoading: true,
-    error: null
-  };
-  
-  componentDidMount() {
-    this.loadTodos();
-  }
-  
-  loadTodos = async () => {
-    try {
-      this.setState({ isLoading: true, error: null });
-      const todos = await fetchTodos();
-      this.setState({ todos, isLoading: false });
-    } catch (error) {
-      this.setState({ error: error.message, isLoading: false });
-    }
-  };
-  
-  handleToggle = async (id) => {
-    const todo = this.state.todos.find(t => t.id === id);
-    if (!todo) return;
-    
-    try {
-      const updated = await updateTodo(id, { completed: !todo.completed });
-      this.setState(prevState => ({
-        todos: prevState.todos.map(t => t.id === id ? updated : t)
-      }));
-    } catch (error) {
-      console.error('Failed to update todo:', error);
-    }
-  };
-  
-  handleDelete = async (id) => {
-    try {
-      await deleteTodo(id);
-      this.setState(prevState => ({
-        todos: prevState.todos.filter(t => t.id !== id)
-      }));
-    } catch (error) {
-      console.error('Failed to delete todo:', error);
-    }
-  };
-  
-  render() {
-    const { todos, isLoading, error } = this.state;
-    
-    return (
-      <TodoList
-        todos={todos}
-        onToggle={this.handleToggle}
-        onDelete={this.handleDelete}
-        isLoading={isLoading}
-        error={error}
-      />
-    );
-  }
-}
-
-export default TodoListContainer;
 ```
+
+React + Saga
+```jsx
+// templates/chota-react-saga/src/containers/TodoListContainer.jsx
+// Same as the Redux container, plus a useEffect that kicks off the
+// initial READ_TODO dispatch — sagas pick that up and fetch from the API.
+// The WC-Saga TodoListContainer does the same thing with a LitElement
+// connected to the store via pwa-helpers.
+import { useEffect } from "react";
+import TodoList from "../ui/organisms/TodoList/TodoList.component";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createTodo, deleteTodo, editTodo, readTodo, toggleTodo, updateTodo,
+} from "../state/todo/todo.actions";
+import { getSelectedFilter } from "../state/filters/filters.selectors";
+import { getVisibleTodos } from "../state/todo/todo.selectors";
+
+export default function TodoListContainer() {
+  const dispatch = useDispatch();
+  const selectedFilter = useSelector(getSelectedFilter);
+  const todoData = useSelector((state) =>
+    getVisibleTodos(state.todo, selectedFilter.id)
+  );
+
+  useEffect(() => {
+    dispatch(readTodo());
+  }, [dispatch]);
+
+  const events = {
+    onTodoCreate: (payload) => dispatch(createTodo(payload)),
+    onTodoEdit: (payload) => dispatch(editTodo(payload)),
+    onTodoUpdate: (text) =>
+      dispatch(updateTodo({ id: todoData.currentTodoItem.id, text })),
+    onTodoToggleUpdate: (id) => dispatch(toggleTodo(id)),
+    onTodoDelete: (payload) => dispatch(deleteTodo(payload)),
+  };
+
+  return <TodoList todoData={todoData} events={events} />;
+}
+```
+
+Angular + NgRx
+```typescript
+// templates/chota-angular-ngrx/src/containers/TodoListContainer.ts
+import { AsyncPipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
+import { AppState } from '../app/state/index';
+import { getVisibleTodos, getTodoState } from '../app/state/todo/todo.selectors';
+import { Todo } from '../app/state/todo/todo.model';
+import {
+  addTodoRequest, editTodo, updateTodoRequest, toggleTodo, deleteTodoRequest,
+} from '../app/state/todo/todo.actions';
+import TodoListComponent from '../ui/organisms/TodoList/TodoList.component';
+
+@Component({
+  selector: 'app-todo-list-container',
+  standalone: true,
+  imports: [TodoListComponent, AsyncPipe],
+  template: `
+    @if (todoData$ | async; as todoData) {
+      <app-todo-list [todoData]="todoData" [events]="events"></app-todo-list>
+    }
+  `,
+})
+export default class TodoListContainerComponent {
+  todoData$ = this.store.select(getVisibleTodos);
+
+  events = {
+    onTodoCreate: (text: string) => this.store.dispatch(addTodoRequest({ text })),
+    onTodoEdit: (todo: Todo) =>
+      this.store.dispatch(editTodo({ id: todo.id, text: todo.text })),
+    onTodoUpdate: (text: string) => {
+      this.store.select(getTodoState).pipe(take(1)).subscribe((state) => {
+        const { id } = state.currentTodoItem;
+        if (id !== null) this.store.dispatch(updateTodoRequest({ id, text }));
+      });
+    },
+    onTodoToggleUpdate: (todo: Todo) =>
+      this.store.dispatch(toggleTodo({ id: todo.id })),
+    onTodoDelete: (id: number) =>
+      this.store.dispatch(deleteTodoRequest({ id })),
+  };
+
+  constructor(private store: Store<AppState>) {}
+}
+```
+
+Vue + Pinia
+```vue
+<!-- templates/chota-vue-pinia/src/containers/TodoListContainer.vue -->
+<template>
+  <TodoList :todoData="todoData.visibleTodos" :events="events" />
+</template>
+
+<script>
+import { defineComponent } from 'vue';
+import { useFiltersStore } from '../state/filters';
+import { useTodoStore } from '../state/todo';
+import TodoList from '../ui/organisms/TodoList/TodoList.component.vue';
+
+export default defineComponent({
+  components: { TodoList },
+  setup() {
+    const filtersData = useFiltersStore();
+    const todoData = useTodoStore();
+    todoData.getTodos();
+
+    const events = {
+      onTodoCreate: (payload) => todoData.addTodos(payload),
+      onTodoEdit: (payload) => todoData.editTodo(payload),
+      onTodoUpdate: (text) =>
+        todoData.updateTodos({ id: todoData.currentTodoItem.id, text }),
+      onTodoToggleUpdate: (todo) => todoData.updateToggleTodos(todo),
+      onTodoDelete: (payload) => todoData.deleteTodos(payload),
+    };
+
+    return { filtersData, todoData, events };
+  },
+});
+</script>
+```
+
+Web Components + Saga
+```js
+// templates/chota-wc-saga/src/containers/TodoListContainer.js
+// LitElement + pwa-helpers `connect()` subscribes a custom element to the
+// store. `stateChanged` is called on every dispatched action. Same events
+// bag as the React-Saga container; same readTodo() kick-off on construct.
+import { LitElement, html } from 'lit-element';
+import { connect } from 'pwa-helpers';
+import store, { useDispatch } from '../state';
+import {
+  createTodo, deleteTodo, editTodo, readTodo, toggleTodo, updateTodo,
+} from "../state/todo/todo.actions";
+import { getSelectedFilter } from "../state/filters/filters.selectors";
+import { getVisibleTodos } from "../state/todo/todo.selectors";
+import "../ui/organisms/TodoList/app-todo-list";
+
+export default class TodoListContainer extends connect(store)(LitElement) {
+  static get properties() {
+    return {
+      todoData: { type: Object },
+      selectedFilter: { type: Object },
+      events: { type: Object },
+    };
+  }
+  constructor() {
+    super();
+    const dispatch = useDispatch();
+    this.events = {
+      onTodoCreate: (e) => dispatch(createTodo(e.detail)),
+      onTodoEdit: (e) => dispatch(editTodo(e.detail)),
+      onTodoUpdate: (e) =>
+        dispatch(updateTodo({ id: this.todoData.currentTodoItem.id, text: e.detail })),
+      onTodoToggleUpdate: (e) => dispatch(toggleTodo(e.detail)),
+      onTodoDelete: (e) => dispatch(deleteTodo(e.detail)),
+    };
+    dispatch(readTodo());
+  }
+  stateChanged(state) {
+    this.selectedFilter = getSelectedFilter(state);
+    this.todoData = getVisibleTodos(state.todo, this.selectedFilter.id);
+  }
+  render() {
+    return html`<app-todo-list .todoData=${this.todoData} .events=${this.events}></app-todo-list>`;
+  }
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+The outward shape is always the same: a container component that selects from the store, builds an `events` callback bag, and renders the presentational organism with `{ todoData, events }`. What changes:
+
+- **Subscription mechanism.** `useSelector` (React) / `store.select(...).pipe(take(1))` / pwa-helpers `connect()` with `stateChanged` / Pinia's direct store access in `setup()`.
+- **Dispatch shape.** `dispatch(action)` in the Redux family; `store.dispatch(...)` in NgRx; store method calls (`todoData.addTodos(...)`) in Pinia; the same `dispatch(action)` in WC-Saga with the wrinkle that child events arrive as `CustomEvent` so handlers read `e.detail`.
+- **Initial fetch.** Saga templates dispatch `readTodo()` on mount (React's `useEffect`, Lit's `constructor`); Pinia calls `todoData.getTodos()` directly in `setup`.
 
 ### Practical Example: Modern React Hooks Approach
 
