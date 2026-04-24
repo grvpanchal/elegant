@@ -67,98 +67,115 @@ By incorporating skeleton screens into frontend development, developers can crea
 
 ## Code Examples
 
-### Basic Example: Simple Card Skeleton
+### Basic Example: Skeleton atom across frameworks
 
+The Skeleton atom is the loading-state cousin of `<div>` — a sized box you put in a layout while data is in flight to reserve space and avoid CLS. Each `chota-*` template ships the same prop shape (`variant`, `height`, `width`, `style`) over a single `.skeleton` element.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```jsx
-// CardSkeleton.jsx - Basic skeleton component
-import React from 'react';
-import './CardSkeleton.css';
+// templates/chota-react-redux/src/ui/skeletons/Skeleton/Skeleton.component.jsx
+import "./Skeleton.style.css";
 
-const CardSkeleton = () => {
+export default function Skeleton({ variant, height, width, style }) {
   return (
-    <div className="card-skeleton">
-      <div className="card-skeleton__image"></div>
-      <div className="card-skeleton__content">
-        <div className="card-skeleton__title"></div>
-        <div className="card-skeleton__text"></div>
-        <div className="card-skeleton__text card-skeleton__text--short"></div>
-      </div>
-    </div>
+    <div
+      className={`skeleton skeleton-${variant ? variant : "text"}`}
+      style={{
+        ...style,
+        height,
+        width,
+      }}
+    ></div>
   );
-};
-
-export default CardSkeleton;
-```
-
-```css
-/* CardSkeleton.css */
-.card-skeleton {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  background: white;
-}
-
-.card-skeleton__image {
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-.card-skeleton__content {
-  padding: 1rem;
-}
-
-.card-skeleton__title {
-  height: 24px;
-  background: #f0f0f0;
-  border-radius: 4px;
-  margin-bottom: 0.75rem;
-  width: 70%;
-}
-
-.card-skeleton__text {
-  height: 16px;
-  background: #f0f0f0;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-}
-
-.card-skeleton__text--short {
-  width: 50%;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
 }
 ```
 
-Usage:
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/skeletons/Skeleton/Skeleton.component.ts
+import { Component, Input } from '@angular/core';
 
-```jsx
-const ProductGrid = () => {
-  const { products, loading } = useProducts();
-  
-  if (loading) {
-    return (
-      <div className="product-grid">
-        {Array(6).fill(0).map((_, i) => (
-          <CardSkeleton key={i} />
-        ))}
-      </div>
-    );
+@Component({
+  selector: 'app-skeleton',
+  standalone: true,
+  templateUrl: './Skeleton.component.html',
+  styleUrls: ['./Skeleton.style.css'],
+})
+export default class SkeletonComponent {
+  @Input() width = "100%";
+  @Input() height = "1rem";
+  @Input() style = {};
+  @Input() variant = "text";
+
+  get classes() {
+    return `skeleton skeleton-${this.variant || "text"}`;
   }
-  
-  return (
-    <div className="product-grid">
-      {products.map(p => <ProductCard key={p.id} product={p} />)}
-    </div>
-  );
-};
+
+  get computedStyle() {
+    return `height: ${this.height}; width: ${this.width};`;
+  }
+}
 ```
+
+```html
+<!-- Skeleton.component.html -->
+<div [class]="classes" [style]="computedStyle"></div>
+```
+
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/skeletons/Skeleton/Skeleton.component.vue -->
+<template>
+  <div :class="getSkeletonClass()" :style="getSkeletonStyle()"></div>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  props: ['variant', 'height', 'width', 'style'],
+  methods: {
+    getSkeletonClass() {
+      return `skeleton skeleton-${this.variant || "text"}`;
+    },
+    getSkeletonStyle() {
+      return `
+        height: ${this.height};
+        width: ${this.width};
+      `;
+    },
+  },
+})
+</script>
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/skeletons/Skeleton/Skeleton.component.js
+import { html } from "lit";
+import styles from "./Skeleton.style";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+
+export default function Skeleton({ variant, height, width, styleCSS }) {
+  useComputedStyles(this, [styles]);
+  return html`
+    <div
+      class=${`skeleton skeleton-${variant ? variant : "text"}`}
+      style=${`
+        ${styleCSS || ''}
+        height: ${height};
+        width: ${width};
+      `}
+    ></div>
+  `;
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+The shape is intentionally tiny so the skeleton can be sprinkled freely. The four implementations differ only in style API: React passes a style *object*; Angular's getter and Vue's method both build a CSS *string* (because their templates take `[style]` / `:style` as a string when convenient); the WC version concatenates the same string and threads it into Lit's template literal. In all four, the rendered DOM ends up exactly the same: `<div class="skeleton skeleton-text" style="height:24px;width:100%">`.
 
 ### Practical Example: List Skeleton with Variants
 
