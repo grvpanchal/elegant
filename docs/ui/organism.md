@@ -30,93 +30,192 @@ From a development workflow perspective, organisms are often the components that
 
 ## Code Examples
 
-### Basic Example: Header Organism
+### Basic Example: TodoList organism across frameworks
 
-Here is an example of an organism called `Header` that combines multiple molecules and atoms. The `Header` organism might consist of a `Logo` molecule, a `Navigation` molecule, and a `Button` atom for a user profile:
+A real organism pulled from the `chota-*` templates: `TodoList` assembles an `Alert` atom, an `AddTodoForm` molecule, `TodoItems` molecule and a `Skeleton` atom into a full "todo page body" region. It takes the entire slice of todo state as a prop plus an `events` bag of callbacks — it doesn't know or care that the state comes from Redux / NgRx / Pinia behind it.
 
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```jsx
-// Header.js
+// templates/chota-react-redux/src/ui/organisms/TodoList/TodoList.component.jsx
+import Alert from "../../atoms/Alert/Alert.component";
+import AddTodoForm from "../../molecules/AddTodoForm/AddTodoForm.component";
+import TodoItems from "../../molecules/TodoItems/TodoItems.component";
+import Skeleton from "../../skeletons/Skeleton/Skeleton.component";
 
-import React from "react";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
-import Button from "./Button";
-
-const Header = () => {
+export default function TodoList({ todoData, events }) {
+  const { onTodoCreate, onTodoEdit, onTodoUpdate, onTodoToggleUpdate, onTodoDelete } = events;
   return (
-    <header>
-      <Logo />
-      <Navigation />
-      <Button label="Profile" />
-    </header>
+    <>
+      {todoData.error ? (
+        <Alert variant="error" show={!!todoData.error} message={todoData.error} />
+      ) : null}
+      <AddTodoForm
+        todoValue={todoData.currentTodoItem.text || ""}
+        onTodoAdd={onTodoCreate}
+        onTodoUpdate={onTodoUpdate}
+        placeholder="Add your task"
+        isLoading={todoData.isActionLoading}
+        buttonInfo={{
+          label: todoData.currentTodoItem.text ? "Save" : "Add",
+          variant: "primary",
+        }}
+      />
+      {todoData.isContentLoading ? (
+        <>
+          <Skeleton height="24px" />
+          <Skeleton height="24px" />
+          <Skeleton height="24px" />
+        </>
+      ) : (
+        <TodoItems
+          todos={todoData.todoItems || []}
+          isDisabled={todoData.isActionLoading}
+          onToggleClick={onTodoToggleUpdate}
+          onDeleteClick={onTodoDelete}
+          onEditClick={onTodoEdit}
+        />
+      )}
+    </>
   );
-};
-
-export default Header;
+}
 ```
 
-In this example:
-
-- The `Header` organism is composed of the `Logo` molecule, `Navigation` molecule, and a `Button` atom for the user's profile.
-- Each of these components (`Logo`, `Navigation`, and `Button`) can be considered atoms or molecules on their own.
-
-Now, let's create the `Logo` and `Navigation` components:
-
-```jsx
-// Logo.js
-
-import React from "react";
-
-const Logo = () => {
-  return <div className="logo">My Logo</div>;
-};
-
-export default Logo;
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/organisms/TodoList/TodoList.component.ts
+@Component({
+  selector: 'app-todo-list',
+  standalone: true,
+  imports: [AlertComponent, AddTodoFormComponent, TodoItemsComponent, SkeletonComponent],
+  templateUrl: './TodoList.component.html',
+  styleUrls: ['./TodoList.style.css'],
+})
+export default class TodoListComponent {
+  @Input() todoData: TodoState = { /* initial defaults */ };
+  @Input() events = {
+    onTodoCreate: (text: string) => {},
+    onTodoEdit: (todo: any) => {},
+    onTodoUpdate: (text: string) => {},
+    onTodoToggleUpdate: (todo: any) => {},
+    onTodoDelete: (id: number) => {},
+  };
+  get buttonInfo() {
+    return {
+      label: this.todoData.currentTodoItem.text ? 'Save' : 'Add',
+      variant: 'primary',
+    };
+  }
+}
 ```
 
-```jsx
-// Navigation.js
-
-import React from "react";
-
-const Navigation = () => {
-  return (
-    <nav>
-      <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Contact</li>
-      </ul>
-    </nav>
-  );
-};
-
-export default Navigation;
+```html
+<!-- TodoList.component.html -->
+@if (todoData.error) {
+  <app-alert variant="error" [show]="!!todoData.error" [message]="todoData.error"></app-alert>
+}
+<app-add-todo-form
+  [todoValue]="todoData.currentTodoItem.text || ''"
+  (onTodoAdd)="events.onTodoCreate($event)"
+  (onTodoUpdate)="events.onTodoUpdate($event)"
+  placeholder="Add your task"
+  [isLoading]="todoData.isActionLoading"
+  [buttonInfo]="buttonInfo"
+></app-add-todo-form>
+@if (todoData.isContentLoading) {
+  <app-skeleton height="24px"></app-skeleton>
+  <app-skeleton height="24px"></app-skeleton>
+  <app-skeleton height="24px"></app-skeleton>
+} @else {
+  <app-todo-items
+    [todos]="todoData.todoItems"
+    [isDisabled]="todoData.isActionLoading"
+    (onToggleClick)="events.onTodoToggleUpdate($event)"
+    (onDeleteClick)="events.onTodoDelete($event)"
+    (onEditClick)="events.onTodoEdit($event)"
+  ></app-todo-items>
+}
 ```
 
-In this setup, the `Logo` and `Navigation` components can be considered molecules, as they are composed of simpler atoms (e.g., a `div` for the logo and a list for navigation items).
-
-We can then use the Header organism in your application:
-
-```jsx
-// App.js
-
-import React from "react";
-import Header from "./Header";
-
-const App = () => {
-  return (
-    <div>
-      <Header />
-      {/* Other content goes here */}
-    </div>
-  );
-};
-
-export default App;
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/organisms/TodoList/TodoList.component.vue -->
+<template>
+  <div>
+    <Alert v-if="todoData.error" variant="error" :show="!!todoData.error" :message="todoData.error" />
+    <AddTodoForm
+      :todoValue="todoData.currentTodoItem.text || ''"
+      @onTodoAdd="events.onTodoCreate"
+      @onTodoUpdate="events.onTodoUpdate"
+      placeholder="Add your task"
+      :isLoading="todoData.isActionLoading"
+      :buttonInfo="getButtonInfo()"
+    />
+    <template v-if="todoData.isContentLoading">
+      <Skeleton height="24px" />
+      <Skeleton height="24px" />
+      <Skeleton height="24px" />
+    </template>
+    <template v-else>
+      <TodoItems
+        :todos="todoData.todoItems || []"
+        :isDisabled="todoData.isActionLoading"
+        @onToggleClick="events.onTodoToggleUpdate"
+        @onDeleteClick="events.onTodoDelete"
+        @onEditClick="events.onTodoEdit"
+      />
+    </template>
+  </div>
+</template>
 ```
 
-This illustrates how organisms in Atomic Design are composed of molecules and atoms to create larger and more complex components. The `Header` organism, in this case, represents a common structure that might appear at the top of many pages in our application.
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/organisms/TodoList/TodoList.component.js
+import { html } from "lit";
+import "../../atoms/Alert/app-alert";
+import "../../molecules/AddTodoForm/app-add-todo-form";
+import "../../molecules/TodoItems/app-todo-items";
+import "../../skeletons/Skeleton/app-skeleton";
+
+export default function TodoList({ todoData, events }) {
+  const { onTodoCreate, onTodoEdit, onTodoUpdate, onTodoToggleUpdate, onTodoDelete } = events;
+  return html`
+    ${todoData.error ? html`
+      <app-alert .variant=${"error"} .show=${!!todoData.error} .message=${todoData.error}></app-alert>
+    ` : null}
+    <app-add-todo-form
+      .todoValue=${todoData.currentTodoItem.text || ""}
+      @onTodoAdd=${onTodoCreate}
+      @onTodoUpdate=${onTodoUpdate}
+      .placeholder=${"Add your task"}
+      .isLoading=${todoData.isActionLoading}
+      .buttonInfo=${{
+        label: todoData.currentTodoItem.text ? "Save" : "Add",
+        variant: "primary",
+      }}
+    ></app-add-todo-form>
+    ${todoData.isContentLoading ? html`
+      <app-skeleton height="24px"></app-skeleton>
+      <app-skeleton height="24px"></app-skeleton>
+      <app-skeleton height="24px"></app-skeleton>
+    ` : html`
+      <app-todo-items
+        .todos=${todoData.todoItems || []}
+        .isDisabled=${todoData.isActionLoading}
+        @onToggleClick=${onTodoToggleUpdate}
+        @onDeleteClick=${onTodoDelete}
+        @onEditClick=${onTodoEdit}
+      ></app-todo-items>
+    `}
+  `;
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+The organism's *interface* — `{ todoData, events }` — is identical in all four tabs. Containers in each template subscribe to their respective store (Redux store / NgRx selectors / Pinia store / saga-backed store) and fan the same prop shape into this component, so the organism itself is store-agnostic and framework-portable in its *shape*.
 
 ### Practical Example: Product Grid with State Management
 
