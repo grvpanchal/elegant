@@ -28,54 +28,136 @@ In the Universal Frontend Architecture, atoms bridge the gap between design and 
 
 ## Code Examples
 
-### Basic Example: Simple Button Atom
+### Basic Example: Button Atom across frameworks
 
-A fundamental button atom demonstrating single-purpose design:
+Here's the same single-purpose Button atom pulled directly from each `chota-*` template. The shape is intentionally identical across all four: one prop-driven button that swaps to a `Loader` while `isLoading` is true, and emits a click otherwise. Compare how each framework expresses the same pattern.
 
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```jsx
-// Button.js
+// templates/chota-react-redux/src/ui/atoms/Button/Button.component.jsx
+import Loader from "../Loader/Loader.component";
+import './Button.style.css';
 
-import React from "react";
-
-const Button = ({ onClick, label }) => {
-  return <button onClick={onClick}>{label}</button>;
-};
-
-export default Button;
+export default function Button(props) {
+  const transformedProps = { ...props };
+  delete transformedProps.isLoading;
+  if (props.isLoading) {
+    return (
+      <button {...transformedProps} className={`${props.className} loading-button`}>
+        <Loader width="2px" size="1.2rem" color="#fff" />
+      </button>
+    );
+  }
+  return <button {...transformedProps}>{props.children}</button>;
+}
 ```
 
-In this example, the Button component is a basic building block (atom) that takes two props:
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Button/Button.component.ts
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import LoaderComponent from '../Loader/Loader.component';
 
-- `onClick`: a function to be called when the button is clicked.
-- `label`: the text content of the button.
+@Component({
+  selector: 'app-button',
+  standalone: true,
+  imports: [LoaderComponent],
+  templateUrl: './Button.component.html',
+  styleUrls: ['./Button.style.css'],
+})
+export default class ButtonComponent {
+  @Input() isLoading = false;
+  @Input() classes?: string;
+  @Input() type = '';
 
-This simple Button component can be reused throughout the application wherever a button is needed. When combining multiple atoms like this, we can start building more complex components (molecules, organisms, etc.) by composing them together.
+  get computedClasses() {
+    return this.isLoading ? `${this.classes} loading-button` : this.classes;
+  }
 
-Here's an example of how we might use this Button component in a parent component:
-
-```jsx
-// App.js
-
-import React from "react";
-import Button from "./Button";
-
-const App = () => {
-  const handleClick = () => {
-    alert("Button clicked!");
-  };
-
-  return (
-    <div>
-      <h1>My App</h1>
-      <Button onClick={handleClick} label="Click me" />
-    </div>
-  );
-};
-
-export default App;
+  @Output() onClick = new EventEmitter<Event>();
+}
 ```
 
-In this example, the `App` component uses the `Button` atom by passing in an `onClick` function and a `label`. This follows the Atomic Design principles of building up more complex components by combining simpler ones.
+```html
+<!-- Button.component.html -->
+@if (isLoading) {
+  <button [class]="computedClasses" [disabled]="isLoading">
+    <app-loader width="2px" size="1.2rem" color="#fff"></app-loader>
+  </button>
+} @else {
+  <button [type]="type || 'button'" (click)="onClick.emit($event)" [class]="computedClasses">
+    <ng-content></ng-content>
+  </button>
+}
+```
+
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Button/Button.component.vue -->
+<template>
+  <button v-if="isLoading" :disabled="disabled" @click="$emit('onClick')" :class="getButtonClass()">
+    <Loader width="2px" size="1.2rem" color="#fff" />
+  </button>
+  <button v-else :disabled="disabled" :type="type" @click="$emit('onClick')" :class="getButtonClass()">
+    <slot />
+  </button>
+</template>
+
+<script>
+import { defineComponent } from 'vue'
+import Loader from '../Loader/Loader.component.vue';
+
+export default defineComponent({
+  components: { Loader },
+  props: ['isLoading', 'class', 'disabled', 'onClick', 'label', 'type'],
+  methods: {
+    getButtonClass() {
+      return `${this.class} loading-button`;
+    },
+  },
+})
+</script>
+
+<style scoped src="./Button.style.css"></style>
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/atoms/Button/Button.component.js
+import { html } from "lit";
+import style from './Button.style';
+import "../Loader/app-loader";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+import emit from "../../../utils/events/emit";
+
+export default function Button(props) {
+  useComputedStyles(this, [style]);
+  if (props.isLoading) {
+    return html`
+      <button type="button" class=${`${props.classes} loading-button`}>
+        <app-loader .width=${'2px'} .size=${'1.2rem'} .color=${'#fff'}>Loading...</app-loader>
+      </button>
+    `;
+  }
+  return html`
+    <button type="button"
+      class="${props.classes}"
+      @click="${() => emit(this, "onClick", props)}">
+      <slot></slot>
+    </button>
+  `;
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+A few things worth comparing across the tabs:
+
+- **Children projection.** React uses `{props.children}`, Angular uses `<ng-content>`, Vue and Web Components both use `<slot>` — four spellings of the same idea.
+- **Event shape.** React passes `onClick` through as a plain prop. Angular exposes an `@Output() EventEmitter`. Vue emits `'onClick'` via `$emit`. The Lit-based WC uses a tiny `emit(this, "onClick", props)` helper wrapping `CustomEvent`.
+- **Styling.** Every template co-locates `Button.style.css` next to the component; Angular and Vue scope it, React imports it side-effect style, WC injects via `useComputedStyles`.
 
 ### Advanced Example: Icon Atom with Dynamic SVG Loading
 
