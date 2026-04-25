@@ -503,7 +503,6 @@ import { Header } from './Header';
 import { Navigation } from './Navigation';
 import { Footer } from './Footer';
 
-{% raw %}
 export function AppLayout({ children }) {
   const { user, loading } = useAuth();
   
@@ -535,14 +534,12 @@ function ShellSkeleton() {
     </div>
   );
 }
-{% endraw %}
 
 // contexts/AuthContext.js (Shared provider)
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-{% raw %}
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -571,7 +568,6 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-{% endraw %}
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -615,7 +611,6 @@ const DashboardMFE = lazy(() => import('dashboard/App'));
 const SettingsMFE = lazy(() => import('settings/App'));
 const ReportsMFE = lazy(() => import('reports/App'));
 
-{% raw %}
 export function Shell() {
   return (
     <BrowserRouter>
@@ -644,7 +639,6 @@ function MFESkeleton() {
     </div>
   );
 }
-{% endraw %}
 
 // app-shell/src/providers/AuthProvider.js
 import { createContext, useState, useEffect } from 'react';

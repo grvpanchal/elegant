@@ -265,7 +265,6 @@ export default LoginPage;
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
-{% raw %}
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   
@@ -280,7 +279,6 @@ function ProtectedRoute({ children }) {
   
   return children;
 }
-{% endraw %}
 
 export default ProtectedRoute;
 
