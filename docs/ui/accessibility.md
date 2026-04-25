@@ -58,71 +58,117 @@ Web accessibility means designing and developing websites, tools, and technologi
 
 ## Code Examples
 
-### Basic Example: Semantic HTML vs Non-Semantic HTML
+### Basic Example: Accessible atoms across frameworks
 
-```html
-<!-- ❌ BAD: Non-semantic, inaccessible -->
-<div class="button" onclick="submitForm()">Submit</div>
-<div class="link" onclick="navigate()">Read more</div>
-<div class="checkbox" onclick="toggle()">
-  <span class="checkmark"></span>
-  Accept terms
-</div>
+Every `chota-*` template ships the same two accessibility patterns: native semantics for interactive controls (`<button>`, `<a>` — never `<div onclick>`), and a screen-reader-only `<label>` paired to every `<input>`. Here's how each framework expresses both, lifted from the real templates.
 
-<script>
-// Missing keyboard support, focus management, screen reader announcements
-function submitForm() {
-  console.log('Form submitted');
+The labelled-input pattern is the most interesting, because the four frameworks each spell "visually hidden but accessible" differently while producing the same DOM output.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
+{% raw %}
+```jsx
+// templates/chota-react-redux/src/ui/atoms/Input/Input.component.jsx
+// Native <input> + <label htmlFor=...> + className="sr-only" so the label
+// is read by AT but invisible. The atom auto-generates an id if the
+// caller didn't supply one, so the htmlFor/id link is always intact.
+export default function Input(props) {
+  let id = props.id;
+  if (!id) id = Math.random();
+  return (
+    <>
+      <label htmlFor={id} className="sr-only">
+        {props.name || "Some Label"}
+      </label>
+      <input {...props} id={id} />
+    </>
+  );
 }
-</script>
-
-<!-- ✅ GOOD: Semantic HTML with built-in accessibility -->
-<button type="submit" onclick="submitForm()">Submit</button>
-<a href="/article">Read more</a>
-<label>
-  <input type="checkbox" name="terms">
-  Accept terms
-</label>
-
-<!-- Automatic benefits:
-  - Keyboard navigation (Tab to focus, Enter/Space to activate)
-  - Focus visible by default
-  - Screen readers announce role and state
-  - Form submission works natively
--->
-
-<!-- Form accessibility -->
-<form>
-  <!-- ❌ BAD: No label association -->
-  <div>Email</div>
-  <input type="email" name="email">
-  
-  <!-- ✅ GOOD: Explicit label -->
-  <label for="email-input">Email</label>
-  <input type="email" id="email-input" name="email" required>
-  
-  <!-- ✅ GOOD: Implicit label -->
-  <label>
-    Password
-    <input type="password" name="password" required>
-  </label>
-  
-  <!-- Helper text and errors -->
-  <label for="username">Username</label>
-  <input
-    type="text"
-    id="username"
-    name="username"
-    aria-describedby="username-help username-error"
-    aria-invalid="false">
-  <span id="username-help" class="help-text">
-    Must be 3-20 characters
-  </span>
-  <span id="username-error" role="alert" aria-live="polite"></span>
-  
-  <button type="submit">Create Account</button>
-</form>
 ```
+{% endraw %}
+
+Angular
+```html
+<!-- templates/chota-angular-ngrx/src/ui/atoms/Input/Input.component.html
+     Same DOM shape: <label class="sr-only" [for]="id"> wraps a unique id
+     onto the input. Angular makes the for/id binding explicit. -->
+<label [for]="id" class="sr-only">{{ name || 'Some Label' }}</label>
+<input
+  [id]="id"
+  [type]="type"
+  [value]="value"
+  [checked]="checked"
+  [disabled]="disabled"
+  [placeholder]="placeholder"
+  (input)="onInput($event)"
+/>
+```
+
+Vue
+{% raw %}
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Input/Input.component.vue
+     Vue uses :for with v-bind. The label sits above the input in the
+     template and inherits the same sr-only class scoped to the SFC. -->
+<template>
+  <label :for="id" class="sr-only">{{ name || 'Some Label' }}</label>
+  <input
+    :id="id"
+    :name="name"
+    :type="type || 'text'"
+    :disabled="disabled"
+    :placeholder="placeholder"
+    :value="value"
+    :checked="checked"
+    @input="$emit('onInput', $event)"
+  />
+</template>
+```
+{% endraw %}
+
+Web Components
+{% raw %}
+```js
+// templates/chota-wc-saga/src/ui/atoms/Input/Input.component.js
+// Lit-html builds the same <label> + <input>. Note the for-attribute is
+// spelled htmlFor here for consistency with the React tab, but `for`
+// also works in Lit — both produce the same attribute on the rendered
+// element.
+import { html } from "lit";
+import emit from "../../../utils/events/emit";
+
+export default function Input(props) {
+  let id = props.id;
+  if (!id) id = Math.random();
+  return html`
+    <label htmlFor=${id} class="sr-only">
+      ${props.name || "Some Label"}
+    </label>
+    <input
+      type=${props.type}
+      .value=${props.value}
+      .checked=${props.checked}
+      id=${id}
+      name=${props.name}
+      placeholder=${props.placeholder}
+      @input=${(e) => emit(this, "onInput", e)}
+    />
+  `;
+}
+```
+{% endraw %}
+
+{::nomarkdown}</div>{:/}
+
+A few accessibility-relevant things to read across the tabs:
+
+- **Native `<button>` everywhere.** Every template's `Button` atom renders a real `<button>` (not a click-handled `<div>`), which inherits keyboard activation, focus visibility, and the `button` role for free. Same for `<a href>` for links.
+- **Every input gets a label.** None of the templates ship an `<input>` with no associated label — even when the visual design has none, the `sr-only` class plus `htmlFor`/`for` keeps the input accessible to screen readers and voice control.
+- **Alt text is mandatory on the Image atom.** All four implementations propagate `props.alt` straight to the underlying `<img alt>`. The `IconButton` molecule passes a meaningful alt through (`"close"`, `"search"`, etc.) so the icon-only button gets an accessible name.
+- **`disabled` is a property, not a class.** All four templates set the real `disabled` property on `<button>` and `<input>` rather than fading it visually, so AT correctly announces the disabled state and Tab navigation skips it.
+
+The framework wrappers diverge a lot. The DOM doesn't.
 
 ### Practical Example: ARIA Patterns for Custom Components
 
