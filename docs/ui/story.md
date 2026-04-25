@@ -45,113 +45,145 @@ By leveraging stories, developers can efficiently build, document, and test UI c
 
 ## Code Examples
 
-### Basic Example: Button Component Stories
+### Basic Example: Button stories across Storybook flavours
 
+Storybook 10 standardises on Component Story Format (CSF 3) — one `default` export with `title` and `component`, plus named exports per story. The framework wrapper (`@storybook/react-vite` / `@storybook/angular` / `@storybook/vue3-vite` / `@storybook/web-components-vite`) decides how `args` get plugged into your component. Same Button, four CSF dialects.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```javascript
-// Button.stories.js - Basic story file structure
-import React from 'react';
-import { Button } from './Button';
+// templates/chota-react-redux/src/ui/atoms/Button/Button.stories.js
+// CSF 3 + react-vite. `args` map directly onto the component's props.
+import Button from "./Button.component";
 
-// Default export: Component metadata
-export default {
-  title: 'UI/Button',  // Sidebar location
-  component: Button,
-  // Automatic prop documentation
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: ['primary', 'secondary', 'danger']
-    },
-    size: {
-      control: 'radio',
-      options: ['small', 'medium', 'large']
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    onClick: { action: 'clicked' }  // Log clicks in Actions panel
-  }
+export default { title: "Atoms/Button", component: Button };
+
+export const Default = {
+  args: {
+    className: "button primary",
+    children: "Sample Button",
+  },
 };
 
-// Named exports: Individual stories
-
-// Story 1: Primary button (most common state)
-export const Primary = {
+export const Loading = {
   args: {
-    variant: 'primary',
-    size: 'medium',
-    children: 'Click me'
-  }
-};
-
-// Story 2: Secondary variant
-export const Secondary = {
-  args: {
-    variant: 'secondary',
-    size: 'medium',
-    children: 'Cancel'
-  }
-};
-
-// Story 3: Danger/destructive action
-export const Danger = {
-  args: {
-    variant: 'danger',
-    size: 'medium',
-    children: 'Delete'
-  }
-};
-
-// Story 4: Disabled state
-export const Disabled = {
-  args: {
-    variant: 'primary',
-    size: 'medium',
-    children: 'Click me',
-    disabled: true
-  }
-};
-
-// Story 5: Large button
-export const Large = {
-  args: {
-    variant: 'primary',
-    size: 'large',
-    children: 'Large Button'
-  }
-};
-
-// Story 6: Small button
-export const Small = {
-  args: {
-    variant: 'primary',
-    size: 'small',
-    children: 'Small'
-  }
-};
-
-// Story 7: Long text edge case
-export const LongText = {
-  args: {
-    variant: 'primary',
-    size: 'medium',
-    children: 'This is a button with very long text that might wrap or overflow'
-  }
-};
-
-// Story 8: Icon button
-export const WithIcon = {
-  args: {
-    variant: 'primary',
-    size: 'medium',
-    children: (
-      <>
-        <Icon name="search" /> Search
-      </>
-    )
-  }
+    isLoading: true,
+    className: "button primary",
+    children: "Sample Button",
+  },
 };
 ```
+
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Button/Button.stories.ts
+// Angular stories pair `args` with a small `render` function that maps
+// them into a component template (since args don't auto-bind onto Inputs).
+import type { Meta, StoryObj } from '@storybook/angular';
+import ButtonComponent from './Button.component';
+
+type Story = StoryObj<ButtonComponent>;
+
+export default {
+  title: 'Atoms/Button',
+  component: ButtonComponent,
+} satisfies Meta<ButtonComponent>;
+
+export const Default: Story = {
+  args: { classes: 'button primary', isLoading: false },
+  render: (args) => ({
+    props: args,
+    template: `<app-button [classes]="classes" [isLoading]="isLoading">Button</app-button>`,
+  }),
+};
+
+export const Loading: Story = {
+  args: { isLoading: true, classes: 'button primary' },
+  render: (args) => ({
+    props: args,
+    template: `<app-button [classes]="classes" [isLoading]="isLoading">Sample Button</app-button>`,
+  }),
+};
+```
+
+Vue
+```javascript
+// templates/chota-vue-pinia/src/ui/atoms/Button/Button.stories.js
+// Vue's CSF uses a Template factory that returns a component definition.
+// Each story binds args via `Template.bind({})` — the classic CSF 2 form,
+// still supported in Storybook 10 alongside CSF 3.
+import { defineComponent } from 'vue';
+import Button from "./Button.component.vue";
+
+const Template = (args) => defineComponent({
+  components: { Button },
+  setup: () => ({ args }),
+  template: '<Button @onClick="args.onClick" :class="args.class" :isLoading="args.isLoading">{{ args.label }}</Button>',
+});
+
+export default { title: "Atoms/Button", component: Button };
+
+export const Default = Template.bind({});
+Default.args = {
+  class: "button primary",
+  label: "Sample Button",
+  onClick: () => console.log('working on click'),
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  isLoading: true,
+  class: "button primary",
+  label: "Sample Button",
+};
+```
+
+Web Components
+```javascript
+// templates/chota-wc-saga/src/ui/atoms/Button/Button.stories.js
+// web-components-vite stories use Lit-html in the render function.
+// Note `.classes=` for property binding and `@onClick=` for the
+// CustomEvent emitted by the Button atom.
+import { html } from 'lit';
+import './app-button';
+
+export default {
+  title: 'Atoms/Button',
+  render: (args) => html`
+    <app-button .classes="${args.classes}" .isLoading="${args.isLoading}"
+                @onClick="${args.onClick}">
+      ${args.label}
+    </app-button>
+  `,
+};
+
+export const Default = {
+  args: {
+    classes: 'button primary',
+    label: 'Sample Button',
+    onClick: (e) => console.log('click', e.detail),
+  },
+};
+
+export const Loading = {
+  args: {
+    isLoading: true,
+    classes: 'button primary',
+    label: 'Sample Button',
+  },
+};
+```
+
+{::nomarkdown}</div>{:/}
+
+The CSF *meta-shape* (`default` export with `title`/`component` + named story exports with `args`) is identical across all four. Where they diverge:
+
+- **React + Web Components** can let `args` flow straight through to the component (React via prop spread, WC via Lit's render template referencing args by name).
+- **Angular** needs an explicit `render` function returning `{ props, template }` because Angular Inputs don't auto-bind from a generic prop bag.
+- **Vue** still uses the classic `Template.bind({})` factory pattern in the shipped templates, though CSF 3 with object args also works fine.
+
+Storybook addons (`addon-docs`, `addon-a11y`, `addon-controls`) all read these stories the same way regardless of framework.
 
 ### Practical Example: Form Component with Decorators and Play Functions
 

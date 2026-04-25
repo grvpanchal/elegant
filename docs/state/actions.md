@@ -29,42 +29,155 @@ Key characteristics:
 
 ## Code Examples
 
-### Basic Example: Simple Action Creators
+### Basic Example: Actions across state libraries
 
+The same todo-CRUD actions, authored idiomatically in each of the state libraries the six `chota-*` templates ship. Every flavour here produces the same effect on the store — they differ only in ceremony and in where the "type + payload" envelope is constructed.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+Classic Redux
 ```javascript
-// actionTypes.js - Constants prevent typos
-export const ADD_TODO = 'todos/add';
-export const TOGGLE_TODO = 'todos/toggle';
-export const DELETE_TODO = 'todos/delete';
+// templates/chota-react-redux/src/state/todo/todo.actions.js
+import { CREATE_TODO, DELETE_TODO, EDIT_TODO, TOGGLE_TODO, UPDATE_TODO } from "./todo.type";
 
-// actions.js - Action creators
 let nextTodoId = 0;
+export const createTodo = (text) => ({
+  type: CREATE_TODO,
+  payload: { id: nextTodoId++, text },
+});
 
-// Basic action creator
-export function addTodo(text) {
-  return {
-    type: ADD_TODO,
-    payload: {
-      id: nextTodoId++,
-      text,
-      completed: false
-    }
-  };
+export const editTodo = (payload) => ({ type: EDIT_TODO, payload });
+export const updateTodo = (payload) => ({ type: UPDATE_TODO, payload });
+export const deleteTodo = (id) => ({ type: DELETE_TODO, payload: { id } });
+export const toggleTodo = (payload) => ({ type: TOGGLE_TODO, payload });
+```
+
+Redux Toolkit
+```javascript
+// templates/chota-react-rtk/src/state/todo/todo.reducer.js
+// RTK's createSlice auto-generates action creators and types from reducer names.
+import { createSlice } from "@reduxjs/toolkit";
+import intialTodoState from "./todo.initial";
+
+let nextTodoId = 0;
+export const todoSlice = createSlice({
+  name: "todo",
+  initialState: intialTodoState,
+  reducers: {
+    createTodo: (state, action) => {
+      state.todoItems.push({ text: action.payload, completed: false, id: nextTodoId++ });
+    },
+    editTodo: (state, action) => { state.currentTodoItem = action.payload; },
+    toggleTodo: (state, action) => {
+      state.todoItems = state.todoItems.map((t) =>
+        t.id === action.payload.id ? { ...t, completed: !t.completed } : t);
+    },
+  },
+});
+
+// Action creators are generated for each case reducer:
+export const { createTodo, editTodo, toggleTodo } = todoSlice.actions;
+```
+
+Redux Saga
+```javascript
+// templates/chota-react-saga/src/state/todo/todo.actions.js
+// Plain action creators. Sagas listen for these and dispatch *Success / *Error follow-ups.
+export const createTodo = (payload) => ({ type: CREATE_TODO, payload });
+export const createTodoSuccess = (payload) => ({ type: CREATE_TODO_SUCCESS, payload });
+export const createTodoError = (error) => ({ type: CREATE_TODO_ERROR, error });
+
+export const readTodo = () => ({ type: READ_TODO });
+export const readTodoSuccess = (payload) => ({ type: READ_TODO_SUCCESS, payload });
+export const readTodoError = (error) => ({ type: READ_TODO_ERROR, error });
+
+export const deleteTodo = (payload) => ({ type: DELETE_TODO, payload });
+export const deleteTodoSuccess = () => ({ type: DELETE_TODO_SUCCESS });
+export const deleteTodoError = (previousState, error) => ({
+  type: DELETE_TODO_ERROR,
+  previousState,
+  error,
+});
+```
+
+NgRx
+```typescript
+// templates/chota-angular-ngrx/src/app/state/todo/todo.actions.ts
+import { createAction, props } from '@ngrx/store';
+
+export const createTodo = createAction(
+  '[Todo] CreateTodo',
+  props<{ id: number; text: string }>()
+);
+
+export const editTodo = createAction(
+  '[Todo] EditTodo',
+  props<{ id: number; text: string }>()
+);
+
+export const toggleTodo = createAction(
+  '[Todo] ToggleTodo',
+  props<{ id: number }>()
+);
+
+export const deleteTodo = createAction(
+  '[Todo] DeleteTodo',
+  props<{ id: number }>()
+);
+
+// Request/Success/Fail triples drive NgRx effects:
+export const loadTodosRequest = createAction('[Todo] LoadTodosRequest');
+export const loadTodosSuccess = createAction('[Todo] LoadTodosSuccess');
+export const loadTodosFail = createAction(
+  '[Todo] LoadTodosFail',
+  props<{ error: string }>()
+);
+```
+
+Pinia
+```javascript
+// templates/chota-vue-pinia/src/state/todo/todo.actions.js
+// Pinia "actions" are just methods on the store — they mutate state directly.
+// There's no separate "action object" envelope.
+export function createTodo(text) {
+  this.isLoading = true;
+  this.isActionLoading = true;
+  this.currentTodoItem = { text, completed: false };
 }
 
-export function toggleTodo(id) {
-  return {
-    type: TOGGLE_TODO,
-    payload: id
-  };
+export function createTodoSuccess(payload) {
+  this.isLoading = false;
+  this.todoItems.push({ id: payload.id, text: payload.text, completed: false });
+  this.currentTodoItem = intialTodoState.currentTodoItem;
 }
 
-export function deleteTodo(id) {
-  return {
-    type: DELETE_TODO,
-    payload: id
-  };
-}
+// Wired into the store via defineStore('todo', { actions: { createTodo, ... } }).
+```
+
+Redux Saga (Web Components)
+```javascript
+// templates/chota-wc-saga/src/state/todo/todo.actions.js
+// Same plain-object shape as the React Saga template — the WC template reuses
+// the request/success/error triple because the pattern is framework-agnostic.
+export const createTodo = (text) => ({
+  type: CREATE_TODO,
+  payload: { text, completed: false },
+});
+export const createTodoSuccess = (payload) => ({ type: CREATE_TODO_SUCCESS, payload });
+export const createTodoError = (error) => ({ type: CREATE_TODO_ERROR, error });
+
+export const toggleTodo = (payload) => ({ type: TOGGLE_TODO, payload });
+export const toggleTodoSuccess = () => ({ type: TOGGLE_TODO_SUCCESS });
+```
+
+{::nomarkdown}</div>{:/}
+
+What to notice:
+
+- **Redux / Saga / WC-Saga** all ship the same primitive: plain `{ type, payload }` objects and little creator functions. Saga variants add explicit `*Success` / `*Error` follow-ups because the middleware expects them.
+- **RTK** hides both the type constants and the plain-object creators — you only write the reducer case names, and it synthesises everything.
+- **NgRx** uses `createAction` + `props<...>()` to give you a typed creator that still produces a conventional `{ type, ...payload }` action object.
+- **Pinia** is the odd one out: it has no action *objects* at all. Actions are methods on the store that mutate `this` — the devtools still show them as discrete events, but you don't author a creator.
 
 // Usage in components
 import { useDispatch } from 'react-redux';

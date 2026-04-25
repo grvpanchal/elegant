@@ -30,49 +30,158 @@ Key categories of attributes:
 
 ## Code Examples
 
-### Basic Example: Boolean and Standard Attributes
+### Basic Example: Setting attributes across frameworks
+
+The same Input atom across the four UI templates: take props (`id`, `name`, `type`, `value`, `disabled`, `placeholder`, `checked`) and lay them onto a real `<input>` element. Each framework has its own answer to "is this an HTML attribute or a DOM property?" — the answers diverge most visibly for `value` and `checked`, which need property binding to track user input.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
+```jsx
+// templates/chota-react-redux/src/ui/atoms/Input/Input.component.jsx
+// React decides at runtime whether to set an attribute or a property
+// for each prop on the JSX element. `value` and `checked` are properties;
+// `placeholder`, `type`, `id`, `name` are attributes. Spread does both.
+export default function Input(props) {
+  let id = props.id;
+  if (!id) id = Math.random();
+  return (
+    <>
+      <label htmlFor={id} className="sr-only">
+        {props.name || "Some Label"}
+      </label>
+      <input {...props} id={id} />
+    </>
+  );
+}
+```
+
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Input/Input.component.ts
+// Angular distinguishes attribute binding ([attr.x]="...") from property
+// binding ([x]="..."). Property is the default; the @HostBinding here
+// reflects the inner type onto the host element only when no [type] is
+// explicitly bound from the parent.
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+
+@Component({
+  selector: 'app-input',
+  standalone: true,
+  templateUrl: './Input.component.html',
+  styleUrls: ['./Input.style.css'],
+})
+export default class InputComponent {
+  @HostBinding('attr.type') externalType: string | null = '';
+
+  @Input() set type(value: string) { this._type = value; this.externalType = null; }
+  get type() { return this._type; }
+  private _type = '';
+
+  @Input() id = '';
+  @Input() name = '';
+  @Input() value = '';
+  @Input() checked = false;
+  @Input() disabled = false;
+  @Input() placeholder = '';
+
+  @Output() onInput = new EventEmitter<Event>();
+  onInputHandler(e: Event) { this.onInput.emit(e); }
+}
+```
 
 ```html
-<!-- Boolean Attributes -->
-<input type="text" required>  <!-- required=true (attribute present) -->
-<input type="checkbox" checked>  <!-- checked=true -->
-<button disabled>Submit</button>  <!-- disabled=true -->
-<input type="text" readonly value="Cannot edit">  <!-- readonly=true -->
+<!-- Input.component.html -->
+<label [for]="id" class="sr-only">{{ name || 'Some Label' }}</label>
+<input
+  [id]="id"
+  [type]="type"
+  [value]="value"
+  [checked]="checked"
+  [disabled]="disabled"
+  [placeholder]="placeholder"
+  (input)="onInputHandler($event)"
+/>
+```
 
-<!-- Valid boolean attribute syntax -->
-<input required>  <!-- Recommended: no value -->
-<input required="">  <!-- Valid: empty string -->
-<input required="required">  <!-- Valid but verbose -->
-
-<!-- INVALID boolean syntax -->
-<input required="false">  <!-- Still true! Attribute is present -->
-<input required="0">  <!-- Still true! -->
-
-<!-- Standard Attributes -->
-<img src="photo.jpg" alt="Description" width="300" height="200">
-<a href="https://example.com" target="_blank" rel="noopener">Link</a>
-<input type="email" name="email" placeholder="Enter email" maxlength="50">
-
-<!-- Global Attributes -->
-<div id="unique-id" class="container active" title="Hover tooltip">
-  <p lang="en" dir="ltr" tabindex="0">Text content</p>
-</div>
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Input/Input.component.vue -->
+<!-- :prop is shorthand for v-bind:prop. Vue chooses attribute vs property
+     automatically (DOM attributes by default, switching to property for
+     known cases like value/checked/innerHTML). -->
+<template>
+  <input
+    :id="id"
+    :name="name"
+    :type="type || 'text'"
+    :disabled="disabled"
+    :alt="alt"
+    :placeholder="placeholder"
+    :class="getImageClass()"
+    @click="$emit('onClick', $event)"
+    @input="$emit('onInput', $event)"
+    :value="value"
+    :checked="checked"
+  />
+</template>
 
 <script>
-  // Accessing attributes via JavaScript
-  const input = document.querySelector('input[required]');
-  
-  // getAttribute/setAttribute (works with attributes)
-  console.log(input.getAttribute('required'));  // "" (empty string)
-  console.log(input.hasAttribute('required'));  // true
-  input.removeAttribute('required');
-  input.setAttribute('required', '');  // Set back
-  
-  // Property access (works with DOM properties)
-  console.log(input.required);  // true (boolean)
-  input.required = false;  // Remove via property
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  props: ['id', 'name', 'type', 'value', 'disabled', 'placeholder', 'alt', 'class', 'onInput', 'onClick', 'checked'],
+  methods: {
+    getImageClass() { return `${this.class}`; },
+  },
+});
 </script>
 ```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/atoms/Input/Input.component.js
+// Lit makes the attribute-vs-property distinction explicit:
+//   foo=${...}       sets an attribute (everything stringifies)
+//   .foo=${...}      sets a JS property (preserves type, required for
+//                     value/checked because they diverge from attributes
+//                     once the user types)
+//   ?foo=${...}      sets a boolean attribute
+//   @foo=${...}      attaches an event listener
+import { html } from "lit";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+import style from './Input.style';
+import emit from "../../../utils/events/emit";
+
+export default function Input(props) {
+  useComputedStyles(this, [style]);
+  let id = props.id;
+  if (!id) id = Math.random();
+  return html`
+    <label htmlFor=${id} class="sr-only">
+      ${props.name || "Some Label"}
+    </label>
+    <input
+      type=${props.type}
+      .value=${props.value}
+      .checked=${props.checked}
+      id=${props.id}
+      name=${props.name}
+      placeholder=${props.placeholder}
+      @change=${(e) => emit(this, "onChange", e)}
+      @input=${(e) => emit(this, "onInput", e)}
+    />
+  `;
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+Three things the tabs make obvious:
+
+- **Property-vs-attribute is real and matters most for `value` / `checked` / `disabled`.** All four templates make sure those go on as *properties*, not attributes — otherwise the input won't track user input correctly. React handles it implicitly, Angular's `[value]` is property binding, Vue's `:value` defers to its known cases, Lit asks you to be explicit with the `.` prefix.
+- **Boolean attributes diverge from boolean properties.** `<input disabled>` (attribute present = true) vs `el.disabled = true` (property). Setting `disabled="false"` as an attribute is the classic footgun — the attribute is present, so the input is disabled regardless of value.
+- **Event handlers are sometimes attributes, often properties, never inline.** Inline `onclick="..."` was deprecated long ago. Each framework wires events through its native channel (synthetic event for React, `(event)` binding for Angular, `@event` for Vue, `@event=${}` for Lit) — but they all resolve to `addEventListener` under the hood.
 
 ### Practical Example: Data Attributes and Custom Metadata
 

@@ -27,111 +27,198 @@ From a practical perspective, molecules reduce code duplication and enforce desi
 
 ## Code Examples
 
-### Basic Example: Search Bar Molecule
+### Basic Example: AddTodoForm molecule across frameworks
 
-A fundamental molecule combining input and button atoms:
+Each `chota-*` template ships a real `AddTodoForm` molecule that composes an `Input` atom and a `Button` atom into a single "add or update a task" pattern. Same contract — props for `buttonInfo`, `placeholder`, `isLoading`, `todoValue`; callbacks `onTodoAdd` / `onTodoUpdate` — four different native languages.
 
+{::nomarkdown}<div class="code-tabs">{:/}
+
+React
 ```jsx
-// SearchBar.js - Basic molecule
+// templates/chota-react-redux/src/ui/molecules/AddTodoForm/AddTodoForm.component.jsx
+import React, { useEffect, useState } from "react";
+import Input from "../../atoms/Input/Input.component";
+import Button from "../../atoms/Button/Button.component";
 
-import React from 'react';
-import Input from './atoms/Input';
-import Button from './atoms/Button';
-import Icon from './atoms/Icon';
-import './SearchBar.css';
-
-/**
- * SearchBar Molecule
- * Combines Input and Button atoms into a search interface
- */
-const SearchBar = ({ 
-  value, 
-  onChange, 
-  onSearch, 
-  placeholder = 'Search...',
-  disabled = false
+const AddTodoForm = ({
+  buttonInfo = { label: 'Add', variant: 'primary' },
+  placeholder, isLoading, onTodoAdd, onTodoUpdate, todoValue,
 }) => {
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && onSearch) {
-      onSearch(value);
-    }
-  };
+  const [inputValue, setInputValue] = useState(todoValue || '');
+  const { label, variant } = buttonInfo;
+
+  const handleChange = (e) => setInputValue(e.target.value);
+  useEffect(() => setInputValue(todoValue), [todoValue]);
 
   return (
-    <div className="search-bar">
-      <Icon name="search" className="search-bar__icon" />
-      <Input
-        type="text"
-        value={value}
-        onChange={onChange}
-        onKeyPress={handleKeyPress}
-        placeholder={placeholder}
-        disabled={disabled}
-        className="search-bar__input"
-      />
-      <Button
-        label="Search"
-        onClick={() => onSearch(value)}
-        disabled={disabled || !value}
-        variant="primary"
-        size="small"
-      />
+    <div>
+      <form role="form" onSubmit={(e) => {
+        e.preventDefault();
+        if (!inputValue.trim()) return;
+        todoValue ? onTodoUpdate(inputValue) : onTodoAdd(inputValue);
+        setInputValue('');
+      }}>
+        <div className="grouped">
+          <Input className="" value={inputValue} disabled={isLoading}
+                 placeholder={placeholder} onChange={handleChange} />
+          <Button className={`button ${variant}`} isLoading={isLoading} type="submit">
+            {label}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
-
-export default SearchBar;
+export default AddTodoForm;
 ```
 
-```css
-/* SearchBar.css */
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
-}
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/molecules/AddTodoForm/AddTodoForm.component.ts
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import InputComponent from '../../atoms/Input/Input.component';
+import ButtonComponent from '../../atoms/Button/Button.component';
 
-.search-bar__icon {
-  color: #666;
-}
+@Component({
+  selector: 'app-add-todo-form',
+  standalone: true,
+  imports: [InputComponent, ButtonComponent],
+  templateUrl: './AddTodoForm.component.html',
+  styleUrls: ['./AddTodoForm.style.css'],
+})
+export default class AddTodoFormComponent implements OnChanges {
+  @Input() buttonInfo = { variant: 'primary', label: 'Add' };
+  @Input() placeholder = 'Add your task';
+  @Input() isLoading = false;
+  @Input() todoValue = '';
 
-.search-bar__input {
-  flex: 1;
-  border: none;
-}
+  @Output() onTodoAdd = new EventEmitter<string>();
+  @Output() onTodoUpdate = new EventEmitter<string>();
 
-.search-bar__input:focus {
-  outline: none;
+  inputValue = '';
+  get buttonClasses() { return `button ${this.buttonInfo.variant}`; }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['todoValue']) this.inputValue = changes['todoValue'].currentValue || '';
+  }
+  onSubmit(e: Event) {
+    e.preventDefault();
+    const trimmed = this.inputValue.trim();
+    if (!trimmed) return;
+    if (this.todoValue) this.onTodoUpdate.emit(trimmed);
+    else this.onTodoAdd.emit(trimmed);
+  }
 }
 ```
 
-Usage:
+```html
+<!-- AddTodoForm.component.html -->
+<form (submit)="onSubmit($event)" class="add-todo-form">
+  <div class="grouped">
+    <app-input [value]="inputValue" [disabled]="isLoading"
+               [placeholder]="placeholder" (onChange)="handleChange($event)"></app-input>
+    <app-button [classes]="buttonClasses" [isLoading]="isLoading" type="submit">
+      {{ buttonInfo.label }}
+    </app-button>
+  </div>
+</form>
+```
 
-```jsx
-import React, { useState } from 'react';
-import SearchBar from './molecules/SearchBar';
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/molecules/AddTodoForm/AddTodoForm.component.vue -->
+<template>
+  <div>
+    <form @submit="onSubmit">
+      <div class="grouped">
+        <Input :value="inputValue" :disabled="isLoading"
+               :placeholder="placeholder" @onInput="handleChange" />
+        <Button :class="getButtonClass()" :isLoading="isLoading" type="submit">
+          {{ label }}
+        </Button>
+      </div>
+    </form>
+  </div>
+</template>
 
-const App = () => {
-  const [query, setQuery] = useState('');
+<script>
+import { defineComponent } from 'vue'
+import Input from '../../atoms/Input/Input.component.vue';
+import Button from '../../atoms/Button/Button.component.vue';
 
-  const handleSearch = (searchTerm) => {
-    console.log('Searching for:', searchTerm);
-    // Perform search logic
+export default defineComponent({
+  components: { Input, Button },
+  props: ['buttonInfo', 'placeholder', 'isLoading', 'onTodoAdd', 'onTodoUpdate', 'todoValue'],
+  data() {
+    return { label: 'Add', variant: 'primary', inputValue: '' };
+  },
+  watch: {
+    todoValue() { this.inputValue = this.todoValue; },
+    buttonInfo() {
+      this.label = this.buttonInfo.label;
+      this.variant = this.buttonInfo.variant;
+    }
+  },
+  methods: {
+    getButtonClass() { return `button ${this.variant}`; },
+    onSubmit(e) {
+      e.preventDefault();
+      if (!this.inputValue.trim()) return;
+      if (this.todoValue) this.$emit('onTodoUpdate', this.inputValue);
+      else this.$emit('onTodoAdd', this.inputValue);
+      this.inputValue = '';
+    },
+    handleChange(e) { this.inputValue = e.target.value; },
+  },
+})
+</script>
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/molecules/AddTodoForm/AddTodoForm.component.js
+import { html, useEffect, useState } from "haunted";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+import style from './AddTodoForm.style';
+import "../../atoms/Input/app-input";
+import "../../atoms/Button/app-button";
+import emit from "../../../utils/events/emit";
+
+function AddTodoForm({ buttonInfo, placeholder, isLoading, todoValue }) {
+  useComputedStyles(this, [style]);
+  const [inputValue, setInputValue] = useState(todoValue || '');
+  const { label, variant } = buttonInfo;
+
+  const handleChange = (e) => setInputValue(e.target.value);
+  useEffect(() => setInputValue(todoValue), [todoValue]);
+
+  const handleFormSubmit = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!inputValue.trim()) return;
+    if (todoValue) emit(this, 'onTodoUpdate', inputValue);
+    else emit(this, 'onTodoAdd', inputValue);
+    setInputValue('');
   };
 
-  return (
-    <SearchBar 
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      onSearch={handleSearch}
-    />
-  );
-};
+  return html`
+    <div>
+      <form @submit=${handleFormSubmit}>
+        <div class="grouped">
+          <app-input .value=${inputValue} .disabled=${isLoading}
+                     .placeholder=${placeholder} @onInput=${handleChange}></app-input>
+          <app-button .classes=${`button ${variant}`} .isLoading=${isLoading} type="submit">
+            ${label}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  `;
+}
 ```
+
+{::nomarkdown}</div>{:/}
+
+Notice how the *composition* is identical — two atom children inside a `.grouped` wrapper with a submit handler — while the idiomatic surroundings change (`ngOnChanges` vs `watch` vs `useEffect`, `@Output` vs `$emit` vs `emit`, etc.). That is the whole point of organising UI at the molecule level: the shape is portable; the syntax is not.
 
 ### Practical Example: Form Field Molecule with Validation
 

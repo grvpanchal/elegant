@@ -55,40 +55,132 @@ Middleware is particularly useful for handling various aspects of state manageme
 
 ## Code Examples
 
-### Basic Example: Simple Logger Middleware
+### Basic Example: Async orchestration across libraries
 
+The clearest place to see middleware in action is async work — fetch data, dispatch *Success* / *Error* outcomes. Each `chota-*` template solves the same "create a todo on the server, then update the store" problem with its native middleware story. RTK ships built-in middleware (immutable check, serializable check, thunks) via `configureStore` so you rarely write custom middleware in plain RTK; saga / NgRx Effects / Pinia operations do the heavy lifting in their respective templates.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+Redux Saga
 ```javascript
-// loggerMiddleware.js - Basic middleware structure
-const loggerMiddleware = (store) => (next) => (action) => {
-  console.group(action.type);
-  console.log('Dispatching:', action);
-  console.log('Previous State:', store.getState());
-  
-  const result = next(action);  // Pass to next middleware or reducer
-  
-  console.log('Next State:', store.getState());
-  console.groupEnd();
-  
-  return result;  // Return result for dispatch() caller
-};
+// templates/chota-react-saga/src/state/todo/todo.operations.js
+// Sagas are the middleware: takeLatest / call / put orchestrate the side
+// effect. Failure dispatches the *_ERROR action; the reducer reacts.
+import { put, takeLatest, call } from "redux-saga/effects";
+import { CREATE_TODO } from "./todo.type";
+import { createTodoError, createTodoSuccess } from "./todo.actions";
+import fetchApi from "../../utils/api";
 
-// Apply middleware to store
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers';
+export function addTodoApi(payload) {
+  return fetchApi("/todos", { method: "POST", body: payload });
+}
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(loggerMiddleware)
-);
+export function* addTodos(action) {
+  try {
+    const payload = { ...action.payload, id: window.crypto.randomUUID() };
+    yield call(addTodoApi, payload);
+    yield put(createTodoSuccess(payload));
+  } catch (error) {
+    yield put(createTodoError(error.toString()));
+  }
+}
 
-// Usage
-store.dispatch({ type: 'todos/add', payload: 'Buy milk' });
-// Console output:
-// todos/add
-//   Dispatching: { type: 'todos/add', payload: 'Buy milk' }
-//   Previous State: { todos: [] }
-//   Next State: { todos: [{ text: 'Buy milk' }] }
+export function* watchTodos() {
+  yield takeLatest(CREATE_TODO, addTodos);
+  // ...DELETE_TODO, UPDATE_TODO, READ_TODO, TOGGLE_TODO
+}
 ```
+
+NgRx Effects
+```typescript
+// templates/chota-angular-ngrx/src/app/state/todo/todo.effects.ts
+// NgRx Effects are RxJS pipes that listen to action streams and dispatch
+// follow-up actions. createEffect + ofType is the saga-equivalent.
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { TodoService } from './todo.service';
+import * as TodoActions from './todo.actions';
+
+@Injectable()
+export class TodoEffects {
+  addTodoRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.addTodoRequest),
+      switchMap(({ text }) =>
+        this.todoService.createTodo(text).pipe(
+          mergeMap((todo) => [
+            TodoActions.createTodo({ id: todo.id, text: todo.text }),
+            TodoActions.addTodoSuccess(),
+          ]),
+          catchError((error) =>
+            of(TodoActions.addTodoFail({
+              error: error.message || 'Failed to add todo',
+            }))
+          )
+        )
+      )
+    )
+  );
+
+  constructor(private actions$: Actions, private todoService: TodoService) {}
+}
+```
+
+Pinia operations
+```javascript
+// templates/chota-vue-pinia/src/state/todo/todo.operations.js
+// Pinia "actions" can be async, so the operation is just an `async function`
+// bound to the store. There's no middleware layer at all — the store method
+// awaits the API and calls request/success/error helpers (which mutate
+// `this`). Same control flow as a saga, expressed as straight async/await.
+import { createTodo, createTodoSuccess, createTodoError } from "./todo.actions";
+import fetchApi from "../../utils/api";
+
+export function addTodoApi(payload) {
+  return fetchApi("/todos", { method: "POST", body: payload });
+}
+
+export async function addTodos(text) {
+  try {
+    createTodo.bind(this)(text);
+    const payload = { text, id: window.crypto.randomUUID() };
+    await addTodoApi(payload);
+    createTodoSuccess.bind(this)(payload);
+  } catch (error) {
+    createTodoError.bind(this)(error.toString());
+  }
+}
+```
+
+Redux Toolkit (built-in middleware)
+```javascript
+// templates/chota-react-rtk/src/state/index.js
+// configureStore wires up immutable-check, serializable-check, and the
+// thunk middleware automatically. You only write custom middleware when
+// you have a cross-cutting concern beyond async — logging, analytics,
+// crash reporting — and pass it via the `middleware` callback.
+import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./rootReducer";
+
+const store = configureStore({
+  reducer: rootReducer,
+  // Defaults already include thunk + checks; extend like:
+  // middleware: (getDefault) => getDefault().concat(myLogger),
+});
+
+export default store;
+```
+
+{::nomarkdown}</div>{:/}
+
+The conceptual job is identical in every tab: intercept an action, run a side effect, dispatch follow-up actions to update the store. The libraries differ in *where* you write that interception:
+
+- **Saga**: a generator function plus a `takeLatest(action, saga)` watcher, run via `sagaMiddleware`.
+- **NgRx Effects**: an injectable class whose properties are RxJS observables, registered via `provideEffects`.
+- **Pinia**: skip the middleware layer entirely — just write an `async` store method. Reactivity propagates the mutations.
+- **RTK**: most apps don't write middleware at all because `configureStore` ships sensible defaults plus thunks; you only reach for custom middleware for genuinely cross-cutting concerns.
 
 ### Practical Example: Async Middleware (Thunk Pattern)
 

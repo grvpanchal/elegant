@@ -88,102 +88,143 @@ By understanding these theming patterns, developers can choose the most suitable
 
 ## Code Examples
 
-### Basic Example: CSS Custom Properties for Theming
+### Basic Example: Theme provider across frameworks
 
-Fundamental theme implementation using CSS variables:
+Every `chota-*` template ships the same `ui/theme.css` (CSS custom properties on `:root` plus a `body.dark` override). What differs is *how each framework reads the active theme out of state and propagates it to children*. Here are the four flavours, all from the templates.
+
+The shared design tokens (same in every template):
 
 ```css
-/* theme.css - Define design tokens */
+/* templates/chota-*/src/ui/theme.css — identical across all templates */
 :root {
-  /* Color tokens */
-  --color-primary: #3b82f6;
-  --color-secondary: #8b5cf6;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
-  --color-warning: #f59e0b;
-  
-  /* Neutral colors */
-  --color-bg: #ffffff;
-  --color-surface: #f3f4f6;
-  --color-text: #111827;
-  --color-text-muted: #6b7280;
-  
-  /* Spacing scale */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  
-  /* Typography */
-  --font-sans: system-ui, -apple-system, sans-serif;
-  --font-mono: 'Monaco', 'Courier New', monospace;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  
-  /* Border radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 1rem;
+  --bg-color: #ffffff;
+  --bg-secondary-color: #f3f3f6;
+  --color-primary: #3b48a6;
+  --color-darkGrey: #3f4144;
+  --color-error: #d43939;
+  --font-color: #333333;
+  /* ...etc */
 }
 
-/* Dark theme override */
-[data-theme="dark"] {
-  --color-bg: #111827;
-  --color-surface: #1f2937;
-  --color-text: #f9fafb;
-  --color-text-muted: #9ca3af;
+body.dark {
+  --bg-color: #000;
+  --bg-secondary-color: #131316;
+  --font-color: #f5f5f5;
 }
 ```
 
-Using theme tokens in components:
+Each template then provides a thin "theme context" so atoms can react to a theme change without each subscribing to the store directly:
 
-```css
-/* button.css */
-.btn {
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s;
-}
+{::nomarkdown}<div class="code-tabs">{:/}
 
-.btn--primary {
-  background: var(--color-primary);
-  color: white;
-}
+React
+```jsx
+// templates/chota-react-redux/src/utils/providers/AtomicProvider.jsx
+// React Context wraps the children and pulls `theme` out of the Redux
+// store via useSelector. Atoms call useAtomicContext() to read it.
+import React, { createContext, useContext } from "react";
+import { useSelector } from "react-redux";
 
-.btn--secondary {
-  background: var(--color-secondary);
-  color: white;
-}
+const atomicContext = createContext(null);
 
-.card {
-  background: var(--color-surface);
-  color: var(--color-text);
-  padding: var(--space-lg);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
+const AtomicProvider = ({ children, components, modules }) => {
+  const theme = useSelector((state) => state.config.theme);
+  return (
+    <atomicContext.Provider value={{ components, modules, children, theme }}>
+      {children}
+    </atomicContext.Provider>
+  );
+};
+
+export const useAtomicContext = () => {
+  const ctx = useContext(atomicContext);
+  return ctx || { theme: '', components: {}, modules: {} };
+};
+
+export default AtomicProvider;
 ```
 
-```html
-<body data-theme="light">
-  <button class="btn btn--primary">Primary Button</button>
-  <div class="card">
-    <h3>Card Title</h3>
-    <p>Content uses theme colors</p>
-  </div>
-</body>
+Angular
+```ts
+// templates/chota-angular-ngrx/src/app/utils/providers/AtomicService.ts
+// Angular wraps the same idea in an Injectable service. Components inject
+// it and subscribe to theme$ via the async pipe in templates.
+import { Injectable, Optional } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { AppState } from '../../state/index';
+import { getTheme } from '../../state/config/config.selectors';
+
+@Injectable({ providedIn: 'root' })
+export class AtomicService {
+  theme$: Observable<string>;
+
+  constructor(@Optional() private store: Store<AppState>) {
+    this.theme$ = this.store ? this.store.select(getTheme) : of('light');
+  }
+}
+
+// Component usage:
+// constructor(public atomic: AtomicService) {}
+// <body [class.dark]="(atomic.theme$ | async) === 'dark'">
 ```
+
+Vue
+```ts
+// templates/chota-vue-pinia/src/main.ts
+// Vue exposes the theme as a global property on the app via
+// app.config.globalProperties, backed by a reactive object.
+// Components read it via this.$theme (Options API) or inject().
+import { createApp, reactive } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
+import './ui/theme.css'
+
+const themeState = reactive({ theme: '' })
+
+const app = createApp(App)
+
+Object.defineProperty(app.config.globalProperties, '$theme', {
+  get() { return themeState.theme },
+  set(value: string) { themeState.theme = value },
+})
+
+app.use(createPinia()).mount('#app')
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/utils/theme/hooks/useComputedStyles.js
+// The WC template adopts theme tokens via Constructable Stylesheets:
+// each component calls useComputedStyles(this, [style]) which adopts
+// the shared sheet onto its shadow root (or document) so :root tokens
+// resolve correctly inside encapsulated components.
+import { useConstructableStylesheets } from "./useConstructableStylesheets";
+
+export default function useComputedStyles(scope, styles, isGlobalAdoptedStyleSheetEnabled = true) {
+  useConstructableStylesheets(scope, styles, isGlobalAdoptedStyleSheetEnabled);
+}
+
+// In every WC atom:
+// import style from './Button.style';
+// import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+//
+// export default function Button(props) {
+//   useComputedStyles(this, [style]);
+//   // ...
+// }
+```
+
+{::nomarkdown}</div>{:/}
+
+The CSS tokens are intentionally framework-agnostic — all four templates share the exact same `theme.css` because that's the whole point of CSS custom properties. The differences are purely about *how the active theme name reaches the components*:
+
+- **React** — Context backed by a Redux selector, read via a hook.
+- **Angular** — Injectable service backed by an NgRx selector, read via the async pipe.
+- **Vue** — global property on the app instance, backed by a Pinia/reactive store, read via `this.$theme`.
+- **Web Components** — no provider at all for the theme value (which lives on `body`); instead a hook adopts shared stylesheets so tokens work inside shadow DOM.
+
+Switch the framework, the contract on the *DOM* (a class on `<body>` plus `:root` custom properties) stays the same.
 
 ### Practical Example: Dark Mode Toggle with JavaScript
 

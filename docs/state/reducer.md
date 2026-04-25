@@ -29,50 +29,161 @@ Key characteristics of reducers:
 
 ## Code Examples
 
-### Basic Example: Simple Counter Reducer
+### Basic Example: Todo reducer across state libraries
 
+The same "todo slice" implemented four different ways, pulled from the actual templates. Notice that Classic Redux and Redux Saga use the same switch/case reducer (Saga adds request/success/error branches); RTK compresses the same effect into `createSlice` with Immer-backed mutating-looking code; NgRx uses `createReducer(on(...))`. Pinia doesn't have a reducer at all — its "actions" mutate the store state directly — so it isn't listed here.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+Classic Redux
 ```javascript
-// counterReducer.js - Basic pure function reducer
-const initialState = {
-  count: 0,
-  history: []
-};
+// templates/chota-react-redux/src/state/todo/todo.reducer.js
+import intialTodoState from "./todo.initial";
+import { CREATE_TODO, DELETE_TODO, EDIT_TODO, TOGGLE_TODO, UPDATE_TODO } from "./todo.type";
 
-function counterReducer(state = initialState, action) {
+const todo = (state = intialTodoState, action) => {
+  let todoItems = [];
   switch (action.type) {
-    case 'INCREMENT':
+    case CREATE_TODO:
       return {
         ...state,
-        count: state.count + 1,
-        history: [...state.history, 'increment']
+        todoItems: [
+          ...state.todoItems,
+          { id: action.payload.id, text: action.payload.text, completed: false },
+        ],
       };
-    
-    case 'DECREMENT':
-      return {
-        ...state,
-        count: state.count - 1,
-        history: [...state.history, 'decrement']
-      };
-    
-    case 'RESET':
-      return initialState;  // Return fresh initial state
-    
+    case EDIT_TODO:
+      return { ...state, currentTodoItem: action.payload };
+    case UPDATE_TODO:
+      todoItems = state.todoItems.map((t) =>
+        t.id === action.payload.id ? { ...t, text: action.payload.text } : t);
+      return { ...state, todoItems, currentTodoItem: intialTodoState.currentTodoItem };
+    case TOGGLE_TODO:
+      todoItems = state.todoItems.map((t) =>
+        t.id === action.payload.id ? { ...t, completed: !t.completed } : t);
+      return { ...state, todoItems };
+    case DELETE_TODO:
+      todoItems = state.todoItems.filter((t) => t.id !== action.payload.id);
+      return { ...state, todoItems };
     default:
-      return state;  // CRITICAL: always return state for unknown actions
+      return state;
   }
-}
-
-// Usage with Redux
-import { createStore } from 'redux';
-const store = createStore(counterReducer);
-
-store.dispatch({ type: 'INCREMENT' });
-console.log(store.getState());  // { count: 1, history: ['increment'] }
-
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'DECREMENT' });
-console.log(store.getState());  // { count: 1, history: ['increment', 'increment', 'decrement'] }
+};
+export default todo;
 ```
+
+Redux Toolkit
+```javascript
+// templates/chota-react-rtk/src/state/todo/todo.reducer.js
+// createSlice + Immer lets you write mutating-looking code that still
+// produces an immutable update under the hood. The slice also auto-emits
+// action creators and types.
+import { createSlice } from "@reduxjs/toolkit";
+import intialTodoState from "./todo.initial";
+
+let nextTodoId = 0;
+export const todoSlice = createSlice({
+  name: "todo",
+  initialState: intialTodoState,
+  reducers: {
+    createTodo: (state, action) => {
+      state.todoItems.push({ text: action.payload, completed: false, id: nextTodoId++ });
+    },
+    editTodo: (state, action) => { state.currentTodoItem = action.payload; },
+    updateTodo: (state, action) => {
+      state.todoItems = state.todoItems.map((t) =>
+        t.id === action.payload.id ? { ...t, text: action.payload.text } : t);
+      state.currentTodoItem = intialTodoState.currentTodoItem;
+    },
+    toggleTodo: (state, action) => {
+      state.todoItems = state.todoItems.map((t) =>
+        t.id === action.payload.id ? { ...t, completed: !t.completed } : t);
+    },
+  },
+});
+export const { createTodo, editTodo, updateTodo, toggleTodo } = todoSlice.actions;
+export default todoSlice.reducer;
+```
+
+Redux Saga
+```javascript
+// templates/chota-react-saga/src/state/todo/todo.reducer.js
+// Same switch/case shape as Classic Redux, plus *_SUCCESS / *_ERROR branches
+// because sagas dispatch those after completing async work. The React-Saga
+// and WC-Saga templates share this exact reducer — the saga pattern is
+// framework-agnostic.
+import intialTodoState from "./todo.initial";
+import {
+  CREATE_TODO, CREATE_TODO_SUCCESS, CREATE_TODO_ERROR,
+  READ_TODO, READ_TODO_SUCCESS, READ_TODO_ERROR,
+  TOGGLE_TODO, TOGGLE_TODO_SUCCESS, TOGGLE_TODO_ERROR,
+  /* ...DELETE_*, UPDATE_*, EDIT_TODO... */
+} from "./todo.type";
+
+const todo = (state = intialTodoState, action) => {
+  switch (action.type) {
+    case READ_TODO:
+      return { ...state, isLoading: true, isContentLoading: true };
+    case READ_TODO_SUCCESS:
+      return { ...state, isLoading: false, isContentLoading: false, todoItems: action.payload };
+    case READ_TODO_ERROR:
+      return { ...state, isLoading: false, isContentLoading: false, error: action.error };
+    case CREATE_TODO:
+      return { ...state, isLoading: true, isActionLoading: true };
+    case CREATE_TODO_SUCCESS:
+      return {
+        ...state, isLoading: false, isActionLoading: false,
+        todoItems: [...state.todoItems, action.payload],
+      };
+    // ...same pattern for TOGGLE_/UPDATE_/DELETE_ triples
+    default:
+      return state;
+  }
+};
+export default todo;
+```
+
+NgRx
+```typescript
+// templates/chota-angular-ngrx/src/app/state/todo/todo.reducer.ts
+import { createReducer, on } from '@ngrx/store';
+import initialTodoState from './todo.initial';
+import {
+  createTodo, editTodo, updateTodo, toggleTodo, deleteTodo, loadTodos,
+  loadTodosRequest, loadTodosSuccess, loadTodosFail,
+  addTodoRequest, addTodoSuccess, addTodoFail,
+} from './todo.actions';
+
+export const todoReducer = createReducer(
+  initialTodoState,
+
+  on(loadTodosRequest, (state) => ({ ...state, isContentLoading: true, error: '' })),
+  on(loadTodosSuccess, (state) => ({ ...state, isContentLoading: false })),
+  on(loadTodosFail, (state, { error }) => ({ ...state, isContentLoading: false, error })),
+  on(loadTodos, (state, { todos }) => ({ ...state, todoItems: todos })),
+
+  on(addTodoRequest, (state) => ({ ...state, isActionLoading: true, error: '' })),
+  on(addTodoSuccess, (state) => ({ ...state, isActionLoading: false })),
+  on(addTodoFail, (state, { error }) => ({ ...state, isActionLoading: false, error })),
+
+  on(createTodo, (state, { id, text }) => ({
+    ...state,
+    todoItems: [...state.todoItems, { id, text, completed: false }],
+  })),
+
+  on(editTodo, (state, payload) => ({ ...state, currentTodoItem: payload })),
+
+  on(toggleTodo, (state, { id }) => ({
+    ...state,
+    todoItems: state.todoItems.map((t) =>
+      t.id === id ? { ...t, completed: !t.completed } : t),
+  })),
+);
+```
+
+{::nomarkdown}</div>{:/}
+
+Across all four tabs the *contract* is the same: given the previous state and an action, return a new state. The surface differs in whether you write the switch yourself (Classic Redux / Saga), let a library auto-generate the switch from handlers (NgRx, RTK), or dispense with the whole pattern in favour of store-method mutations (Pinia — see the `Store` docs).
 
 ### Practical Example: CRUD Operations Reducer
 

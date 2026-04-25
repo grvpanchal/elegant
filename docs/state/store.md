@@ -45,80 +45,115 @@ By using a store, developers can more easily manage complex application states, 
 
 ## Code Examples
 
-### Basic Example: Simple Redux Store
+### Basic Example: Store bootstrap across state libraries
 
-A fundamental store implementation demonstrating core concepts:
+Each `chota-*` template configures its store in the smallest possible way. The React-Saga and WC-Saga templates share the same saga-backed setup because the saga pattern is framework-agnostic, so only one is shown.
 
+{::nomarkdown}<div class="code-tabs">{:/}
+
+Classic Redux
 ```javascript
-// store.js - Basic Redux store
+// templates/chota-react-redux/src/state/index.js
+import { createStore } from "redux";
+import reducer from "./rootReducer";
 
-import { createStore } from 'redux';
-
-// Initial state shape
-const initialState = {
-  user: null,
-  theme: 'light',
-  notifications: []
-};
-
-// Reducer - Pure function that updates state
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'SET_USER':
-      return { ...state, user: action.payload };
-    
-    case 'TOGGLE_THEME':
-      return { 
-        ...state, 
-        theme: state.theme === 'light' ? 'dark' : 'light' 
-      };
-    
-    case 'ADD_NOTIFICATION':
-      return {
-        ...state,
-        notifications: [...state.notifications, action.payload]
-      };
-    
-    case 'CLEAR_NOTIFICATIONS':
-      return { ...state, notifications: [] };
-    
-    default:
-      return state;
-  }
-};
-
-// Create store
-const store = createStore(rootReducer);
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 export default store;
 ```
 
-Usage in components:
+Redux Toolkit
+```javascript
+// templates/chota-react-rtk/src/state/index.js
+import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./rootReducer";
 
-```jsx
-// App.js - Connect components to store
+const store = configureStore({
+  reducer: rootReducer,
+  // DevTools and thunk middleware are wired automatically by configureStore.
+});
 
-import React from 'react';
-import { Provider, useSelector, useDispatch } from 'react-redux';
-import store from './store';
-
-const ThemeToggle = () => {
-  const theme = useSelector(state => state.theme);
-  const dispatch = useDispatch();
-
-  return (
-    <button onClick={() => dispatch({ type: 'TOGGLE_THEME' })}>
-      Current: {theme}
-    </button>
-  );
-};
-
-const App = () => (
-  <Provider store={store}>
-    <ThemeToggle />
-  </Provider>
-);
+export default store;
 ```
+
+Redux Saga
+```javascript
+// templates/chota-react-saga/src/state/index.js
+// (Identical setup in templates/chota-wc-saga/src/state/index.js —
+// sagas don't care whether the UI is React or Web Components.)
+import { composeWithDevTools } from "@redux-devtools/extension";
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
+import reducer from "./rootReducer";
+import sagas from "./rootSagas";
+
+const sagaMiddleware = createSagaMiddleware();
+const enhancer = applyMiddleware(sagaMiddleware);
+const composedEnhancers = composeWithDevTools(enhancer);
+
+const store = createStore(reducer, composedEnhancers);
+sagaMiddleware.run(sagas);
+
+export default store;
+```
+
+NgRx
+```typescript
+// templates/chota-angular-ngrx/src/app/app.config.ts
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { reducers } from './state';
+import { TodoEffects } from './state/todo/todo.effects';
+import { environment } from '../environments/environment';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideStore(reducers),
+    provideEffects([TodoEffects]),
+    provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
+  ],
+};
+```
+
+Pinia
+```javascript
+// templates/chota-vue-pinia/src/state/todo/index.js
+// Pinia has no single root "store" — each defineStore() is its own
+// self-contained store with state / getters / actions, wired on the app
+// via app.use(createPinia()) in main.ts.
+import { defineStore, acceptHMRUpdate } from 'pinia';
+import { addTodos, deleteTodos, getTodos, updateTodos, updateToggleTodos } from './todo.operations';
+import intialTodoState from './todo.initial';
+import { getVisibleTodos } from './todo.selectors';
+import { editTodo } from './todo.actions';
+import { useFiltersStore } from '../filters';
+import { getSelectedFilter } from '../filters/filters.selectors';
+
+export const useTodoStore = defineStore('todo', {
+  state: () => ({ ...intialTodoState }),
+  getters: {
+    visibleTodos: (state) => {
+      const filtersData = useFiltersStore();
+      return getVisibleTodos(state, getSelectedFilter(filtersData).id);
+    },
+  },
+  actions: { getTodos, addTodos, editTodo, updateTodos, updateToggleTodos, deleteTodos },
+});
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTodoStore, import.meta.hot));
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+Each tab is the full store bootstrap straight from the corresponding template — real imports, real enhancers, real devtools wiring. The Redux family shares the `createStore` primitive (or `configureStore` as its opinionated wrapper). NgRx provides the same store via Angular DI. Pinia throws out the notion of one central store entirely: every `defineStore` call is a store in its own right, and the store tree emerges from which stores a component happens to use.
 
 ### Practical Example: Store with Middleware and DevTools
 

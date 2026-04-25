@@ -99,8 +99,7 @@ tabsNodes = document.querySelectorAll(".code-tabs");
 loop(tabsNodes, (tabsNode) => {
   nodes = tabsNode.querySelectorAll("p");
   if (nodes.length) {
-    nodes[0].classList.add("hide");
-    nodes[1].classList.add("selected");
+    nodes[0].classList.add("selected");
   }
   loop(nodes, (node, i) => onTabSelect(nodes, node, i));
 });

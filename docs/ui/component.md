@@ -27,59 +27,169 @@ In the context of the [Atomic Design](atomic-design.html) system, components exi
 
 ## Code Examples
 
-### Basic Example: Native Web Component
+### Basic Example: Alert component across frameworks
 
-A fundamental custom element demonstrating core component principles:
+A component is anything that combines markup, styling, and behaviour behind a single name. Here's the same `Alert` atom — props for `variant`, `show`, `message`, an internal boolean, a `useEffect`-style sync with the `show` prop, and a close handler that emits upward — implemented once in each of the `chota-*` templates.
 
-Web Components consist of three main technologies: Custom Elements, Shadow DOM, and HTML Templates.
+{::nomarkdown}<div class="code-tabs">{:/}
 
-Here's a simple example of a Web Component using Custom Elements:
+React
+```jsx
+// templates/chota-react-redux/src/ui/atoms/Alert/Alert.component.jsx
+import React, { useEffect, useState } from "react";
+import "./Alert.style.css";
+import IconButton from "../IconButton/IconButton.component";
+import Image from "../Image/Image.component";
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custom Button Component</title>
-  </head>
-  <body>
-    <!-- Define the custom button component -->
-    <script>
-      class CustomButton extends HTMLElement {
-        constructor() {
-          super();
+export default function Alert({ variant, show, message, onCloseClick }) {
+  const [showAlert, setShowAlert] = useState(show);
 
-          // Create a shadow root
-          this.attachShadow({ mode: "open" });
+  const handleClose = (e) => {
+    setShowAlert(false);
+    if (onCloseClick) onCloseClick(e);
+  };
 
-          // Define the button element
-          const button = document.createElement("button");
-          button.textContent = "Click me!";
-          button.addEventListener("click", () => alert("Button clicked!"));
+  useEffect(() => { setShowAlert(show); }, [show]);
 
-          // Append the button to the shadow DOM
-          this.shadowRoot.appendChild(button);
-        }
-      }
-
-      // Register the custom element
-      customElements.define("custom-button", CustomButton);
-    </script>
-
-    <!-- Use the custom button component -->
-    <custom-button></custom-button>
-  </body>
-</html>
+  return showAlert ? (
+    <div className={`bg-${variant === "error" ? "error" : "primary"} text-white alert`}>
+      <div className="message">
+        <Image src={`https://icongr.am/feather/${
+          variant === "error" ? "alert-triangle" : "info"
+        }.svg?size=24&color=ffffff`} alt={variant} />
+        <span>{message}</span>
+      </div>
+      <IconButton variant="clear" alt="close" color="ffffff" iconName="x" size="16" onClick={handleClose} />
+    </div>
+  ) : null;
+}
 ```
 
-- The `CustomButton` class extends `HTMLElement` to create a custom element.
-- The `constructor` method is used to define the behavior of the custom element.
-- `this.attachShadow({ mode: 'open' })` creates a shadow DOM for encapsulating the component's styles and functionality.
-- A button element is created and added to the shadow DOM.
-- The custom element is registered using `customElements.define('custom-button', CustomButton)`.
+Angular
+```ts
+// templates/chota-angular-ngrx/src/ui/atoms/Alert/Alert.component.ts
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import ImageComponent from '../Image/Image.component';
+import IconButtonComponent from '../IconButton/IconButton.component';
 
-In the HTML body, `<custom-button></custom-button>` is used to insert an instance of the custom button component.
+@Component({
+  selector: 'app-alert',
+  standalone: true,
+  imports: [ImageComponent, IconButtonComponent],
+  templateUrl: './Alert.component.html',
+  styleUrls: ['./Alert.style.css'],
+})
+export default class AlertComponent implements OnChanges {
+  @Input() show = false;
+  @Input() variant?: string;
+  @Input() message = '';
+  @Output() onCloseClick = new EventEmitter<Event>();
+
+  showAlert = false;
+
+  get classes() {
+    return `bg-${this.variant === 'error' ? 'error' : 'primary'} text-white alert`;
+  }
+  get src() {
+    return `https://icongr.am/feather/${
+      this.variant === 'error' ? 'alert-triangle' : 'info'
+    }.svg?size=24&color=ffffff`;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['show']) this.showAlert = changes['show'].currentValue;
+  }
+
+  handleClose(e: Event) {
+    this.showAlert = false;
+    this.onCloseClick.emit(e);
+  }
+}
+```
+
+Vue
+```vue
+<!-- templates/chota-vue-pinia/src/ui/atoms/Alert/Alert.component.vue -->
+<template>
+  <div v-if="showAlert" :class="getVariantClass()">
+    <div class="message">
+      <Image :src="getImageSrc()" alt="variant" />
+      <span>{{ message }}</span>
+    </div>
+    <IconButton variant="clear" alt="close" color="ffffff"
+                iconName="x" size="16" @onClick="handleClose" />
+  </div>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+import Image from "../Image/Image.component.vue";
+import IconButton from "../IconButton/IconButton.component.vue";
+
+export default defineComponent({
+  components: { Image, IconButton },
+  props: ['show', 'message', 'variant', 'onCloseClick'],
+  data() { return { showAlert: this.show }; },
+  watch: { show(v) { this.showAlert = v; } },
+  methods: {
+    getVariantClass() {
+      return `bg-${this.variant === 'error' ? 'error' : 'primary'} text-white alert`;
+    },
+    getImageSrc() {
+      return `https://icongr.am/feather/${
+        this.variant === 'error' ? 'alert-triangle' : 'info'
+      }.svg?size=24&color=ffffff`;
+    },
+    handleClose(e) {
+      this.showAlert = false;
+      this.$emit('onCloseClick', e);
+    },
+  },
+});
+</script>
+```
+
+Web Components
+```js
+// templates/chota-wc-saga/src/ui/atoms/Alert/Alert.component.js
+import { html, useEffect, useState } from "haunted";
+import style from "./Alert.style";
+import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
+import '../IconButton/app-icon-button';
+import '../Image/app-image';
+import emit from "../../../utils/events/emit";
+
+export default function Alert({ variant, show, message }) {
+  useComputedStyles(this, [style]);
+  const [showAlert, setShowAlert] = useState(show);
+
+  const handleClose = (e) => {
+    setShowAlert(false);
+    emit(this, "onCloseClick", e);
+  };
+
+  useEffect(() => { setShowAlert(show); }, [show]);
+
+  return showAlert ? html`
+    <div class=${`bg-${
+      variant === "error" ? "error" : "primary"
+    } text-white alert`}>
+      <div class="message">
+        <app-image .src=${`https://icongr.am/feather/${
+          variant === "error" ? "alert-triangle" : "info"
+        }.svg?size=24&color=ffffff`} alt=${variant}></app-image>
+        <span>${message}</span>
+      </div>
+      <app-icon-button .variant=${"clear"} .alt=${"close"} .color=${"ffffff"}
+                       .iconName=${"x"} .size=${"16"} @onClick=${handleClose}></app-icon-button>
+    </div>
+  ` : null;
+}
+```
+
+{::nomarkdown}</div>{:/}
+
+A component is the same idea in every flavour — a named unit that owns markup, a tiny bit of local state, a reaction to prop changes, and an event it broadcasts to whatever parent is listening. Each framework's ceremony differs (`useState` / class fields / `data()` + `watch` / haunted's `useState` + `emit` helper) but the *shape* — what goes in, what renders, what goes out — is preserved across all four.
 
 ### Practical Example: React Component with State and Props
 

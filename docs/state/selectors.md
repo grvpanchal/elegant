@@ -29,26 +29,114 @@ Key aspects of selectors:
 
 ## Code Examples
 
-### Basic Example: Simple Selectors
+### Basic Example: getVisibleTodos across state libraries
 
+The same derived selector — give me the filtered set of visible todos — across four state libraries. Classic Redux, Redux Saga, and WC-Saga all use the same plain-function selector (Saga templates share this exact file). Pinia exposes it as a getter on the store. NgRx composes memoized selectors via `createSelector`.
+
+{::nomarkdown}<div class="code-tabs">{:/}
+
+Classic Redux
 ```javascript
-// selectors.js - Basic state extraction
-const selectTodos = (state) => state.todos.items;
-const selectTodosLoading = (state) => state.todos.loading;
-const selectTodosFilter = (state) => state.todos.filter;
+// templates/chota-react-redux/src/state/todo/todo.selectors.js
+// Plain selector function. The React-Saga and WC-Saga templates ship the
+// same file — the selector pattern is independent of the middleware.
+import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from "../filters/filters.type";
 
-// Component usage
-import { useSelector } from 'react-redux';
-
-function TodoList() {
-  const todos = useSelector(selectTodos);
-  const loading = useSelector(selectTodosLoading);
-  
-  if (loading) return <Spinner />;
-  
-  return todos.map(todo => <TodoItem key={todo.id} todo={todo} />);
-}
+export const getVisibleTodos = (todo, filter) => {
+  let visibleTodos = [];
+  switch (filter) {
+    case SHOW_ALL:       visibleTodos = todo.todoItems; break;
+    case SHOW_COMPLETED: visibleTodos = todo.todoItems.filter((t) => t.completed); break;
+    case SHOW_ACTIVE:    visibleTodos = todo.todoItems.filter((t) => !t.completed); break;
+    default:             throw new Error("Unknown filter: " + filter);
+  }
+  return { ...todo, todoItems: visibleTodos };
+};
 ```
+
+Redux Toolkit
+```javascript
+// templates/chota-react-rtk/src/state/todo/todo.selectors.js
+// RTK doesn't add a selector layer of its own for the basic case — you
+// write a plain selector the same way. Reach for `createSelector`
+// (re-exported from RTK) when you need memoization for expensive shapes.
+import { SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED } from "../filters/filters.type";
+
+export const getVisibleTodos = (todo, filter) => {
+  switch (filter) {
+    case SHOW_ALL:       return { ...todo };
+    case SHOW_COMPLETED: return { ...todo, todoItems: todo.todoItems.filter((t) => t.completed) };
+    case SHOW_ACTIVE:    return { ...todo, todoItems: todo.todoItems.filter((t) => !t.completed) };
+    default:             return todo;
+  }
+};
+
+// With memoization:
+// export const getVisibleTodos = createSelector(
+//   [(state) => state.todo, (state) => state.filters],
+//   (todo, filters) => { /* ...same logic... */ }
+// );
+```
+
+NgRx
+```typescript
+// templates/chota-angular-ngrx/src/app/state/todo/todo.selectors.ts
+// createSelector composes input selectors into a memoized output selector.
+// The combiner only re-runs when an input selector returns a new reference.
+import { createSelector } from '@ngrx/store';
+import { AppState } from '../index';
+import { getSelectedFilter } from '../filters/filters.selectors';
+
+export const getTodoState = (state: AppState) => state.todo;
+
+export const getVisibleTodos = createSelector(
+  getTodoState,
+  getSelectedFilter,
+  (todoState, selectedFilter) => {
+    const { todoItems } = todoState;
+    switch (selectedFilter?.id) {
+      case 'SHOW_COMPLETED':
+        return { ...todoState, todoItems: todoItems.filter((t) => t.completed) };
+      case 'SHOW_ACTIVE':
+        return { ...todoState, todoItems: todoItems.filter((t) => !t.completed) };
+      default:
+        return todoState;
+    }
+  }
+);
+```
+
+Pinia
+```javascript
+// templates/chota-vue-pinia/src/state/todo/index.js
+// Pinia "selectors" are getters on the store — functions of state that
+// Vue's reactivity system caches automatically. The selector function
+// itself lives in todo.selectors.js and is reused from the getter.
+import { defineStore } from 'pinia';
+import { getVisibleTodos } from './todo.selectors';
+import { useFiltersStore } from '../filters';
+import { getSelectedFilter } from '../filters/filters.selectors';
+
+export const useTodoStore = defineStore('todo', {
+  state: () => ({ /* ...intialTodoState */ }),
+  getters: {
+    visibleTodos(state) {
+      const filtersData = useFiltersStore();
+      const selectedFilter = getSelectedFilter(filtersData);
+      return getVisibleTodos(state, selectedFilter.id);
+    },
+  },
+});
+
+// templates/chota-vue-pinia/src/state/todo/todo.selectors.js
+export const getVisibleTodos = (todo, filter) => {
+  /* same switch on filter as the Redux tab */
+};
+```
+
+{::nomarkdown}</div>{:/}
+
+The takeaway: the *derivation* — "apply the active filter to the todo list" — is the same pure function everywhere. What changes is how each library wires memoization and subscription. Redux-family templates use plain functions and optionally opt into `createSelector`. NgRx uses `createSelector` as the default path so every output selector is memoized. Pinia uses Vue's reactivity (a getter on the store) and reuses the same plain selector internally.
 
 ### Practical Example: Memoized Selectors with Reselect
 
