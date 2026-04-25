@@ -108,6 +108,7 @@ export const Loading: Story = {
 ```
 
 Vue
+{% raw %}
 ```javascript
 // templates/chota-vue-pinia/src/ui/atoms/Button/Button.stories.js
 // Vue's CSF uses a Template factory that returns a component definition.
@@ -138,6 +139,7 @@ Loading.args = {
   label: "Sample Button",
 };
 ```
+{% endraw %}
 
 Web Components
 ```javascript

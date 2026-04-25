@@ -108,6 +108,7 @@ export default class AlertComponent implements OnChanges {
 ```
 
 Vue
+{% raw %}
 ```vue
 <!-- templates/chota-vue-pinia/src/ui/atoms/Alert/Alert.component.vue -->
 <template>
@@ -148,6 +149,7 @@ export default defineComponent({
 });
 </script>
 ```
+{% endraw %}
 
 Web Components
 ```js
@@ -474,6 +476,7 @@ export default {
 
 Usage:
 
+{% raw %}
 ```vue
 <!-- ProductCard.vue -->
 <template>
@@ -492,6 +495,7 @@ Usage:
   </Card>
 </template>
 ```
+{% endraw %}
 
 ## Common Mistakes
 

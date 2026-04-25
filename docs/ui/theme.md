@@ -118,6 +118,7 @@ Each template then provides a thin "theme context" so atoms can react to a theme
 {::nomarkdown}<div class="code-tabs">{:/}
 
 React
+{% raw %}
 ```jsx
 // templates/chota-react-redux/src/utils/providers/AtomicProvider.jsx
 // React Context wraps the children and pulls `theme` out of the Redux
@@ -143,6 +144,7 @@ export const useAtomicContext = () => {
 
 export default AtomicProvider;
 ```
+{% endraw %}
 
 Angular
 ```ts

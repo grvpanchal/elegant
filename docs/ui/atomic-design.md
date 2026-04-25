@@ -441,6 +441,7 @@ function Homepage() {
 
 ### Advanced Example: Atomic Design in Vue with Composition API
 
+{% raw %}
 ```vue
 <!-- ===== ATOMS ===== -->
 
@@ -725,6 +726,7 @@ function addToCart(product) {
 }
 </script>
 ```
+{% endraw %}
 
 ## Common Mistakes
 

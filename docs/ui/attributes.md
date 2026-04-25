@@ -90,6 +90,7 @@ export default class InputComponent {
 }
 ```
 
+{% raw %}
 ```html
 <!-- Input.component.html -->
 <label [for]="id" class="sr-only">{{ name || 'Some Label' }}</label>
@@ -103,6 +104,7 @@ export default class InputComponent {
   (input)="onInputHandler($event)"
 />
 ```
+{% endraw %}
 
 Vue
 ```vue

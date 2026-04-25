@@ -475,6 +475,7 @@ new AppShell();
 
 ### Example 2: App Shell with SSR and Hydration (Next.js)
 
+{% raw %}
 ```javascript
 // pages/_app.js (App Shell wrapper)
 import { AuthProvider } from '../contexts/AuthContext';
@@ -596,9 +597,11 @@ export async function getServerSideProps() {
   return { props: { data } };
 }
 ```
+{% endraw %}
 
 ### Example 3: Micro-Frontend Integration in App Shell
 
+{% raw %}
 ```javascript
 // app-shell/src/Shell.js
 import React, { Suspense, lazy } from 'react';
@@ -745,6 +748,7 @@ module.exports = {
   ]
 };
 ```
+{% endraw %}
 
 ## Common Mistakes
 

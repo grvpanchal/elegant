@@ -37,6 +37,7 @@ A real organism pulled from the `chota-*` templates: `TodoList` assembles an `Al
 {::nomarkdown}<div class="code-tabs">{:/}
 
 React
+{% raw %}
 ```jsx
 // templates/chota-react-redux/src/ui/organisms/TodoList/TodoList.component.jsx
 import Alert from "../../atoms/Alert/Alert.component";
@@ -81,6 +82,7 @@ export default function TodoList({ todoData, events }) {
   );
 }
 ```
+{% endraw %}
 
 Angular
 ```ts
@@ -171,6 +173,7 @@ Vue
 ```
 
 Web Components
+{% raw %}
 ```js
 // templates/chota-wc-saga/src/ui/organisms/TodoList/TodoList.component.js
 import { html } from "lit";
@@ -212,6 +215,7 @@ export default function TodoList({ todoData, events }) {
   `;
 }
 ```
+{% endraw %}
 
 {::nomarkdown}</div>{:/}
 

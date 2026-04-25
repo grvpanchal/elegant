@@ -74,6 +74,7 @@ The Skeleton atom is the loading-state cousin of `<div>` — a sized box you put
 {::nomarkdown}<div class="code-tabs">{:/}
 
 React
+{% raw %}
 ```jsx
 // templates/chota-react-redux/src/ui/skeletons/Skeleton/Skeleton.component.jsx
 import "./Skeleton.style.css";
@@ -91,6 +92,7 @@ export default function Skeleton({ variant, height, width, style }) {
   );
 }
 ```
+{% endraw %}
 
 Angular
 ```ts
