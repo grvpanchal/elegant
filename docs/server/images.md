@@ -533,17 +533,14 @@ const blurDataURL = await generateBlurPlaceholder('/images/hero.jpg');
 console.log(blurDataURL);
 // "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
 
-{% raw %}
 // Include in img tag
 <img
   src="/images/hero.jpg"
   alt="Hero"
   style={{ backgroundImage: `url(${blurDataURL})` }}
 />
-{% endraw %}
 
 
-{% raw %}
 // ===== LQIP (Low Quality Image Placeholder) =====
 // Progressive JPEG approach
 

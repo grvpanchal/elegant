@@ -1,6 +1,8 @@
 **/node_modules
 docs/_site
 docs/demos
+docs/.bundle
+docs/.jekyll-cache
 .angular
 dist
 **/project.json
