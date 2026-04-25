@@ -36,6 +36,7 @@ SEO considerations for multilingual sites: **Separate URLs** per language (Googl
 
 Simple internationalization with react-i18next:
 
+{% raw %}
 ```javascript
 // ===== i18n.js - Configuration =====
 import i18n from 'i18next';
@@ -169,11 +170,13 @@ function ProductCard({ price, releaseDate }) {
   );
 }
 ```
+{% endraw %}
 
 ### Practical Example: Next.js with Dynamic Locale Routes
 
 Internationalized routing with SSR:
 
+{% raw %}
 ```javascript
 // ===== next.config.js =====
 module.exports = {
@@ -353,11 +356,13 @@ class MyDocument extends Document {
 
 export default MyDocument;
 ```
+{% endraw %}
 
 ### Advanced Example: RTL Support and Lazy Loading
 
 Dynamic bundle loading with RTL layout:
 
+{% raw %}
 ```javascript
 // ===== i18n.js - Lazy loading configuration =====
 import i18n from 'i18next';
@@ -414,6 +419,7 @@ function AppContent() {
 
 // ===== styles/globals.css - RTL-compatible styles =====
 ```
+{% endraw %}
 
 ```css
 /* Use logical properties for automatic RTL support */
@@ -595,6 +601,7 @@ function ItemCount({ count }) {
 // Breaks in Russian (1, 2-4, 5+ forms), Arabic (6 forms), Japanese (no plurals)
 ```
 
+{% raw %}
 ```javascript
 // ✅ GOOD: i18n library handles plural rules
 // en.json
@@ -617,6 +624,7 @@ function ItemCount({ count }) {
 }
 // Library automatically selects correct plural form per language
 ```
+{% endraw %}
 
 **Why it matters:** Each language has different pluralization rules—i18n libraries handle complexity automatically using CLDR data.
 

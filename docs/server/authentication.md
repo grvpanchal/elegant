@@ -78,6 +78,7 @@ Authentication is the process of **verifying user identity** before granting acc
 
 ### Basic Example: Login Flow with JWT
 
+{% raw %}
 ```javascript
 // ===== AUTH CONTEXT + LOGIN =====
 // AuthContext.js - Global authentication state
@@ -318,6 +319,7 @@ function App() {
 
 export default App;
 ```
+{% endraw %}
 
 ### Practical Example: Axios Interceptors with Token Refresh
 

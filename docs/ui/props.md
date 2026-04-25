@@ -34,6 +34,7 @@ The Loader atom has three props: `size`, `width`, `color`. That's it — a pure,
 {::nomarkdown}<div class="code-tabs">{:/}
 
 React
+{% raw %}
 ```jsx
 // templates/chota-react-redux/src/ui/atoms/Loader/Loader.component.jsx
 // Props are plain destructured arguments. Defaults are applied inline
@@ -56,6 +57,7 @@ export default function Loader({ size, width, color }) {
 
 // <Loader size="24px" width="3px" color="#333" />
 ```
+{% endraw %}
 
 Angular
 ```ts

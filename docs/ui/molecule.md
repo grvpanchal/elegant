@@ -111,6 +111,7 @@ export default class AddTodoFormComponent implements OnChanges {
 }
 ```
 
+{% raw %}
 ```html
 <!-- AddTodoForm.component.html -->
 <form (submit)="onSubmit($event)" class="add-todo-form">
@@ -123,8 +124,10 @@ export default class AddTodoFormComponent implements OnChanges {
   </div>
 </form>
 ```
+{% endraw %}
 
 Vue
+{% raw %}
 ```vue
 <!-- templates/chota-vue-pinia/src/ui/molecules/AddTodoForm/AddTodoForm.component.vue -->
 <template>
@@ -173,6 +176,7 @@ export default defineComponent({
 })
 </script>
 ```
+{% endraw %}
 
 Web Components
 ```js

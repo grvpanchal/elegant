@@ -376,6 +376,7 @@ export default function ProductList() {
 
 ### Example 2: Web Components with Framework-Agnostic Integration
 
+{% raw %}
 ```javascript
 // Checkout MFE: Built with React, exported as Web Component
 // checkout-mfe/src/CheckoutComponent.js
@@ -524,6 +525,7 @@ export default {
 </body>
 </html>
 ```
+{% endraw %}
 
 ### Example 3: Advanced Module Federation with Shared State and Authentication
 
