@@ -6,6 +6,8 @@ slug: session
 
 # Session
 
+HTTP forgets you the moment a request finishes. Sessions are how the web pretends otherwise — and getting that pretence right is the difference between "stayed logged in for a week" and "got silently signed out mid-checkout."
+
 ## Key Insight
 
 Session management in frontend applications balances stateless authentication (JWT tokens for API authorization) with stateful user experience (persisting preferences, cart data, form progress across page reloads and browser sessions) through layered storage strategies—HTTP-only cookies for security-critical auth tokens preventing XSS theft, localStorage for persistent user preferences surviving browser restarts, sessionStorage for temporary tab-specific state, and server-side sessions for sensitive data requiring server validation—while implementing token rotation, silent refresh, and cross-tab synchronization to maintain seamless authentication across multiple windows without re-login prompts or data loss.

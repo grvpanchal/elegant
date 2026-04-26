@@ -947,6 +947,122 @@
         "No glossary defines App Shell, VAPID, IndexedDB, Cache Storage API, or PRPL before they're used in body text."
       ]
     },
+    "server/seo": {
+      "doc": "server/seo",
+      "last_sha": "f76947467ad097c3e9255d432a1a021aa4d4ba9d",
+      "last_reviewed_at": "2026-04-26T13:34:34Z",
+      "score": 21,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 1},
+      "issues_fixed": [
+        "Replaced obsolete FID metric with INP (Interaction to Next Paint) in the Core Web Vitals pillars list and the performance paragraph — FID was officially deprecated in March 2024 and INP became the responsiveness CWV",
+        "Expanded 'CWV' acronym to 'Core Web Vitals' in seo-3 quiz explanation"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Section order is reversed (Key Insight before Detailed Description) and Glossary is missing entirely.",
+        "STRUCTURAL: Basic Example is Next.js-only with no cross-framework tabs (no <p>FrameworkName</p> labels at all).",
+        "ENGAGEMENT GLUE: Doc has zero cross-references to sibling server docs (ssr.md, ssg.md, web-vitals.md) or to ui-* docs.",
+        "Examples lean heavily on Next.js Pages Router APIs (`getServerSideProps`, `getStaticProps`, `pages/_document.js`, `pages/sitemap.xml.js`, `swcMinify`, `optimizeFonts`) which are legacy as of Next 13+ App Router.",
+        "Detailed Description is 7 dense single-paragraph blocks with no sub-headings. Breaking into labeled subsections would aid scannability.",
+        "Quiz options are uneven in length — correct answers (C, C, A, B, B) are conspicuously the longest option in each question."
+      ]
+    },
+    "server/session": {
+      "doc": "server/session",
+      "last_sha": "ca3c7ee7d35f961a690cc62443a39b8647b4b502",
+      "last_reviewed_at": "2026-04-26T13:34:30Z",
+      "score": 19,
+      "axes": {"hook": 2, "cadence": 2, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Added a brief opening hook before Key Insight ('HTTP forgets you the moment a request finishes...') so the page doesn't dump the reader straight into a 100+ word run-on sentence"
+      ],
+      "issues_reported": [
+        "Section order does not match the standard skeleton: doc opens with 'Key Insight' before 'Detailed Description' and there is no 'Glossary' section.",
+        "No cross-framework code tabs.",
+        "Key Insight paragraph is a single 110-word sentence with four em-dashes and seven parentheticals.",
+        "Every paragraph in Detailed Description follows the same shape: 'Topic: **Bold Term** (long parenthetical list)'.",
+        "'Code Examples' is used as a wrapper H2 around Basic / Practical / Advanced (which become H3).",
+        "Basic Example mixes three concerns (client AuthService, fetch wrapper, full Express server) in one ~250-line block.",
+        "Practical Example: SharedWorker portion silently shadows `expiresIn` inside `scheduleRefresh` via destructuring — subtle bug.",
+        "Advanced Example's React `useEffect` has a stale-closure bug: re-registers a `beforeunload` listener every render and the cleanup `() => saveState()` calls the debounced save.",
+        "Common Mistakes section has 3 entries — could add a 4th on 'Logging out only client-side / forgetting server-side revocation'.",
+        "No Glossary, so newcomers hit 'JWT', 'IdP', 'silent auth', 'refresh-token rotation', 'sliding timeout' without on-page definitions.",
+        "Quiz answers C and B are extremely long compared to distractors."
+      ]
+    },
+    "server/ssg": {
+      "doc": "server/ssg",
+      "last_sha": "419df98ae1796898e0d342e75b9e2dbed9a6f1d8",
+      "last_reviewed_at": "2026-04-26T13:34:33Z",
+      "score": 25,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated 'Build optimization techniques' paragraph (was repeated verbatim at lines 31-33)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: Key Insight appears BEFORE Detailed Description.",
+        "Code Examples uses single H2 wrapper with H3 subsections.",
+        "All Basic/Practical/Advanced examples are Next.js-only — no cross-framework tab structure.",
+        "Quiz options for ssg-1, ssg-3, ssg-4, ssg-5 have notably uneven length: correct answer is comprehensive while distractors are short one-liners.",
+        "Quiz ssg-4 places the correct answer (D) last after three obviously-wrong distractors.",
+        "Key Insight paragraph is one long em-dash-separated sentence (~80 words)."
+      ]
+    },
+    "server/ssr": {
+      "doc": "server/ssr",
+      "last_sha": "aafcbd9e79767e298261b14bd8bf883e76962bfa",
+      "last_reviewed_at": "2026-04-26T13:34:44Z",
+      "score": 24,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 3, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated 'Practical Example: SSR with State Management and Data Fetching' heading and intro paragraph (lines 95-97 were a verbatim repeat of lines 91-93)",
+        "Rewrote ssr-1 options and distractors so they actually answer the asked question (SSR vs SSG vs ISR). Previously the question asked about SSR/SSG difference but the four options described whether JS still ships to the client — making the correct=C option a near-duplicate of ssr-3's correct answer. Kept correct='C' and the existing explanation"
+      ],
+      "issues_reported": [
+        "Quiz redundancy: even after the ssr-1 fix, ssr-2, ssr-3, and ssr-5 all touch the hydration/JS-on-client theme.",
+        "Hook vs Key Insight overlap: blockquote bullets and Key Insight paragraph both lead with 'dramatically improves perceived performance and SEO' in nearly identical phrasing.",
+        "Detailed Description is six dense paragraphs with no sub-headings or bullets.",
+        "Cross-framework coverage: every code example is React-only. Vue (renderToString from vue/server-renderer), Angular Universal, and Lit SSR (@lit-labs/ssr) learners get nothing.",
+        "Common Mistake #2 ('Not Serializing State Correctly') escaping only `<` still misses `\\u2028`, `\\u2029`, and `</script` in attribute contexts.",
+        "References section mixes named markdown links and bare numbered URLs ([1]…[6]); inconsistent style."
+      ]
+    },
+    "server/widget": {
+      "doc": "server/widget",
+      "last_sha": "a857d1146b780f4ebcf71175a4fd71b96b860771",
+      "last_reviewed_at": "2026-04-26T13:34:46Z",
+      "score": 23,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated '### 8. Versioning & Updates' subsection (the entire heading + 5 bullets appeared verbatim twice in Detailed Description)"
+      ],
+      "issues_reported": [
+        "Section order: Key Insight BEFORE Detailed Description.",
+        "No explicit 'Glossary' heading; opening paragraph after H1 serves as one but isn't labeled.",
+        "Quiz uses essay-style Q&A rather than the MCQ format implied by the project standard (no answer letters / `correct=` markers).",
+        "Detailed Description is 8 dense numbered subsections with bullet-heavy paragraphs.",
+        "Hook is serviceable but flat — leads with a textbook definition rather than a concrete scenario (e.g., 'Intercom, Stripe Checkout, and Disqus are all widgets').",
+        "Engagement glue: few connective phrases between subsections."
+      ]
+    },
+    "server/index-file": {
+      "doc": "server/index-file",
+      "last_sha": "41ce9bafd5a36d27c61b8bc3c60361a260f3fa4d",
+      "last_reviewed_at": "2026-04-26T13:34:58Z",
+      "score": 19,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 1, "engagement_glue": 3},
+      "issues_fixed": [
+        "Split the dense single-paragraph Key Insight into two paragraphs (entry-point contract + bug-prevention) to improve readability cadence"
+      ],
+      "issues_reported": [
+        "Section structure does not match the standard project template: doc lacks Glossary, Basic Example, Practical Example, and Advanced Example sections. Instead opens with Key Insight (out of order) and bundles examples under a generic 'Code Examples' heading.",
+        "Quiz is free-response Q&A, not MCQ format. There are no answer options (A/B/C/D) and no `correct=` letters.",
+        "No cross-framework code tabs anywhere in the doc — missing per-template `src/index.{js,jsx,ts}` and `index.html`.",
+        "Stale APIs in Example 2 (React index.js): `getCLS, getFID, getFCP, getLCP, getTTFB` from web-vitals v3+ are deprecated in favour of `onCLS, onINP, onFCP, onLCP, onTTFB`. FID was retired as a Core Web Vital in March 2024.",
+        "Missing Glossary entries: 'barrel export', 'directory index', 'try_files', 'tree-shaking', 'critical CSS', 'FCP', 'INP'.",
+        "Section 5 talks about index.ts/TypeScript despite CLAUDE.md noting templates intentionally avoid TypeScript at the root.",
+        "Reference list is thin (5 entries) and lacks links to MDN's `<script defer>`, the package.json `exports` field spec, and the actual Vite/Rollup entry-point docs."
+      ]
+    },
     "ui/theme": {
       "doc": "ui/theme",
       "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",

@@ -92,10 +92,6 @@ hydrateRoot(container, <App />);
 
 Real-world implementation showing state serialization and async data:
 
-### Practical Example: SSR with State Management and Data Fetching
-
-Real-world implementation showing state serialization and async data:
-
 ```javascript
 // server.js - SSR with Redux
 
@@ -377,7 +373,7 @@ hydrateRoot(
 
 {% include quiz.html id="ssr-1"
    question="What's the difference between Server-Side Rendering (SSR) and Static Site Generation (SSG)?"
-   options="A|No — SSR means zero JS ships to the client, which is its main perf benefit and why framework teams are moving away from hydration entirely;;B|Only for form submissions — the initial page is fully static and the first interaction triggers a one-time JS bundle fetch, but nothing runs before that;;C|Yes — server-rendered HTML is static until hydration runs. Interactivity (onClick, state, client-side routing) needs the same React/Vue/Angular bundle on the client. React Server Components, partial hydration, and islands reduce the JS footprint, but not to zero for interactive regions;;D|JS is optional; it only boots if the user explicitly enables JavaScript in the browser settings"
+   options="A|They are identical — &quot;SSG&quot; is just a marketing rename of SSR;;B|SSG runs in the browser, SSR runs on a CDN edge — both produce HTML at request time;;C|SSR renders HTML on the server per request (fresh data, personalisation possible). SSG renders HTML once at build time and serves the same cached file to every visitor (fast, cheap, but stale until the next build). ISR is a hybrid: pre-built like SSG, then revalidated on a schedule;;D|SSR can only be used with React; SSG works with any framework"
    correct="C"
    explanation="Pick per-route: per-user personalised pages -> SSR; marketing/blog/docs -> SSG; near-real-time content -> ISR (SSG + revalidate)." %}
 

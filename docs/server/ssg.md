@@ -30,8 +30,6 @@ Hybrid rendering strategies optimize different pages differently: homepage (SSG 
 
 Build optimization techniques include: parallel page generation (build multiple pages simultaneously), partial rebuilds (only rebuild changed pages, not entire site), content-addressed hashing (cache unchanged assets permanently), image optimization (generate responsive formats at build), code splitting (separate bundles per route), tree shaking (eliminate unused code). Large sites with 50,000+ pages use distributed builds across multiple workers, reducing 2-hour builds to 10 minutes.
 
-Build optimization techniques include: parallel page generation (build multiple pages simultaneously), partial rebuilds (only rebuild changed pages, not entire site), content-addressed hashing (cache unchanged assets permanently), image optimization (generate responsive formats at build), code splitting (separate bundles per route), tree shaking (eliminate unused code). Large sites with 50,000+ pages use distributed builds across multiple workers, reducing 2-hour builds to 10 minutes.
-
 ## Code Examples
 
 ### Basic Example: Next.js getStaticProps
