@@ -6,7 +6,7 @@ slug: template
 # Template
 
 > - Page-level structure defining layout without real content
-> - Wire frames that show content placement
+> - Wireframes that show content placement
 > - Reusable layouts composed of organisms
 
 ## Key Insight
@@ -25,7 +25,9 @@ Templates also serve as the **contract between design and development**. Designe
 
 From a responsive design perspective, templates often define **breakpoint-specific layouts**. A two-column desktop template might become single-column on mobile, with organisms reordering based on priority. The template orchestrates this transformation while organisms remain unchanged, maintaining the separation of concerns that makes Atomic Design powerful.
 
-Templates also establish **content hierarchies and relationships**. A BlogPostTemplate might define: header at top, article content in main column, sidebar with related articles, comment section at bottom, footer at end. This structure guides users through content in intended order while maintaining flexibility for different articles. Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:
+Templates also establish **content hierarchies and relationships**. A BlogPostTemplate might define: header at top, article content in main column, sidebar with related articles, comment section at bottom, footer at end. This structure guides users through content in intended order while maintaining flexibility for different articles.
+
+Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:
 
 ```jsx
 // HomePageTemplate.js
@@ -92,13 +94,7 @@ const App = () => {
 export default App;
 ```
 
-This demonstrates how templates can be used to structure different sections or pages of your application by combining organisms. Templates are higher-level components that help maintain a consistent layout across multiple pages.
-
-## Code Examples
-
-### Basic Example: Homepage Template
-
-Here is an example of a simple template for a webpage called `HomePageTemplate`. This template might include a `Header` organism, a `MainContent` organism, and a `Footer` organism:
+This demonstrates how templates structure different sections or pages of your application by combining organisms. Templates are higher-level components that help maintain a consistent layout across multiple pages — and because they accept their content via props or slots, the same `HomePageTemplate` can render a marketing landing page today and a logged-in dashboard tomorrow without any structural change.
 
 ## References
 - [1] https://atomicdesign.bradfrost.com/chapter-2/
