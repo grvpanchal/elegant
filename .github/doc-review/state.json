@@ -98,6 +98,30 @@
         "Quiz question 2 ('What is a reducer and why is it called that?') is on-topic for state but feels misplaced on the Store page — reducers have their own concept; consider swapping for a question on selectors, subscription, or root vs. slice composition that's more store-specific.",
         "WebFetch of the published page returned HTTP 503 — review was performed against the .md only; if the live render has additional issues (e.g., quiz JS not initialising) they were not assessed."
       ]
+    },
+    "ui/organism": {
+      "doc": "ui/organism",
+      "last_sha": "fc3e983b86237e386921b123efce28a73e8bc265",
+      "last_reviewed_at": "2026-04-26T06:58:29Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Expanded References from 1 bare URL to 5 named, topical links (Atomic Design ch.2, Molecule, Container, State, Component-Driven UIs)",
+        "Reworded the Practical Example lede (line 226) to acknowledge that fetching inside the organism is a teaching shortcut and to forward-link to Container — improves engagement glue and softens the contradiction with quiz Q2"
+      ],
+      "issues_reported": [
+        "Practical Example (lines ~228-317) and Advanced Example (lines ~356-503) are React-only and import imaginary './hooks/useProducts', './hooks/useComments', './molecules/*', './atoms/*' paths — they don't correspond to anything in templates/ and partly duplicate the Basic cross-framework TodoList. Consider replacing with an organism actually shipped in the chota-* templates (e.g., a header organism or a templates/-sourced second example) for parity with the Basic section.",
+        "Tension between teaching and example: Quiz Q2 (correct=D) and Q5 (correct=A) explicitly say organisms should NOT do data fetching, but the Practical ProductGrid example calls useProducts() inside the organism. Even with the new lede, a stronger fix would be to have the example accept `products`/`loading`/`onFiltersChange` as props and put useProducts() in a sibling ProductGridContainer.",
+        "Detailed Description (lines 19-29) is six uniform-length paragraphs with no list, callout, or code break; a short 'organism checklist' bullet list (recognizable region / composes molecules / owns UI state, not business state / responsive arrangement lives here) would help the 3-minute skim.",
+        "Common Mistake 3 closing example pair (DashboardPanel) is good but introduced after the SiteHeader example with no transition — a single sentence connecting 'render-prop slots' (SiteHeader) to 'children-as-content' (DashboardPanel) would improve cadence."
+      ]
     }
   }
 }
