@@ -1,4 +1,28 @@
 {
   "version": 1,
-  "docs": {}
+  "docs": {
+    "ui/accessibility": {
+      "doc": "ui/accessibility",
+      "last_sha": "410bd4e66a873a628a28c2656a8e7f27b144b20b",
+      "last_reviewed_at": "2026-04-26T06:52:44Z",
+      "score": 22,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fleshed out the smallest-unit-of-work sentence in Detailed Description with a memorable closing clause (line 19)",
+        "Expanded References from 1 bare URL to 5 named, topical links (WCAG 2.2, ARIA APG, MDN first-rule-of-ARIA, Inclusive Components)",
+        "Added a bullet calling out that Math.random() ids in the Input atom are a placeholder, not a recommendation, and pointing at useId / randomUUID (after line 169)"
+      ],
+      "issues_reported": [
+        "Detailed Description is four stacked bulleted lists (Why Matters / POUR / Key Technologies) with almost no connective prose — cadence suffers; consider folding POUR into a single short paragraph since it already appears in Key Insight",
+        "Practical Example (lines ~175-406) and Advanced Example (lines ~408-667) are huge standalone HTML files that don't reference any chota-* template — they duplicate the cross-framework section's purpose and should be trimmed to the patterns the templates actually demonstrate, or moved to a separate 'ARIA cookbook' page"
+      ]
+    }
+  }
 }
