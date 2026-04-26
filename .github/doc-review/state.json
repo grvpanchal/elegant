@@ -427,6 +427,133 @@
         "MINOR: Cadence relies on long uninterrupted paragraphs in Detailed Description; sub-headings (### Templates vs Pages, ### Responsive templates, ### Design/dev contract) would let learners scan."
       ]
     },
+    "state/actions": {
+      "doc": "state/actions",
+      "last_sha": "5b66a8225c58490834e8cdd54c59889c508cd563",
+      "last_reviewed_at": "2026-04-26T13:22:10Z",
+      "score": 21,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Typo `intialTodoState` -> `initialTodoState` in RTK and Pinia code blocks (3 occurrences)",
+        "Empty References section populated with 6 named topical links (Redux core, FSA spec, RTK createAction/createAsyncThunk, NgRx, Pinia, Redux Style Guide)"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Orphaned code block at lines 182-203 — a `// Usage in components` JSX snippet appears after the cross-framework tabs close (`{::nomarkdown}</div>{:/}` and the 'What to notice' bullets), with no section heading, no opening code fence, and a stray closing ``` on line 203. Likely a leftover from a refactor.",
+        "CADENCE: Practical and Advanced examples are very long monolithic React-only blocks with no cross-framework parity — they break the multi-template promise.",
+        "ENGAGEMENT GLUE: No transitions between Detailed Description -> Code Examples, between Practical -> Advanced, or between Advanced -> Common Mistakes.",
+        "HOOK: 'Key Insight' (the actual hook with the time-travel/audit-trail framing) is buried below Detailed Description.",
+        "QUIZ: actions-1 stem asks 'What's the difference between an action type and an action creator?' but the correct answer (B) describes the FSA envelope shape, not the type-vs-creator distinction. Stem and answer don't match."
+      ]
+    },
+    "state/reducer": {
+      "doc": "state/reducer",
+      "last_sha": "a7819bfac2c98a5a27b6a0f505e93c350cebdda0",
+      "last_reviewed_at": "2026-04-26T13:23:03Z",
+      "score": 26,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Reordered sections so Detailed Description precedes Key Insight, matching the standard Glossary -> Detailed Description -> Key Insight structure",
+        "Populated the empty References section with six canonical links (Redux reducers tutorial, Redux Style Guide, RTK createSlice/createReducer, NgRx createReducer, Immer, Dan Abramov egghead course)"
+      ],
+      "issues_reported": [
+        "Quiz answer-length asymmetry: in all five MCQs the correct option is 3-5x longer than the distractors, making the answer guessable from length alone.",
+        "Practical and Advanced Examples are ~100 and ~140 lines of nearly pure code with no interleaved prose explaining why each pattern is shown or how it ties back to the templates.",
+        "'Code Examples' H2 wraps Basic/Practical/Advanced as H3s, which is non-standard.",
+        "Basic Example folds the WC-Saga template into the Saga tab without a visible label — a learner may miss that the same reducer ships in two templates.",
+        "Common Mistakes uses emoji check/cross markers (BAD/GOOD) which render fine but are inconsistent with sibling docs."
+      ]
+    },
+    "state/selectors": {
+      "doc": "state/selectors",
+      "last_sha": "6bb370f314e9e8297f82a32929b18ae40556a4d3",
+      "last_reviewed_at": "2026-04-26T13:22:09Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 5,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Fixed typo `intialTodoState` -> `initialTodoState` in Pinia tab",
+        "Added a one-line connective intro to the Practical Example linking it back to the Basic Example and motivating createSelector",
+        "Added a one-line connective intro to the Advanced Example explaining why normalized state + parametrized selectors matter"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: Key Insight appears before Detailed Description, and there is no explicit Glossary heading.",
+        "Practical and Advanced Examples are not framework-tabbed like the Basic Example; they are React/Reselect only.",
+        "Advanced Example references `defaultMemoize` from reselect, which was renamed to `lruMemoize` / `weakMapMemoize` in reselect 5.x.",
+        "Cross-doc engagement glue is thin: no inline links to sibling state docs (reducers, actions, store) or to the `state-*` skills."
+      ]
+    },
+    "state/middleware": {
+      "doc": "state/middleware",
+      "last_sha": "0828e4d25f34a654f132fbd1059fe91b0ee5053d",
+      "last_reviewed_at": "2026-04-26T13:22:32Z",
+      "score": 26,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed dangling citation markers [10], [2], [5], [1] from Common Use Cases bullets — they referenced no actual references",
+        "Tightened a stray standalone comment in the thunk code block into a proper inline note",
+        "Added a lead-in paragraph before Practical Example (thunk) so the code is framed before it starts",
+        "Added a lead-in paragraph before Advanced Example summarising the six patterns and the payoff of the curried shape"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: Glossary -> Key Insight -> Detailed Description, but the convention is Glossary -> Detailed Description -> Key Insight -> Basic Example.",
+        "Detailed Description is prose-heavy and partly redundant with the Key Insight (both restate the interception/pipeline idea).",
+        "Common Mistakes covers only 3 issues; adding a 4th (e.g. middleware that returns undefined when callers expect the dispatch return value) would round it out.",
+        "No Pinia plugin example is shown despite the doc claiming Pinia plugins count as middleware in this lexicon — the Pinia tab uses an `async` store action instead.",
+        "Advanced Example is a single ~150-line code block with six numbered patterns; splitting into smaller blocks with one-line intros each would aid scannability."
+      ]
+    },
+    "state/state": {
+      "doc": "state/state",
+      "last_sha": "0af7b226e453faa97a08746ad29cf99ef2907aea",
+      "last_reviewed_at": "2026-04-26T13:22:28Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 5,
+        "quiz_quality": 5,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Reordered sections to match standard structure: Glossary -> Detailed Description -> Key Insight -> Code Examples (was Glossary -> Key Insight -> Detailed Description)",
+        "Fixed heading hierarchy under 'Core Concepts': Store / Properties / Actions were h3 (same level as their parent), now correctly h4",
+        "Tightened opening Glossary blockquote with a sharper 'get it right / get it wrong' framing and bolded the term"
+      ],
+      "issues_reported": [
+        "Basic Example uses a single jsx code block rather than the cross-framework tabs the other terminology pages use — structural gap on the general 'state' page where readers from Vue/Angular/WC templates land first.",
+        "'Universal Frontend Architecture' paragraph is marketing-flavoured and name-drops Vuex (deprecated) — could be tightened to mention the templates' actual choices (Redux/RTK/Saga, NgRx, Pinia, Lit+Saga).",
+        "Detailed Description has four h3 sub-sections plus h4 children plus three follow-up paragraphs plus a 'Goals' list — risks burying the Key Insight.",
+        "Engagement glue is thin: only one outbound link ([Store](store.html)) in the entire doc."
+      ]
+    },
     "ui/theme": {
       "doc": "ui/theme",
       "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",

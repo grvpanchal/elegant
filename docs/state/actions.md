@@ -57,12 +57,12 @@ Redux Toolkit
 // templates/chota-react-rtk/src/state/todo/todo.reducer.js
 // RTK's createSlice auto-generates action creators and types from reducer names.
 import { createSlice } from "@reduxjs/toolkit";
-import intialTodoState from "./todo.initial";
+import initialTodoState from "./todo.initial";
 
 let nextTodoId = 0;
 export const todoSlice = createSlice({
   name: "todo",
-  initialState: intialTodoState,
+  initialState: initialTodoState,
   reducers: {
     createTodo: (state, action) => {
       state.todoItems.push({ text: action.payload, completed: false, id: nextTodoId++ });
@@ -148,7 +148,7 @@ export function createTodo(text) {
 export function createTodoSuccess(payload) {
   this.isLoading = false;
   this.todoItems.push({ id: payload.id, text: payload.text, completed: false });
-  this.currentTodoItem = intialTodoState.currentTodoItem;
+  this.currentTodoItem = initialTodoState.currentTodoItem;
 }
 
 // Wired into the store via defineStore('todo', { actions: { createTodo, ... } }).
@@ -545,3 +545,10 @@ const usersSlice = createSlice({
    explanation="A typo'd string in one place is a bug that slips past TypeScript; a typo'd imported constant is a compile error. RTK hides this by auto-deriving types from slice names." %}
 
 ## References
+
+- [Redux: Actions](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow#actions) — the canonical definition of actions and the `{ type, payload }` envelope.
+- [Flux Standard Action (FSA)](https://github.com/redux-utilities/flux-standard-action) — the community contract for the action shape that RTK and most middleware assume.
+- [Redux Toolkit: `createAction`](https://redux-toolkit.js.org/api/createAction) and [`createAsyncThunk`](https://redux-toolkit.js.org/api/createAsyncThunk) — FSA-compliant creators and the lifecycle-action triple for async work.
+- [NgRx: `createAction` and props](https://ngrx.io/guide/store/actions) — typed action creators for Angular feature slices.
+- [Pinia: Actions](https://pinia.vuejs.org/core-concepts/actions.html) — why Pinia "actions" are store methods rather than dispatched objects.
+- [Redux Style Guide: action types as `domain/event`](https://redux.js.org/style-guide/#model-actions-as-events-not-setters) — naming conventions and the events-not-setters mindset.
