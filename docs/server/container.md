@@ -45,9 +45,6 @@ The Container/Presentational pattern (also called Smart/Dumb components) is a fu
 **Modern React Context:**
 With React Hooks, the pattern has evolved. Custom hooks (like `useUsers()`, `useTodos()`) often replace containers, but the **separation principle remains critical**: components that fetch data should be separate from components that render data.
 
-References
-
-- [1] https://medium.com/@learnreact/container-components-c0e67432e005
 ## Code Examples
 
 ### Basic Example: TodoListContainer across frameworks
@@ -897,5 +894,9 @@ function ProductCard({ product, onAddToCart }) {
 
 ## References
 
-- [1] https://medium.com/@learnreact/container-components-c0e67432e005
-- [2] https://redux.js.org/tutorials/fundamentals/part-5-ui-react#presentational-and-container-components
+- [Container Components - Michael Chan](https://medium.com/@learnreact/container-components-c0e67432e005)
+- [Presentational and Container Components - Dan Abramov](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)
+- [Redux: Presentational and Container Components](https://redux.js.org/tutorials/fundamentals/part-5-ui-react#presentational-and-container-components)
+- [React Hooks FAQ - Replacing render props and HOCs](https://react.dev/reference/react/hooks)
+- [NgRx: Container Components](https://ngrx.io/guide/component)
+- [Pinia: Using a store outside a component](https://pinia.vuejs.org/core-concepts/outside-component-usage.html)

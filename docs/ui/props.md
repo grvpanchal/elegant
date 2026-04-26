@@ -375,13 +375,13 @@ const ProductPage = () => {
 };
 ```
 
-All attributes and properties are a bit hard to understand by just looking into the code, it will get easier once you'll see it working in a real custom element. Meanwhile, remember the trick to achieve reflection: linking get/set property methods to get/set attribute methods
+Attributes and properties are tricky to grasp from code alone; it gets clearer once you see them working in a real custom element. The trick to achieving reflection is linking get/set property methods to get/set attribute methods.
 
-Maybe this schema will help clarify how attributes and properties reflection works:
+This schema clarifies how attributes and properties reflection works:
 
 ![Props vs Attributes](../assets/img/props_vs_attributes.webp "Props vs Attributes")
 
-Click [here](https://elegant.js.org/setup/TodoList-basic-component.html#basic-understanding-of-attribute-vs-props) to learn more about the difference between props and attributes.
+Read more about the [difference between props and attributes](https://elegant.js.org/setup/TodoList-basic-component.html#basic-understanding-of-attribute-vs-props).
 
 ## Common Mistakes
 
@@ -576,5 +576,9 @@ const Button: React.FC<ButtonProps> = ({
 
 ## References
 
-- https://www.freecodecamp.org/news/how-to-use-props-in-reactjs/
-- https://javascript.works-hub.com/learn/web-components-api-definition-attributes-and-props-886c0
+- [How to use props in React](https://www.freecodecamp.org/news/how-to-use-props-in-reactjs/) — freeCodeCamp tutorial covering passing, destructuring, and defaulting props.
+- [Web Components: attributes vs properties](https://javascript.works-hub.com/learn/web-components-api-definition-attributes-and-props-886c0) — the reflection model and when each form is appropriate.
+- [Passing data to components (React docs)](https://react.dev/learn/passing-props-to-a-component) — the canonical reference for the React `props` contract and `children`.
+- [Component props (Vue 3 guide)](https://vuejs.org/guide/components/props.html) — declaration forms, validation, and one-way data flow in Vue.
+- [Angular @Input() inputs](https://angular.dev/guide/components/inputs) — declaring component inputs, aliases, transforms, and required inputs.
+- [Lit reactive properties](https://lit.dev/docs/components/properties/) — declaring properties and configuring attribute reflection in Web Components.

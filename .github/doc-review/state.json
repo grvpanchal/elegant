@@ -122,6 +122,106 @@
         "Detailed Description (lines 19-29) is six uniform-length paragraphs with no list, callout, or code break; a short 'organism checklist' bullet list (recognizable region / composes molecules / owns UI state, not business state / responsive arrangement lives here) would help the 3-minute skim.",
         "Common Mistake 3 closing example pair (DashboardPanel) is good but introduced after the SiteHeader example with no transition — a single sentence connecting 'render-prop slots' (SiteHeader) to 'children-as-content' (DashboardPanel) would improve cadence."
       ]
+    },
+    "ui/component": {
+      "doc": "ui/component",
+      "last_sha": "083579b007890b98b8f8c990ce366f45f20cb94c",
+      "last_reviewed_at": "2026-04-26T13:12:12Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Tightened the opening blockquote phrasing on lines 8-9 ('interactive unit of UI', 'binding HTML, JS, and CSS together')",
+        "Expanded References from 3 bare URLs to 6 named, topical links (React, Vue, Angular, MDN Web Components, Lit, Components in JS)",
+        "Normalized UK 'behaviour' to US 'behavior' on line 194 to match the rest of the doc",
+        "Renamed code-comment filename from ToggleSwitch.js to ToggleSwitch.jsx on line 201 to match the React templates' .jsx convention for JSX-bearing files",
+        "Renamed code-comment filename from App.js to App.jsx on line 318 for the same reason"
+      ],
+      "issues_reported": [
+        "Section order deviates from the standard cadence: 'Key Insight' (line 12) appears before 'Detailed Description' (line 16), but the rest of docs/{ui,state,server} follows Glossary -> Detailed Description -> Key Insight. Reordering touches structural headings, so flagging rather than fixing.",
+        "Practical and Advanced examples (ToggleSwitch in React, Card in Vue) are stand-alone snippets that don't correspond to anything in templates/chota-*; sibling docs in docs/ui generally root practical examples in the actual template tree. Worth aligning in a follow-up.",
+        "Quiz Q1 is narrowly Web-Components-specific (Custom Elements / Shadow DOM / Templates) while the rest of the doc is framework-agnostic; a learner who understood the doc could still miss this question. Consider rephrasing to test the cross-framework concept the page actually teaches."
+      ]
+    },
+    "ui/props": {
+      "doc": "ui/props",
+      "last_sha": "b02874c246721882e906a77fc54dbc9c5f3a7fec",
+      "last_reviewed_at": "2026-04-26T13:12:13Z",
+      "score": 24,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Rewrote the awkward 'it will get easier once you'll see' sentence on line 378 for grammar and flow",
+        "Replaced the bare 'Click here' anchor on line 384 with descriptive link text ('difference between props and attributes')",
+        "Expanded References (lines 577-580) from 2 bare URLs to 6 named topical links covering React, Vue, Angular, Lit, freeCodeCamp, and the WC attributes/properties article"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the page convention: Key Insight (line 12) appears BEFORE Detailed Description (line 16). The standard family template specifies Glossary -> Detailed Description -> Key Insight; consider swapping these two sections.",
+        "The Glossary blockquote at lines 8-10 has no preceding 'Glossary' or summary heading; other docs in the family typically introduce the blockquote with a one-line definition or label.",
+        "Practical Example (TypeScript UserCard, lines 161-276) and Advanced Example (Card composition, lines 282-376) are pure React/TS — they break the cross-framework promise set up by the Basic Example and don't reference any path under templates/. Consider aligning at least one with the chota-* templates.",
+        "Hook is weak: the page jumps from glossary to a fairly abstract Key Insight paragraph with no concrete teaser. A one-line motivating example before Detailed Description would lift the hook score."
+      ]
+    },
+    "ui/events": {
+      "doc": "ui/events",
+      "last_sha": "83af18c47620c41c26f273dad91dc167f9e29f1d",
+      "last_reviewed_at": "2026-04-26T13:12:59Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Replaced literal '\\u2014' escape sequence with em dash on line 15 (was rendering as raw text in Key Insight)",
+        "Added missing terminal period to the parenthetical on line 21"
+      ],
+      "issues_reported": [
+        "References section is a numbered perplexity-style citation dump with duplicate [1]-[9] sequences (two interleaved lists) and a stray bare URL at the top, rather than the 4-6 named topical links the rubric expects; restructuring would touch >30 lines so flagging instead.",
+        "Back half of the doc (Types of HTML Element Events table + per-framework Framework transformation section + Comparison Table + Summary) duplicates content already covered by the cross-framework Basic Example tabs and is mostly reference prose with weak narrative glue, hurting cadence/engagement before the quiz; consolidating is structural.",
+        "Quiz Q3 and Q5 have correct-answer options that are visibly the longest by a wide margin, letting test-takers guess by length rather than understanding (cannot fix per hard constraint on quiz letters/options).",
+        "Practical Example HTML uses two separate <script> blocks inside one <body> with overlapping concepts (propagation vs delegation); not strictly broken but flows oddly as a single 'example'."
+      ]
+    },
+    "server/container": {
+      "doc": "server/container",
+      "last_sha": "95ad31d4f7edfb1e9e9a28027c3952cd21ce6baf",
+      "last_reviewed_at": "2026-04-26T13:12:37Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Removed orphan mid-document 'References' heading and stale single bare link sitting between Detailed Description and Code Examples (lines 48-50)",
+        "Expanded the bottom References section from 2 bare numbered links to 6 named topical links covering Container Components, Smart/Dumb Components, Redux UI tutorial, React Hooks, NgRx Component guide, and Pinia outside-component usage (lines ~898-905)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the rubric: the doc has Glossary -> Key Insight -> Detailed Description, but the established structure is Glossary -> Detailed Description -> Key Insight -> Basic Example. Reordering touches >40 lines so it is left for human review.",
+        "Practical Example: Modern React Hooks Approach (lines ~270-365) and Advanced Example: Redux Container Pattern (lines ~368-573) are generic invented snippets that do NOT correspond to anything under templates/. They reference paths like hooks/useTodos.js, actions/userActions.js, containers/UserListContainer.js, slices/userSlice.js that don't exist in chota-*. Only the Basic Example is faithful to the templates.",
+        "Practical Example imports `TodoList from '../components/TodoList'` while the Basic Example correctly imports from `../ui/organisms/TodoList/TodoList.component` — inconsistency that may confuse learners following the atomic-design layout described in the skills.",
+        "Cadence: the doc front-loads with a long Detailed Description (~30 lines of bullet lists) before the first code, then dumps two ~100-200 line examples back-to-back with no narrative glue between them. Could benefit from short transitional paragraphs.",
+        "Basic Example's intra-tab comments mention 'The chota-react-rtk variant is identical' and 'WC-Saga TodoListContainer does the same thing' but no separate RTK tab is shown — readers may want either an explicit RTK tab or that note moved to the post-tab summary."
+      ]
     }
   }
 }
