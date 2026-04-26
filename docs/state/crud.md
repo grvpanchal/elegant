@@ -41,24 +41,24 @@ For state management actions, there are some common naming conventions and best 
 
 By following these conventions, you can create a more organized and maintainable state management codebase. The specific naming convention you choose should be consistent throughout your project and easily understood by your team.
 
-Below is an example of basic implementation of CRUD naming for you state actions
+Below is an example of a basic implementation of CRUD naming for your state actions.
 
 ```jsx
-   // ...
-   useEffect(() => {
-    dispatch(readTodo());
-  }, [dispatch])
+// ...
+useEffect(() => {
+  dispatch(readTodo());
+}, [dispatch]);
 
-   const events = {
-    onTodoCreate: (payload) => dispatch(createTodo(payload)),
-    onTodoEdit: (payload) => dispatch(editTodo(payload)),
-    onTodoUpdate: (text) =>
-      dispatch(updateTodo({ id: todoData.currentTodoItem.id, text })),
-    onTodoToggleUpdate: (id) => dispatch(toggleTodo(id)),
-    onTodoDelete: (payload) => dispatch(deleteTodo(payload)),
-  };
-  // ...
-  ```
+const events = {
+  onTodoCreate: (payload) => dispatch(createTodo(payload)),
+  onTodoEdit: (payload) => dispatch(editTodo(payload)),
+  onTodoUpdate: (text) =>
+    dispatch(updateTodo({ id: todoData.currentTodoItem.id, text })),
+  onTodoToggleUpdate: (id) => dispatch(toggleTodo(id)),
+  onTodoDelete: (payload) => dispatch(deleteTodo(payload)),
+};
+// ...
+```
 
 ## References
 - [1] https://en.wikipedia.org/wiki/CRUD_(acronym)

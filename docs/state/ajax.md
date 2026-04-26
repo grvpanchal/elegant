@@ -28,10 +28,10 @@ AJAX (Asynchronous JavaScript and XML) is a technique used in web development to
 - Example:
 ```js
 const xhttp = new XMLHttpRequest();
-xhttp.onload = function() {
+xhttp.onload = function () {
   document.getElementById("demo").innerHTML = this.responseText;
-  }
-  xhr.timeout = 10000;
+};
+xhttp.timeout = 10000;
 xhttp.open("GET", "ajax_info.txt", true);
 xhttp.send();
 ```

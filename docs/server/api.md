@@ -577,12 +577,12 @@ REST (Representational State Transfer) is an architectural style for designing n
 - **Purpose**: Send data to the server to create a new resource.
 - **Usage**: Used for actions like user registration, adding new items, etc.
 
-### 2. **PUT**
+### 3. **PUT**
 - **Purpose**: Update an existing resource on the server.
 - **Usage**: Used for actions like updating user information, modifying items, etc.
 
 
-### 2. **DELETE**
+### 4. **DELETE**
 - **Purpose**: Remove a resource from the server.
 - **Usage**: Used for actions like deleting user accounts, removing items, etc.
 
@@ -605,7 +605,7 @@ Although it is well known that GraphQL and REST APIs both use the same set of AP
 XML-RPC (Extensible Markup Language-Remote Procedure Call) can be described as another type of API protocol, which differentiates itself in terms of information security and the use of XML format that is specifically designed for transferring data. When compared to SOAP-based APIs, the XML-RPC protocols are easier and much simpler to use since they use minimum bandwidth.
 
 ### 5. WebSocket
-A two-way interactive communication session between the user’s browser and a server can be made smoother and faster with the help of an organized set of APIs known as WebSockets. WebSocket APIs play a vital role in helping receive event-driven responses, and they also help in easier management of sending messages to a server. Plus, the entire process involving this doesn’t even require having to poll the server in order to receive a reply.
+A two-way interactive communication session between the user's browser and a server can be made smoother and faster with the help of an organized set of APIs known as WebSockets. WebSocket APIs play a vital role in helping receive event-driven responses, and they also help in easier management of sending messages to a server. Plus, the entire process involving this doesn't even require having to poll the server in order to receive a reply.
 
 ## Quick Quiz
 

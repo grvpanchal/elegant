@@ -554,6 +554,142 @@
         "Engagement glue is thin: only one outbound link ([Store](store.html)) in the entire doc."
       ]
     },
+    "state/ajax": {
+      "doc": "state/ajax",
+      "last_sha": "0408893b3e57ec72f1bd0f444931f330b632578e",
+      "last_reviewed_at": "2026-04-26T13:25:00Z",
+      "score": 7,
+      "axes": {
+        "hook": 2,
+        "cadence": 2,
+        "concreteness": 2,
+        "common_mistakes": 0,
+        "quiz_quality": 0,
+        "engagement_glue": 1
+      },
+      "issues_fixed": [
+        "Fixed broken XHR code snippet: corrupted indentation, missing semicolon on the onload assignment, and a typo where `xhr.timeout` referenced an undefined variable (the rest of the snippet uses `xhttp`)"
+      ],
+      "issues_reported": [
+        "MAJOR: Doc is missing most of the standard terminology-page sections. Present: Glossary blockquote, Detailed Description, References. Missing: explicit Key Insight callout, Basic Example with cross-framework tabs, Practical Example, Advanced Example, Common Mistakes, and Quiz.",
+        "MAJOR: No cross-framework code tabs at all. The doc shows raw XHR/Fetch snippets but never demonstrates how Redux/RTK/Saga/NgRx/Pinia/Lit-Saga templates actually invoke AJAX (thunk vs createAsyncThunk vs saga `call`/`put` vs NgRx effect with `HttpClient` vs Pinia action).",
+        "Axios and jQuery sections lack code samples while XHR and Fetch have them — inconsistent cadence.",
+        "Hook is weak: opens with the acronym expansion and a definition. A scenario-driven hook would land better.",
+        "MAJOR: No quiz block, so quiz_quality cannot be scored — flagged 0.",
+        "MAJOR: No Common Mistakes section. Candidates: forgetting to handle non-2xx fetch responses (fetch only rejects on network errors), CORS preflight surprises, race conditions, leaking AbortControllers, parsing JSON before checking response.ok.",
+        "References list is link-only with no titles."
+      ]
+    },
+    "state/crud": {
+      "doc": "state/crud",
+      "last_sha": "9f610795802508886565e77fed4ae36c01b29f53",
+      "last_reviewed_at": "2026-04-26T13:25:01Z",
+      "score": 9,
+      "axes": {
+        "hook": 2,
+        "cadence": 2,
+        "concreteness": 2,
+        "common_mistakes": 0,
+        "quiz_quality": 0,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fixed typo 'you state actions' -> 'your state actions' and tightened the lead-in sentence before the code block",
+        "Normalized indentation inside the jsx code block (was indented under list-style spacing) and added missing semicolons / trailing fence cleanup"
+      ],
+      "issues_reported": [
+        "MAJOR: Doc is missing the standard structure almost entirely: no Glossary heading, no Detailed Description heading, no Key Insight, no cross-framework Basic Example tabs, no Practical Example, no Advanced Example, no Common Mistakes, and no Quiz section. Only a blockquote, prose, one jsx snippet, and References exist.",
+        "MAJOR: No cross-framework code tabs - other state docs in this directory provide Redux / RTK / Saga / NgRx / Pinia / Lit-Saga variants.",
+        "The single code example references undefined helpers (createTodo, readTodo, editTodo, updateTodo, toggleTodo, deleteTodo, todoData) without showing where they come from.",
+        "Hook is weak: the doc opens with the acronym expansion and a SQL mapping table, but never motivates why CRUD naming matters for client-side state.",
+        "List item 10 invents conventions ('_INIT', '_UPDATE' suffixes) that are not used anywhere in the elegant templates and contradict guidance in sibling docs (which use REQUEST/SUCCESS/FAILURE triples).",
+        "MAJOR: No quiz block.",
+        "Reference list is 15 links long with no annotation or grouping; several (Reddit, StackOverflow, generic glossary blogs) are low-signal."
+      ]
+    },
+    "state/operations": {
+      "doc": "state/operations",
+      "last_sha": "e57cdadfc65226bac60c9ee0b823c91a1fc2803e",
+      "last_reviewed_at": "2026-04-26T13:25:46Z",
+      "score": 7,
+      "axes": {
+        "hook": 2,
+        "cadence": 2,
+        "concreteness": 1,
+        "common_mistakes": 0,
+        "quiz_quality": 0,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Strengthened the opening hook with a 'race between network and user attention' frame and tied the doc to the repo's Redux/NgRx/Pinia/Saga templates",
+        "Expanded Explicit State Management bullets to explain why each flag matters and connected the pattern to the request/success/fail action triple used by Redux-family templates and to Pinia's reactive fields",
+        "Rewrote the Optimistic Updates paragraph to describe the rollback path and give a concrete example (like-button, add-todo) instead of a vague 'more responsive feel'",
+        "Rewrote Batching and Debouncing with concrete triggers (search-as-you-type, draggable canvas) and explained what each technique actually does",
+        "Reframed the ConfigureAwait section so the .NET advice is explicitly mapped to a JS/browser analog",
+        "Added a concluding sentence that ties the four strategies together as a closing transition"
+      ],
+      "issues_reported": [
+        "MAJOR: Doc is missing the standard structure entirely: no Glossary, no explicit Detailed Description heading, no Key Insight callout, no Basic/Practical/Advanced Examples with cross-framework code tabs, no Common Mistakes section, and no MCQ Quiz.",
+        "The 'ConfigureAwait for Performance' section originates from a .NET/C# reference. Recommend renaming the heading to something framework-neutral (e.g. 'Scheduling and Context') in a structural pass.",
+        "Reference list is bloated: 16 numbered citations but only [1], [2], [4], and [5] are cited inline.",
+        "Concreteness is the weakest axis: there is not a single code snippet, despite this being a cross-framework state-management doc where the request/success/fail triple, useOptimistic usage, and saga try/catch error handling all have canonical short examples."
+      ]
+    },
+    "server/api": {
+      "doc": "server/api",
+      "last_sha": "8fc742a68b5ac9d57eaf222c98a636eb344ecf4f",
+      "last_reviewed_at": "2026-04-26T13:25:22Z",
+      "score": 19,
+      "axes": {
+        "hook": 3,
+        "cadence": 2,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Renumbered REST Processes headings (2.PUT and 2.DELETE) to 3 and 4 respectively to fix duplicate ordinal",
+        "Replaced curly apostrophes with straight ASCII apostrophes in WebSocket paragraph for consistency"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Section ordering violates the standard (Glossary -> Detailed Description -> Key Insight). Doc currently has Glossary blockquote -> Key Insight -> Detailed Description.",
+        "STRUCTURAL: Lines 467-608 contain a large block of orphan/duplicate content (Benefits, Example Implementation, REST Processes, Types of web-based APIs) that duplicates earlier sections and was never integrated.",
+        "STRUCTURAL: Doc has no cross-framework code tabs as the standard structure requires. All examples are React-only.",
+        "QUIZ MISMATCH: Quiz api-1 asks 'What is the primary purpose of request and response interceptors in an API client?' but options A-D are all about REST vs GraphQL vs WebSocket transport differences (same content as api-5). The correct answer B and explanation reference interceptors only obliquely.",
+        "Detailed Description paragraphs are very long (5-7 lines each) with inline numbered lists in parentheses.",
+        "Section heading '### 2. REST Processes' appears with H3 level and ordinal '2' without a preceding '1', signalling it was copy-pasted from another doc.",
+        "Key Insight paragraph is one sentence of 80+ words; splitting into 2-3 sentences would improve the hook.",
+        "References section is thin (3 links); could add MDN Fetch API, MSW, OpenAPI/Swagger references."
+      ]
+    },
+    "server/router": {
+      "doc": "server/router",
+      "last_sha": "fd2a171bf80ec8d967dbd1788923862b566807eb",
+      "last_reviewed_at": "2026-04-26T13:25:34Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 2,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Quiz router-1: question asked 'How does client-side routing avoid a full page reload?' but the four options were about useParams/useLocation/useNavigate (a copy-paste of router-2's options). Rewrote options A-D to match the question while keeping correct='B' (the pushState/popstate explanation now aligns with both the question and the explanation block)"
+      ],
+      "issues_reported": [
+        "Section ordering inverts the standard: 'Key Insight' appears BEFORE 'Detailed Description'.",
+        "Missing cross-framework code tabs. All three code examples are React-only — no Vue Router, Angular Router, or Lit/web-component sibling examples.",
+        "No explicit '## Glossary' heading — the doc opens with a blockquote of three bullets acting as a glossary.",
+        "Quiz router-2 still has very thin distractors ('They're synonyms', 'useParams is server-only', 'They only work in Remix') that don't teach a meaningful misconception.",
+        "Quiz router-5: distractors A/B/C are one-liners that no learner would seriously pick; correct answer D is ~3x longer than the others, which telegraphs the right choice.",
+        "Hook is functional but flat. A concrete pain-point opener would land harder.",
+        "Common Mistake #2 mixes RR v5 and v6 in the same example, which may confuse learners on v6+.",
+        "References list is all third-party blog posts; no link to React Router / Vue Router / Angular Router official docs."
+      ]
+    },
     "ui/theme": {
       "doc": "ui/theme",
       "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",
