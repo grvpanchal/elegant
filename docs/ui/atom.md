@@ -155,13 +155,13 @@ export default function Button(props) {
 
 A few things worth comparing across the tabs:
 
-- **Children projection.** React uses `{props.children}`, Angular uses `<ng-content>`, Vue and Web Components both use `<slot>` — four spellings of the same idea.
+- **Children projection.** React uses `{props.children}`, Angular uses `<ng-content>`, Vue and Web Components both use `<slot>` — three spellings of the same idea across four frameworks.
 - **Event shape.** React passes `onClick` through as a plain prop. Angular exposes an `@Output() EventEmitter`. Vue emits `'onClick'` via `$emit`. The Lit-based WC uses a tiny `emit(this, "onClick", props)` helper wrapping `CustomEvent`.
 - **Styling.** Every template co-locates `Button.style.css` next to the component; Angular and Vue scope it, React imports it side-effect style, WC injects via `useComputedStyles`.
 
-### Advanced Example: Icon Atom with Dynamic SVG Loading
+### Advanced Example: Icon Atom with a Path Lookup Table
 
-A production-ready icon atom demonstrating flexibility and optimization:
+A small icon atom showing how a single component can render any one of N variants from a static lookup, while keeping the prop surface tiny:
 
 ```jsx
 // Icon.js
@@ -344,3 +344,7 @@ const IconButton = ({ onClick, icon, ariaLabel }) => (
 ## References
 
 - [Atoms — Atomic Design (Brad Frost)](https://atomicdesign.bradfrost.com/chapter-2/#atoms)
+- [Atomic Design overview](atomic-design.html) — where atoms sit relative to molecules, organisms, and templates
+- [Molecule](molecule.html) — the next composition layer up, where atoms start combining
+- [Container](../server/container.html) — where the business logic and data-fetching that atoms must *not* contain actually lives
+- [React.memo](https://react.dev/reference/react/memo) and [Vue functional components](https://vuejs.org/guide/extras/render-function.html#functional-components) — framework-level optimizations that pair naturally with pure atoms

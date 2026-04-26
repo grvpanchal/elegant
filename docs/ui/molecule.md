@@ -6,8 +6,8 @@ slug: molecule
 # Molecule
 
 > - Comprised of multiple atoms or molecules
-> - Populates a grouped or assembled sections of UI
-> - Creates functional UI patterns with single purpose
+> - Populates grouped or assembled sections of UI
+> - Creates functional UI patterns with a single purpose
 
 ## Key Insight
 
@@ -224,7 +224,7 @@ function AddTodoForm({ buttonInfo, placeholder, isLoading, todoValue }) {
 
 Notice how the *composition* is identical — two atom children inside a `.grouped` wrapper with a submit handler — while the idiomatic surroundings change (`ngOnChanges` vs `watch` vs `useEffect`, `@Output` vs `$emit` vs `emit`, etc.). That is the whole point of organising UI at the molecule level: the shape is portable; the syntax is not.
 
-### Practical Example: Form Field Molecule with Validation
+### Practical Example: LoginForm Molecule
 
 Here is a simple molecule example called `LoginForm` that combines two atoms: an `Input` atom and a `Button` atom. The `LoginForm` molecule represents a common user interface pattern where users can input their credentials and submit the form:
 
@@ -271,7 +271,7 @@ export default LoginForm;
 
 In this example, the `LoginForm` molecule encapsulates the UI for a login form. It consists of two `Input` atoms for the username and password fields, and a `Button` atom for submitting the form. The `LoginForm` molecule manages the local state for the username and password inputs and defines a `handleLogin` function that could contain the logic for authenticating the user.
 
-Now, we can use the `LoginForm` molecule in your application:
+Now, we can use the `LoginForm` molecule in our application:
 
 ```jsx
 // App.js
@@ -662,3 +662,7 @@ const FormField = ({ label, value, onChange, error, required }) => (
 ## References
 
 - [Molecules — Atomic Design (Brad Frost)](https://atomicdesign.bradfrost.com/chapter-2/#molecules)
+- [Atomic Design overview](atomic-design.html) — where molecules sit between atoms and organisms
+- [Atom](atom.html) and [Organism](organism.html) — the layers immediately above and below
+- [Component Driven User Interfaces](https://www.componentdriven.org/) — the broader case for composing UIs from small, isolated parts
+- [Storybook: Component-Driven Development](https://storybook.js.org/tutorials/intro-to-storybook/) — building and documenting molecules in isolation

@@ -23,6 +23,30 @@
         "Detailed Description is four stacked bulleted lists (Why Matters / POUR / Key Technologies) with almost no connective prose — cadence suffers; consider folding POUR into a single short paragraph since it already appears in Key Insight",
         "Practical Example (lines ~175-406) and Advanced Example (lines ~408-667) are huge standalone HTML files that don't reference any chota-* template — they duplicate the cross-framework section's purpose and should be trimmed to the patterns the templates actually demonstrate, or moved to a separate 'ARIA cookbook' page"
       ]
+    },
+    "ui/atom": {
+      "doc": "ui/atom",
+      "last_sha": "dbf4115917135da796b65f095bd526cf3cafbc54",
+      "last_reviewed_at": "2026-04-26T07:05:00Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Corrected 'four spellings' children-projection bullet to 'three spellings... across four frameworks' (line 158)",
+        "Reworded Advanced Example heading + lede away from misleading 'flexibility and optimization' framing (line 162)",
+        "Expanded References from 1 bare link to 5 named cross-links (atomic-design, molecule, container, React.memo, Vue functional components)"
+      ],
+      "issues_reported": [
+        "Advanced Example (lines 166-231) is a generic React-only Icon + SearchButton that does not reference any chota-* template — out of step with the Basic Example which sources verbatim from all four templates; consider replacing with a real atom from templates/ (e.g., Loader, Input) or removing in favour of more chota-pulled prose",
+        "Detailed Description has five 100-180 word paragraphs back-to-back with no list, callout, or code break — cadence is uniform and skim-resistant; one paragraph could be a 3-bullet list (e.g., the design-system-consistency paragraph at line 23)",
+        "Common Mistakes are solid but all three pick the same straw target (button doing too much / inconsistent props / missing aria); a fourth on 'baking a specific data shape into the atom' would broaden the failure modes covered"
+      ]
     }
   }
 }
