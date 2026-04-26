@@ -10,10 +10,6 @@ slug: api
 > - Centralizes server communication with consistent patterns
 > - Handles authentication, error handling, and caching
 
-## Key Insight
-
-API services are the bridge between your frontend and backend—your application's nervous system coordinating all data flow with consistency, error handling, and authentication built-in. By centralizing API logic into a structured client layer, you eliminate scattered fetch calls, ensure predictable error handling, and create a single source of truth for all server communication that scales from simple CRUD operations to complex multi-service architectures.
-
 ## Detailed Description
 
 API services transform chaotic, duplicated data fetching into an organized, maintainable architecture. Instead of scattering `fetch()` calls throughout your codebase with inconsistent error handling and duplicated authentication logic, a well-designed API layer centralizes all server communication into reusable service modules with consistent patterns for requests, responses, errors, caching, and retry logic.
@@ -29,6 +25,10 @@ TypeScript integration elevates API services from simple wrappers to typed contr
 Performance optimization with API services includes: (1) **Request deduplication** preventing parallel identical requests (React Query, SWR), (2) **Response caching** storing frequently accessed data (cache-control headers, client-side LRU cache), (3) **Optimistic updates** showing UI changes before server confirms (instant perceived responsiveness), (4) **Batch operations** combining multiple requests into one (GraphQL, custom batch endpoints), (5) **Retry strategies** with exponential backoff for failed requests, (6) **Request cancellation** aborting outdated requests (AbortController) when user navigates away.
 
 Testing API services becomes straightforward with centralized logic. Mock the base HTTP client once, and all service methods inherit mocked behavior. Use tools like MSW (Mock Service Worker) intercepting network requests at the network level for realistic integration tests, or simple jest.mock() for unit tests. Services return predictable promises making async testing with async/await or waitFor simple and reliable.
+
+## Key Insight
+
+API services are the bridge between your frontend and backend—your application's nervous system coordinating all data flow with consistency, error handling, and authentication built-in. Centralizing API logic into a structured client layer eliminates scattered fetch calls and creates a single source of truth for server communication. The result scales cleanly from simple CRUD operations to complex multi-service architectures.
 
 ## Code Examples
 
@@ -464,156 +464,13 @@ console.log(user.name);  // Autocomplete works
 
 **Why it matters:** Types catch errors at compile time and provide documentation.
 
-## Benefits
-
-- **Consistency**: Centralizing API interactions ensures consistent handling of requests and responses.
-- **Reusability**: Common logic for API calls can be reused across different parts of the application.
-- **Maintainability**: Easier to update and maintain API-related code in a single place.
-- **Scalability**: Simplifies the process of adding new API endpoints and services.
-
-## Example Implementation
-
-### API Client (using axios)
-
-```javascript
-import axios from 'axios';
-
-const apiClient = axios.create({
-  baseURL: 'https://api.example.com',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-apiClient.interceptors.request.use(
-  (config) => {
-    // Add authorization token if available
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Handle common errors (e.g., 401 Unauthorized)
-    if (error.response.status === 401) {
-      // Redirect to login or refresh token
-    }
-    return Promise.reject(error);
-  }
-);
-
-export default apiClient;
-```
-
-### Service layer
-```javascript
-import apiClient from './apiClient';
-
-const UserService = {
-  getUser(userId) {
-    return apiClient.get(`/users/${userId}`);
-  },
-  createUser(userData) {
-    return apiClient.post('/users', userData);
-  },
-  updateUser(userId, userData) {
-    return apiClient.put(`/users/${userId}`, userData);
-  },
-  deleteUser(userId) {
-    return apiClient.delete(`/users/${userId}`);
-  },
-};
-
-export default UserService;
-```
-
-### Usage in component
-
-```jsx
-import React, { useEffect, useState } from 'react';
-import UserService from './services/UserService';
-
-const UserProfile = ({ userId }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    UserService.getUser(userId)
-      .then((response) => setUser(response.data))
-      .catch((error) => console.error(error));
-  }, [userId]);
-
-  return user ? (
-    <div>
-      <h1>{user.name}</h1>
-      <p>{user.email}</p>
-    </div>
-  ) : (
-    <p>Loading...</p>
-  );
-};
-
-export default UserProfile;
-```
-
-
-### 2. REST Processes
-
-## Overview
-REST (Representational State Transfer) is an architectural style for designing networked applications. It relies on stateless, client-server communication, often using HTTP. In frontend architecture, RESTful APIs provide a standard way to interact with backend services, enabling the frontend to perform CRUD (Create, Read, Update, Delete) operations.
-
-## Key REST Processes
-
-### 1. **GET**
-- **Purpose**: Retrieve data from the server.
-- **Usage**: Used to fetch resources such as user data, product lists, etc.
-
-### 2. **POST**
-- **Purpose**: Send data to the server to create a new resource.
-- **Usage**: Used for actions like user registration, adding new items, etc.
-
-### 3. **PUT**
-- **Purpose**: Update an existing resource on the server.
-- **Usage**: Used for actions like updating user information, modifying items, etc.
-
-
-### 4. **DELETE**
-- **Purpose**: Remove a resource from the server.
-- **Usage**: Used for actions like deleting user accounts, removing items, etc.
-
-## Types of web-based APIs
-
-### 1. REST-based APIs
-A data-driven architectural style of API development, REST (Representational State Transfer) is one of the most lucrative categories of web-based APIs. Based on Uniform Resource Identifiers (URIs) and HTTP protocol, REST-based APIs use JSON for data formatting which is considered to be browser-compatible.
-
-REST-based APIs are extremely simple when it comes to building and scaling as compared to other types of APIs. When these types of APIs are put to action, they help facilitate client-server communications with ease and smoothness. Because REST-based APIs are simple, they can be the perfect APIs for beginners.
-
-### 2. SOAP-based APIs
-As compared to its peers, SOAP-based APIs (Simple Object Access Protocol) can be viewed as quite complex in terms of use. These APIs use a type of protocol known as Simple Object Access Protocol, which is a common communication protocol. This helps them in providing higher levels of security and makes them better at accuracy as compared with the REST-based APIs in the way messages are exchanged.
-
-### 3. GraphQL-based APIs
-GraphQL is one of the most advanced sets of web-based APIs where open-source data query and manipulation language is used. This makes it easier for forming a definitive pathway for the runtime that plays a vital role in fulfilling queries with the pre-existing data.
-
-Although it is well known that GraphQL and REST APIs both use the same set of APIs, the major thing that differentiates them is the interface: a single interface-id is put to use by GraphQL when it comes to organizing data into the format of a graph.
-
-### 4. XML-RPC
-XML-RPC (Extensible Markup Language-Remote Procedure Call) can be described as another type of API protocol, which differentiates itself in terms of information security and the use of XML format that is specifically designed for transferring data. When compared to SOAP-based APIs, the XML-RPC protocols are easier and much simpler to use since they use minimum bandwidth.
-
-### 5. WebSocket
-A two-way interactive communication session between the user's browser and a server can be made smoother and faster with the help of an organized set of APIs known as WebSockets. WebSocket APIs play a vital role in helping receive event-driven responses, and they also help in easier management of sending messages to a server. Plus, the entire process involving this doesn't even require having to poll the server in order to receive a reply.
-
 ## Quick Quiz
 
 {% include quiz.html id="api-1"
    question="What is the primary purpose of request and response interceptors in an API client?"
-   options="A|They are three names for the same transport — REST is the HTTP version, GraphQL is the websocket version, and WebSocket is the HTTP/2 version;;B|REST is resource-oriented over HTTP with multiple endpoints and strong caching. GraphQL is a single endpoint where the client specifies exactly the fields it needs — reduces over-fetch/under-fetch, one round trip for complex queries, but introduces its own caching and N+1 concerns. WebSocket is a persistent bidirectional connection for real-time push (chat, live dashboards, presence). Most large apps mix all three by use case;;C|GraphQL has replaced REST and WebSocket for modern applications, which is why Facebook deprecated their REST gateway in 2019;;D|WebSocket only works in Node.js environments; REST is for browsers and GraphQL is for mobile apps"
+   options="A|They replace the network transport layer, swapping HTTP for WebSocket or GraphQL on the fly depending on the endpoint;;B|They centralise cross-cutting concerns — attaching auth tokens, logging requests, normalising error shapes, transforming payloads, retrying on 401 with a refreshed token — so every call inherits that behaviour without each call site reimplementing it;;C|They are required by the HTTP spec for any request that uses cookies or custom headers, and skipping them causes browsers to block the request;;D|They are purely a performance optimisation that batches multiple requests into a single network call, with no effect on auth or error handling"
    correct="B"
-   explanation="Interceptors are the one place that knows about auth headers, retry logic, error normalisation — the rest of the codebase just calls api.get/api.post." %}
+   explanation="Interceptors are the one place that knows about auth headers, retry logic, and error normalisation — the rest of the codebase just calls api.get/api.post and inherits that behaviour for free." %}
 
 {% include quiz.html id="api-2"
    question="Which HTTP method should be used for which REST operation?"

@@ -27,6 +27,8 @@ Key characteristics:
 4. **FSA compliance** - Follow Flux Standard Action format for consistency
 5. **Immutable** - Action objects shouldn't be modified after creation
 
+With those rules in mind, let's see how the same intent gets expressed across the six template families.
+
 ## Code Examples
 
 ### Basic Example: Actions across state libraries
@@ -179,28 +181,7 @@ What to notice:
 - **NgRx** uses `createAction` + `props<...>()` to give you a typed creator that still produces a conventional `{ type, ...payload }` action object.
 - **Pinia** is the odd one out: it has no action *objects* at all. Actions are methods on the store that mutate `this` — the devtools still show them as discrete events, but you don't author a creator.
 
-// Usage in components
-import { useDispatch } from 'react-redux';
-import { addTodo, toggleTodo } from './actions';
-
-function TodoForm() {
-  const dispatch = useDispatch();
-  const [text, setText] = useState('');
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(addTodo(text));  // Dispatch action
-    setText('');
-  };
-  
-  return (
-    <form onSubmit={handleSubmit}>
-      <input value={text} onChange={e => setText(e.target.value)} />
-      <button type="submit">Add Todo</button>
-    </form>
-  );
-}
-```
+Synchronous creators are only half the story — most real apps need to dispatch actions in response to network calls, which is where thunks come in.
 
 ### Practical Example: Async Action Creators (Thunks)
 
@@ -260,6 +241,8 @@ function UsersList() {
   );
 }
 ```
+
+Once thunks feel natural, RTK's `createAction` and `createAsyncThunk` collapse most of the boilerplate into a few one-liners while staying FSA-compliant.
 
 ### Advanced Example: Flux Standard Actions with Redux Toolkit
 
@@ -367,6 +350,8 @@ export const likePost = (postId) => (dispatch, getState) => {
   }
 };
 ```
+
+Even with the right tooling in hand, a few action-shape pitfalls keep showing up across teams — here are the ones that bite most often.
 
 ## Common Mistakes
 
@@ -515,10 +500,10 @@ const usersSlice = createSlice({
 ## Quick Quiz
 
 {% include quiz.html id="actions-1"
-   question="What's the difference between an action type and an action creator?"
-   options="A|{ type, meta } — a minimal envelope where type identifies the action and meta carries the payload as a structured map, standardised by Redux 5;;B|{ type, payload, error?, meta? } — a consistent envelope where type identifies the action, payload carries the data, error=true flags failure (in which case payload is the Error), and meta holds cross-cutting info (requestId, timestamp, optimistic). createAction in RTK emits FSA-compliant creators by default;;C|Any plain object — Redux imposes no shape on actions as long as they can be serialized;;D|{ op, args, id } — an RPC-style envelope borrowed from JSON-RPC 2.0"
+   question="What shape does an FSA-compliant action object follow?"
+   options="A|{ type, meta } — a minimal envelope where type identifies the action and meta carries the payload as a structured map;;B|{ type, payload, error?, meta? } — a consistent envelope where type identifies the action, payload carries the data, error=true flags failure (in which case payload is the Error), and meta holds cross-cutting info (requestId, timestamp, optimistic). createAction in RTK emits FSA-compliant creators by default;;C|Any plain object — Redux imposes no shape on actions as long as they can be serialized;;D|{ op, args, id } — an RPC-style envelope borrowed from JSON-RPC 2.0"
    correct="B"
-   explanation="Types are the wire format. Creators encapsulate payload shaping, default fields, and any input coercion so callers just pass raw data." %}
+   explanation="The Flux Standard Action contract is { type, payload, error?, meta? }. RTK's createAction emits FSA-compliant creators by default, so most middleware and devtools assume this shape." %}
 
 {% include quiz.html id="actions-2"
    question="When should you reach for a thunk (or RTK's createAsyncThunk) vs a plain action creator?"

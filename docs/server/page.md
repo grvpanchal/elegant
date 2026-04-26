@@ -782,221 +782,45 @@ export default function App({ Component, pageProps }) {
 
 ## Quiz
 
-### Question 1: Page vs Template Distinction
+{% include quiz.html
+  id="page-1"
+  question="What's the fundamental difference between a page and a template?"
+  options="A: Pages are styled while templates are unstyled wireframes;;B: Templates handle routing while pages handle layout;;C: A page binds a template to specific data and a route, while a template is an abstract, reusable layout pattern;;D: Pages and templates are interchangeable terms for the same concept"
+  correct="C"
+  explanation="A template defines an abstract, reusable layout (e.g. ProductTemplate's hero/specs/reviews structure). A page is the concrete instance: it owns a route, fetches the data, and feeds that data into the template. The same template can back thousands of pages."
+%}
 
-**Q**: What's the fundamental difference between a page and a template? When would you create a new template vs. a new page?
+{% include quiz.html
+  id="page-2"
+  question="Where should data fetching live in a page/template architecture?"
+  options="A: Inside the template, so each template owns its own data;;B: Inside leaf atoms and molecules so they fetch what they render;;C: At the page level via loaders such as getServerSideProps, getStaticProps, or a route loader, which then pass data into the template as props;;D: In a global singleton store that templates read from directly"
+  correct="C"
+  explanation="Data fetching is a page-level concern. The page (route) runs the loader (getServerSideProps / getStaticProps / loadPage / route loader), and passes the resulting data into a pure presentational template. This keeps templates reusable across different data sources."
+%}
 
-**A**:
+{% include quiz.html
+  id="page-3"
+  question="Who should own SEO metadata (title, description, Open Graph tags) in an SSR app?"
+  options="A: A single global _app/layout component, so every route shares one title and description;;B: The template, since templates know what content they render;;C: Each page sets its own title, description, and Open Graph tags because metadata is route-specific;;D: The CDN, via response headers"
+  correct="C"
+  explanation="SEO metadata is route-specific: Google indexes pages, not templates. Each page should set its own <title>, meta description, and Open Graph tags based on the data it loaded. A single global title across every route causes pages to compete for the same keywords."
+%}
 
-**Templates** are abstract, reusable layout patterns. **Pages** are concrete instances filled with real content.
+{% include quiz.html
+  id="page-4"
+  question="A product page can't find the requested product. Which response is the soft-404 antipattern?"
+  options="A: Return HTTP 404 with a helpful 'Not Found' template;;B: Return HTTP 200 with a 'Product not found' UI rendered in the normal layout;;C: Use Next.js's notFound: true from getServerSideProps;;D: Redirect to a category page with HTTP 301"
+  correct="B"
+  explanation="Returning HTTP 200 with 'not found' content is the classic soft-404: search engines see a successful response and index the empty page. The correct behavior is to return a real 404 status (e.g. notFound: true in Next.js) so crawlers, caches, and analytics treat it as missing."
+%}
 
-**Template**: Defines structure without specific content
-```javascript
-function ProductTemplate({ product, onAddToCart }) {
-  return (
-    <div>
-      <h1>{product.name}</h1>
-      <img src={product.image} />
-      <p>${product.price}</p>
-      <button onClick={onAddToCart}>Add to Cart</button>
-    </div>
-  );
-}
-```
-
-**Page**: Fetches data and passes to template
-```javascript
-// pages/products/iphone-15.js
-export default function IPhone15Page({ product }) {
-  return <ProductTemplate product={product} />;
-}
-
-export async function getStaticProps() {
-  const product = await fetchProduct('iphone-15');
-  return { props: { product } };
-}
-```
-
-**When to create new template**:
-- Different layout structure (blog post ≠ product page ≠ profile page)
-- Different component composition (about page has timeline + team grid, product page has specs + reviews)
-- Different responsive behavior (dashboard multi-column, mobile single-column)
-
-**When to create new page**:
-- New URL route (`/products/new-item` = new page, same ProductTemplate)
-- Same layout, different content (1000 product pages from one ProductTemplate)
-- Same template, different data source (CMS pages all use LandingTemplate)
-
-**Example**: E-commerce site has 3 templates (ProductTemplate, CategoryTemplate, CheckoutTemplate) but 10,000 pages (9000 products, 50 categories, 1 checkout). Each product page uses ProductTemplate with different data.
-
-**Why it matters**: Over-templating creates maintenance burden (50 nearly-identical templates). Under-templating creates rigid pages (hardcoded content, can't reuse). Right balance: template per layout pattern, pages per content instance.
-
-### Question 2: Server-Side Data Fetching in Pages
-
-**Q**: Explain the difference between `getStaticProps`, `getServerSideProps`, and client-side fetching for pages. When would you use each?
-
-**A**:
-
-**getStaticProps** (Static Site Generation):
-```javascript
-export async function getStaticProps() {
-  const data = await fetch('https://api.example.com/data').then(r => r.json());
-  return {
-    props: { data },
-    revalidate: 60 // Regenerate every 60 seconds (ISR)
-  };
-}
-```
-- Runs at **build time** (or on-demand with ISR)
-- Generates static HTML files
-- **Fastest** (served from CDN)
-- **Use for**: Content that doesn't change often (blog posts, product pages, documentation)
-
-**getServerSideProps** (Server-Side Rendering):
-```javascript
-export async function getServerSideProps(context) {
-  const { userId } = context.req.cookies;
-  const userData = await fetch(`https://api.example.com/users/${userId}`).then(r => r.json());
-  return { props: { userData } };
-}
-```
-- Runs on **every request**
-- Generates fresh HTML per request
-- **Slower** (server processing on each load)
-- **Use for**: User-specific data (dashboard, profile), real-time data (stock prices), auth-required pages
-
-**Client-Side Fetching**:
-```javascript
-export default function Page() {
-  const [data, setData] = useState(null);
-  
-  useEffect(() => {
-    fetch('/api/data').then(r => r.json()).then(setData);
-  }, []);
-  
-  if (!data) return <Loading />;
-  return <div>{data.content}</div>;
-}
-```
-- Runs in **browser after page load**
-- Shows loading state initially
-- **Best for**: Data that changes frequently, personalized content, non-SEO-critical data
-
-**Decision Matrix**:
-
-| Data Type | Method | Why |
-|-----------|--------|-----|
-| Blog posts | `getStaticProps` | Rarely change, need SEO |
-| Product catalog | `getStaticProps` + ISR | Change occasionally, need SEO |
-| User profile | `getServerSideProps` | User-specific, need fresh data |
-| Live chat messages | Client-side | Real-time updates |
-| Shopping cart | Client-side | Frequent updates, no SEO needed |
-| Search results | `getServerSideProps` | Query-dependent, need SEO |
-
-**Why it matters**: The wrong choice tanks performance. Using `getServerSideProps` for static blog posts adds ~200ms of server processing per request. Using client-side fetching for SEO-critical product pages hides content from Google crawlers.
-
-### Question 3: Page-Level Error Handling
-
-**Q**: How should pages handle errors (404, 500, data fetch failures)? What's the difference between client-side and server-side error handling?
-
-**A**:
-
-**Server-Side Error Handling** (Recommended):
-
-```javascript
-// pages/products/[id].js
-export default function ProductPage({ product, error }) {
-  if (error) {
-    return (
-      <ErrorTemplate 
-        statusCode={error.code}
-        message={error.message}
-      />
-    );
-  }
-  
-  return <ProductTemplate product={product} />;
-}
-
-export async function getServerSideProps({ params }) {
-  try {
-    const response = await fetch(`/api/products/${params.id}`);
-    
-    // Handle 404
-    if (response.status === 404) {
-      return {
-        notFound: true // Next.js shows 404 page
-      };
-    }
-    
-    // Handle other errors
-    if (!response.ok) {
-      return {
-        props: {
-          error: {
-            code: response.status,
-            message: 'Failed to load product'
-          }
-        }
-      };
-    }
-    
-    const product = await response.json();
-    return { props: { product } };
-    
-  } catch (error) {
-    // Network error, database down, etc.
-    return {
-      props: {
-        error: {
-          code: 500,
-          message: 'Server error'
-        }
-      }
-    };
-  }
-}
-```
-
-**Client-Side Error Handling**:
-
-```javascript
-export default function ProductPage({ productId }) {
-  const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
-  useEffect(() => {
-    fetch(`/api/products/${productId}`)
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(setProduct)
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [productId]);
-  
-  if (loading) return <LoadingTemplate />;
-  if (error) return <ErrorTemplate message={error} />;
-  return <ProductTemplate product={product} />;
-}
-```
-
-**Comparison**:
-
-| Aspect | Server-Side | Client-Side |
-|--------|-------------|-------------|
-| SEO | ✅ Google sees error page | ❌ Google sees loading state |
-| HTTP Status | ✅ Returns 404/500 | ⚠️ Always returns 200 |
-| Performance | ✅ No loading flicker | ❌ Shows loading spinner |
-| User Experience | ✅ Immediate error | ❌ Delay before error shows |
-
-**Best Practice**: Handle critical errors server-side (product not found → 404), handle recoverable errors client-side (reviews failed to load → show product anyway).
-
-**Why it matters**: Server-side errors return proper HTTP status codes (404, 500), which are crucial for SEO and browser caching. Client-side errors always return 200 OK with error content, confusing search engines and analytics. A product page returning 200 with a "Product not found" message tells Google the page exists (index it!), when it should return 404 (don't index).
+{% include quiz.html
+  id="page-5"
+  question="In a file-based router like Next.js, how do you declare a dynamic route that matches /products/iphone-15, /products/macbook, etc.?"
+  options="A: Create products.jsx and parse the URL manually inside the component;;B: Register the route in a central routes.config.js file;;C: Use a bracketed filename such as pages/[slug].jsx, pages/products/[slug].jsx, or app/products/[slug]/page.jsx;;D: Add a regex to next.config.js under rewrites"
+  correct="C"
+  explanation="File-based routers treat the filesystem as the route table. A bracketed segment in the filename (pages/[slug].jsx, pages/products/[slug].jsx, or app/products/[slug]/page.jsx) declares a dynamic parameter. The framework parses the URL and exposes the value via params/router."
+%}
 
 ## References
 
