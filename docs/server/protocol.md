@@ -6,9 +6,9 @@ slug: protocol
 
 # Protocol and Security
 
-> - Rules for communication between clients and servers
-> - HTTPS enables PWA features and encrypted communication
-> - Foundation for real-time and streaming capabilities
+> - Protocols are the rules clients and servers use to talk—and they decide what your app can even do
+> - HTTPS is no longer optional: Service Workers, Geolocation, and Camera APIs refuse to load without it
+> - HTTP/2 multiplexing, HTTP/3 over QUIC, and WebSocket upgrades unlock real-time and streaming features that HTTP/1.1 simply cannot deliver
 
 ## Key Insight
 

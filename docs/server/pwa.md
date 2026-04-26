@@ -8,7 +8,7 @@ slug: pwa
 
 ## Key Insight
 
-Progressive Web Apps transform browser-based applications into native-like experiences with offline functionality, home screen installation, push notifications, and background sync through Service Workers and Web App Manifests—bridging the gap between web reach (billions of devices without app stores) and native capabilities (offline access, notifications, smooth 60fps performance) while remaining installable, discoverable, and updateable without gatekeepers or downloads.
+Progressive Web Apps turn ordinary websites into installable, offline-capable, push-notifying apps — without an app store. Three pieces do the heavy lifting: a **Service Worker** (a programmable network proxy that intercepts fetches and caches responses), a **Web App Manifest** (JSON that tells the browser the app's name, icons, and how to launch it), and **HTTPS** (required for both). The payoff: web reach (billions of devices, search-discoverable, instant updates) plus native feel (offline, notifications, home-screen launch, 60fps) — with no gatekeepers and no multi-gigabyte downloads.
 
 ## Detailed Description
 
@@ -903,7 +903,7 @@ router.on('navigate', async (path) => {
 
 {% include quiz.html id="pwa-1"
    question="What are the states of a service worker's lifecycle?"
-   options="A|They are the same API — push and notification were unified into a single Web Push API in Chrome 110 for simpler usage;;B|Push API delivers a message from a server to the service worker even when the app is closed (via a push service like FCM with a VAPID-signed subscription). Notifications API renders a system-level notification (title, body, icon, actions). Push typically TRIGGERS a notification in the service worker, but each can be used without the other — you can show a notification without push, and you can receive a push without showing a notification;;C|Push is for Android only; Notification is for iOS only;;D|Push runs on the main thread while Notification runs in a Web Worker for isolation"
+   options="A|Register, Compile, Run, Terminate — a single linear path identical to a normal script's load sequence;;B|Register (page calls navigator.serviceWorker.register), Install (fires once per version — pre-cache assets in the install event with caches.open().addAll()), Activate (fires after the previous SW terminates — clean up old caches; clients.claim() takes control immediately), and Fetch (intercepts network requests via event.respondWith). A new SW waits in 'installed' state until all controlled tabs close, unless skipWaiting() forces immediate activation;;C|Mount, Update, Unmount — the same lifecycle as a React component, just running off the main thread;;D|Open, Read, Write, Close — service workers are essentially file handles for the Cache API"
    correct="B"
    explanation="Knowing the lifecycle is how you implement &quot;new version available — reload?&quot; UX correctly. skipWaiting() and clients.claim() let you force takeover, at the cost of potentially interrupting the running page." %}
 
@@ -947,12 +947,12 @@ router.on('navigate', async (path) => {
 - [13] https://learn.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/
 - [14] https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable
 - [15] https://asperbrothers.com/blog/pwa-2019-best-practices-checklist/
-- [1] https://blog.logrocket.com/prpl-pattern-solutions-for-modern-web-app-optimization/
-- [2] https://www.gatsbyjs.com/blog/prpl-pattern/
-- [3] https://www.patterns.dev/vanilla/prpl/
-- [4] https://web.dev/articles/apply-instant-loading-with-prpl
-- [5] https://polymer-library.polymer-project.org/3.0/docs/apps/prpl
-- [6] https://polymer-library.polymer-project.org/2.0/docs/apps/prpl
-- [7] https://houssein.me/thinking-prpl
-- [8] https://mannes.tech/prpl-pattern/
-- [9] https://www.linkedin.com/pulse/how-structure-pwas-prpl-patterns-getinrhythm
+- [16] https://blog.logrocket.com/prpl-pattern-solutions-for-modern-web-app-optimization/ (PRPL)
+- [17] https://www.gatsbyjs.com/blog/prpl-pattern/ (PRPL)
+- [18] https://www.patterns.dev/vanilla/prpl/ (PRPL)
+- [19] https://web.dev/articles/apply-instant-loading-with-prpl (PRPL)
+- [20] https://polymer-library.polymer-project.org/3.0/docs/apps/prpl (PRPL)
+- [21] https://polymer-library.polymer-project.org/2.0/docs/apps/prpl (PRPL)
+- [22] https://houssein.me/thinking-prpl (PRPL)
+- [23] https://mannes.tech/prpl-pattern/ (PRPL)
+- [24] https://www.linkedin.com/pulse/how-structure-pwas-prpl-patterns-getinrhythm (PRPL)

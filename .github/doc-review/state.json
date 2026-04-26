@@ -818,6 +818,135 @@
         "Quiz Q2's decision matrix marks 'Theme' as URL-unfriendly but many sites do encode `?theme=dark` for SSR; could note this nuance."
       ]
     },
+    "server/localization": {
+      "doc": "server/localization",
+      "last_sha": "36f951a2db803b2d2404dcfd21c48a4834c03336",
+      "last_reviewed_at": "2026-04-26T13:31:23Z",
+      "score": 22,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Added missing article in Key Insight ('maintaining a single codebase')",
+        "Fixed comma splice / missing article in Detailed Description ('an expensive refactoring exercise')",
+        "Smoothed weak transition: 'I18n happens once, enabling L10n for unlimited locales thereafter.'",
+        "Fixed grammar: 'Arabic and Hebrew' (was 'Arabic, Hebrew')",
+        "Rewrote run-on sentence about SSR locale detection / hydration into two clearer clauses",
+        "Expanded References from 6 bare links to 7 named, topical links including Google Search Central multi-regional sites entry"
+      ],
+      "issues_reported": [
+        "Missing the standard 'Glossary' section that should precede 'Detailed Description' (i18n, L10n, CLDR, hreflang, bidi, logical properties, plural categories, fallback chain).",
+        "'Key Insight' appears at the top before 'Detailed Description' rather than after the Basic Example.",
+        "Detailed Description is dense with run-on sentences (some 80+ words). Several paragraphs cram 6-8 distinct ideas into one sentence.",
+        "Code Examples section uses a single '## Code Examples' parent header with H3 subsections, instead of the standard sibling H2s.",
+        "No cross-framework tabs anywhere in the doc — all examples are React/Next.js only.",
+        "Advanced Example splits into three separate fenced blocks (JS, CSS, JS) with `{% raw %}` only wrapping the first.",
+        "Practical Example references the legacy `next-i18next` API alongside the modern `serverSideTranslations` import — these are from different major versions.",
+        "Quiz option text is unusually long (full paragraphs with semicolons).",
+        "Hook/opening lacks a concrete narrative anchor (e.g., a real bug story, screenshot of broken RTL, or '5MB bundle vs 50KB' contrast)."
+      ]
+    },
+    "server/mfe": {
+      "doc": "server/mfe",
+      "last_sha": "5fc10ce7e8a4d665e8a6c7be18979ef42ca58744",
+      "last_reviewed_at": "2026-04-26T13:31:24Z",
+      "score": 23,
+      "axes": {"hook": 4, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed 5 duplicate References entries (Single SPA, Web Components, Martin Fowler, Webpack Module Federation appeared twice; relabeled the angulararchitects.io link from generic 'MFE Next Gen' to 'Import Maps: Next Evolution for MFEs')",
+        "Replaced invalid `import { User } from '@company/contracts@1.0.0'` (npm-style version syntax is not valid in JS/TS imports) with a package.json-pinning comment plus a normal import"
+      ],
+      "issues_reported": [
+        "Doc skips the standard structure: no Glossary, no Basic Example with cross-framework tabs, no Practical Example, and Code Examples uses 'Example 1/2/3' rather than Basic/Practical/Advanced.",
+        "Section 1 (Architectural Philosophy) is two dense ~10-line paragraphs with no list or code break.",
+        "Example 2 (Web Components, line ~422): inside the React function component `CheckoutApp`, the handler calls `this.dispatchEvent(...)` — `this` is undefined in a function component and will throw at runtime.",
+        "Common Mistakes only covers three issues; CSS leakage between MFEs and routing-conflict / history-API ownership are common pitfalls that would round out the section.",
+        "Quiz answer-length asymmetry: in all three MCQs the correct option is the longest by a wide margin.",
+        "Section 9 (Developer Experience) ends abruptly with no transition into the Code Examples block."
+      ]
+    },
+    "server/page": {
+      "doc": "server/page",
+      "last_sha": "76cc5bf09102ff8243e4cf33bf5c764bb16fd536",
+      "last_reviewed_at": "2026-04-26T13:31:48Z",
+      "score": 21,
+      "axes": {"hook": 3, "cadence": 4, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 1},
+      "issues_fixed": [
+        "Split the wall-of-text Key Insight into two paragraphs at the 'critical insight' pivot for easier scanning",
+        "Replaced colon-led list intro in section 2 with a period",
+        "Fixed missing article 'the correct template' in section 5",
+        "Tightened 'Why it matters' grammar across Common Mistakes 1-3 ('the same keywords', 'a page-level concern', 'violates the DRY principle')",
+        "Fixed grammar in quiz 2 'Why it matters' ('The wrong choice', '~200ms')",
+        "Fixed quiz 3 'Why it matters' ('which are crucial', 'A product page returning 200 with a \"Product not found\" message')"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: doc places Key Insight BEFORE Detailed Description and uses a single 'Code Examples' section with three numbered examples instead of Basic / Practical / Advanced.",
+        "Cross-framework code tabs are entirely missing. Every code block is Next.js/React only.",
+        "No MCQ quiz with `correct=` letters present — the Quiz section uses long-form Q/A prose instead.",
+        "Hook is functional but understated: a concrete opening anecdote would land harder.",
+        "Engagement glue is weak: no inter-section transitions, no callouts, no progressive narrative thread.",
+        "Doc is very long (~1000 lines) with substantial conceptual repetition between Key Insight, Detailed Description sections 2-3, and Quiz Q1."
+      ]
+    },
+    "server/protocol": {
+      "doc": "server/protocol",
+      "last_sha": "448b79b05af0df8404bf9617936ad61d536548fc",
+      "last_reviewed_at": "2026-04-26T13:31:55Z",
+      "score": 14,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 4, "common_mistakes": 1, "quiz_quality": 1, "engagement_glue": 2},
+      "issues_fixed": [
+        "Tightened the opening blockquote hook from three generic bullets to three concrete, capability-focused bullets that name specific APIs (Service Workers, Geolocation, Camera) and protocols (HTTP/2, HTTP/3 QUIC, WebSocket)"
+      ],
+      "issues_reported": [
+        "Section order violates the standard structure: Key Insight currently precedes Detailed Description.",
+        "Glossary section is entirely missing — learners have no quick lookup for HTTPS, TLS, ACME, HSTS, OCSP, mTLS, ALPN, QUIC.",
+        "Basic Example with cross-framework code tabs is missing; doc jumps from prose to a single Node.js/Express snippet.",
+        "Practical and Advanced Examples not labeled as such — generic 'Code Examples' header. Example 3 is a stub: 'Complete implementation coming soon'.",
+        "MAJOR: Common Mistakes section has only three single-line entries (HTTP in production, missing HSTS, mixed content) with no code snippets.",
+        "MAJOR: Quiz is broken as an MCQ: questions have no A/B/C/D options and no `correct=` letter markers.",
+        "Key Insight is a single ~250-word paragraph that buries five distinct ideas.",
+        "Detailed Description has nine numbered top-level subsections; sections 8 (REST/GraphQL/gRPC) and 9 (Security Headers) drift from the protocol/security through-line.",
+        "No engagement glue between subsections — each ends abruptly with code or a bullet list."
+      ]
+    },
+    "server/proxy": {
+      "doc": "server/proxy",
+      "last_sha": "0ebf80abbcc1a97025ba73363b154692c9c77e5c",
+      "last_reviewed_at": "2026-04-26T13:31:55Z",
+      "score": 23,
+      "axes": {"hook": 4, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 3, "engagement_glue": 4},
+      "issues_fixed": [
+        "Converted malformed bare reference '[36] https://www.strongdm.com/...' to a proper markdown link with descriptive title 'Proxy vs Reverse Proxy (StrongDM)'"
+      ],
+      "issues_reported": [
+        "Section order: Key Insight BEFORE Detailed Description (standard is Glossary -> Detailed Description -> Key Insight -> Examples).",
+        "Missing cross-framework code tabs entirely. Single 'Code Examples' section with three Nginx/Node-flavored examples instead of cross-framework tabs.",
+        "Quiz format is open-ended Q/A with long-form answers rather than the standard MCQ with `correct=` letters.",
+        "Detailed Description has 9 numbered subsections — encyclopedic; learner cadence suffers.",
+        "X-XSS-Protection header is deprecated/disabled in modern browsers but is still recommended in Examples 2 and Section 9.",
+        "`onProxyReq`/`onProxyRes`/`onError` callbacks are deprecated in http-proxy-middleware v3+ in favor of the `on:` object form.",
+        "No mention of the templates that ship with `elegant`. A short 'how this looks in chota' callout would tie the doc to the codebase.",
+        "Glossary's third bullet ('Provides SSL termination, load balancing, and security') applies to reverse proxies specifically, not 'proxy' as a generic term."
+      ]
+    },
+    "server/pwa": {
+      "doc": "server/pwa",
+      "last_sha": "304efaea83bcaa508086435c458bcecbeefe1703",
+      "last_reviewed_at": "2026-04-26T13:31:55Z",
+      "score": 19,
+      "axes": {"hook": 3, "cadence": 2, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 3, "engagement_glue": 3},
+      "issues_fixed": [
+        "Quiz pwa-1 had mismatched question/options: question asked about Service Worker lifecycle states but options A-D were about Push API vs Notifications API (duplicating pwa-5). Rewrote options A-D to be about the lifecycle (Register/Install/Activate/Fetch) so correct=B now genuinely answers the question",
+        "Rewrote the Key Insight from a single 100-word run-on sentence into a 3-sentence hook that names the three core technologies (Service Worker, Manifest, HTTPS) up front",
+        "Fixed duplicate reference numbering: PRPL refs were numbered [1]-[9] colliding with the main [1]-[15] list. Renumbered to [16]-[24] and tagged each with '(PRPL)'"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: Key Insight FIRST, no Glossary, and two extra sections ('Key Features of PWAs' / 'Basic Setup for a PWA' as a duplicate mini-tutorial, plus 'PRPL Pattern') wedged between Advanced Example and Common Mistakes / Quiz.",
+        "'Detailed Description' is six dense paragraphs of 200-400 words each, heavy with inline parenthetical lists.",
+        "Code examples are JavaScript-only — no cross-framework tabs.",
+        "The 'Basic Setup for a PWA' subsection repeats material already covered by the Basic Example above it.",
+        "Quiz pwa-2's distractor options B/C/D are extremely terse one-liners next to a long correct option A — telegraphs the answer. Same pattern in pwa-3 and pwa-4.",
+        "No glossary defines App Shell, VAPID, IndexedDB, Cache Storage API, or PRPL before they're used in body text."
+      ]
+    },
     "ui/theme": {
       "doc": "ui/theme",
       "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",
