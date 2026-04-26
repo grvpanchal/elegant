@@ -223,7 +223,7 @@ The organism's *interface* — `{ todoData, events }` — is identical in all fo
 
 ### Practical Example: Product Grid with State Management
 
-Organism connecting to state and handling complex logic:
+A product grid that owns its own UI state (filters, current page) and delegates data loading to a `useProducts` hook. In a real chota-* app the hook would live behind a container so the organism stays store-agnostic — see [Container](../ui/container.html) — but inlining it here keeps the example focused on organism responsibilities.
 
 ```jsx
 // ProductGrid.jsx - Organism with state management
@@ -737,4 +737,8 @@ const DashboardPanel = ({ title, subtitle, actions, children }) => (
 
 ## References
 
-- [1] https://atomicdesign.bradfrost.com/chapter-2/
+- [Atomic Design — Chapter 2: Organisms](https://atomicdesign.bradfrost.com/chapter-2/) — Brad Frost's original definition of organisms and where they sit in the hierarchy.
+- [Molecule](../ui/molecule.html) — the layer organisms compose from; useful for deciding whether a thing is "still a molecule" or has graduated.
+- [Container](../ui/container.html) — the wrapper that subscribes to state and feeds an organism via props, keeping the organism store-agnostic.
+- [State](../state/state.html) — overview of the request/success/fail action triple and selectors that containers typically wire into organisms.
+- [Component-Driven User Interfaces](https://www.componentdriven.org/) — process arguments for building bottom-up, with organisms as the natural reuse boundary.

@@ -73,6 +73,31 @@
         "Quiz question 4 has only 2 options (A/B) while the rest have 3-4. Adding a third plausible distractor (e.g. 'Yes, but only one level of nesting is allowed') would make it less guessable.",
         "Engagement glue is thin: Detailed Description never forward-points to Common Mistakes, and there's no cross-link to containers/state until deep inside Common Mistakes."
       ]
+    },
+    "state/store": {
+      "doc": "state/store",
+      "last_sha": "3edc633dfaa4f7fb979100c80ceaa626c547a864",
+      "last_reviewed_at": "2026-04-26T06:56:33Z",
+      "score": 22,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Rewrote the opening Detailed Description paragraph to drop stale [1][2] citation markers and make the example properties concrete (line 19)",
+        "Replaced the [1][5][2][3]-cited 'Key characteristics' list + redundant short Redux snippet with a four-bullet list and a transition paragraph that hands off to the cross-framework tabs (lines 25-32)",
+        "Removed the duplicate 'smallest possible way' phrasing from the Basic Example lede so the prose around line 38 no longer echoes line 32",
+        "Replaced the seven bare numbered URLs in References with six named, topical links (Redux store, RTK configureStore, Pinia core concepts, NgRx provideStore, Zustand, Abramov 'You Might Not Need Redux', Erikson on Context vs store)"
+      ],
+      "issues_reported": [
+        "Practical Example (lines ~150-235) and Advanced Example (lines ~237-357) are generic Redux/Zustand snippets that don't reference any chota-* template and overlap heavily with the cross-framework tabs; the Zustand example also imports `create` as a default export, which is wrong for current Zustand v4/v5 (`import { create } from 'zustand'`). Consider trimming both to one short 'sub-store / slice composition' example pulled from templates/chota-react-rtk or templates/chota-vue-pinia.",
+        "Quiz question 2 ('What is a reducer and why is it called that?') is on-topic for state but feels misplaced on the Store page — reducers have their own concept; consider swapping for a question on selectors, subscription, or root vs. slice composition that's more store-specific.",
+        "WebFetch of the published page returned HTTP 503 — review was performed against the .md only; if the live render has additional issues (e.g., quiz JS not initialising) they were not assessed."
+      ]
     }
   }
 }
