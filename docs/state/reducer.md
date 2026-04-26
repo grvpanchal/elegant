@@ -10,10 +10,6 @@ slug: reducer
 > - Foundation of predictable state management
 > - Enables time-travel debugging and state reproducibility
 
-## Key Insight
-
-Reducers transform Redux from "just another state container" into a predictable state machine—every state transition is a pure function, meaning given the same state and action, you'll always get the exact same result. This purity unlocks time-travel debugging, hot reloading, and deterministic testing that's impossible with mutable state. Think of reducers as the "laws of physics" for your application state: they define how your state universe evolves, and unlike messy imperative code, these laws can be tested, replayed, and proven correct.
-
 ## Detailed Description
 
 A reducer in state management is a pure function that takes the current state and an action as arguments, and returns a new state. Reducers are fundamental to managing state in libraries like Redux, but the concept is applicable to other state management solutions as well. It's particularly useful for handling CRUD (Create, Read, Update, Delete) operations in a predictable manner.
@@ -26,6 +22,10 @@ Key characteristics of reducers:
 3. **Predictable transformations** - Determine how state changes in response to actions
 4. **Composable** - Complex reducers built from simpler reducer functions
 5. **Testable** - Pure functions are trivial to unit test
+
+## Key Insight
+
+Reducers transform Redux from "just another state container" into a predictable state machine—every state transition is a pure function, meaning given the same state and action, you'll always get the exact same result. This purity unlocks time-travel debugging, hot reloading, and deterministic testing that's impossible with mutable state. Think of reducers as the "laws of physics" for your application state: they define how your state universe evolves, and unlike messy imperative code, these laws can be tested, replayed, and proven correct.
 
 ## Code Examples
 
@@ -607,3 +607,10 @@ console.log(state);  // { count: 5 } - state preserved
    explanation="Reducers are functions — they compose. combineReducers, sub-reducers, higher-order wrappers, and cross-slice listeners are the standard tools for keeping each reducer focused." %}
 
 ## References
+
+- [Redux: Reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers) — the canonical introduction to the `(state, action) => newState` contract.
+- [Redux Style Guide: Reducers](https://redux.js.org/style-guide/#reducers) — official guidance on purity, immutability, and the default-case rule.
+- [Redux Toolkit: `createSlice`](https://redux-toolkit.js.org/api/createSlice) and [`createReducer`](https://redux-toolkit.js.org/api/createReducer) — Immer-backed reducers that let you write mutating-looking code safely.
+- [NgRx: `createReducer` and `on`](https://ngrx.io/guide/store/reducers) — typed reducers for Angular feature slices.
+- [Immer](https://immerjs.github.io/immer/) — the structural-sharing library RTK and many hand-rolled reducers use to keep updates immutable without endless spreads.
+- [Dan Abramov — "Writing a Tiny Redux"](https://egghead.io/courses/getting-started-with-redux) — builds a reducer-driven store from scratch and shows why purity is load-bearing.

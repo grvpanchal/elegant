@@ -5,8 +5,8 @@ slug: component
 ---
 # Component
 
-> - An interactive unit of element comprising of HTML, CSS and JS
-> - JS framework element to deliver reactivity with HTML, JS and CSS
+> - An interactive unit of UI composed of HTML, CSS, and JS
+> - A JS framework element that delivers reactivity by binding HTML, JS, and CSS together
 > - Encapsulates structure, styling, and behavior into reusable units
 
 ## Key Insight
@@ -29,7 +29,7 @@ In the context of the [Atomic Design](atomic-design.html) system, components exi
 
 ### Basic Example: Alert component across frameworks
 
-A component is anything that combines markup, styling, and behaviour behind a single name. Here's the same `Alert` atom — props for `variant`, `show`, `message`, an internal boolean, a `useEffect`-style sync with the `show` prop, and a close handler that emits upward — implemented once in each of the `chota-*` templates.
+A component is anything that combines markup, styling, and behavior behind a single name. Here's the same `Alert` atom — props for `variant`, `show`, `message`, an internal boolean, a `useEffect`-style sync with the `show` prop, and a close handler that emits upward — implemented once in each of the `chota-*` templates.
 
 {::nomarkdown}<div class="code-tabs">{:/}
 
@@ -198,7 +198,7 @@ A component is the same idea in every flavour — a named unit that owns markup,
 A real-world component demonstrating state management and component composition:
 
 ```jsx
-// ToggleSwitch.js
+// ToggleSwitch.jsx
 
 import React, { useState } from "react";
 import "./ToggleSwitch.css";
@@ -314,7 +314,7 @@ export default ToggleSwitch;
 Usage:
 
 ```jsx
-// App.js
+// App.jsx
 
 import React, { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
@@ -657,6 +657,9 @@ const ProductList = ({ products }) => {
 
 ## References
 
-- https://react.dev/learn/your-first-component
-- https://medium.com/@adityaa803/components-in-javascript-1f5c66042fa5
-- https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+- [React: Your First Component](https://react.dev/learn/your-first-component)
+- [Vue 3: Component Basics](https://vuejs.org/guide/essentials/component-basics.html)
+- [Angular: Component Overview](https://angular.dev/guide/components)
+- [MDN: Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components)
+- [Lit: Defining a Component](https://lit.dev/docs/components/defining/)
+- [Components in JavaScript (Medium)](https://medium.com/@adityaa803/components-in-javascript-1f5c66042fa5)

@@ -43,6 +43,8 @@ Developers write stories alongside components → Storybook renders stories in i
 
 By leveraging stories, developers can efficiently build, document, and test UI components, making Storybook a powerful tool in the frontend development process.
 
+The example below shows the **same Button atom** rewritten as a story across all four template families — so you can see exactly where CSF stays the same and where each framework adapter pulls its own weight.
+
 ## Code Examples
 
 ### Basic Example: Button stories across Storybook flavours
@@ -94,7 +96,7 @@ export const Default: Story = {
   args: { classes: 'button primary', isLoading: false },
   render: (args) => ({
     props: args,
-    template: `<app-button [classes]="classes" [isLoading]="isLoading">Button</app-button>`,
+    template: `<app-button [classes]="classes" [isLoading]="isLoading">Sample Button</app-button>`,
   }),
 };
 
@@ -193,8 +195,8 @@ Storybook addons (`addon-docs`, `addon-a11y`, `addon-controls`) all read these s
 ```javascript
 // LoginForm.stories.jsx - Advanced story features
 import React from 'react';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+// Storybook 10 ships interaction helpers from a single package:
+import { within, userEvent, expect } from '@storybook/test';
 import { LoginForm } from './LoginForm';
 
 export default {
@@ -450,7 +452,7 @@ export const CustomCells: Story = {
         label: 'Status',
         render: (value: string) => (
           <span className={`status-${value}`}>
-            {value === 'active' ? '���' : '���'} {value}
+            {value === 'active' ? 'on' : 'off'} {value}
           </span>
         )
       }

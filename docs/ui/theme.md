@@ -5,9 +5,9 @@ slug: theme
 ---
 # Theme
 
-> - Provides the unique visual style to your site
-> - Colors, typography, spacing that define your brand
-> - Enables consistent design across entire application
+> - Provides the unique visual style of your site — colors, typography, spacing, motion
+> - Codifies brand decisions as design tokens (CSS custom properties) so they live in one place
+> - Enables consistent design across the entire application and instant theme switching (light/dark/brand) at runtime
 
 ## Key Insight
 
@@ -15,7 +15,7 @@ Themes are systematic design languages implemented through CSS—not just colors
 
 ## Detailed Description
 
-Theme provides the unique visual style to your site. In many ways the colors highlight what a site represents. CSS frameworks offer various theming patterns to customize the look and feel of websites, each with different trade-offs between flexibility, performance, and ease of use.
+Theme provides the unique visual style of your site — the colors, typography, and spacing that visitors immediately associate with your brand. CSS frameworks offer various theming patterns to customize the look and feel of websites, each with different trade-offs between flexibility, performance, and ease of use.
 
 A well-designed theme system goes beyond simple color swapping. Modern themes implement **design tokens**—named entities that store visual design attributes like colors, fonts, spacing, and animation durations. These tokens create a contract between designers and developers: designers specify `--color-primary: #3b82f6` in design tools, developers reference `var(--color-primary)` in code, and changes propagate consistently across the entire application.
 
@@ -30,7 +30,7 @@ Modern frameworks offer different theming philosophies:
 
 ### Theming Patterns
 
-### Utility-First Approach
+#### Utility-First Approach
 
 Frameworks like Tailwind CSS use a utility-first approach for theming:
 
@@ -39,7 +39,7 @@ Frameworks like Tailwind CSS use a utility-first approach for theming:
 - Enables rapid prototyping and unique designs
 - Example: Tailwind CSS[2][10]
 
-### Component-Based Theming
+#### Component-Based Theming
 
 Frameworks such as Bootstrap and Foundation use pre-designed components:
 
@@ -48,7 +48,7 @@ Frameworks such as Bootstrap and Foundation use pre-designed components:
 - Provides a cohesive look across the entire application
 - Examples: Bootstrap, Foundation[1][4]
 
-### CSS Variables and Custom Properties
+#### CSS Variables and Custom Properties
 
 Modern frameworks leverage CSS variables for theming:
 
@@ -57,7 +57,7 @@ Modern frameworks leverage CSS variables for theming:
 - Supports creating multiple themes with minimal code
 - Example: Open Props[10]
 
-### Preprocessor-Based Theming
+#### Preprocessor-Based Theming
 
 Some frameworks use preprocessors like Sass for advanced theming:
 
@@ -66,7 +66,7 @@ Some frameworks use preprocessors like Sass for advanced theming:
 - Enables creation of complex theme variations
 - Example: Bootstrap (with Sass)[1]
 
-### Classless Theming
+#### Classless Theming
 
 Classless CSS themes provide styling without requiring specific classes:
 
@@ -75,7 +75,7 @@ Classless CSS themes provide styling without requiring specific classes:
 - Provides a good starting point for custom designs
 - Examples: Water.css, awsm.css[9]
 
-### Theme Switching
+#### Theme Switching
 
 Many frameworks support easy theme switching:
 
@@ -230,7 +230,7 @@ Switch the framework, the contract on the *DOM* (a class on `<body>` plus `:root
 
 ### Practical Example: Dark Mode Toggle with JavaScript
 
-Complete dark mode implementation:
+Now zoom out from frameworks: here is the same idea in plain JavaScript so you can see the moving parts (system preference, stored preference, runtime toggle) without any library noise.
 
 ```javascript
 // theme-switcher.js
@@ -309,7 +309,7 @@ document.querySelector('#theme-toggle').addEventListener('click', () => {
 
 ### Advanced Example: Design Token System with Multiple Themes
 
-Comprehensive multi-theme system:
+Once a single light/dark toggle works, the natural next step is *n* themes — light, dark, high-contrast, plus brand themes (Ocean, Forest). The same `var(--token)` consumers stay unchanged; only the root-level token block is swapped:
 
 ```css
 /* design-tokens.css - Base tokens */

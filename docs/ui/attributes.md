@@ -16,7 +16,7 @@ Attributes are the "settings panel" for HTML elements—they don't change what a
 
 ## Detailed Description
 
-Elements in HTML have attributes; these are additional values that configure the elements or adjust their behavior in various ways to meet the criteria the users want. Attributes appear in the opening tag and consist of a name and (usually) a value.
+Elements in HTML have attributes; these are additional values that configure the elements or adjust their behavior to meet the developer's needs. Attributes appear in the opening tag and consist of a name and (usually) a value.
 
 Attributes serve multiple purposes: some control element behavior (disabled, required), others provide metadata (id, class), some enable accessibility (aria-label, role), and others store custom data (data-* attributes). The browser parses attributes into DOM properties, but attributes and properties are not always synchronized—this is a common source of bugs.
 
@@ -528,4 +528,9 @@ All event handler attributes accept a string. The string will be used to synthes
 
 ## References
 
-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
+- [MDN: HTML Attributes reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) — comprehensive list of every standard attribute and which elements accept it.
+- [MDN: Using data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) — patterns for `data-*` storage and the `dataset` API.
+- [MDN: ARIA states and properties](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes) — semantics for assistive technology (`aria-expanded`, `aria-live`, `role`, etc.).
+- [HTML Living Standard: boolean attributes](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#boolean-attributes) — the spec rule that "presence is truthy" lives here.
+- [Lit: attributes vs properties](https://lit.dev/docs/components/properties/#attributes) — the clearest framework write-up of when each form applies.
+- [React DOM: supported attributes](https://react.dev/reference/react-dom/components/common) — how React maps JSX props onto attributes vs properties.

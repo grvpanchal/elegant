@@ -118,7 +118,7 @@ import { useFiltersStore } from '../filters';
 import { getSelectedFilter } from '../filters/filters.selectors';
 
 export const useTodoStore = defineStore('todo', {
-  state: () => ({ /* ...intialTodoState */ }),
+  state: () => ({ /* ...initialTodoState */ }),
   getters: {
     visibleTodos(state) {
       const filtersData = useFiltersStore();
@@ -139,6 +139,8 @@ export const getVisibleTodos = (todo, filter) => {
 The takeaway: the *derivation* — "apply the active filter to the todo list" — is the same pure function everywhere. What changes is how each library wires memoization and subscription. Redux-family templates use plain functions and optionally opt into `createSelector`. NgRx uses `createSelector` as the default path so every output selector is memoized. Pinia uses Vue's reactivity (a getter on the store) and reuses the same plain selector internally.
 
 ### Practical Example: Memoized Selectors with Reselect
+
+Once a selector starts combining multiple state slices or doing real work (filter + search + count), opt into `createSelector`. Each input selector is a tiny state-reader; the combiner only re-runs when one of those inputs returns a new reference.
 
 ```javascript
 import { createSelector } from 'reselect';
@@ -206,6 +208,8 @@ function TodoStats() {
 ```
 
 ### Advanced Example: Parametrized and Normalized Selectors
+
+Real apps store entities in `{ byId, allIds }` shape so updates stay O(1) and references stay stable. Selectors then become the join layer — denormalizing on read, parametrized by id, with per-instance caches when the same selector is called with different props.
 
 ```javascript
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';

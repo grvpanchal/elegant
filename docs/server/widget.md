@@ -101,16 +101,6 @@ Widgets need careful versioning since you can't force hosts to update embed code
 - **Feature flags**: Enable new features via backend config, allowing gradual rollout and A/B testing
 - **Backward compatibility**: New widget versions must handle old initialization patterns
 
-### 8. Versioning & Updates
-
-Widgets need careful versioning since you can't force hosts to update embed code. Strategies:
-
-- **Semantic versioning**: `widget@1.2.3` where major changes break compatibility
-- **Evergreen loading**: `<script src="widget.js">` always loads latest minor/patch version (1.x), major versions require explicit upgrade (`widget-v2.js`)
-- **Deprecation lifecycle**: Announce breaking changes 6 months ahead, provide migration guide, maintain old versions for 1+ years
-- **Feature flags**: Enable new features via backend config, allowing gradual rollout and A/B testing
-- **Backward compatibility**: New widget versions must handle old initialization patterns
-
 ## Code Examples
 
 ### Example 1: Basic Shadow DOM Widget with Loader

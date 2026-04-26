@@ -18,7 +18,7 @@ Skeleton screens transform the psychological experience of waiting—instead of 
 
 Skeleton screens are a user interface design technique used in frontend development to improve perceived loading times and enhance user experience during content loading. Unlike traditional loading indicators (spinners, progress bars) that simply indicate work is happening, skeleton screens show the actual structure of incoming content using placeholder shapes, creating a smooth transition from loading state to loaded state.
 
-Skeleton screens are visual placeholders that appear while the actual content of a webpage or application is loading. They mimic the layout and structure of the final content, typically using light gray boxes or shapes to represent various elements such as text, images, and other UI components.
+Visually, they appear as light gray boxes or shapes that mimic the layout of the final content, standing in for text, images, and other UI components until the real data arrives.
 
 ### Purpose and Benefits
 
@@ -504,13 +504,9 @@ const UserProfile = ({ userId }) => {
    explanation="If the skeleton uses the same layout system as the real UI, it mirrors the real layout at every breakpoint automatically." %}
 
 ## References
-- [1] https://www.nngroup.com/articles/skeleton-screens/
-- [2] https://blog.hubspot.com/website/skeleton-screens
-- [3] https://blog.logrocket.com/ux-design/past-present-skeleton-screen/
-- [4] https://www.smashingmagazine.com/2020/04/skeleton-screens-react/
-- [5] https://blog.prototypr.io/skeleton-loader-an-overview-purpose-usage-and-design-173b5340d0e1?gi=b943e7ecae97
-- [6] https://mailchimp.com/resources/skeleton-screen/
-- [7] https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a?gi=c8b4f94b0606
-- [8] https://en.wikipedia.org/wiki/Skeleton_(computer_programming)
-- [9] https://www.freecodecamp.org/news/how-to-use-skeleton-screens-to-improve-perceived-website-performance/
-- [10] https://nestify.io/blog/skeleton-screens/
+- [Nielsen Norman Group: Skeleton screens and perceived performance](https://www.nngroup.com/articles/skeleton-screens/)
+- [LogRocket: Past and present of the skeleton screen](https://blog.logrocket.com/ux-design/past-present-skeleton-screen/)
+- [Smashing Magazine: Building skeleton screens with React](https://www.smashingmagazine.com/2020/04/skeleton-screens-react/)
+- [Mailchimp: Skeleton screen UX patterns](https://mailchimp.com/resources/skeleton-screen/)
+- [freeCodeCamp: Improving perceived performance with skeletons](https://www.freecodecamp.org/news/how-to-use-skeleton-screens-to-improve-perceived-website-performance/)
+- [UX Design: What you should know about skeleton screens](https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a)

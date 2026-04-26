@@ -22,8 +22,6 @@ This abstraction layer is fundamental to React's Virtual DOM architecture. Inste
 
 The anatomy of a React element is simple:
 
-The anatomy of a React element is simple:
-
 ```javascript
 // React element structure
 {

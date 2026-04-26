@@ -6,13 +6,15 @@ slug: protocol
 
 # Protocol and Security
 
-> - Rules for communication between clients and servers
-> - HTTPS enables PWA features and encrypted communication
-> - Foundation for real-time and streaming capabilities
+> - Protocols are the rules clients and servers use to talk—and they decide what your app can even do
+> - HTTPS is no longer optional: Service Workers, Geolocation, and Camera APIs refuse to load without it
+> - HTTP/2 multiplexing, HTTP/3 over QUIC, and WebSocket upgrades unlock real-time and streaming features that HTTP/1.1 simply cannot deliver
 
-## Key Insight
+## Glossary
 
-Protocols define the rules for communication between clients and servers in web applications. The most critical protocol shift in modern web development is **HTTP to HTTPS**—not just for security, but as a **functional requirement**: Service Workers (enabling PWAs, offline caching, background sync) **only work over HTTPS** because they can intercept network requests. SSL/TLS certificates ensure encrypted communication, verified through domain validation (Let's Encrypt uses ACME protocol with `.well-known/acme-challenge/` directory). In development, self-signed certificates (mkcert) bypass browser security warnings on localhost. Beyond HTTPS, protocols govern data transfer (HTTP/2 multiplexing, HTTP/3 QUIC), real-time communication (WebSocket over TLS), and API design (REST over HTTP, GraphQL over HTTP/HTTPS). The protocol layer determines **what's possible**: HTTPS unlocks PWA features, HTTP/2 enables server push, WebSocket enables bidirectional streaming—choosing the right protocol architecture is choosing your application's capabilities.
+> - **HTTPS**: HTTP wrapped in a TLS-encrypted tunnel. Provides confidentiality (no eavesdropping), integrity (no tampering), and authentication (server proves its identity via a CA-signed certificate). Required by every powerful browser API: Service Workers, Geolocation, Camera, Push.
+> - **TLS (Transport Layer Security)**: The cryptographic protocol that powers the "S" in HTTPS. Modern versions are TLS 1.2 and TLS 1.3; TLS 1.0 / 1.1 are deprecated. TLS 1.3 dropped legacy ciphers, made forward secrecy mandatory, and cut handshake round-trips from 2 to 1 (or 0 with session resumption).
+> - **HTTP/2 and HTTP/3**: The two modern HTTP transports. HTTP/2 (over TCP+TLS) introduced binary framing, header compression (HPACK), and stream multiplexing on a single connection. HTTP/3 swaps TCP for QUIC over UDP, removing transport-layer head-of-line blocking and supporting connection migration across networks (Wi-Fi to LTE without dropping the session).
 
 ## Detailed Description
 
@@ -351,6 +353,14 @@ ssl_session_timeout 10m;
 ssl_stapling on;                # OCSP stapling (faster cert validation)
 ssl_stapling_verify on;
 ```
+
+## Key Insight
+
+Protocols define the rules of conversation between clients and servers, and the single most important shift in the modern web is **HTTP to HTTPS**. This is no longer just a security upgrade — it is a **functional gate**. Service Workers, Geolocation, Camera, Push Notifications, and most powerful browser APIs simply refuse to initialize on `http://`. The browser treats unencrypted origins as untrusted, and it does so deliberately: a Service Worker can intercept every request your page makes, so giving an unauthenticated origin that power would hand attackers a persistent foothold inside the user's browser.
+
+Once you accept HTTPS as the floor, the question becomes **which transport sits on top of TLS**. HTTP/1.1 forces one in-flight request per connection, which is why the era of domain-sharding and CSS sprites was so painful. HTTP/2 fixes that with multiplexed streams over a single connection, header compression, and prioritization — all of which "just work" once your server enables it. HTTP/3 moves the whole stack to QUIC over UDP, eliminating TCP head-of-line blocking and surviving network changes (Wi-Fi to cellular) without dropping the session. None of these upgrades require code changes; they are pure transport wins triggered by server config.
+
+The deeper insight is that **the protocol layer determines what your application can even attempt**. HTTPS unlocks PWA features. HTTP/2 makes asset-heavy SPAs feasible without bundler gymnastics. WebSockets (`wss://`) unlock bidirectional, low-latency channels for chat, presence, and collaborative editing. gRPC over HTTP/2 unlocks streaming RPC between services. Choosing your protocol architecture is choosing the shape of features you can ship.
 
 ## Code Examples
 
@@ -735,45 +745,234 @@ echo ""
 echo "Test your SSL: https://www.ssllabs.com/ssltest/analyze.html?d=$DOMAIN"
 ```
 
-### Example 3: Complete Protocol Implementation
-
-```javascript
-// Complete implementation coming soon
-```
-
 ## Common Mistakes
 
-### 1. Using HTTP in Production
+### 1. Serving Production Traffic Over HTTP
+**Mistake:** Skipping TLS in production because "it's just a marketing site" — every modern browser API and ranking signal is gated on HTTPS.
 
-❌ **Wrong**: Service Workers fail silently over HTTP
+```nginx
+# BAD: HTTP-only server block, no redirect
+server {
+    listen 80;
+    server_name example.com;
 
-✅ **Correct**: Use HTTPS (Let's Encrypt is free)
+    root /var/www/html;
+    index index.html;
 
-### 2. Missing HSTS Header
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+# Result:
+# - Chrome marks the site "Not Secure" in the address bar
+# - Service Worker registration throws SecurityError
+# - navigator.geolocation, getUserMedia, Push API all refuse
+# - Google penalizes the page in search rankings
+# - Any cafe Wi-Fi can MITM and inject ads or malware
 
-❌ **Wrong**: Vulnerable to SSL stripping attacks
 
-✅ **Correct**: Add `Strict-Transport-Security` header
+# GOOD: HTTP block redirects, HTTPS block serves traffic
+server {
+    listen 80;
+    server_name example.com www.example.com;
 
-### 3. Mixed Content
+    # Allow ACME challenge for Let's Encrypt renewals
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
 
-❌ **Wrong**: HTTPS page loading HTTP resources
+    # Everything else: 301 to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
 
-✅ **Correct**: Use HTTPS for all resources
+server {
+    listen 443 ssl http2;
+    server_name example.com www.example.com;
 
-## Quiz
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
 
-### Question 1: Why HTTPS for Service Workers?
+    root /var/www/html;
+    index index.html;
+}
+```
 
-**A**: Service Workers can intercept all network requests. Over HTTP, attackers could inject malicious Service Workers that persist indefinitely and steal data.
+**Why it matters:** HTTPS is no longer optional — it is the minimum bar for credible production traffic and a hard requirement for Service Workers, Geolocation, Camera, and Push.
 
-### Question 2: Let's Encrypt 90-Day Expiration
+### 2. Forgetting (or Misconfiguring) HSTS
+**Mistake:** Relying on the 301 redirect alone. The first request still goes over HTTP, which is exactly when SSL-stripping attacks happen.
 
-**A**: Forces automation, limits damage from compromised keys, simplifies revocation.
+```nginx
+# BAD: No HSTS, every fresh visit starts as plaintext
+server {
+    listen 443 ssl http2;
+    server_name example.com;
 
-### Question 3: Mixed Content
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    # Missing: Strict-Transport-Security header
+}
+# A user typing "example.com" in the address bar:
+# 1. Browser issues http://example.com (plaintext)
+# 2. Attacker on the same Wi-Fi intercepts, never forwards the 301
+# 3. Attacker proxies the site over HTTPS to your server but plaintext to the user
+# 4. User sees a working site; attacker reads every keystroke
 
-**A**: HTTPS page loading HTTP resources defeats HTTPS purpose. Browsers block it to prevent attackers from injecting malicious content.
+
+# GOOD: HSTS instructs the browser to use HTTPS for future visits
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    # Tell the browser: for the next year, never speak HTTP to this host
+    add_header Strict-Transport-Security
+        "max-age=31536000; includeSubDomains; preload" always;
+}
+# After the first successful HTTPS visit:
+# - Browser refuses to send any HTTP request to example.com or *.example.com
+# - The 301 redirect step is skipped client-side, killing SSL-stripping
+# - With "preload" submitted to hstspreload.org, even the FIRST visit is protected
+```
+
+**Why it matters:** Without HSTS, your TLS only protects users who already typed `https://`. With it, the browser becomes an active participant in keeping the connection encrypted.
+
+### 3. Mixed Content on an HTTPS Page
+**Mistake:** Loading scripts, stylesheets, fonts, or images from `http://` URLs on an HTTPS page. Browsers either block the resource (active content) or flag the page as not-fully-secure (passive content).
+
+```html
+<!-- BAD: Hard-coded http:// resources poison an HTTPS page -->
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://cdn.example.com/style.css" />
+  <script src="http://analytics.example.com/track.js"></script>
+</head>
+<body>
+  <img src="http://images.example.com/hero.jpg" alt="Hero" />
+</body>
+</html>
+<!-- Browser behaviour on https://yoursite.com:
+     - style.css and track.js are BLOCKED (active mixed content)
+     - hero.jpg loads but the address bar shows a broken padlock
+     - Console fills with "Mixed Content" warnings
+     - Page looks broken, users lose trust -->
+
+
+<!-- GOOD: Use protocol-relative or explicit https:// URLs everywhere -->
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.example.com/style.css" />
+  <script src="https://analytics.example.com/track.js"></script>
+
+  <!-- Belt-and-braces: instruct the browser to upgrade any stragglers -->
+  <meta http-equiv="Content-Security-Policy"
+        content="upgrade-insecure-requests" />
+</head>
+<body>
+  <img src="https://images.example.com/hero.jpg" alt="Hero" />
+</body>
+</html>
+<!-- upgrade-insecure-requests rewrites any leftover http:// to https://
+     before the request goes out, catching third-party widgets you don't
+     control. -->
+```
+
+**Why it matters:** A single mixed-content asset is enough to break the padlock and undermine every other security guarantee on the page.
+
+### 4. Hard-Coding Deprecated TLS Versions and Ciphers
+**Mistake:** Copy-pasting an old `nginx.conf` snippet that still enables TLS 1.0 / 1.1 or weak ciphers. Modern auditors (and Qualys SSL Labs) downgrade your grade immediately.
+
+```nginx
+# BAD: Allows TLS 1.0/1.1 and weak ciphers
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;          # TLS 1.0 / 1.1 deprecated
+    ssl_ciphers   ALL:!aNULL:!eNULL;              # "ALL" includes RC4, 3DES
+}
+# Consequences:
+# - PCI-DSS compliance failure (TLS 1.0 banned since 2018)
+# - SSL Labs grade drops to B or C
+# - Vulnerable to BEAST, POODLE, Sweet32 attacks
+# - Modern browsers will eventually refuse to connect at all
+
+
+# GOOD: Modern protocols only, curated cipher list, OCSP stapling on
+server {
+    listen 443 ssl http2;
+    listen 443 quic reuseport;                    # HTTP/3 alongside HTTP/2
+    server_name example.com;
+
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5:!3DES:!RC4;
+    ssl_prefer_server_ciphers on;
+
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # OCSP stapling: server fetches revocation status, client doesn't have to
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+    resolver            1.1.1.1 8.8.8.8 valid=300s;
+
+    add_header Strict-Transport-Security
+        "max-age=31536000; includeSubDomains; preload" always;
+    add_header Alt-Svc 'h3=":443"; ma=86400' always;
+}
+```
+
+**Why it matters:** TLS configuration is the kind of thing you set once and forget — which is exactly why a stale config silently turns into a compliance and security liability years later. Test with `https://www.ssllabs.com/ssltest/` after every change.
+
+## Quick Quiz
+
+{% include quiz.html id="protocol-1"
+   question="Why do Service Workers require HTTPS (with localhost as the only exception)?"
+   options="A: HTTPS is faster than HTTP, so it makes Service Workers respond more quickly;;B: Service Workers can intercept every network request the page makes, so over HTTP a man-in-the-middle could inject a malicious worker that persists in the cache and silently exfiltrates data on future visits — TLS authentication is what proves the worker came from the real origin;;C: Service Workers are written in TypeScript and TypeScript only compiles over HTTPS;;D: It is a Chrome-only restriction; Firefox and Safari permit Service Workers over plain HTTP"
+   correct="B"
+   explanation="A Service Worker is a powerful, persistent network proxy living inside the browser. Allowing it on HTTP would let any coffee-shop attacker install one that survives indefinitely. HTTPS proves the worker really came from the origin you trust — and localhost is whitelisted purely for developer ergonomics."
+%}
+
+{% include quiz.html id="protocol-2"
+   question="What is the main performance benefit of HTTP/2 multiplexing over HTTP/1.1?"
+   options="A: HTTP/2 compresses the response body using Brotli, which HTTP/1.1 cannot do;;B: HTTP/2 forces every asset to be inlined into the HTML, eliminating extra requests entirely;;C: HTTP/2 carries many concurrent request/response streams over a single TCP+TLS connection, eliminating HTTP/1.1's one-request-at-a-time head-of-line blocking and making domain sharding, sprite sheets, and aggressive bundling unnecessary;;D: HTTP/2 uses UDP instead of TCP, so it avoids TCP retransmits"
+   correct="C"
+   explanation="HTTP/1.1 limits you to one in-flight request per connection (browsers compensate by opening 6 connections per origin). HTTP/2 multiplexes many streams on one connection with binary framing and header compression, so 100 small requests cost roughly the same as one. Note: HTTP/3 is the one that switches to UDP — that's a different question."
+%}
+
+{% include quiz.html id="protocol-3"
+   question="What does mutual TLS (mTLS) add on top of normal HTTPS?"
+   options="A: Nothing — mTLS is just a marketing rename of TLS 1.3;;B: It encrypts the URL path (which normal HTTPS leaves in the clear);;C: It replaces TCP with QUIC for lower latency;;D: In addition to the server presenting a certificate, the client also presents a certificate that the server validates, so both sides are cryptographically authenticated. Used heavily for service-to-service traffic, zero-trust networks, and high-security APIs"
+   correct="D"
+   explanation="Standard HTTPS authenticates the server only; the client is anonymous at the TLS layer (auth happens later via cookies/tokens). mTLS makes authentication symmetric — the client must present a cert the server's CA trusts. It is the backbone of modern zero-trust architectures and service meshes."
+%}
+
+{% include quiz.html id="protocol-4"
+   question="What problem does OCSP stapling solve?"
+   options="A: It lets the server proactively attach a recent, signed proof of certificate validity to the TLS handshake, so the browser does not have to make its own blocking call to the CA's OCSP responder — improving handshake latency and protecting user privacy;;B: It staples multiple certificates into one bundle so the browser only downloads a single file;;C: It is an alternative name for HSTS preload;;D: It compresses the certificate chain to reduce handshake size"
+   correct="A"
+   explanation="Without stapling, the browser has to call the CA's OCSP responder on every fresh handshake to check whether a certificate has been revoked — slow, and it leaks the user's browsing history to the CA. With stapling, the server fetches that signed status periodically and includes it in the handshake itself."
+%}
+
+{% include quiz.html id="protocol-5"
+   question="Why does Let's Encrypt issue certificates that expire after only 90 days?"
+   options="A: To force website owners to pay for renewals;;B: Because longer validity periods are technically impossible with ECDSA keys;;C: Short lifetimes force automation (you cannot realistically renew 90-day certs by hand), limit the blast radius if a private key is compromised, and reduce reliance on revocation infrastructure (which is slow and unreliable in practice);;D: Browsers refuse to trust certificates valid for more than 90 days"
+   correct="C"
+   explanation="The 90-day window is a deliberate forcing function. You must automate renewal (certbot, cron, systemd timer), and if a key leaks, the window of abuse is bounded. Industry direction is shorter still — the CA/Browser Forum is moving toward 47-day max-validity by 2029."
+%}
 
 ## References
 

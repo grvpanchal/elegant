@@ -16,7 +16,7 @@ Accessibility (a11y) isn't an "add-on" feature—it's fundamental architecture. 
 
 ## Detailed Description
 
-Web accessibility means designing and developing websites, tools, and technologies so that people with disabilities can use them. This includes various types of disabilities: auditory, cognitive, neurological, physical, speech, and visual. Accessibility also benefits people without disabilities, such as mobile device users, older individuals, and those with temporary or situational limitations (broken arm, bright sunlight on screen).
+Web accessibility means designing and developing websites, tools, and technologies so that people with disabilities can use them — auditory, cognitive, neurological, physical, speech, or visual. The same work also benefits people without disabilities: mobile users, older users, and anyone with a temporary or situational limitation (broken arm, bright sunlight, a baby in the other hand). The cross-template `Input` atom shown below — a `<label class="sr-only">` paired with a real `<input>` — is the smallest unit of that work: one element with a real role, one label the eye can't see but a screen reader can.
 
 **Why Accessibility Matters:**
 
@@ -167,6 +167,7 @@ A few accessibility-relevant things to read across the tabs:
 - **Every input gets a label.** None of the templates ship an `<input>` with no associated label — even when the visual design has none, the `sr-only` class plus `htmlFor`/`for` keeps the input accessible to screen readers and voice control.
 - **Alt text is mandatory on the Image atom.** All four implementations propagate `props.alt` straight to the underlying `<img alt>`. The `IconButton` molecule passes a meaningful alt through (`"close"`, `"search"`, etc.) so the icon-only button gets an accessible name.
 - **`disabled` is a property, not a class.** All four templates set the real `disabled` property on `<button>` and `<input>` rather than fading it visually, so AT correctly announces the disabled state and Tab navigation skips it.
+- **The `Math.random()` id is a placeholder, not a recommendation.** It guarantees the `htmlFor`/`id` link exists when the caller forgot to pass one, but production code should swap it for `useId` (React 18+), Angular's `inject(IdGeneratorService)` pattern, or `crypto.randomUUID()` so SSR markup stays stable across hydrations.
 
 The framework wrappers diverge a lot. The DOM doesn't.
 
@@ -770,7 +771,7 @@ The framework wrappers diverge a lot. The DOM doesn't.
 
 {% include quiz.html id="accessibility-2"
    question="Which of these is the correct way to make a custom dropdown usable by a screen reader and keyboard?"
-   options="A|Wrap it in a <details> element;;B|Use aria-haspopup / aria-expanded / aria-controls on the trigger, role=&quot;listbox&quot; on the menu, keyboard handlers for arrows/Enter/Escape, and proper focus management;;C|Rely on CSS :focus-visible alone;;D|Add a click handler and hope for the best"
+   options="A|Style a native <select> with CSS and call it done;;B|Use aria-haspopup / aria-expanded / aria-controls on the trigger, role=&quot;listbox&quot; on the menu, keyboard handlers for arrows/Enter/Escape, and proper focus management;;C|Rely on CSS :focus-visible alone;;D|Add a click handler and hope for the best"
    correct="B"
    explanation="A custom dropdown needs ARIA states on trigger and list, keyboard handling for Up/Down/Enter/Escape, and focus moved into the listbox when open and back to the trigger on close." %}
 
@@ -794,4 +795,8 @@ The framework wrappers diverge a lot. The DOM doesn't.
 
 ## References
 
-- [1] https://www.w3.org/WAI/fundamentals/accessibility-intro/
+- [1] [W3C WAI — Introduction to Web Accessibility](https://www.w3.org/WAI/fundamentals/accessibility-intro/)
+- [2] [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
+- [3] [WAI-ARIA Authoring Practices — design patterns for menus, dialogs, tabs, comboboxes](https://www.w3.org/WAI/ARIA/apg/patterns/)
+- [4] [MDN — ARIA: the first rule (don't use ARIA)](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+- [5] [Inclusive Components by Heydon Pickering — pattern walkthroughs](https://inclusive-components.design/)

@@ -8,7 +8,9 @@ slug: index-file
 
 ## Key Insight
 
-The index file is the **entry point contract** between servers and applications—when you visit `example.com/folder`, the server automatically looks for `folder/index.html`, making "index" the default filename convention across web infrastructure. This convention spans multiple contexts: `index.html` is the browser's entry point (loads first), `index.js` is JavaScript's module entry point (imported when you `import './folder'`), and package.json's `"main": "index.js"` tells Node.js where to start. Understanding index files prevents common bugs: forgetting `index.html` causes 403 Forbidden errors, misconfiguring Webpack's entry point (`entry: './src/index.js'`) breaks builds, and incorrectly setting package.json's main field makes your npm package unimportable. The power of index files lies in defaults—they reduce boilerplate (no need to specify `/index.html` in URLs) and create predictable project structure (every folder can be treated as a module).
+The index file is the **entry point contract** between servers and applications—when you visit `example.com/folder`, the server automatically looks for `folder/index.html`, making "index" the default filename convention across web infrastructure. This convention spans multiple contexts: `index.html` is the browser's entry point (loads first), `index.js` is JavaScript's module entry point (imported when you `import './folder'`), and package.json's `"main": "index.js"` tells Node.js where to start.
+
+Understanding index files prevents common bugs: forgetting `index.html` causes 403 Forbidden errors, misconfiguring Webpack's entry point (`entry: './src/index.js'`) breaks builds, and incorrectly setting package.json's main field makes your npm package unimportable. The power of index files lies in defaults—they reduce boilerplate (no need to specify `/index.html` in URLs) and create predictable project structure (every folder can be treated as a module).
 
 ## Detailed Description
 

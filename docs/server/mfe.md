@@ -916,8 +916,9 @@ export interface User {
   emailAddress: string; // v2.0.0 (BREAKING)
 }
 
-// Dashboard MFE imports contracts v1.0.0
-import { User } from '@company/contracts@1.0.0';
+// Dashboard MFE pins contracts v1.0.0 in package.json
+// "dependencies": { "@company/contracts": "1.0.0" }
+import { User } from '@company/contracts';
 
 // TypeScript compiler catches mismatch:
 // Error: Type '{ emailAddress: string }' is not assignable to type '{ email: string }'
@@ -995,8 +996,4 @@ function Dashboard() {
 - [Import Maps Specification](https://github.com/WICG/import-maps)
 - [Pact Contract Testing](https://docs.pact.io/)
 - [Micro Frontends: An Introduction](https://micro-frontends.org/)
-- [Single SPA Documentation](https://single-spa.js.org/)
-- [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
-- [Basics](https://martinfowler.com/articles/micro-frontends.html)
-- [Plugin](https://webpack.js.org/concepts/module-federation/)
-- [MFE Next Gen](https://www.angulararchitects.io/en/blog/import-maps-the-next-evolution-step-for-micro-frontends-article/)
+- [Import Maps: Next Evolution for MFEs](https://www.angulararchitects.io/en/blog/import-maps-the-next-evolution-step-for-micro-frontends-article/)

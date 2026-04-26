@@ -264,8 +264,6 @@ loadPolyfills().then(() => {
 
 Modern bundle: 50KB (ES2020 with async/await, optional chaining). Legacy bundle: 120KB (ES5 with polyfills). Modern browsers save 70KB, old browsers still work.
 
-Modern bundle: 50KB (ES2020 with async/await, optional chaining). Legacy bundle: 120KB (ES5 with polyfills). Modern browsers save 70KB, old browsers still work.
-
 ## Code Examples
 
 ### Example 1: Basic App Shell with Service Worker

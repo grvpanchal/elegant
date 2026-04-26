@@ -6,13 +6,9 @@ slug: state
 
 # State Basics
 
-> - Application memory that changes over time
-> - From user inputs to API responses to UI toggles
-> - Foundation of dynamic and interactive applications
-
-## Key Insight
-
-State is the memory of your application—every piece of data that changes over time, from user inputs to API responses to UI toggles. Mastering state management means understanding when state should live locally in components versus globally in a store, how to keep state synchronized with reality, and how to structure state to make your application predictable, debuggable, and performant.
+> - **State** — application memory that changes over time
+> - Spans user input, API responses, UI toggles, and everything in between
+> - Get it right and your app feels predictable; get it wrong and bugs multiply
 
 ## Detailed Description
 
@@ -35,15 +31,15 @@ State in frontend development refers to any information that an application need
 
 ### Core Concepts
 
-### Store
+#### Store
 
 A centralized location where the application state is stored, typically as an object.
 
-### Properties
+#### Properties
 
 Individual data points within the store that represent specific pieces of state.
 
-### Actions
+#### Actions
 
 Functions or methods used to update properties in the store, similar to setter methods.
 
@@ -60,6 +56,10 @@ The evolution from manual state management to sophisticated solutions like Redux
 - **Ensure UI consistency** with underlying data through reactive updates
 - **Improve predictability** with clear rules for how and when state changes
 - **Enable debugging** through state snapshots, time-travel, and action logs
+
+## Key Insight
+
+State is the memory of your application—every piece of data that changes over time, from user inputs to API responses to UI toggles. Mastering state management means understanding when state should live locally in components versus globally in a store, how to keep state synchronized with reality, and how to structure state to make your application predictable, debuggable, and performant.
 
 ## Code Examples
 

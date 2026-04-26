@@ -667,7 +667,7 @@ const router = createBrowserRouter([
 
 {% include quiz.html id="router-1"
    question="How does client-side routing avoid a full page reload?"
-   options="A|They are synonyms — each returns the current location object, and React Router picks whichever name matches your framework version;;B|useParams returns the matched dynamic segments (:id -> { id }); useLocation returns the Location object (pathname, search, hash, state) — useful for reading query strings and router-carried state; useNavigate returns an imperative navigate(path, { replace, state }) fn for programmatic navigation. Each is a narrow tool for one job;;C|They are all identical wrappers around window.location — React Router v6 only kept three names for backwards compatibility with v4 class components;;D|useParams is server-only (runs on the SSR server), useLocation runs only during hydration, and useNavigate is the only browser-safe one"
+   options="A|It opens each route in a hidden iframe and swaps which iframe is visible, so the browser thinks it never left the original document;;B|The router intercepts link clicks (event.preventDefault), updates the URL via history.pushState() without making an HTTP request, listens for popstate to handle back/forward, and re-renders the matching route component — JS state, Redux store, and DOM scroll position are preserved;;C|It still issues an HTTP request for every navigation, but the server returns 304 Not Modified so the browser skips re-rendering;;D|Modern browsers automatically detect <Link> tags and short-circuit the network — no router code is involved at runtime"
    correct="B"
    explanation="pushState + a matching popstate listener is the core primitive every SPA router (React Router, Vue Router, @angular/router) builds on." %}
 

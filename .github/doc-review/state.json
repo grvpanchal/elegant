@@ -1,0 +1,1070 @@
+{
+  "version": 1,
+  "docs": {
+    "ui/accessibility": {
+      "doc": "ui/accessibility",
+      "last_sha": "410bd4e66a873a628a28c2656a8e7f27b144b20b",
+      "last_reviewed_at": "2026-04-26T06:52:44Z",
+      "score": 22,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fleshed out the smallest-unit-of-work sentence in Detailed Description with a memorable closing clause (line 19)",
+        "Expanded References from 1 bare URL to 5 named, topical links (WCAG 2.2, ARIA APG, MDN first-rule-of-ARIA, Inclusive Components)",
+        "Added a bullet calling out that Math.random() ids in the Input atom are a placeholder, not a recommendation, and pointing at useId / randomUUID (after line 169)"
+      ],
+      "issues_reported": [
+        "Detailed Description is four stacked bulleted lists (Why Matters / POUR / Key Technologies) with almost no connective prose — cadence suffers; consider folding POUR into a single short paragraph since it already appears in Key Insight",
+        "Practical Example (lines ~175-406) and Advanced Example (lines ~408-667) are huge standalone HTML files that don't reference any chota-* template — they duplicate the cross-framework section's purpose and should be trimmed to the patterns the templates actually demonstrate, or moved to a separate 'ARIA cookbook' page"
+      ]
+    },
+    "ui/atom": {
+      "doc": "ui/atom",
+      "last_sha": "dbf4115917135da796b65f095bd526cf3cafbc54",
+      "last_reviewed_at": "2026-04-26T07:05:00Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Corrected 'four spellings' children-projection bullet to 'three spellings... across four frameworks' (line 158)",
+        "Reworded Advanced Example heading + lede away from misleading 'flexibility and optimization' framing (line 162)",
+        "Expanded References from 1 bare link to 5 named cross-links (atomic-design, molecule, container, React.memo, Vue functional components)"
+      ],
+      "issues_reported": [
+        "Advanced Example (lines 166-231) is a generic React-only Icon + SearchButton that does not reference any chota-* template — out of step with the Basic Example which sources verbatim from all four templates; consider replacing with a real atom from templates/ (e.g., Loader, Input) or removing in favour of more chota-pulled prose",
+        "Detailed Description has five 100-180 word paragraphs back-to-back with no list, callout, or code break — cadence is uniform and skim-resistant; one paragraph could be a 3-bullet list (e.g., the design-system-consistency paragraph at line 23)",
+        "Common Mistakes are solid but all three pick the same straw target (button doing too much / inconsistent props / missing aria); a fourth on 'baking a specific data shape into the atom' would broaden the failure modes covered"
+      ]
+    },
+    "ui/molecule": {
+      "doc": "ui/molecule",
+      "last_sha": "98990fb906765dcdfff89f4d5764941846812731",
+      "last_reviewed_at": "2026-04-26T06:55:49Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fixed grammar in opening blockquote (line 8-10): 'a grouped or assembled sections' -> 'grouped or assembled sections', and 'with single purpose' -> 'with a single purpose'",
+        "Renamed 'Practical Example: Form Field Molecule with Validation' to 'Practical Example: LoginForm Molecule' so the heading matches the code (the snippet has no validation)",
+        "Fixed pronoun mix in LoginForm narration: 'we can use the LoginForm molecule in your application' -> '...in our application'",
+        "Expanded References from a single bare link to 5 named entries (Brad Frost, Atomic Design overview, Atom/Organism cross-links, Component Driven UIs, Storybook CDD tutorial)"
+      ],
+      "issues_reported": [
+        "Practical (LoginForm) and Advanced (Card/CardHeader) examples are React-only and import imaginary './Input', './Button', './atoms/...' paths — they don't correspond to anything shipped in templates/ and partly duplicate the cross-framework AddTodoForm. Consider trimming or rewriting against real template paths like the canonical AddTodoForm section.",
+        "Detailed Description is five paragraphs of uniform length and abstraction — no list, callout, or diagram breaks the wall of prose. A short bulleted 'molecule checklist' (single purpose / no business logic / props in, callbacks out / composes atoms or smaller molecules) would improve skimmability for the 3-minute read.",
+        "Quiz question 4 has only 2 options (A/B) while the rest have 3-4. Adding a third plausible distractor (e.g. 'Yes, but only one level of nesting is allowed') would make it less guessable.",
+        "Engagement glue is thin: Detailed Description never forward-points to Common Mistakes, and there's no cross-link to containers/state until deep inside Common Mistakes."
+      ]
+    },
+    "state/store": {
+      "doc": "state/store",
+      "last_sha": "3edc633dfaa4f7fb979100c80ceaa626c547a864",
+      "last_reviewed_at": "2026-04-26T06:56:33Z",
+      "score": 22,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Rewrote the opening Detailed Description paragraph to drop stale [1][2] citation markers and make the example properties concrete (line 19)",
+        "Replaced the [1][5][2][3]-cited 'Key characteristics' list + redundant short Redux snippet with a four-bullet list and a transition paragraph that hands off to the cross-framework tabs (lines 25-32)",
+        "Removed the duplicate 'smallest possible way' phrasing from the Basic Example lede so the prose around line 38 no longer echoes line 32",
+        "Replaced the seven bare numbered URLs in References with six named, topical links (Redux store, RTK configureStore, Pinia core concepts, NgRx provideStore, Zustand, Abramov 'You Might Not Need Redux', Erikson on Context vs store)"
+      ],
+      "issues_reported": [
+        "Practical Example (lines ~150-235) and Advanced Example (lines ~237-357) are generic Redux/Zustand snippets that don't reference any chota-* template and overlap heavily with the cross-framework tabs; the Zustand example also imports `create` as a default export, which is wrong for current Zustand v4/v5 (`import { create } from 'zustand'`). Consider trimming both to one short 'sub-store / slice composition' example pulled from templates/chota-react-rtk or templates/chota-vue-pinia.",
+        "Quiz question 2 ('What is a reducer and why is it called that?') is on-topic for state but feels misplaced on the Store page — reducers have their own concept; consider swapping for a question on selectors, subscription, or root vs. slice composition that's more store-specific.",
+        "WebFetch of the published page returned HTTP 503 — review was performed against the .md only; if the live render has additional issues (e.g., quiz JS not initialising) they were not assessed."
+      ]
+    },
+    "ui/organism": {
+      "doc": "ui/organism",
+      "last_sha": "fc3e983b86237e386921b123efce28a73e8bc265",
+      "last_reviewed_at": "2026-04-26T06:58:29Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Expanded References from 1 bare URL to 5 named, topical links (Atomic Design ch.2, Molecule, Container, State, Component-Driven UIs)",
+        "Reworded the Practical Example lede (line 226) to acknowledge that fetching inside the organism is a teaching shortcut and to forward-link to Container — improves engagement glue and softens the contradiction with quiz Q2"
+      ],
+      "issues_reported": [
+        "Practical Example (lines ~228-317) and Advanced Example (lines ~356-503) are React-only and import imaginary './hooks/useProducts', './hooks/useComments', './molecules/*', './atoms/*' paths — they don't correspond to anything in templates/ and partly duplicate the Basic cross-framework TodoList. Consider replacing with an organism actually shipped in the chota-* templates (e.g., a header organism or a templates/-sourced second example) for parity with the Basic section.",
+        "Tension between teaching and example: Quiz Q2 (correct=D) and Q5 (correct=A) explicitly say organisms should NOT do data fetching, but the Practical ProductGrid example calls useProducts() inside the organism. Even with the new lede, a stronger fix would be to have the example accept `products`/`loading`/`onFiltersChange` as props and put useProducts() in a sibling ProductGridContainer.",
+        "Detailed Description (lines 19-29) is six uniform-length paragraphs with no list, callout, or code break; a short 'organism checklist' bullet list (recognizable region / composes molecules / owns UI state, not business state / responsive arrangement lives here) would help the 3-minute skim.",
+        "Common Mistake 3 closing example pair (DashboardPanel) is good but introduced after the SiteHeader example with no transition — a single sentence connecting 'render-prop slots' (SiteHeader) to 'children-as-content' (DashboardPanel) would improve cadence."
+      ]
+    },
+    "ui/component": {
+      "doc": "ui/component",
+      "last_sha": "083579b007890b98b8f8c990ce366f45f20cb94c",
+      "last_reviewed_at": "2026-04-26T13:12:12Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Tightened the opening blockquote phrasing on lines 8-9 ('interactive unit of UI', 'binding HTML, JS, and CSS together')",
+        "Expanded References from 3 bare URLs to 6 named, topical links (React, Vue, Angular, MDN Web Components, Lit, Components in JS)",
+        "Normalized UK 'behaviour' to US 'behavior' on line 194 to match the rest of the doc",
+        "Renamed code-comment filename from ToggleSwitch.js to ToggleSwitch.jsx on line 201 to match the React templates' .jsx convention for JSX-bearing files",
+        "Renamed code-comment filename from App.js to App.jsx on line 318 for the same reason"
+      ],
+      "issues_reported": [
+        "Section order deviates from the standard cadence: 'Key Insight' (line 12) appears before 'Detailed Description' (line 16), but the rest of docs/{ui,state,server} follows Glossary -> Detailed Description -> Key Insight. Reordering touches structural headings, so flagging rather than fixing.",
+        "Practical and Advanced examples (ToggleSwitch in React, Card in Vue) are stand-alone snippets that don't correspond to anything in templates/chota-*; sibling docs in docs/ui generally root practical examples in the actual template tree. Worth aligning in a follow-up.",
+        "Quiz Q1 is narrowly Web-Components-specific (Custom Elements / Shadow DOM / Templates) while the rest of the doc is framework-agnostic; a learner who understood the doc could still miss this question. Consider rephrasing to test the cross-framework concept the page actually teaches."
+      ]
+    },
+    "ui/props": {
+      "doc": "ui/props",
+      "last_sha": "b02874c246721882e906a77fc54dbc9c5f3a7fec",
+      "last_reviewed_at": "2026-04-26T13:12:13Z",
+      "score": 24,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Rewrote the awkward 'it will get easier once you'll see' sentence on line 378 for grammar and flow",
+        "Replaced the bare 'Click here' anchor on line 384 with descriptive link text ('difference between props and attributes')",
+        "Expanded References (lines 577-580) from 2 bare URLs to 6 named topical links covering React, Vue, Angular, Lit, freeCodeCamp, and the WC attributes/properties article"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the page convention: Key Insight (line 12) appears BEFORE Detailed Description (line 16). The standard family template specifies Glossary -> Detailed Description -> Key Insight; consider swapping these two sections.",
+        "The Glossary blockquote at lines 8-10 has no preceding 'Glossary' or summary heading; other docs in the family typically introduce the blockquote with a one-line definition or label.",
+        "Practical Example (TypeScript UserCard, lines 161-276) and Advanced Example (Card composition, lines 282-376) are pure React/TS — they break the cross-framework promise set up by the Basic Example and don't reference any path under templates/. Consider aligning at least one with the chota-* templates.",
+        "Hook is weak: the page jumps from glossary to a fairly abstract Key Insight paragraph with no concrete teaser. A one-line motivating example before Detailed Description would lift the hook score."
+      ]
+    },
+    "ui/events": {
+      "doc": "ui/events",
+      "last_sha": "83af18c47620c41c26f273dad91dc167f9e29f1d",
+      "last_reviewed_at": "2026-04-26T13:12:59Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Replaced literal '\\u2014' escape sequence with em dash on line 15 (was rendering as raw text in Key Insight)",
+        "Added missing terminal period to the parenthetical on line 21"
+      ],
+      "issues_reported": [
+        "References section is a numbered perplexity-style citation dump with duplicate [1]-[9] sequences (two interleaved lists) and a stray bare URL at the top, rather than the 4-6 named topical links the rubric expects; restructuring would touch >30 lines so flagging instead.",
+        "Back half of the doc (Types of HTML Element Events table + per-framework Framework transformation section + Comparison Table + Summary) duplicates content already covered by the cross-framework Basic Example tabs and is mostly reference prose with weak narrative glue, hurting cadence/engagement before the quiz; consolidating is structural.",
+        "Quiz Q3 and Q5 have correct-answer options that are visibly the longest by a wide margin, letting test-takers guess by length rather than understanding (cannot fix per hard constraint on quiz letters/options).",
+        "Practical Example HTML uses two separate <script> blocks inside one <body> with overlapping concepts (propagation vs delegation); not strictly broken but flows oddly as a single 'example'."
+      ]
+    },
+    "server/container": {
+      "doc": "server/container",
+      "last_sha": "95ad31d4f7edfb1e9e9a28027c3952cd21ce6baf",
+      "last_reviewed_at": "2026-04-26T13:12:37Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Removed orphan mid-document 'References' heading and stale single bare link sitting between Detailed Description and Code Examples (lines 48-50)",
+        "Expanded the bottom References section from 2 bare numbered links to 6 named topical links covering Container Components, Smart/Dumb Components, Redux UI tutorial, React Hooks, NgRx Component guide, and Pinia outside-component usage (lines ~898-905)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the rubric: the doc has Glossary -> Key Insight -> Detailed Description, but the established structure is Glossary -> Detailed Description -> Key Insight -> Basic Example. Reordering touches >40 lines so it is left for human review.",
+        "Practical Example: Modern React Hooks Approach (lines ~270-365) and Advanced Example: Redux Container Pattern (lines ~368-573) are generic invented snippets that do NOT correspond to anything under templates/. They reference paths like hooks/useTodos.js, actions/userActions.js, containers/UserListContainer.js, slices/userSlice.js that don't exist in chota-*. Only the Basic Example is faithful to the templates.",
+        "Practical Example imports `TodoList from '../components/TodoList'` while the Basic Example correctly imports from `../ui/organisms/TodoList/TodoList.component` — inconsistency that may confuse learners following the atomic-design layout described in the skills.",
+        "Cadence: the doc front-loads with a long Detailed Description (~30 lines of bullet lists) before the first code, then dumps two ~100-200 line examples back-to-back with no narrative glue between them. Could benefit from short transitional paragraphs.",
+        "Basic Example's intra-tab comments mention 'The chota-react-rtk variant is identical' and 'WC-Saga TodoListContainer does the same thing' but no separate RTK tab is shown — readers may want either an explicit RTK tab or that note moved to the post-tab summary."
+      ]
+    },
+    "ui/atomic-design": {
+      "doc": "ui/atomic-design",
+      "last_sha": "b7112afc45cefdaf940cde4234b433691eb48741",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Expanded References from a single bare URL to 6 named topical links (Brad Frost chapters 2-4, the original 2013 blog post, Storybook component-driven development, Pattern Lab)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the prescribed template: 'Key Insight' currently appears before 'Detailed Description'. Reordering would touch heading anchors and is structural.",
+        "No cross-framework code tabs anywhere in the doc. Basic Example is HTML-only, Practical is React-only, Advanced is Vue-only — none use the `{::nomarkdown}<div class=\"code-tabs\">{:/}` + `<p>FrameworkName</p>` structure used by sibling pages. Adding tabs would require restructuring three example sections.",
+        "Glossary blockquote at the top is just three bullets with no leading definitional sentence; sibling docs typically open with a one-line definition before the bullet list.",
+        "Practical Example mixes design tokens, atoms, molecules, organisms, templates, and pages in one ~280-line JS block with no intermediate prose — a cadence problem for learners. Splitting into shorter narrated chunks would exceed the 40-line/structural threshold.",
+        "Common Mistakes section has no transitional prose between the three numbered mistakes and no closing sentence before the quiz; engagement glue is thin throughout."
+      ]
+    },
+    "ui/attributes": {
+      "doc": "ui/attributes",
+      "last_sha": "12dac41132d208ec9b83f60b9beb73a84617b7e2",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Expanded References section from a single bare MDN link to 6 named topical links (MDN attributes reference, data attributes howto, ARIA states/properties, HTML spec on boolean attributes, Lit attributes-vs-properties, React DOM supported attributes)",
+        "Tightened awkward phrasing in Detailed Description ('to meet the criteria the users want' -> 'to meet the developer's needs')"
+      ],
+      "issues_reported": [
+        "Section order deviates from the canonical template: 'Key Insight' appears before 'Detailed Description'. Reordering is structural.",
+        "Two trailing top-level sections after Common Mistakes ('Boolean Attributes' and 'Event Handler Attributes') sit between Common Mistakes and the Quiz, which is unusual for the template — they read like reference appendices rather than learner narrative; consider folding into Detailed Description or Practical/Advanced examples.",
+        "'Event Handler Attributes' section quotes spec-like prose verbatim without attribution to the HTML spec; add a source link or rephrase.",
+        "Glossary blockquote is terse (3 bullets) and lacks a one-sentence hook framing 'why care'; the page jumps straight from glossary to Key Insight, so the hook score is moderate.",
+        "Quiz option D in attributes-1 contains a long compound sentence with an em dash mid-clause; consider splitting for readability — but cannot edit per constraint on quiz content."
+      ]
+    },
+    "ui/dom": {
+      "doc": "ui/dom",
+      "last_sha": "3988733833e036ed9e34f28872ff2c57dcdb5b5c",
+      "last_reviewed_at": "2026-04-26T13:15:49Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Tightened wordy opening of Detailed Description ('document currently loaded in each one of your browser tabs is represented by a document object model' was awkward and repetitive)",
+        "Softened the 'improving performance 100x' claim in the reflow Why-it-matters and made the takeaway more concrete",
+        "Rewrote the innerHTML Why-it-matters to actually explain *how* XSS happens (parsing vs execution) instead of restating the mistake"
+      ],
+      "issues_reported": [
+        "Section order deviates from the standard template: 'Key Insight' appears before 'Detailed Description', and the page uses a single 'Code Examples' header with three h3 subsections instead of the canonical Basic/Practical/Advanced top-level structure.",
+        "No cross-framework tabs at all. DOM is framework-agnostic, but the page could still benefit from a small tab block contrasting vanilla DOM access with React refs / Vue template refs / Angular ViewChild / Lit query decorators — that would tie it to the rest of the docs set.",
+        "Glossary blockquote is only three terse bullets and lacks a one-line plain-English definition; readers landing here from search may want a sentence-form summary first.",
+        "No transitional/engagement glue between sections — sections jump straight into headings with no 'why this next' framing.",
+        "Quiz Q1 has a trivially long correct option (C is far longer than A/B/D), which gives away the answer by length alone."
+      ]
+    },
+    "ui/element": {
+      "doc": "ui/element",
+      "last_sha": "ed75dba4636049fe88998a9ce1e827a9ad5f44d4",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed duplicated 'The anatomy of a React element is simple:' sentence above the element-shape code block"
+      ],
+      "issues_reported": [
+        "Section ordering inverts the page convention (Glossary -> Detailed Description -> Key Insight -> Examples). This page places Key Insight before Detailed Description; consider reordering for consistency.",
+        "Basic Example is React-only and lacks the cross-framework tabbed structure (no `<p>FrameworkName</p>` labels for Angular/Vue/Web Components). Consider adding tabs so learners can compare React.createElement, Angular's createComponent / Renderer2, Vue's h(), and customElements.define.",
+        "Detailed Description is dense and React-centric; six paragraphs of prose before a code block hurts cadence. Consider breaking the second/third paragraphs with a small diagram or callout, and trimming the Universal Frontend Architecture paragraph which feels promotional rather than instructive.",
+        "Custom Element States subsection mixes a near-verbatim spec quote with a friendlier bulleted list — the redundancy could be collapsed into a single explanation. Also, 'precustomized' is mentioned in the spec quote but never explained in the bullet list.",
+        "Quiz Q3 lists 'constructed (element upgraded)' as option A then says in the explanation that 'custom' is 'sometimes called constructed'. That conflation is misleading — 'constructed' is not an alias for 'custom' in the WHATWG spec.",
+        "References section is sparse (2 links). Adding links to the WHATWG custom-element-state definition, MDN customElements, and React's reconciliation docs would strengthen learner follow-up paths."
+      ]
+    },
+    "ui/rwd": {
+      "doc": "ui/rwd",
+      "last_sha": "712d9070ee864ce6bffc83e180b2a9d1352a1ca7",
+      "last_reviewed_at": "2026-04-26T13:16:03Z",
+      "score": 27,
+      "axes": {
+        "hook": 4,
+        "cadence": 5,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Expanded References section from a single bare-link plus a `[1]` raw URL into 6 named topical links (web.dev RWD basics, MDN media queries, MDN container queries, MDN responsive images, MDN clamp(), CSS-Tricks Grid guide), each with a one-line topical hint"
+      ],
+      "issues_reported": [
+        "Common Mistakes section has only 3 entries — could add a 4th on missing/incorrect viewport meta tag.",
+        "Hook (Key Insight) is a single dense ~150-word paragraph; splitting the three pillars onto their own line or bullet would make it scannable.",
+        "No mention of `prefers-reduced-motion` / `prefers-color-scheme` media features even though they're listed implicitly under 'color scheme' in principle 4.",
+        "Advanced Example mixes two unrelated concepts (responsive images + container queries) in one block without a transition sentence between them."
+      ]
+    },
+    "ui/skeleton": {
+      "doc": "ui/skeleton",
+      "last_sha": "c3ea50385d9fae8d063f4676075b71fa51abbb3f",
+      "last_reviewed_at": "2026-04-26T13:18:38Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 5,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Replaced 10 bare numbered URLs in References with 6 named topical links",
+        "Removed near-duplicate opening sentence in Detailed Description (two paragraphs both began 'Skeleton screens are...') and rewrote the second as a tighter visual description"
+      ],
+      "issues_reported": [
+        "Section order deviates from the standard template: 'Key Insight' currently precedes 'Detailed Description', and there is no 'Glossary' section.",
+        "Inline citation markers like [1], [3], [6], [7] still pepper the Detailed Description but no longer correspond to the renumbered References list. Either strip the bracket markers from prose or restore a numbered references list.",
+        "Code Examples header reads 'Code Examples' rather than the template's 'Basic Example' heading; the actual basic example is nested as an h3.",
+        "Practical and Advanced examples are React-only despite the Basic Example showcasing all four frameworks — engagement_glue suffers because cross-framework parity is dropped after the first example.",
+        "Detailed Description leans heavily on bulleted marketing-style prose ('Purpose and Benefits', 'Best Practices') rather than narrative cadence; consider tightening into 1-2 paragraphs."
+      ]
+    },
+    "ui/story": {
+      "doc": "ui/story",
+      "last_sha": "41590a212e7c0c64b79dce91d227f80ae216dcb3",
+      "last_reviewed_at": "2026-04-26T13:18:46Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Angular Default story used the children text 'Button' while Loading used 'Sample Button' — unified to 'Sample Button' to match siblings",
+        "Practical example imported from deprecated `@storybook/testing-library` and `@storybook/jest` — replaced with the Storybook 10 unified `@storybook/test` package",
+        "Replaced two corrupted Unicode replacement characters in the DataTable CustomCells render with plain 'on'/'off' strings",
+        "Added a transition sentence before the Basic Example so the cross-framework button comparison has a setup line"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: the doc places Key Insight before Detailed Description, and uses the opening blockquote as the Glossary.",
+        "Practical Example block is React-only and quite long (~115 lines, 7 sub-stories). Worth splitting into a tighter narrative or trimming the AccessibilityTest story.",
+        "Advanced Example title says 'TypeScript stories with complex data' but the file uses JSX inside a `.stories.ts` snippet (decorator and CustomCells render) — would need a `.tsx` extension or removal of JSX.",
+        "References list duplicates the Storybook docs (entries [1] v7 and [2] current; [5]/[6]/[7] all point to overlapping pages). Could be deduped to 3-4 canonical links.",
+        "Vue example still teaches the legacy `Template.bind({})` factory; surrounding prose acknowledges CSF 3 also works, but a learner walking through tabs in order sees three CSF 3 examples and one CSF 2."
+      ]
+    },
+    "ui/template": {
+      "doc": "ui/template",
+      "last_sha": "603f208402f6d7d5ee3bb91809188de21b3ec414",
+      "last_reviewed_at": "2026-04-26T13:45:00Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "AUTHORING PASS: Restructured to standard layout. Added Glossary, kept and tightened Detailed Description, sharpened Key Insight ('templates are the IKEA shelf, pages fill it with books').",
+        "Added Basic Example with cross-framework code tabs sourced from real templates/chota-react-rtk/src/ui/templates/Layout/Layout.component.jsx, templates/chota-vue-pinia/src/ui/templates/Layout/Layout.component.vue, templates/chota-wc-saga/src/ui/templates/Layout/Layout.component.js (Angular skipped — no top-level Layout in chota-angular-ngrx).",
+        "Renamed Practical Example file comments from .js to .jsx per CLAUDE.md (JSX-bearing files must be .jsx in chota-react-*).",
+        "Added 4 Common Mistakes (business state in templates, hardcoded page content, mixed responsive concerns, duplicated shell across pages) with BAD/GOOD code and Why-it-matters.",
+        "Added 5 MCQ quizzes (template-1..5) covering template/page split, store-agnostic shells, slot composition, responsive ownership, decoupling.",
+        "Replaced bare numeric reference link with 7 named topical references (Brad Frost, Atomic Design siblings, Container, web.dev CLS, componentdriven.org)."
+      ],
+      "issues_reported": []
+    },
+    "state/actions": {
+      "doc": "state/actions",
+      "last_sha": "5b66a8225c58490834e8cdd54c59889c508cd563",
+      "last_reviewed_at": "2026-04-26T13:22:10Z",
+      "score": 21,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Typo `intialTodoState` -> `initialTodoState` in RTK and Pinia code blocks (3 occurrences)",
+        "Empty References section populated with 6 named topical links (Redux core, FSA spec, RTK createAction/createAsyncThunk, NgRx, Pinia, Redux Style Guide)"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Orphaned code block at lines 182-203 — a `// Usage in components` JSX snippet appears after the cross-framework tabs close (`{::nomarkdown}</div>{:/}` and the 'What to notice' bullets), with no section heading, no opening code fence, and a stray closing ``` on line 203. Likely a leftover from a refactor.",
+        "CADENCE: Practical and Advanced examples are very long monolithic React-only blocks with no cross-framework parity — they break the multi-template promise.",
+        "ENGAGEMENT GLUE: No transitions between Detailed Description -> Code Examples, between Practical -> Advanced, or between Advanced -> Common Mistakes.",
+        "HOOK: 'Key Insight' (the actual hook with the time-travel/audit-trail framing) is buried below Detailed Description.",
+        "QUIZ: actions-1 stem asks 'What's the difference between an action type and an action creator?' but the correct answer (B) describes the FSA envelope shape, not the type-vs-creator distinction. Stem and answer don't match."
+      ]
+    },
+    "state/reducer": {
+      "doc": "state/reducer",
+      "last_sha": "a7819bfac2c98a5a27b6a0f505e93c350cebdda0",
+      "last_reviewed_at": "2026-04-26T13:23:03Z",
+      "score": 26,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Reordered sections so Detailed Description precedes Key Insight, matching the standard Glossary -> Detailed Description -> Key Insight structure",
+        "Populated the empty References section with six canonical links (Redux reducers tutorial, Redux Style Guide, RTK createSlice/createReducer, NgRx createReducer, Immer, Dan Abramov egghead course)"
+      ],
+      "issues_reported": [
+        "Quiz answer-length asymmetry: in all five MCQs the correct option is 3-5x longer than the distractors, making the answer guessable from length alone.",
+        "Practical and Advanced Examples are ~100 and ~140 lines of nearly pure code with no interleaved prose explaining why each pattern is shown or how it ties back to the templates.",
+        "'Code Examples' H2 wraps Basic/Practical/Advanced as H3s, which is non-standard.",
+        "Basic Example folds the WC-Saga template into the Saga tab without a visible label — a learner may miss that the same reducer ships in two templates.",
+        "Common Mistakes uses emoji check/cross markers (BAD/GOOD) which render fine but are inconsistent with sibling docs."
+      ]
+    },
+    "state/selectors": {
+      "doc": "state/selectors",
+      "last_sha": "6bb370f314e9e8297f82a32929b18ae40556a4d3",
+      "last_reviewed_at": "2026-04-26T13:22:09Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 5,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Fixed typo `intialTodoState` -> `initialTodoState` in Pinia tab",
+        "Added a one-line connective intro to the Practical Example linking it back to the Basic Example and motivating createSelector",
+        "Added a one-line connective intro to the Advanced Example explaining why normalized state + parametrized selectors matter"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: Key Insight appears before Detailed Description, and there is no explicit Glossary heading.",
+        "Practical and Advanced Examples are not framework-tabbed like the Basic Example; they are React/Reselect only.",
+        "Advanced Example references `defaultMemoize` from reselect, which was renamed to `lruMemoize` / `weakMapMemoize` in reselect 5.x.",
+        "Cross-doc engagement glue is thin: no inline links to sibling state docs (reducers, actions, store) or to the `state-*` skills."
+      ]
+    },
+    "state/middleware": {
+      "doc": "state/middleware",
+      "last_sha": "0828e4d25f34a654f132fbd1059fe91b0ee5053d",
+      "last_reviewed_at": "2026-04-26T13:22:32Z",
+      "score": 26,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed dangling citation markers [10], [2], [5], [1] from Common Use Cases bullets — they referenced no actual references",
+        "Tightened a stray standalone comment in the thunk code block into a proper inline note",
+        "Added a lead-in paragraph before Practical Example (thunk) so the code is framed before it starts",
+        "Added a lead-in paragraph before Advanced Example summarising the six patterns and the payoff of the curried shape"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: Glossary -> Key Insight -> Detailed Description, but the convention is Glossary -> Detailed Description -> Key Insight -> Basic Example.",
+        "Detailed Description is prose-heavy and partly redundant with the Key Insight (both restate the interception/pipeline idea).",
+        "Common Mistakes covers only 3 issues; adding a 4th (e.g. middleware that returns undefined when callers expect the dispatch return value) would round it out.",
+        "No Pinia plugin example is shown despite the doc claiming Pinia plugins count as middleware in this lexicon — the Pinia tab uses an `async` store action instead.",
+        "Advanced Example is a single ~150-line code block with six numbered patterns; splitting into smaller blocks with one-line intros each would aid scannability."
+      ]
+    },
+    "state/state": {
+      "doc": "state/state",
+      "last_sha": "0af7b226e453faa97a08746ad29cf99ef2907aea",
+      "last_reviewed_at": "2026-04-26T13:22:28Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 5,
+        "quiz_quality": 5,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Reordered sections to match standard structure: Glossary -> Detailed Description -> Key Insight -> Code Examples (was Glossary -> Key Insight -> Detailed Description)",
+        "Fixed heading hierarchy under 'Core Concepts': Store / Properties / Actions were h3 (same level as their parent), now correctly h4",
+        "Tightened opening Glossary blockquote with a sharper 'get it right / get it wrong' framing and bolded the term"
+      ],
+      "issues_reported": [
+        "Basic Example uses a single jsx code block rather than the cross-framework tabs the other terminology pages use — structural gap on the general 'state' page where readers from Vue/Angular/WC templates land first.",
+        "'Universal Frontend Architecture' paragraph is marketing-flavoured and name-drops Vuex (deprecated) — could be tightened to mention the templates' actual choices (Redux/RTK/Saga, NgRx, Pinia, Lit+Saga).",
+        "Detailed Description has four h3 sub-sections plus h4 children plus three follow-up paragraphs plus a 'Goals' list — risks burying the Key Insight.",
+        "Engagement glue is thin: only one outbound link ([Store](store.html)) in the entire doc."
+      ]
+    },
+    "state/ajax": {
+      "doc": "state/ajax",
+      "last_sha": "9c7651b4e681d839c0e6e5d2939b3be6ba9a3fbd",
+      "last_reviewed_at": "2026-04-26T13:45:00Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "AUTHORING PASS: Restructured to standard layout. Added Glossary blockquote, 4-paragraph Detailed Description, Key Insight, Basic Example with cross-framework tabs (React Redux thunk, React RTK createAsyncThunk, React Saga call/put, NgRx effect with HttpClient, Pinia operation), Practical Example, 3 Common Mistakes (BAD/GOOD + Why-it-matters), 5 MCQ quizzes (ajax-1..5), and a 5-link named References block.",
+        "Pulled real code excerpts from templates/chota-react-redux/src/state/todo/todo.actions.js, templates/chota-react-rtk/src/state/todo/todo.actions.js, templates/chota-react-saga/src/state/todo/todo.operations.js, templates/chota-angular-ngrx/src/app/state/todo/todo.effects.ts, templates/chota-vue-pinia/src/state/todo/todo.operations.js."
+      ],
+      "issues_reported": [
+        "Detailed Description ends with the fetch-vs-XHR asymmetry note inline; a separate callout would draw the eye but isn't strictly needed.",
+        "Quiz answer-length asymmetry: correct options are visibly longer than distractors in some questions."
+      ]
+    },
+    "state/crud": {
+      "doc": "state/crud",
+      "last_sha": "683a124dab41b145df4c319b5895bc375cc8a97f",
+      "last_reviewed_at": "2026-04-26T13:45:00Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "AUTHORING PASS: Restructured to standard layout. Added Glossary, 3-paragraph Detailed Description (preserving the SQL/HTTP-method mapping table), Key Insight, Basic Example with cross-framework tabs (Redux constants, RTK slice, Saga, NgRx createAction, Pinia actions), Practical Example with optimistic update, 3 Common Mistakes, 5 MCQ quizzes (crud-1..5), and a tightened 5-link References block.",
+        "Dropped the invented `_INIT`/`_UPDATE` suffix bullet — replaced with the actual REQUEST/SUCCESS/FAIL triple convention used across the chota-* templates.",
+        "Pulled real code from templates/chota-react-redux/src/state/todo/{type,actions}.js, templates/chota-react-rtk/src/state/todo/todo.actions.js, templates/chota-react-saga/src/state/todo/todo.actions.js, templates/chota-angular-ngrx/src/app/state/todo/todo.actions.ts, templates/chota-vue-pinia/src/state/todo/todo.actions.js."
+      ],
+      "issues_reported": [
+        "Could add a 4th Common Mistake on dispatching success before optimistic-update commit so error rollback can find the temp item."
+      ]
+    },
+    "state/operations": {
+      "doc": "state/operations",
+      "last_sha": "e06001181d111d4bc154c0f6fbab865cf8fbeee5",
+      "last_reviewed_at": "2026-04-26T13:45:00Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "AUTHORING PASS: Restructured to standard layout. Added Glossary, 4-paragraph Detailed Description (distilling the previous Explicit-State / Optimistic / Batching / Scheduling content into tight prose), Key Insight, Basic Example with cross-framework tabs sourced from real templates/, Practical Example with optimistic add-todo, 3 Common Mistakes, 5 MCQ quizzes (operations-1..5), and a 5-link tight References block (replacing the bloated 16-citation list).",
+        "Removed the .NET-flavoured 'ConfigureAwait for Performance' section.",
+        "Pulled real code from templates/chota-react-redux/src/state/todo/todo.actions.js, templates/chota-react-rtk/src/state/todo/todo.actions.js, templates/chota-react-saga/src/state/todo/todo.operations.js, templates/chota-angular-ngrx/src/app/state/todo/todo.effects.ts, templates/chota-vue-pinia/src/state/todo/todo.operations.js."
+      ],
+      "issues_reported": []
+    },
+    "server/api": {
+      "doc": "server/api",
+      "last_sha": "8fc742a68b5ac9d57eaf222c98a636eb344ecf4f",
+      "last_reviewed_at": "2026-04-26T13:25:22Z",
+      "score": 19,
+      "axes": {
+        "hook": 3,
+        "cadence": 2,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Renumbered REST Processes headings (2.PUT and 2.DELETE) to 3 and 4 respectively to fix duplicate ordinal",
+        "Replaced curly apostrophes with straight ASCII apostrophes in WebSocket paragraph for consistency"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Section ordering violates the standard (Glossary -> Detailed Description -> Key Insight). Doc currently has Glossary blockquote -> Key Insight -> Detailed Description.",
+        "STRUCTURAL: Lines 467-608 contain a large block of orphan/duplicate content (Benefits, Example Implementation, REST Processes, Types of web-based APIs) that duplicates earlier sections and was never integrated.",
+        "STRUCTURAL: Doc has no cross-framework code tabs as the standard structure requires. All examples are React-only.",
+        "QUIZ MISMATCH: Quiz api-1 asks 'What is the primary purpose of request and response interceptors in an API client?' but options A-D are all about REST vs GraphQL vs WebSocket transport differences (same content as api-5). The correct answer B and explanation reference interceptors only obliquely.",
+        "Detailed Description paragraphs are very long (5-7 lines each) with inline numbered lists in parentheses.",
+        "Section heading '### 2. REST Processes' appears with H3 level and ordinal '2' without a preceding '1', signalling it was copy-pasted from another doc.",
+        "Key Insight paragraph is one sentence of 80+ words; splitting into 2-3 sentences would improve the hook.",
+        "References section is thin (3 links); could add MDN Fetch API, MSW, OpenAPI/Swagger references."
+      ]
+    },
+    "server/router": {
+      "doc": "server/router",
+      "last_sha": "fd2a171bf80ec8d967dbd1788923862b566807eb",
+      "last_reviewed_at": "2026-04-26T13:25:34Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 2,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Quiz router-1: question asked 'How does client-side routing avoid a full page reload?' but the four options were about useParams/useLocation/useNavigate (a copy-paste of router-2's options). Rewrote options A-D to match the question while keeping correct='B' (the pushState/popstate explanation now aligns with both the question and the explanation block)"
+      ],
+      "issues_reported": [
+        "Section ordering inverts the standard: 'Key Insight' appears BEFORE 'Detailed Description'.",
+        "Missing cross-framework code tabs. All three code examples are React-only — no Vue Router, Angular Router, or Lit/web-component sibling examples.",
+        "No explicit '## Glossary' heading — the doc opens with a blockquote of three bullets acting as a glossary.",
+        "Quiz router-2 still has very thin distractors ('They're synonyms', 'useParams is server-only', 'They only work in Remix') that don't teach a meaningful misconception.",
+        "Quiz router-5: distractors A/B/C are one-liners that no learner would seriously pick; correct answer D is ~3x longer than the others, which telegraphs the right choice.",
+        "Hook is functional but flat. A concrete pain-point opener would land harder.",
+        "Common Mistake #2 mixes RR v5 and v6 in the same example, which may confuse learners on v6+.",
+        "References list is all third-party blog posts; no link to React Router / Vue Router / Angular Router official docs."
+      ]
+    },
+    "server/app-shell": {
+      "doc": "server/app-shell",
+      "last_sha": "316f05da9ec8d94f70847cba8924f99236a51d5f",
+      "last_reviewed_at": "2026-04-26T13:28:06Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 1
+      },
+      "issues_fixed": [
+        "Removed duplicated paragraph at lines 266-267 about Modern/Legacy bundle sizes (the same sentence appeared twice in the Polyfills section)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: 'Key Insight' appears before 'Detailed Description'.",
+        "Missing the cross-framework code tabs (`<p>FrameworkName</p>` labels with framework-specific implementations). The three examples are presented as 'Code Examples' with vanilla JS, Next.js, and Module Federation rather than per-framework tabs.",
+        "No Glossary section heading — the doc opens with a blockquote bullet list then a definitional paragraph, but the conventional `## Glossary` heading is absent.",
+        "Engagement glue is weak: no explicit transitional sentences linking the 9 numbered subsections of Detailed Description, no callouts/admonitions, no diagrams or ASCII layout sketches.",
+        "Hook is functional but unremarkable — a concrete pain-point opener (e.g. '50KB of identical chrome on every navigation') would land harder.",
+        "Quiz Q1's option D ('They are the same thing with different marketing names') is too obviously wrong to be useful.",
+        "'Practical Example' / 'Advanced Example' labelling is replaced by 'Example 1/2/3' — naming drift from sibling docs.",
+        "Example 1 is ~200 lines of vanilla JS in a single fenced block mixing index.html, sw.js, and app.js — splitting would aid scannability."
+      ]
+    },
+    "server/authentication": {
+      "doc": "server/authentication",
+      "last_sha": "0501c1b8f4ec90ac797f97d4d6a94f59043e5fcf",
+      "last_reviewed_at": "2026-04-26T13:28:27Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fixed grammar in Key Insight: 'The access token includes in Authorization header proves identity' rewritten as a properly punctuated compound sentence; normalized '15min'/'7days' to '15 min'/'7 days'",
+        "Fixed bug in ProtectedRoute Basic Example: imported and called useLocation() instead of referencing an undefined global location",
+        "Replaced two stray references to 'The ACC' (an undefined acronym) with generic phrasing in the JWT Authentication and Roles & Permissions subsections"
+      ],
+      "issues_reported": [
+        "Structural: doc inserts seven non-standard subsections between Common Mistakes and Quiz — 'Token Service', 'Roles and Permissions', 'Session Management', 'MFA', 'API Endpoints', 'Error Handling', 'Security Considerations'. These read like a separate API-reference doc spliced in.",
+        "Structural: no cross-framework code tabs; all three code examples are React-only.",
+        "Structural: section order is Key Insight precedes Detailed Description; standard is Glossary -> Detailed Description -> Key Insight.",
+        "Quiz tell: in Q1, Q2, and Q3 the correct option is several lines longer than every distractor.",
+        "The Practical and Advanced code examples are not wrapped in {% raw %} markers like the Basic example is; contain template literals (`${...}`) but no Liquid `{{ }}` so it likely renders fine — worth confirming during a Jekyll build."
+      ]
+    },
+    "server/forms": {
+      "doc": "server/forms",
+      "last_sha": "a98c2b829ecf6919125fa8ff7a13283e2687ede6",
+      "last_reviewed_at": "2026-04-26T13:28:25Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Tightened Key Insight wording at line 11: clarified 'DOM' article and reframed the 'stale data' clause so the cause-effect reads cleanly",
+        "Changed 'React Preferred' label at line 23 to 'React default' — more accurate in a React 19 / React Hook Form era"
+      ],
+      "issues_reported": [
+        "Doc is React-only across all three code examples and all three Common Mistakes. The repo ships Angular (NgRx), Vue (Pinia), and Lit/WC templates. Adding tabbed equivalents would lift engagement_glue substantially.",
+        "The 'Controlled Components Pattern' bullet list and the 'Trade-offs' bullet list repeat the same controlled-vs-uncontrolled framing three times across the Detailed Description.",
+        "Password-strength helper thresholds ('<8 → Weak') overlap with the Yup `min(8)` validator which already blocks <8 from submission, so 'Weak' is unreachable in the live form.",
+        "Multi-step checkout example elides 'other billing fields' with a comment — readers copying this snippet will miss the city/state/zip handlers.",
+        "No coverage of accessible error announcement patterns beyond `role='alert'` and `aria-describedby`. A short note on focus management after submit failure would round out the Accessibility bullet."
+      ]
+    },
+    "server/images": {
+      "doc": "server/images",
+      "last_sha": "ddfe219fc0a285d85e80f5749e136af464d79319",
+      "last_reviewed_at": "2026-04-26T13:28:34Z",
+      "score": 26,
+      "axes": {
+        "hook": 5,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 3,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed duplicate Sustainability/Accessibility bullets that appeared twice in the 'Why Image Optimization Matters' list",
+        "Removed two stray dangling sentences appended after the References list (about <picture>/<source> fallback) that were not part of any section",
+        "Fixed quiz images-1: the question asked about srcset vs sizes, but all four options described image CDN behavior and correct=B was the CDN answer — realigned the question stem and explanation to match the CDN-themed options (correct letter unchanged)"
+      ],
+      "issues_reported": [
+        "Quiz images-1 and images-5 now both cover image CDNs (after the images-1 question was aligned to its options). The original intent was clearly for images-1 to cover srcset vs sizes — restoring requires editing options or correct=, both disallowed.",
+        "Quiz images-3 distractors are very weak ('only works in Safari', 'is deprecated', 'interchangeable') — consider strengthening with plausible misconceptions.",
+        "Detailed Description is dense (six numbered subsections + table + bullet list before any code). Consider promoting one or two subsections into shorter callouts."
+      ]
+    },
+    "server/links": {
+      "doc": "server/links",
+      "last_sha": "10c1acd3405c2efcff2e384629b2fbf976914441",
+      "last_reviewed_at": "2026-04-26T13:28:37Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Corrected misleading accessibility comment in 'Using Buttons for Navigation' anti-pattern (buttons ARE in tab order; the real problem is wrong semantics, not Tab focus)",
+        "Updated outdated Next.js Link API pattern (`<Link><a>...</a></Link>`) in two places to the modern Next.js 13+ form where Link renders the `<a>` internally",
+        "Removed inaccurate '~300ms' hover prefetch timing claim and the matching '300ms delay might not be enough' bullet; replaced with accurate description of hover/focus-triggered prefetching"
+      ],
+      "issues_reported": [
+        "Doc is very long (~1780 lines) and code-dense; consider splitting Sections 5 (Deep Linking/Universal Links) and 6 (SEO/Crawlability) into their own pages or trimming — they overlap with seo.md.",
+        "The `<link rel='prerender'>` example is labeled DEPRECATED but no pointer to the modern replacement (Speculation Rules API).",
+        "Section 9 ('Link State and Styling') is very thin (two short snippets) compared to the surrounding sections — feels like an afterthought.",
+        "The 'When <Link> causes full reload' example claims `<Link to='https://external.com'>` triggers a full reload; should clarify that you should use `<a>` for external URLs rather than relying on `<Link>` to detect them.",
+        "Quiz Q2's decision matrix marks 'Theme' as URL-unfriendly but many sites do encode `?theme=dark` for SSR; could note this nuance."
+      ]
+    },
+    "server/localization": {
+      "doc": "server/localization",
+      "last_sha": "36f951a2db803b2d2404dcfd21c48a4834c03336",
+      "last_reviewed_at": "2026-04-26T13:31:23Z",
+      "score": 22,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Added missing article in Key Insight ('maintaining a single codebase')",
+        "Fixed comma splice / missing article in Detailed Description ('an expensive refactoring exercise')",
+        "Smoothed weak transition: 'I18n happens once, enabling L10n for unlimited locales thereafter.'",
+        "Fixed grammar: 'Arabic and Hebrew' (was 'Arabic, Hebrew')",
+        "Rewrote run-on sentence about SSR locale detection / hydration into two clearer clauses",
+        "Expanded References from 6 bare links to 7 named, topical links including Google Search Central multi-regional sites entry"
+      ],
+      "issues_reported": [
+        "Missing the standard 'Glossary' section that should precede 'Detailed Description' (i18n, L10n, CLDR, hreflang, bidi, logical properties, plural categories, fallback chain).",
+        "'Key Insight' appears at the top before 'Detailed Description' rather than after the Basic Example.",
+        "Detailed Description is dense with run-on sentences (some 80+ words). Several paragraphs cram 6-8 distinct ideas into one sentence.",
+        "Code Examples section uses a single '## Code Examples' parent header with H3 subsections, instead of the standard sibling H2s.",
+        "No cross-framework tabs anywhere in the doc — all examples are React/Next.js only.",
+        "Advanced Example splits into three separate fenced blocks (JS, CSS, JS) with `{% raw %}` only wrapping the first.",
+        "Practical Example references the legacy `next-i18next` API alongside the modern `serverSideTranslations` import — these are from different major versions.",
+        "Quiz option text is unusually long (full paragraphs with semicolons).",
+        "Hook/opening lacks a concrete narrative anchor (e.g., a real bug story, screenshot of broken RTL, or '5MB bundle vs 50KB' contrast)."
+      ]
+    },
+    "server/mfe": {
+      "doc": "server/mfe",
+      "last_sha": "5fc10ce7e8a4d665e8a6c7be18979ef42ca58744",
+      "last_reviewed_at": "2026-04-26T13:31:24Z",
+      "score": 23,
+      "axes": {"hook": 4, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed 5 duplicate References entries (Single SPA, Web Components, Martin Fowler, Webpack Module Federation appeared twice; relabeled the angulararchitects.io link from generic 'MFE Next Gen' to 'Import Maps: Next Evolution for MFEs')",
+        "Replaced invalid `import { User } from '@company/contracts@1.0.0'` (npm-style version syntax is not valid in JS/TS imports) with a package.json-pinning comment plus a normal import"
+      ],
+      "issues_reported": [
+        "Doc skips the standard structure: no Glossary, no Basic Example with cross-framework tabs, no Practical Example, and Code Examples uses 'Example 1/2/3' rather than Basic/Practical/Advanced.",
+        "Section 1 (Architectural Philosophy) is two dense ~10-line paragraphs with no list or code break.",
+        "Example 2 (Web Components, line ~422): inside the React function component `CheckoutApp`, the handler calls `this.dispatchEvent(...)` — `this` is undefined in a function component and will throw at runtime.",
+        "Common Mistakes only covers three issues; CSS leakage between MFEs and routing-conflict / history-API ownership are common pitfalls that would round out the section.",
+        "Quiz answer-length asymmetry: in all three MCQs the correct option is the longest by a wide margin.",
+        "Section 9 (Developer Experience) ends abruptly with no transition into the Code Examples block."
+      ]
+    },
+    "server/page": {
+      "doc": "server/page",
+      "last_sha": "76cc5bf09102ff8243e4cf33bf5c764bb16fd536",
+      "last_reviewed_at": "2026-04-26T13:31:48Z",
+      "score": 21,
+      "axes": {"hook": 3, "cadence": 4, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 1},
+      "issues_fixed": [
+        "Split the wall-of-text Key Insight into two paragraphs at the 'critical insight' pivot for easier scanning",
+        "Replaced colon-led list intro in section 2 with a period",
+        "Fixed missing article 'the correct template' in section 5",
+        "Tightened 'Why it matters' grammar across Common Mistakes 1-3 ('the same keywords', 'a page-level concern', 'violates the DRY principle')",
+        "Fixed grammar in quiz 2 'Why it matters' ('The wrong choice', '~200ms')",
+        "Fixed quiz 3 'Why it matters' ('which are crucial', 'A product page returning 200 with a \"Product not found\" message')"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: doc places Key Insight BEFORE Detailed Description and uses a single 'Code Examples' section with three numbered examples instead of Basic / Practical / Advanced.",
+        "Cross-framework code tabs are entirely missing. Every code block is Next.js/React only.",
+        "No MCQ quiz with `correct=` letters present — the Quiz section uses long-form Q/A prose instead.",
+        "Hook is functional but understated: a concrete opening anecdote would land harder.",
+        "Engagement glue is weak: no inter-section transitions, no callouts, no progressive narrative thread.",
+        "Doc is very long (~1000 lines) with substantial conceptual repetition between Key Insight, Detailed Description sections 2-3, and Quiz Q1."
+      ]
+    },
+    "server/protocol": {
+      "doc": "server/protocol",
+      "last_sha": "e9fdbf6126fa991ecc758d38a0f47d4df4da845a",
+      "last_reviewed_at": "2026-04-26T13:45:00Z",
+      "score": 24,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "AUTHORING PASS: Added `## Glossary` between H1 and Detailed Description (HTTPS / TLS / HTTP/2 + HTTP/3 bullets).",
+        "Reordered to Glossary -> Detailed Description -> Key Insight -> Code Examples -> Common Mistakes -> Quiz.",
+        "Deleted the 'Complete implementation coming soon' Example 3 stub.",
+        "Beefed up Common Mistakes from 3 single-line entries to 4 numbered mistakes with BAD/GOOD nginx/HTML blocks and Why-it-matters lines (HTTP-only production, missing HSTS, mixed content, deprecated TLS/ciphers).",
+        "Converted free-form Quiz Q+A prose to 5 MCQs (`protocol-1`..`protocol-5`) with `correct=` markers and explanations covering Service Workers + HTTPS, HTTP/2 multiplexing, mTLS, OCSP stapling, Let's Encrypt 90-day validity.",
+        "Split the dense single-paragraph Key Insight into 3 short paragraphs."
+      ],
+      "issues_reported": [
+        "Detailed Description still uses 9 numbered subsections; sections 8 (REST/GraphQL/gRPC) and 9 (Security Headers) drift from the through-line and could move to dedicated docs in a future pass."
+      ]
+    },
+    "server/proxy": {
+      "doc": "server/proxy",
+      "last_sha": "0ebf80abbcc1a97025ba73363b154692c9c77e5c",
+      "last_reviewed_at": "2026-04-26T13:31:55Z",
+      "score": 23,
+      "axes": {"hook": 4, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 3, "engagement_glue": 4},
+      "issues_fixed": [
+        "Converted malformed bare reference '[36] https://www.strongdm.com/...' to a proper markdown link with descriptive title 'Proxy vs Reverse Proxy (StrongDM)'"
+      ],
+      "issues_reported": [
+        "Section order: Key Insight BEFORE Detailed Description (standard is Glossary -> Detailed Description -> Key Insight -> Examples).",
+        "Missing cross-framework code tabs entirely. Single 'Code Examples' section with three Nginx/Node-flavored examples instead of cross-framework tabs.",
+        "Quiz format is open-ended Q/A with long-form answers rather than the standard MCQ with `correct=` letters.",
+        "Detailed Description has 9 numbered subsections — encyclopedic; learner cadence suffers.",
+        "X-XSS-Protection header is deprecated/disabled in modern browsers but is still recommended in Examples 2 and Section 9.",
+        "`onProxyReq`/`onProxyRes`/`onError` callbacks are deprecated in http-proxy-middleware v3+ in favor of the `on:` object form.",
+        "No mention of the templates that ship with `elegant`. A short 'how this looks in chota' callout would tie the doc to the codebase.",
+        "Glossary's third bullet ('Provides SSL termination, load balancing, and security') applies to reverse proxies specifically, not 'proxy' as a generic term."
+      ]
+    },
+    "server/pwa": {
+      "doc": "server/pwa",
+      "last_sha": "304efaea83bcaa508086435c458bcecbeefe1703",
+      "last_reviewed_at": "2026-04-26T13:31:55Z",
+      "score": 19,
+      "axes": {"hook": 3, "cadence": 2, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 3, "engagement_glue": 3},
+      "issues_fixed": [
+        "Quiz pwa-1 had mismatched question/options: question asked about Service Worker lifecycle states but options A-D were about Push API vs Notifications API (duplicating pwa-5). Rewrote options A-D to be about the lifecycle (Register/Install/Activate/Fetch) so correct=B now genuinely answers the question",
+        "Rewrote the Key Insight from a single 100-word run-on sentence into a 3-sentence hook that names the three core technologies (Service Worker, Manifest, HTTPS) up front",
+        "Fixed duplicate reference numbering: PRPL refs were numbered [1]-[9] colliding with the main [1]-[15] list. Renumbered to [16]-[24] and tagged each with '(PRPL)'"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: Key Insight FIRST, no Glossary, and two extra sections ('Key Features of PWAs' / 'Basic Setup for a PWA' as a duplicate mini-tutorial, plus 'PRPL Pattern') wedged between Advanced Example and Common Mistakes / Quiz.",
+        "'Detailed Description' is six dense paragraphs of 200-400 words each, heavy with inline parenthetical lists.",
+        "Code examples are JavaScript-only — no cross-framework tabs.",
+        "The 'Basic Setup for a PWA' subsection repeats material already covered by the Basic Example above it.",
+        "Quiz pwa-2's distractor options B/C/D are extremely terse one-liners next to a long correct option A — telegraphs the answer. Same pattern in pwa-3 and pwa-4.",
+        "No glossary defines App Shell, VAPID, IndexedDB, Cache Storage API, or PRPL before they're used in body text."
+      ]
+    },
+    "server/seo": {
+      "doc": "server/seo",
+      "last_sha": "f76947467ad097c3e9255d432a1a021aa4d4ba9d",
+      "last_reviewed_at": "2026-04-26T13:34:34Z",
+      "score": 21,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 1},
+      "issues_fixed": [
+        "Replaced obsolete FID metric with INP (Interaction to Next Paint) in the Core Web Vitals pillars list and the performance paragraph — FID was officially deprecated in March 2024 and INP became the responsiveness CWV",
+        "Expanded 'CWV' acronym to 'Core Web Vitals' in seo-3 quiz explanation"
+      ],
+      "issues_reported": [
+        "STRUCTURAL: Section order is reversed (Key Insight before Detailed Description) and Glossary is missing entirely.",
+        "STRUCTURAL: Basic Example is Next.js-only with no cross-framework tabs (no <p>FrameworkName</p> labels at all).",
+        "ENGAGEMENT GLUE: Doc has zero cross-references to sibling server docs (ssr.md, ssg.md, web-vitals.md) or to ui-* docs.",
+        "Examples lean heavily on Next.js Pages Router APIs (`getServerSideProps`, `getStaticProps`, `pages/_document.js`, `pages/sitemap.xml.js`, `swcMinify`, `optimizeFonts`) which are legacy as of Next 13+ App Router.",
+        "Detailed Description is 7 dense single-paragraph blocks with no sub-headings. Breaking into labeled subsections would aid scannability.",
+        "Quiz options are uneven in length — correct answers (C, C, A, B, B) are conspicuously the longest option in each question."
+      ]
+    },
+    "server/session": {
+      "doc": "server/session",
+      "last_sha": "ca3c7ee7d35f961a690cc62443a39b8647b4b502",
+      "last_reviewed_at": "2026-04-26T13:34:30Z",
+      "score": 19,
+      "axes": {"hook": 2, "cadence": 2, "concreteness": 4, "common_mistakes": 4, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Added a brief opening hook before Key Insight ('HTTP forgets you the moment a request finishes...') so the page doesn't dump the reader straight into a 100+ word run-on sentence"
+      ],
+      "issues_reported": [
+        "Section order does not match the standard skeleton: doc opens with 'Key Insight' before 'Detailed Description' and there is no 'Glossary' section.",
+        "No cross-framework code tabs.",
+        "Key Insight paragraph is a single 110-word sentence with four em-dashes and seven parentheticals.",
+        "Every paragraph in Detailed Description follows the same shape: 'Topic: **Bold Term** (long parenthetical list)'.",
+        "'Code Examples' is used as a wrapper H2 around Basic / Practical / Advanced (which become H3).",
+        "Basic Example mixes three concerns (client AuthService, fetch wrapper, full Express server) in one ~250-line block.",
+        "Practical Example: SharedWorker portion silently shadows `expiresIn` inside `scheduleRefresh` via destructuring — subtle bug.",
+        "Advanced Example's React `useEffect` has a stale-closure bug: re-registers a `beforeunload` listener every render and the cleanup `() => saveState()` calls the debounced save.",
+        "Common Mistakes section has 3 entries — could add a 4th on 'Logging out only client-side / forgetting server-side revocation'.",
+        "No Glossary, so newcomers hit 'JWT', 'IdP', 'silent auth', 'refresh-token rotation', 'sliding timeout' without on-page definitions.",
+        "Quiz answers C and B are extremely long compared to distractors."
+      ]
+    },
+    "server/ssg": {
+      "doc": "server/ssg",
+      "last_sha": "419df98ae1796898e0d342e75b9e2dbed9a6f1d8",
+      "last_reviewed_at": "2026-04-26T13:34:33Z",
+      "score": 25,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated 'Build optimization techniques' paragraph (was repeated verbatim at lines 31-33)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates: Key Insight appears BEFORE Detailed Description.",
+        "Code Examples uses single H2 wrapper with H3 subsections.",
+        "All Basic/Practical/Advanced examples are Next.js-only — no cross-framework tab structure.",
+        "Quiz options for ssg-1, ssg-3, ssg-4, ssg-5 have notably uneven length: correct answer is comprehensive while distractors are short one-liners.",
+        "Quiz ssg-4 places the correct answer (D) last after three obviously-wrong distractors.",
+        "Key Insight paragraph is one long em-dash-separated sentence (~80 words)."
+      ]
+    },
+    "server/ssr": {
+      "doc": "server/ssr",
+      "last_sha": "aafcbd9e79767e298261b14bd8bf883e76962bfa",
+      "last_reviewed_at": "2026-04-26T13:34:44Z",
+      "score": 24,
+      "axes": {"hook": 4, "cadence": 4, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 3, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated 'Practical Example: SSR with State Management and Data Fetching' heading and intro paragraph (lines 95-97 were a verbatim repeat of lines 91-93)",
+        "Rewrote ssr-1 options and distractors so they actually answer the asked question (SSR vs SSG vs ISR). Previously the question asked about SSR/SSG difference but the four options described whether JS still ships to the client — making the correct=C option a near-duplicate of ssr-3's correct answer. Kept correct='C' and the existing explanation"
+      ],
+      "issues_reported": [
+        "Quiz redundancy: even after the ssr-1 fix, ssr-2, ssr-3, and ssr-5 all touch the hydration/JS-on-client theme.",
+        "Hook vs Key Insight overlap: blockquote bullets and Key Insight paragraph both lead with 'dramatically improves perceived performance and SEO' in nearly identical phrasing.",
+        "Detailed Description is six dense paragraphs with no sub-headings or bullets.",
+        "Cross-framework coverage: every code example is React-only. Vue (renderToString from vue/server-renderer), Angular Universal, and Lit SSR (@lit-labs/ssr) learners get nothing.",
+        "Common Mistake #2 ('Not Serializing State Correctly') escaping only `<` still misses `\\u2028`, `\\u2029`, and `</script` in attribute contexts.",
+        "References section mixes named markdown links and bare numbered URLs ([1]…[6]); inconsistent style."
+      ]
+    },
+    "server/widget": {
+      "doc": "server/widget",
+      "last_sha": "a857d1146b780f4ebcf71175a4fd71b96b860771",
+      "last_reviewed_at": "2026-04-26T13:34:46Z",
+      "score": 23,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 5, "quiz_quality": 4, "engagement_glue": 3},
+      "issues_fixed": [
+        "Removed duplicated '### 8. Versioning & Updates' subsection (the entire heading + 5 bullets appeared verbatim twice in Detailed Description)"
+      ],
+      "issues_reported": [
+        "Section order: Key Insight BEFORE Detailed Description.",
+        "No explicit 'Glossary' heading; opening paragraph after H1 serves as one but isn't labeled.",
+        "Quiz uses essay-style Q&A rather than the MCQ format implied by the project standard (no answer letters / `correct=` markers).",
+        "Detailed Description is 8 dense numbered subsections with bullet-heavy paragraphs.",
+        "Hook is serviceable but flat — leads with a textbook definition rather than a concrete scenario (e.g., 'Intercom, Stripe Checkout, and Disqus are all widgets').",
+        "Engagement glue: few connective phrases between subsections."
+      ]
+    },
+    "server/index-file": {
+      "doc": "server/index-file",
+      "last_sha": "41ce9bafd5a36d27c61b8bc3c60361a260f3fa4d",
+      "last_reviewed_at": "2026-04-26T13:34:58Z",
+      "score": 19,
+      "axes": {"hook": 3, "cadence": 3, "concreteness": 5, "common_mistakes": 4, "quiz_quality": 1, "engagement_glue": 3},
+      "issues_fixed": [
+        "Split the dense single-paragraph Key Insight into two paragraphs (entry-point contract + bug-prevention) to improve readability cadence"
+      ],
+      "issues_reported": [
+        "Section structure does not match the standard project template: doc lacks Glossary, Basic Example, Practical Example, and Advanced Example sections. Instead opens with Key Insight (out of order) and bundles examples under a generic 'Code Examples' heading.",
+        "Quiz is free-response Q&A, not MCQ format. There are no answer options (A/B/C/D) and no `correct=` letters.",
+        "No cross-framework code tabs anywhere in the doc — missing per-template `src/index.{js,jsx,ts}` and `index.html`.",
+        "Stale APIs in Example 2 (React index.js): `getCLS, getFID, getFCP, getLCP, getTTFB` from web-vitals v3+ are deprecated in favour of `onCLS, onINP, onFCP, onLCP, onTTFB`. FID was retired as a Core Web Vital in March 2024.",
+        "Missing Glossary entries: 'barrel export', 'directory index', 'try_files', 'tree-shaking', 'critical CSS', 'FCP', 'INP'.",
+        "Section 5 talks about index.ts/TypeScript despite CLAUDE.md noting templates intentionally avoid TypeScript at the root.",
+        "Reference list is thin (5 entries) and lacks links to MDN's `<script defer>`, the package.json `exports` field spec, and the actual Vite/Rollup entry-point docs."
+      ]
+    },
+    "ui/theme": {
+      "doc": "ui/theme",
+      "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",
+      "last_reviewed_at": "2026-04-26T13:19:20Z",
+      "score": 22,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 1
+      },
+      "issues_fixed": [
+        "Strengthened the top callout/hook bullets with more specific phrasing (tokens, motion, runtime switching) instead of vague brand statements",
+        "Replaced filler sentence 'In many ways the colors highlight what a site represents' with a concrete one tying brand recognition to colors/typography/spacing",
+        "Fixed broken heading hierarchy: the six pattern subheadings under 'Theming Patterns' were all H3 (siblings of their parent), causing them to render as a flat sibling list. Demoted them to H4 (Utility-First, Component-Based, CSS Variables, Preprocessor-Based, Classless, Theme Switching)",
+        "Added a transition lead-in before the Practical Example so the jump from framework tabs to plain JS reads intentionally rather than abruptly",
+        "Added a transition lead-in before the Advanced Example explaining the natural progression from a binary toggle to N named themes"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: Key Insight appears BEFORE Detailed Description.",
+        "No explicit Glossary heading — the doc opens with an unlabelled blockquote callout.",
+        "References [1]-[10] are listed at the end but only [1], [2], [4], [8], [9], [10] appear in the inline citations within Theming Patterns. [3], [5], [6], [7] are orphaned.",
+        "Practical and Advanced examples are framework-agnostic / React-only and break the cross-framework tabbed pattern established in the Basic Example.",
+        "Theming Patterns subsection is sourced primarily from external CSS-framework articles (Bootstrap, Tailwind, Water.css) and reads as encyclopedic survey text disconnected from the chota-* templates.",
+        "No quiz question covers Shadow DOM piercing / scoped styling for the Web Components template, despite that being the most subtle insight in the Basic Example."
+      ]
+    }
+  }
+}

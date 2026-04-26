@@ -1177,4 +1177,4 @@ app.get('/api/test', (req, res) => {
 - [http-proxy-middleware Documentation](https://github.com/chimurai/http-proxy-middleware)
 - [Understanding CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
 - [Nginx HTTP Proxying Module](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
-- [36] https://www.strongdm.com/blog/difference-between-proxy-and-reverse-proxy
+- [Proxy vs Reverse Proxy (StrongDM)](https://www.strongdm.com/blog/difference-between-proxy-and-reverse-proxy)

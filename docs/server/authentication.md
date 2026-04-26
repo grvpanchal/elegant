@@ -12,7 +12,7 @@ slug: authentication
 
 ## Key Insight
 
-**Authentication in SPAs uses token-based systems (JWT) stored in memory or httpOnly cookies**, where login returns an access token (short-lived, 15min) and refresh token (long-lived, 7days). The access token includes in Authorization header (`Bearer eyJ...`) proves identity for API requests, refresh token exchanges for new access token when expired, and logout clears all tokens preventing further API access. **The critical security trade-off**: localStorage is vulnerable to XSS attacks (JavaScript can steal tokens), httpOnly cookies prevent XSS but require CSRF protection, and memory storage (React state) is most secure but lost on page refresh unless combined with refresh token flow.
+**Authentication in SPAs uses token-based systems (JWT) stored in memory or httpOnly cookies**, where login returns an access token (short-lived, 15 min) and refresh token (long-lived, 7 days). The access token, included in the Authorization header (`Bearer eyJ...`), proves identity for API requests; the refresh token exchanges for a new access token when the access token expires; and logout clears all tokens, preventing further API access. **The critical security trade-off**: localStorage is vulnerable to XSS attacks (JavaScript can steal tokens), httpOnly cookies prevent XSS but require CSRF protection, and memory storage (React state) is most secure but lost on page refresh unless combined with refresh token flow.
 
 ## Detailed Description
 
@@ -262,11 +262,12 @@ export default LoginPage;
 // ===== PROTECTED ROUTE =====
 // ProtectedRoute.js - Redirect to login if not authenticated
 
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
   
   if (loading) {
     return <div>Loading...</div>;
@@ -916,7 +917,7 @@ app.post('/api/transfer-money', (req, res) => {
 
 ### JWT Authentication
 
-The ACC uses JWT (JSON Web Tokens) for stateless authentication, meaning the server does not need to store session data. The token contains information about the user and is signed to prevent tampering.
+Token-based auth uses JWT (JSON Web Tokens) for stateless authentication, meaning the server does not need to store session data. The token contains information about the user and is signed to prevent tampering.
 
 **JWT Structure**: 
 - Header: Contains metadata about the token (algorithm and type).
@@ -942,7 +943,7 @@ The ACC uses JWT (JSON Web Tokens) for stateless authentication, meaning the ser
 
 ## Roles and Permissions
 
-The ACC supports Role-Based Access Control (RBAC). Roles are assigned to users, and these roles determine what actions they can perform within the application. 
+Most SPA backends support Role-Based Access Control (RBAC). Roles are assigned to users, and these roles determine what actions they can perform within the application.
 
 ### Role Definitions:
 - **Admin**: Full access to all resources and configuration settings.

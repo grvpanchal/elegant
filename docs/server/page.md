@@ -12,7 +12,9 @@ slug: page
 
 ## Key Insight
 
-Pages are the concrete instances of templates filled with real content—they're where abstract layout patterns meet actual data to create what users see and interact with. While a ProductTemplate defines "hero image slot + specs section + reviews area," a specific iPhone 15 page fills those slots with iPhone photos, A17 chip specs, and real customer reviews. This template-to-page relationship enables massive scale: Amazon serves millions of product pages from a single ProductTemplate by injecting different data, while maintaining consistent UX. The critical insight is that pages don't redefine layout—they provide props/data to templates. This separation enables parallel workflows (designers refine templates, content teams create data), automated page generation (10,000 product pages from a CMS), and A/B testing (same template, different content variations). In server-side rendering, pages are where data-fetching meets rendering—`getServerSideProps` or `getStaticProps` fetch data, pass to template as props, generate HTML.
+Pages are the concrete instances of templates filled with real content—they're where abstract layout patterns meet actual data to create what users see and interact with. A ProductTemplate defines "hero image slot + specs section + reviews area"; a specific iPhone 15 page fills those slots with iPhone photos, A17 chip specs, and real customer reviews. This template-to-page relationship enables massive scale: Amazon serves millions of product pages from a single ProductTemplate by injecting different data, while maintaining consistent UX.
+
+The critical insight is that pages don't redefine layout—they provide props and data to templates. That separation enables parallel workflows (designers refine templates, content teams create data), automated page generation (10,000 product pages from a CMS), and A/B testing (same template, different content variations). In server-side rendering, pages are where data fetching meets rendering: `getServerSideProps` or `getStaticProps` fetch data, pass it to a template as props, and generate HTML.
 
 ## Detailed Description
 
@@ -28,7 +30,7 @@ Think of templates as cookie cutters and pages as the actual cookies—same shap
 
 ### 2. Pages vs Templates: The Critical Distinction
 
-The template/page distinction often confuses developers because both render similar UI. The key difference is **content specificity**:
+The template/page distinction often confuses developers because both render similar UI. The key difference is **content specificity**.
 
 **Templates**:
 - Abstract layout patterns
@@ -113,7 +115,7 @@ Pages often map to URL patterns using dynamic routing:
 - `pages/blog/[year]/[month]/[slug].js` → `/blog/2024/01/my-post`
 - `pages/[...catch-all].js` → Matches any route
 
-**File-based routing** treats the filesystem as the router—adding a page file automatically creates a route. This makes pages the **entry point** for URL patterns, responsible for loading correct template and data.
+**File-based routing** treats the filesystem as the router—adding a page file automatically creates a route. This makes pages the **entry point** for URL patterns, responsible for loading the correct template and data.
 
 ### 6. Pages in Content Management Systems (CMS)
 
@@ -643,7 +645,7 @@ export default function ProductTemplate({ product }) {
 }
 ```
 
-**Why it matters**: Mixing data fetching and presentation in templates makes them impossible to reuse. A ProductTemplate that fetches its own data can't be used in a CartPreview or SearchResults component. Pages should orchestrate (fetch data, check auth), templates should present (receive props, render UI).
+**Why it matters**: Mixing data fetching and presentation in templates makes them impossible to reuse. A ProductTemplate that fetches its own data can't be dropped into a CartPreview or SearchResults component. Pages should orchestrate (fetch data, check auth); templates should present (receive props, render UI).
 
 ### 2. Not Using SEO Metadata Per Page
 
@@ -703,7 +705,7 @@ export default function ProductPage({ product }) {
 // Laptop page: "MacBook Pro M3 - Buy Online | My Store"
 ```
 
-**Why it matters**: SEO is page-level concern. Google indexes pages, not templates. Without unique metadata, all product pages compete for same keywords, hurting search rankings. Each page should have unique title, description, and Open Graph tags based on its content.
+**Why it matters**: SEO is a page-level concern. Google indexes pages, not templates. Without unique metadata, all product pages compete for the same keywords and hurt each other's search rankings. Each page should have a unique title, description, and Open Graph tags based on its content.
 
 ### 3. Duplicating Layout Code Across Pages
 
@@ -776,7 +778,7 @@ export default function App({ Component, pageProps }) {
 }
 ```
 
-**Why it matters**: Duplicating layout across pages violates DRY principle. When you need to update the header, you must change 50 page files. Layout components centralize common structure while allowing per-page customization (different layouts for admin vs public pages).
+**Why it matters**: Duplicating layout across pages violates the DRY principle. When you need to update the header, you must change 50 page files. Layout components centralize common structure while still allowing per-page customization (different layouts for admin vs public pages).
 
 ## Quiz
 
@@ -891,7 +893,7 @@ export default function Page() {
 | Shopping cart | Client-side | Frequent updates, no SEO needed |
 | Search results | `getServerSideProps` | Query-dependent, need SEO |
 
-**Why it matters**: Wrong choice tanks performance. Using `getServerSideProps` for static blog posts adds 200ms server processing per request. Using client-side fetching for SEO-critical product pages hides content from Google crawlers.
+**Why it matters**: The wrong choice tanks performance. Using `getServerSideProps` for static blog posts adds ~200ms of server processing per request. Using client-side fetching for SEO-critical product pages hides content from Google crawlers.
 
 ### Question 3: Page-Level Error Handling
 
@@ -994,7 +996,7 @@ export default function ProductPage({ productId }) {
 
 **Best Practice**: Handle critical errors server-side (product not found → 404), handle recoverable errors client-side (reviews failed to load → show product anyway).
 
-**Why it matters**: Server-side errors return proper HTTP status codes (404, 500), crucial for SEO and browser caching. Client-side errors always return 200 OK with error content, confusing search engines and analytics. Product page returning 200 with "Product not found" message tells Google the page exists (index it!), when it should return 404 (don't index).
+**Why it matters**: Server-side errors return proper HTTP status codes (404, 500), which are crucial for SEO and browser caching. Client-side errors always return 200 OK with error content, confusing search engines and analytics. A product page returning 200 with a "Product not found" message tells Google the page exists (index it!), when it should return 404 (don't index).
 
 ## References
 

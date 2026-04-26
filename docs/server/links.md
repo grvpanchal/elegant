@@ -106,10 +106,8 @@ Result: Fast (no network request), state preserved, smooth transition
 
 **Hybrid (Progressive Enhancement)**:
 ```html
-<!-- Next.js Link -->
-<Link href="/about">
-  <a>About Us</a>
-</Link>
+<!-- Next.js Link (13+ renders the <a> internally) -->
+<Link href="/about">About Us</Link>
 
 <!-- Without JavaScript: -->
 User clicks → <a href="/about"> → Full page reload → Works ✓
@@ -1211,7 +1209,7 @@ function ProductPage({ product }) {
 </button>
 
 // Problems:
-// ❌ Not keyboard-accessible with Tab key (buttons not in tab order for navigation)
+// ❌ Wrong semantics for navigation (assistive tech announces it as a button, not a link)
 // ❌ Not crawlable by search engines
 // ❌ No context menu (right-click → Open in new tab)
 // ❌ No URL preview on hover
@@ -1427,12 +1425,10 @@ Use `<a>`:
 
 **Progressive Enhancement**:
 ```jsx
-// Next.js Link - best of both worlds
-<Link href="/about">
-  <a>About</a>
-</Link>
+// Next.js Link - best of both worlds (13+ renders the <a> internally)
+<Link href="/about">About</Link>
 
-// Without JavaScript: <a> works (full reload)
+// Without JavaScript: underlying <a href="/about"> works (full reload)
 // With JavaScript: Link intercepts (client-side navigation)
 ```
 
@@ -1591,7 +1587,7 @@ function ProductsPage() {
 </Link>
 
 // Behavior: Prefetches when user hovers link
-// Network request triggered ~300ms before click
+// Network request fires on hover/focus, often well before the click
 ```
 
 **Advantages**:
@@ -1602,7 +1598,7 @@ function ProductsPage() {
 **Disadvantages**:
 - ✗ Doesn't work on mobile (no hover)
 - ✗ Requires user action (not proactive)
-- ✗ 300ms delay might not be enough for slow connections
+- ✗ Hover dwell time may not be enough for slow connections
 
 **When to use**:
 - Desktop-primary applications

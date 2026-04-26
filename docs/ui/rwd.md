@@ -313,16 +313,9 @@ h1 {
 
 ## References
 
-[Responsive web design basics](https://web.dev/responsive-web-design-basics/)
-
-> - Set the viewport: Pages optimized for a variety of devices must include a meta viewport tag in the head of the document. A meta viewport tag gives the browser instructions on how to control the page's dimensions and scaling
->
-> - Size content to the viewport: Users are used to scrolling websites vertically on both desktop and mobile; forcing the user to scroll horizontally or to zoom out in order to see the whole page results in a poor user experience
->
-> - Use CSS media queries for responsiveness: Media queries are simple filters that can be applied to CSS styles. They make it easy to change styles based on the characteristics of the device rendering the content
->
-> - How to choose breakpoints: Don't define breakpoints based on device classes. Create breakpoints when the content and design requires it
->
-> - Best Practices: At a minimum, optimize page speed and avoid absolutely hiding content
-
-- [1] https://web.dev/articles/responsive-web-design-basics
+- [Responsive web design basics (web.dev)](https://web.dev/articles/responsive-web-design-basics) — viewport meta tag, fluid sizing, content-driven breakpoints.
+- [Using media queries (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) — full syntax reference for `@media` features and logical operators.
+- [CSS container queries (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) — `container-type`, `@container`, and component-level responsiveness.
+- [Responsive images (MDN)](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) — `srcset`, `sizes`, and `<picture>` for art direction.
+- [`clamp()` for fluid typography (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp) — interpolating between min and max with a viewport-relative preferred value.
+- [A Complete Guide to CSS Grid (CSS-Tricks)](https://css-tricks.com/snippets/css/complete-guide-grid/) — two-dimensional layouts that pair naturally with mobile-first breakpoints.

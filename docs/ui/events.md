@@ -12,13 +12,13 @@ slug: events
 
 ## Key Insight
 
-Events are the browser's way of saying "something happened"\u2014not just clicks, but scrolls, hovers, form submissions, page loads, network responses, animations completing, and hundreds of other moments your code can react to. The event system transforms the browser from a static document viewer into an interactive application platform. Understanding event propagation (bubbling/capturing), delegation, and preventDefault is what separates developers who can "make buttons work" from those who can build sophisticated, performant UIs with proper keyboard navigation, form validation, and infinite scroll.
+Events are the browser's way of saying "something happened" — not just clicks, but scrolls, hovers, form submissions, page loads, network responses, animations completing, and hundreds of other moments your code can react to. The event system transforms the browser from a static document viewer into an interactive application platform. Understanding event propagation (bubbling/capturing), delegation, and preventDefault is what separates developers who can "make buttons work" from those who can build sophisticated, performant UIs with proper keyboard navigation, form validation, and infinite scroll.
 
 ## Detailed Description
 
 Events are fired to notify code of "interesting changes" that may affect code execution. These can arise from user interactions such as using a mouse or resizing a window, changes in the state of the underlying environment (e.g. low battery or media events from the operating system), and other causes.
 
-The browser's event system is based on the observer pattern: you register listeners for specific event types, and when those events occur, your callback functions execute. Events follow a propagation path through the DOM tree, enabling powerful patterns like event delegation. The Event object passed to handlers contains rich information about what happened (which key, mouse position, target element, etc.)
+The browser's event system is based on the observer pattern: you register listeners for specific event types, and when those events occur, your callback functions execute. Events follow a propagation path through the DOM tree, enabling powerful patterns like event delegation. The Event object passed to handlers contains rich information about what happened (which key, mouse position, target element, etc.).
 
 Key characteristics of events:
 1. **Event types** - Click, keydown, submit, load, scroll, etc. (100+ types)

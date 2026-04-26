@@ -69,9 +69,6 @@ Images are the #1 cause of slow page loads, accounting for **50-70% of total pag
 - **Sustainability**: Smaller images = less energy consumption, lower carbon footprint
 - **Accessibility**: Faster loads benefit users with slow connections or older devices
 
-- **Sustainability**: Smaller images = less energy consumption, lower carbon footprint
-- **Accessibility**: Faster loads benefit users with slow connections or older devices
-
 ## Code Examples
 
 ### Basic Example: Responsive Images with srcset
@@ -786,10 +783,10 @@ function AspectRatioImage({ src, alt, aspectRatio = '16/9' }) {
 ## Quick Quiz
 
 {% include quiz.html id="images-1"
-   question="What's the difference between srcset and sizes on an <img>?"
+   question="What do image CDNs (Cloudinary, Imgix, Cloudflare Images, etc.) actually do?"
    options="A|CDNs only cache JPEGs — other formats bypass the cache and are served directly from origin, which is why Cloudinary dropped WebP support in 2023;;B|They transform images on demand: resizing via URL params, reformatting to WebP / AVIF based on the Accept header, compressing per DPR via client hints, and serving everything from edge caches. You ship one source asset and the CDN delivers the right size / format / quality per request. Cloudinary, Imgix, imagekit and the CDN arms of Cloudflare / Vercel / Netlify all do this, so you don't hand-generate 12 variants per image;;C|They regenerate every image on every request, so nothing is cached — this is how CDNs guarantee freshness;;D|They are a marketing term for a fancy HTTP cache — no actual transformation happens"
    correct="B"
-   explanation="Without sizes, the browser assumes 100vw and picks a larger image than needed. Give it both (srcset=&quot;a.jpg 480w, b.jpg 1200w&quot; + sizes=&quot;(max-width: 768px) 100vw, 50vw&quot;) for optimal downloads." %}
+   explanation="Image CDNs do content-aware transformation at the edge: one source asset, many derivatives generated on demand from URL params and request headers, then cached. That's why you don't need to pre-build a dozen size/format variants of every image." %}
 
 {% include quiz.html id="images-2"
    question="How do you implement progressive image loading with a blur placeholder?"
@@ -823,5 +820,3 @@ function AspectRatioImage({ src, alt, aspectRatio = '16/9' }) {
 - [Cloudinary Image Transformations](https://cloudinary.com/documentation/image_transformations)
 - [Core Web Vitals](https://web.dev/vitals/)
 
-The picture element includes multiple <source> elements with different srcset attributes for different viewport sizes.
-The <img> element is the fallback for browsers that do not support the <picture> element.
