@@ -6,27 +6,36 @@ slug: pwa
 
 # Progressive Web App
 
-## Key Insight
+## Glossary
 
-Progressive Web Apps turn ordinary websites into installable, offline-capable, push-notifying apps — without an app store. Three pieces do the heavy lifting: a **Service Worker** (a programmable network proxy that intercepts fetches and caches responses), a **Web App Manifest** (JSON that tells the browser the app's name, icons, and how to launch it), and **HTTPS** (required for both). The payoff: web reach (billions of devices, search-discoverable, instant updates) plus native feel (offline, notifications, home-screen launch, 60fps) — with no gatekeepers and no multi-gigabyte downloads.
+- **App Shell**: The minimal HTML/CSS/JS scaffolding (header, nav, layout) cached up-front so the UI paints instantly even on cold starts or offline.
+- **Service Worker**: A script that runs in a background thread, separate from the page, and acts as a programmable network proxy for fetch, push, and sync events.
+- **Web App Manifest**: A JSON file describing the app's name, icons, start URL, and display mode — what the browser uses to install the site as an app.
+- **VAPID**: Voluntary Application Server Identification. A public/private key pair the server uses to authenticate itself to the browser's push service.
+- **Cache Storage API**: The `caches.*` API used inside service workers to store and look up `Request`/`Response` pairs by URL.
+- **IndexedDB**: A transactional, async, in-browser key-value/object store used for larger or structured data that exceeds Cache Storage limits.
+- **PRPL**: Push critical resources, Render initial route, Pre-cache remaining routes, Lazy-load the rest — a performance pattern for PWAs.
 
 ## Detailed Description
 
-Progressive Web Apps solve the fundamental tension between web and native development: web apps offer universal reach (any device with a browser, no installation friction, instant updates), but traditional web experiences lack offline support, push notifications, home screen presence, and performance characteristics of installed apps. Native apps provide these capabilities but require app store approval, separate codebases per platform (iOS/Android), multi-gigabyte downloads, and update delays. PWAs combine web's advantages (write once, deploy everywhere, discoverable via search, linkable URLs) with native's capabilities (offline functionality, installable, notifications, smooth animations) creating apps that feel native but deploy as websites.
+Progressive Web Apps resolve the long-standing tension between web reach and native capability. Web apps deploy universally — any browser, no install friction, instant updates, linkable URLs — but historically lacked offline support, push notifications, home-screen presence, and the smooth performance of installed apps. Native apps offer those capabilities but require app store approval, per-platform codebases, large downloads, and update delays. PWAs blend the two: write once, deploy everywhere, install on demand, work offline, and notify users — all without a gatekeeper.
 
-The three core PWA technologies work together: (1) **Service Workers** act as programmable network proxies running in background threads, intercepting fetch requests to serve from cache when offline, performing background sync when connectivity returns, handling push notifications even when browser closed, and managing cache strategies (cache-first for assets, network-first for API data, stale-while-revalidate for balance); (2) **Web App Manifest** JSON file describing app metadata (name, icons in multiple sizes, theme color, display mode standalone hiding browser chrome, start_url defining entry point, scope controlling which URLs belong to app), enabling "Add to Home Screen" creating launcher icon alongside native apps; (3) **HTTPS requirement** ensuring secure Service Worker contexts preventing man-in-the-middle attacks on cached responses and network interception, required for installation eligibility.
+Three technologies do the work together. **Service Workers** are background scripts that intercept network requests, serve cached responses when offline, replay queued work when connectivity returns, and receive push messages even with the page closed. The **Web App Manifest** is a JSON file describing name, icons, theme color, `start_url`, `scope`, and `display` mode — the browser reads it to power "Add to Home Screen." **HTTPS** is required for both, since a worker that intercepts traffic must run on a trusted origin.
 
-Service Worker lifecycle consists of four states: **Register** (JavaScript calls `navigator.serviceWorker.register('/sw.js')` from main thread), **Install** (Service Worker downloads, fires `install` event where you pre-cache critical assets using `caches.open().addAll()`, only runs once per version), **Activate** (fires after install when old Service Worker terminates, cleanup old caches here using `caches.delete()`, calls to `clients.claim()` immediately control pages), **Fetch** (intercepts network requests via `fetch` event, `event.respondWith()` returns cached responses or fetches from network, implements cache strategies determining when to serve stale data vs fetch fresh). Updating Service Workers requires changing file content (modify version string), browser detects change and downloads new worker installing in parallel with old version, new worker waits until all tabs close before activating unless `skipWaiting()` forces immediate activation (dangerous for breaking changes), `clients.claim()` takes control immediately without page reload.
+A Service Worker moves through four lifecycle states — Register, Install, Activate, Fetch. Register happens when the page calls `navigator.serviceWorker.register('/sw.js')`. Install fires once per version and is where you pre-cache assets via `caches.open().addAll()`. Activate fires after the previous worker terminates and is where you delete old caches; `clients.claim()` lets the new worker control existing tabs immediately. Fetch intercepts every network request, and `event.respondWith()` decides whether to return cache, network, or a mix. A new worker normally waits in "installed" until all controlled tabs close, unless `skipWaiting()` forces an immediate takeover.
 
-Cache strategies balance freshness vs speed: **Cache First** serves from cache instantly falling back to network if missing (ideal for static assets like CSS/JS/images that rarely change, fastest but potentially stale), **Network First** tries network with timeout falling back to cache if offline (ideal for API responses needing fresh data but require offline fallback, slower but freshest), **Stale While Revalidate** serves cached response immediately while fetching network update in background replacing cache for next request (balances speed and freshness, ideal for frequently updating content like news feeds), **Network Only** never uses cache always fetching fresh (for sensitive data, analytics), **Cache Only** never hits network (for pre-cached critical assets guaranteed available). Implementation uses `event.respondWith()` with promise chains checking `caches.match()` then conditional `fetch()`.
+Cache strategy is the operational core, and choice depends on content type:
 
-Offline functionality requires strategic pre-caching during install event: cache **App Shell** (HTML structure, global CSS, navigation JavaScript providing consistent layout and routing even offline while content areas show "offline" messages), cache **Critical Routes** (homepage, frequently accessed pages), cache **Static Assets** (images, fonts, icons used across app), implement **Runtime Caching** (cache API responses as they're fetched using Cache Storage API, set size limits and expiration policies preventing infinite cache growth, use IndexedDB for larger datasets exceeding Cache API limits). Offline fallback page displayed when navigating to uncached URL while offline provides branded "You're offline" experience instead of browser's dinosaur game, cached during install event, served from fetch handler when network fails and requested page not cached.
+- **Cache First** — serve cache instantly, hit network only on miss. Best for hashed, immutable assets (JS/CSS/fonts/images).
+- **Network First** — try network with a timeout, fall back to cache. Best for API responses where freshness matters.
+- **Stale While Revalidate** — return cache immediately, refresh in the background. Best for feeds and frequently updated pages.
+- **Network Only** / **Cache Only** — escape hatches for sensitive data and pre-cached critical assets.
 
-Background Sync enables deferred actions when connectivity unavailable: user submits form while offline, Service Worker registers sync event with tag identifier, browser queues sync until connection restored (even if PWA closed), fires `sync` event handler processing pending operations, retrieves queued data from IndexedDB, POSTs to server, deletes from queue on success or retries on failure (exponential backoff). Periodic Background Sync (experimental) updates content in background even without user interaction (news apps fetching articles overnight for instant access in morning), requires permission, limited by browser heuristics (site engagement, battery level).
+On top of caching, PWAs add three engagement primitives. **Background Sync** queues a form submission to IndexedDB when offline and replays it once the browser fires a `sync` event. **Push Notifications** combine the Push API (server-to-worker transport, authenticated with VAPID keys) with the Notifications API (`self.registration.showNotification()`) — push delivers, notification displays. **Installability** is gated on HTTPS, a valid manifest with name/icons/start_url/display, a registered service worker with a fetch handler, and a small engagement signal; once satisfied, the browser fires `beforeinstallprompt`, which you can defer to wire up a custom "Install" button.
 
-Push Notifications keep users engaged: server sends push message via Push API (uses VAPID authentication with public/private key pairs), browser receives push even when PWA closed, fires `push` event in Service Worker, displays notification using `self.registration.showNotification()` with title/body/icon/badge/actions, user clicks notification firing `notificationclick` event, Service Worker opens specific URL via `clients.openWindow()` or focuses existing window. Implementation requires requesting permission (`Notification.requestPermission()`), subscribing to push service (`registration.pushManager.subscribe()`), sending subscription endpoint to backend, server triggering pushes using Web-Push protocol.
+## Key Insight
 
-Installability criteria for "Add to Home Screen" prompt: (1) served over HTTPS, (2) manifest.json with name/short_name, icons (192px and 512px minimum), start_url, display standalone or fullscreen, (3) registered Service Worker with fetch handler, (4) user engagement signals (PWA loaded twice with 5-minute interval between visits). Install prompt triggered automatically by browser when criteria met, can be deferred using `beforeinstallprompt` event, custom "Install App" button triggers saved event calling `prompt()` method, installed PWA appears in app launcher, runs in standalone window without browser UI, launches to start_url, can be uninstalled like native apps.
+Progressive Web Apps turn ordinary websites into installable, offline-capable, push-notifying apps — without an app store. Three pieces do the heavy lifting: a **Service Worker** (a programmable network proxy that intercepts fetches and caches responses), a **Web App Manifest** (JSON that tells the browser the app's name, icons, and how to launch it), and **HTTPS** (required for both). The payoff: web reach (billions of devices, search-discoverable, instant updates) plus native feel (offline, notifications, home-screen launch, 60fps) — with no gatekeepers and no multi-gigabyte downloads.
 
 ## Code Examples
 
@@ -601,68 +610,6 @@ document.getElementById('installButton').addEventListener('click', async () => {
 window.addEventListener('appinstalled', () => {
   console.log('PWA installed successfully');
   deferredPrompt = null;
-});
-```
-
-### Key Features of PWAs
-
-- **Installable**: Can be added to the device's home screen
-- **Offline Functionality**: Works with poor or no internet connection
-- **Fast Performance**: Loads quickly and responds smoothly to user interactions
-- **Push Notifications**: Can send updates to users even when the app is closed
-- **Cross-Platform**: Works on multiple devices and operating systems
-
-### Basic Setup for a PWA
-
-### 1. Web App Manifest
-
-Create a JSON file (usually named `manifest.json`) with essential information about your app:
-
-```json
-{
-  "name": "My PWA",
-  "short_name": "PWA",
-  "start_url": "/",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-```
-
-### 2. Service Worker
-
-Create a JavaScript file (e.g., `sw.js`) to handle offline functionality and caching:
-
-```javascript
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open('my-pwa-cache').then((cache) => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/styles.css',
-        '/app.js'
-      ]);
-    })
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
 });
 ```
 

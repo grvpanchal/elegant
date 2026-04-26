@@ -497,13 +497,13 @@ root.render(
 
 // Performance monitoring
 if (process.env.NODE_ENV === 'production') {
-  // Web Vitals
-  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-    getCLS(console.log);
-    getFID(console.log);
-    getFCP(console.log);
-    getLCP(console.log);
-    getTTFB(console.log);
+  // Web Vitals (modern API: FID was retired in March 2024 and replaced by INP)
+  import('web-vitals').then(({ onCLS, onINP, onFCP, onLCP, onTTFB }) => {
+    onCLS(console.log);
+    onINP(console.log);
+    onFCP(console.log);
+    onLCP(console.log);
+    onTTFB(console.log);
   });
 }
 
@@ -757,225 +757,68 @@ export default {
 
 **Why it matters**: Every render-blocking resource in `<head>` delays First Contentful Paint. Users see blank screen while browser downloads resources. Inline critical CSS, defer non-critical resources = faster perceived performance.
 
+## Glossary
+
+- **Index file**: The default filename a server or module resolver returns when a path points at a directory rather than a specific file (e.g. `index.html`, `index.js`).
+- **Directory index**: The server-side feature that maps a request for `/foo/` to a configured filename inside that directory; controlled by `DirectoryIndex` (Apache) or `index` (Nginx).
+- **Barrel export**: An `index.js` (or `index.ts`) that re-exports symbols from sibling modules so consumers can write `import { Button } from './components'` instead of deep paths.
+- **Tree-shaking**: A bundler optimization that drops unused exports from the final bundle; relies on static ES Module syntax and a known entry point.
+- **FCP (First Contentful Paint)**: A Core Web Vital measuring the time from navigation start to when the browser paints the first text or image.
+- **INP (Interaction to Next Paint)**: A Core Web Vital that replaced FID in March 2024; measures the latency of all user interactions on a page and reports the worst-case responsiveness.
+- **Critical CSS**: The minimal subset of stylesheet rules required to render above-the-fold content; typically inlined in `<style>` inside `index.html` so the first paint is not render-blocked.
+
 ## Quiz
 
-### Question 1: Index File Resolution
+{% include quiz.html
+  id="index-file-1"
+  question="A request comes in for https://example.com/docs/ with no trailing filename. Which server directive controls the filename lookup order, and what is the typical default sequence?"
+  options="A: Apache uses 'IndexOrder' and Nginx uses 'fallback'; both default to default.html only;;B: Apache uses 'DirectoryIndex' and Nginx uses 'index'; both walk the configured list left-to-right (e.g. index.html, index.htm) and 403 if none match;;C: Both Apache and Nginx hard-code index.html and cannot be configured;;D: Nginx checks index.html first regardless of config; Apache checks the file with the newest mtime"
+  correct="B"
+  explanation="Apache's DirectoryIndex and Nginx's index directive both accept an ordered list of candidate filenames and try them left-to-right. If none exist and directory listing is off, the server returns 403 Forbidden."
+%}
 
-**Q**: When you import a folder in JavaScript (`import utils from './utils'`), what does the module system look for, and in what order?
+{% include quiz.html
+  id="index-file-2"
+  question="A package.json declares both a 'main' field pointing at './lib/index.js' and an 'exports' field pointing at './dist/index.mjs'. What does Node.js resolve when a consumer writes `import x from 'pkg'`?"
+  options="A: './lib/index.js' because 'main' is the historical default;;B: './dist/index.mjs' because the 'exports' field, when present, takes precedence and also encapsulates the package;;C: Both files are loaded and merged;;D: It throws because declaring both fields is a hard error"
+  correct="B"
+  explanation="When 'exports' is defined it overrides 'main' and 'module' and additionally blocks deep imports that aren't listed. 'main' is only consulted as a fallback for legacy resolvers."
+%}
 
-**A**:
+{% include quiz.html
+  id="index-file-3"
+  question="A static file server is configured to serve /var/www and a user requests /uploads/. The directory exists but contains no index.html. With default settings, what does the user most likely see?"
+  options="A: A 200 response with an empty body;;B: A 301 redirect to the parent directory;;C: Either a 403 Forbidden (directory listing disabled, the safe default) or an auto-generated file listing of /uploads (if autoindex/Options +Indexes is enabled) — which leaks filenames;;D: The contents of /var/www/index.html"
+  correct="C"
+  explanation="Without an index file the server falls back to its directory-listing behavior: 403 by default on hardened configs, or an HTML listing if autoindex (Nginx) / Options +Indexes (Apache) is on. The latter can expose private filenames, which is why you should always ship an index file or disable listing."
+%}
 
-**Node.js Module Resolution Algorithm** (for `import './utils'` or `require('./utils')`):
+{% include quiz.html
+  id="index-file-4"
+  question="Why does the entry filename you point a bundler at (e.g. Webpack's `entry` or Vite's `build.rollupOptions.input`) matter for tree-shaking?"
+  options="A: Because tree-shaking only runs on files literally named 'index.js';;B: Because the bundler walks the static import graph starting from that entry — only exports reachable from it are kept; everything unreferenced is eligible for elimination;;C: Because the entry file's filename is hashed into the chunk name and shorter names ship smaller bundles;;D: Tree-shaking is independent of the entry; it operates per-file"
+  correct="B"
+  explanation="Tree-shaking is reachability analysis from the entry. If you point the bundler at the wrong file, or your entry pulls in a barrel that re-exports everything, the bundler can't prove unused exports are dead and ships them anyway."
+%}
 
-1. **Check if `./utils` is a file**:
-   - `./utils.js`
-   - `./utils.json`
-   - `./utils.node` (native addon)
-   
-2. **If `./utils` is a directory**, check for package.json:
-   - Read `./utils/package.json`
-   - If `exports` field exists, use it (highest priority):
-     ```json
-     "exports": {
-       ".": "./dist/index.js"
-     }
-     ```
-   - Else if `module` field exists (ES modules):
-     ```json
-     "module": "./esm/index.js"
-     ```
-   - Else use `main` field (CommonJS):
-     ```json
-     "main": "./lib/index.js"
-     ```
-   
-3. **If no package.json**, default to index files:
-   - `./utils/index.js`
-   - `./utils/index.json`
-   - `./utils/index.node`
-
-4. **If none found**, throw error:
-   ```
-   Error: Cannot find module './utils'
-   ```
-
-**Example**:
-```
-utils/
-├── package.json  →  { "main": "dist/bundle.js" }
-├── index.js
-└── dist/
-    └── bundle.js
-
-import utils from './utils';
-// Resolves to: ./utils/dist/bundle.js (package.json "main" wins)
-
-// If package.json deleted:
-import utils from './utils';
-// Resolves to: ./utils/index.js (default fallback)
-```
-
-**Why it matters**: Understanding resolution prevents "module not found" errors. If you create `components/Button.js` but import `./components`, it fails unless you add `components/index.js` or configure package.json.
-
-### Question 2: SPA Routing and index.html
-
-**Q**: Why do Single-Page Applications need server configuration to fallback to index.html? What happens without it?
-
-**A**:
-
-**The Problem**:
-
-SPAs use **client-side routing** (React Router, Vue Router). When you navigate from `/` to `/products/123`, the browser **doesn't request a new HTML file**—JavaScript changes the URL and renders new components.
-
-But if user **refreshes page** or **visits `/products/123` directly**, browser makes HTTP request to server:
-
-```
-GET /products/123 HTTP/1.1
-Host: example.com
-```
-
-Server looks for file `products/123.html` → **doesn't exist** → returns 404.
-
-**Without Fallback Configuration**:
-```nginx
-# No try_files directive
-server {
-  root /var/www/html;
-  location / { }
-}
-
-# User visits example.com/products/123
-# → Server looks for /var/www/html/products/123.html
-# → File doesn't exist
-# → Returns 404 Not Found
-```
-
-**With Fallback Configuration**:
-```nginx
-server {
-  root /var/www/html;
-  location / {
-    try_files $uri $uri/ /index.html;
-  }
-}
-
-# User visits example.com/products/123
-# 1. Try $uri → /var/www/html/products/123 (not found)
-# 2. Try $uri/ → /var/www/html/products/123/ (not found)
-# 3. Fallback → /var/www/html/index.html (found!)
-# → Returns index.html with 200 OK
-# → React Router sees URL is /products/123
-# → Renders ProductPage component
-```
-
-**Apache Configuration**:
-```apache
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
-```
-
-**Why it matters**: Without fallback, SPAs break on page refresh or direct URL access. Users bookmark `/products/123`, return later, get 404. Search engines crawl links, get 404s, don't index pages. Fallback is **mandatory** for SPAs in production.
-
-### Question 3: Critical CSS in index.html
-
-**Q**: What is critical CSS, and why should you inline it in index.html instead of loading from a separate file?
-
-**A**:
-
-**Critical CSS** = Styles required to render **above-the-fold content** (visible without scrolling).
-
-**Traditional Approach** (Render-Blocking):
-```html
-<head>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-
-<!-- Timeline:
-   0ms: HTML parsing starts
-  50ms: <link> found, CSS request sent
- 250ms: CSS downloaded (200ms on 3G)
- 250ms: CSS parsed
- 250ms: First Contentful Paint (FCP)
- -->
-```
-
-Browser **blocks rendering** until CSS downloaded and parsed = 250ms blank screen.
-
-**Optimized Approach** (Inline Critical CSS):
-```html
-<head>
-  <style>
-    /* Critical CSS (2-5KB, extracted from styles.css) */
-    body { margin: 0; font-family: system-ui; }
-    header { background: #333; padding: 1rem; }
-    .hero { min-height: 100vh; }
-  </style>
-  
-  <!-- Defer non-critical CSS -->
-  <link rel="preload" href="/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/styles.css"></noscript>
-</head>
-
-<!-- Timeline:
-   0ms: HTML parsing starts
-  10ms: Inline CSS parsed (no network request!)
-  10ms: First Contentful Paint (FCP)
- 250ms: Full CSS downloaded (in background, doesn't block)
- -->
-```
-
-**Benefits**:
-- **FCP reduced from 250ms to 10ms** (24x faster)
-- Above-the-fold content renders immediately
-- Full CSS loads in background without blocking
-
-**How to Extract Critical CSS**:
-1. **Manual**: Identify above-the-fold styles, inline them
-2. **Automated tools**:
-   - [Critical](https://github.com/addyosmani/critical) (npm package)
-   - [Penthouse](https://github.com/pocketjoso/penthouse)
-   - [Critters](https://github.com/GoogleChromeLabs/critters) (webpack plugin)
-
-**Example with Critical**:
-```javascript
-// build.js
-const critical = require('critical');
-
-critical.generate({
-  inline: true,
-  base: 'dist/',
-  src: 'index.html',
-  target: {
-    html: 'index.html'
-  },
-  width: 1300,
-  height: 900
-});
-
-// Reads dist/index.html
-// Extracts critical CSS for 1300x900 viewport
-// Inlines it in <style> tag
-// Defers original <link rel="stylesheet">
-```
-
-**Tradeoffs**:
-- **Pros**: Faster FCP, better perceived performance
-- **Cons**: Larger HTML file (2-5KB added), build step complexity
-
-**Why it matters**: Google uses FCP as Core Web Vital ranking factor. Sites with FCP <1.8s rank higher. Inlining critical CSS is easiest way to improve FCP without changing functionality.
+{% include quiz.html
+  id="index-file-5"
+  question="A teammate adds `export * from './Button'` and `export * from './Modal'` to components/index.js. Button.js then imports `{ Modal } from '../components'` (the barrel). What is the most common failure mode?"
+  options="A: TypeScript will silently widen all types to 'any';;B: A circular import: the barrel loads Button, Button loads the barrel which is mid-evaluation, and Button sees Modal as undefined at module-init time — leading to 'Cannot read properties of undefined' once Button uses it;;C: ESLint blocks the build because barrels are forbidden;;D: The bundle size doubles but runtime behavior is unchanged"
+  correct="B"
+  explanation="Re-exporting siblings through a barrel and then importing siblings via that same barrel creates a cycle. JavaScript resolves cyclic imports by handing back a partially-initialized module record, so the second name is `undefined` at the moment the first module reads it. The fix is to import siblings by their direct path, not through index.js."
+%}
 
 ## References
 
 - [HTML Living Standard - Directory Index](https://html.spec.whatwg.org/)
 - [Node.js Module Resolution Algorithm](https://nodejs.org/api/modules.html#modules_all_together)
-- [Webpack Entry Points](https://webpack.js.org/concepts/entry-points/)
+- [Node.js: package.json `exports` field](https://nodejs.org/api/packages.html#exports)
+- [MDN: `<script defer>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#defer)
+- [Vite: build entry points and rollupOptions.input](https://vite.dev/guide/build.html#multi-page-app)
+- [Webpack: `entry` configuration](https://webpack.js.org/configuration/entry-context/#entry)
 - [Critical Rendering Path - Web.dev](https://web.dev/critical-rendering-path/)
+- [Core Web Vitals: INP replaces FID](https://web.dev/articles/inp)
 - [SEO Best Practices - Google Search Central](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)
 
 

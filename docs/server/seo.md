@@ -6,106 +6,129 @@ slug: seo
 
 # Search Engine Optimization
 
+## Glossary
+
+- **Crawling** — the process by which search-engine bots (Googlebot, Bingbot) fetch your URLs by following links and sitemap entries. If a page can't be crawled, it can't be indexed.
+- **Indexing** — once crawled, the engine parses, renders, and stores the page in its index so it can be returned for queries. JS-only pages depend on the engine's rendering pass to be indexed.
+- **Core Web Vitals** — Google's user-experience signals used in the Page Experience ranking system. The three current vitals are:
+  - **LCP (Largest Contentful Paint)** — when the biggest above-the-fold element finishes painting. Target < 2.5s.
+  - **INP (Interaction to Next Paint)** — page-lifetime responsiveness to user input; replaced FID in March 2024. Target < 200ms.
+  - **CLS (Cumulative Layout Shift)** — how much visible content jumps around as the page loads. Target < 0.1.
+- **Canonical URL** — the URL you declare (via `<link rel="canonical">`) as the "official" address for a piece of content when several URLs would otherwise serve it.
+- **hreflang** — a `<link rel="alternate" hreflang="…">` annotation telling search engines which language/region a page targets so the right localized URL surfaces in the right market.
+- **Schema.org / structured data** — a shared vocabulary for describing entities (Product, Article, Recipe, FAQ, BreadcrumbList) on a page. Usually delivered as JSON-LD and used by search engines to render rich results.
+
+## Detailed Description
+
+### Crawling & Indexing
+
+Search Engine Optimization in modern frontend architecture solves a fundamental conflict: search engines prefer fast-loading, semantic HTML with clear content hierarchy, while modern SPAs prioritize rich interactivity through JavaScript frameworks. Without proper SEO implementation, Google's crawler sees `<div id="root"></div>` and nothing more—your beautifully designed React app is invisible to search engines, social media previews show blank pages, and organic traffic remains zero despite excellent content. The fix is to give crawlers real HTML on the first response — see [ssr.md](ssr.html) for server-side rendering and [ssg.md](ssg.html) for build-time pre-rendering.
+
+The core SEO pillars for frontend applications: (1) **Server-Side Rendering** ensuring crawlers receive fully-rendered HTML instead of waiting for JavaScript execution (critical for initial indexing and social previews — see [ssr.md](ssr.html)), (2) **Meta Tags** providing title, description, Open Graph, Twitter Cards in HTML `<head>` (controls how pages appear in search results and social shares), (3) **Structured Data** using JSON-LD schema markup describing content semantically (enables rich snippets like star ratings, breadcrumbs, FAQs in search results), (4) **Semantic HTML** with proper heading hierarchy, alt text, ARIA labels (improves accessibility and crawler understanding), (5) **Performance Optimization** via Core Web Vitals (LCP, INP, CLS directly impact rankings since Google's Page Experience update — note that INP replaced FID as the responsiveness metric in March 2024).
+
+### Core Web Vitals
+
+Performance SEO gained massive importance with Google's Page Experience ranking factor prioritizing Core Web Vitals (see also [web.dev's vitals reference](https://web.dev/vitals/) under [References](#references)). LCP (Largest Contentful Paint) <2.5s measures main content visibility—optimize by preloading critical assets, using SSG/SSR for above-fold content (see [ssg.md](ssg.html)), implementing image optimization. INP (Interaction to Next Paint) <200ms measures interactivity responsiveness across the page lifecycle (replacing the older FID metric in 2024)—optimize by code splitting, lazy loading below-fold components, minimizing long JavaScript tasks. CLS (Cumulative Layout Shift) <0.1 prevents jarring layout changes—fix by always specifying image dimensions, reserving space for dynamic content, avoiding inserting content above existing content.
+
+### Metadata & Open Graph
+
+Meta tag implementation requires dynamic per-page values, not static sitewide tags. Homepage needs "Buy Premium Widgets | WidgetCo" title and "Shop our collection of 500+ premium widgets..." description, while product pages need "Widget Pro 3000 - $99.99 | WidgetCo" with specific product descriptions. Next.js `generateMetadata`, React 19's native `<title>`/`<meta>` hoisting, or framework-specific solutions inject tags dynamically based on route/content. Critical tags: title (50-60 chars), description (150-160 chars), canonical URL (prevent duplicate content), Open Graph (og:title, og:description, og:image for Facebook/LinkedIn), Twitter Cards (twitter:card, twitter:image for Twitter previews).
+
+### Structured Data
+
+Structured data transforms search results from plain blue links into rich snippets with images, ratings, prices, breadcrumbs, FAQs. JSON-LD script tags inject schema.org vocabulary describing content types—Product schema includes name/price/availability, Article schema has headline/author/datePublished, Recipe schema shows cooking time/ingredients. Google's Rich Results Test validates markup and previews appearance. Example: Product schema creates search results showing "$99.99 - In Stock (234 reviews)" instead of just plain text description, dramatically improving click-through rates (20-30% boost typical).
+
+### URL Structure & Canonicals
+
+Canonical URLs prevent duplicate content penalties when same content appears at multiple URLs (www vs non-www, trailing slashes, query parameters). Use `<link rel="canonical">` specifying preferred URL. Implement 301 redirects from duplicate URLs to canonical versions. For paginated content, link pages together with prev/next semantics in your navigation. Sitemap generation automates discovery of all indexable pages, especially critical for large SPAs where crawlers might miss dynamically generated routes. Generate XML sitemaps during build listing all URLs with lastmod dates, changefreq hints, priority scores. Submit to Google Search Console for faster indexing. For dynamic content, implement dynamic sitemaps that read your database/CMS and generate XML on demand. Include image sitemaps for image search optimization and video sitemaps for video content discovery.
+
+### hreflang & Internationalization
+
+International sites use hreflang tags indicating language/region variants preventing wrong-language pages ranking in wrong regions. Each localized URL must reference every other variant — including itself — with a matching `<link rel="alternate" hreflang="en-US" href="…">` entry, plus an `x-default` for the fallback. Mismatches (one page lists `fr-CA` but the French page doesn't list back) cause search engines to ignore the cluster entirely.
+
+### Performance & Mobile
+
+Beyond Core Web Vitals, mobile-first indexing means Google primarily uses the mobile version of your site for ranking. Ensure parity between desktop and mobile content (don't hide text behind "read more" toggles that aren't expanded), test with real-device throttling, and prefer responsive images (`srcset` / `<picture>`) over UA-sniffed assets. Pair this with the build/runtime tactics described in [ssg.md](ssg.html) and the runtime work in [ssr.md](ssr.html) for the best result.
+
 ## Key Insight
 
 SEO for frontend applications centers on making JavaScript-rendered content discoverable and crawlable by search engines through server-side rendering, semantic HTML, meta tags, structured data (JSON-LD), and Core Web Vitals optimization—transforming dynamic SPAs from invisible black boxes (empty `<div id="root">`) into rich, indexable content that ranks highly in search results and generates engaging social media previews.
 
-## Detailed Description
-
-Search Engine Optimization in modern frontend architecture solves a fundamental conflict: search engines prefer fast-loading, semantic HTML with clear content hierarchy, while modern SPAs prioritize rich interactivity through JavaScript frameworks. Without proper SEO implementation, Google's crawler sees `<div id="root"></div>` and nothing more—your beautifully designed React app is invisible to search engines, social media previews show blank pages, and organic traffic remains zero despite excellent content.
-
-The core SEO pillars for frontend applications: (1) **Server-Side Rendering** ensuring crawlers receive fully-rendered HTML instead of waiting for JavaScript execution (critical for initial indexing and social previews), (2) **Meta Tags** providing title, description, Open Graph, Twitter Cards in HTML `<head>` (controls how pages appear in search results and social shares), (3) **Structured Data** using JSON-LD schema markup describing content semantically (enables rich snippets like star ratings, breadcrumbs, FAQs in search results), (4) **Semantic HTML** with proper heading hierarchy, alt text, ARIA labels (improves accessibility and crawler understanding), (5) **Performance Optimization** via Core Web Vitals (LCP, INP, CLS directly impact rankings since Google's Page Experience update — note that INP replaced FID as the responsiveness metric in March 2024).
-
-Meta tag implementation requires dynamic per-page values, not static sitewide tags. Homepage needs "Buy Premium Widgets | WidgetCo" title and "Shop our collection of 500+ premium widgets..." description, while product pages need "Widget Pro 3000 - $99.99 | WidgetCo" with specific product descriptions. Next.js `<Head>` component, React Helmet, or framework-specific solutions inject tags dynamically based on route/content. Critical tags: title (50-60 chars), description (150-160 chars), canonical URL (prevent duplicate content), Open Graph (og:title, og:description, og:image for Facebook/LinkedIn), Twitter Cards (twitter:card, twitter:image for Twitter previews).
-
-Structured data transforms search results from plain blue links into rich snippets with images, ratings, prices, breadcrumbs, FAQs. JSON-LD script tags inject schema.org vocabulary describing content types—Product schema includes name/price/availability, Article schema has headline/author/datePublished, Recipe schema shows cooking time/ingredients. Google's Rich Results Test validates markup and previews appearance. Example: Product schema creates search results showing "$99.99 - In Stock ⭐⭐⭐⭐⭐ (234 reviews)" instead of just plain text description, dramatically improving click-through rates (20-30% boost typical).
-
-Performance SEO gained massive importance with Google's Page Experience ranking factor prioritizing Core Web Vitals. LCP (Largest Contentful Paint) <2.5s measures main content visibility—optimize by preloading critical assets, using SSG/SSR for above-fold content, implementing image optimization. INP (Interaction to Next Paint) <200ms measures interactivity responsiveness across the page lifecycle (replacing the older FID metric in 2024)—optimize by code splitting, lazy loading below-fold components, minimizing long JavaScript tasks. CLS (Cumulative Layout Shift) <0.1 prevents jarring layout changes—fix by always specifying image dimensions, reserving space for dynamic content, avoiding inserting content above existing content.
-
-Sitemap generation automates discovery of all indexable pages, especially critical for large SPAs where crawlers might miss dynamically generated routes. Generate XML sitemaps during build listing all URLs with lastmod dates, changefreq hints, priority scores. Submit to Google Search Console for faster indexing. For dynamic content, implement dynamic sitemaps via API routes reading database/CMS and generating XML on-the-fly. Include image sitemaps for image search optimization and video sitemaps for video content discovery.
-
-Canonical URLs prevent duplicate content penalties when same content appears at multiple URLs (www vs non-www, trailing slashes, query parameters). Use `<link rel="canonical">` specifying preferred URL. Implement 301 redirects from duplicate URLs to canonical versions. For paginated content, use rel="next"/rel="prev" linking pages together. International sites use hreflang tags indicating language/region variants preventing wrong-language pages ranking in wrong regions.
-
 ## Code Examples
 
-### Basic Example: Next.js SEO Component
+### Basic Example: Next.js App Router `generateMetadata`
 
-Reusable SEO component with meta tags and Open Graph:
+Modern App Router pages declare metadata via the async `generateMetadata` export — Next.js renders the `<head>` for you, so there's no `<Head>` component or `pages/_document.js` boilerplate. Cross-reference: [ssr.md](ssr.html) for the rendering pipeline this metadata rides on.
 
 ```javascript
-// ===== components/SEO.js =====
-import Head from 'next/head';
+// ===== app/layout.js =====
+// Root metadata applies to every route unless a child overrides it.
 
-export default function SEO({
-  title = 'Default Site Title',
-  description = 'Default site description',
-  image = '/default-og-image.jpg',
-  url,
-  type = 'website'
-}) {
-  const siteName = 'YourSite';
-  const twitterHandle = '@yoursite';
-  
+export const metadata = {
+  metadataBase: new URL('https://example.com'),
+  title: {
+    default: 'YourSite',
+    template: '%s | YourSite',
+  },
+  description: 'Default site description',
+  openGraph: {
+    siteName: 'YourSite',
+    type: 'website',
+    images: ['/default-og-image.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: '@yoursite',
+  },
+  robots: { index: true, follow: true },
+};
+
+export default function RootLayout({ children }) {
   return (
-    <Head>
-      {/* Primary Meta Tags */}
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={description} />
-      
-      {/* Canonical URL */}
-      {url && <link rel="canonical" href={url} />}
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content={type} />
-      <meta property="og:url" content={url} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:site_name" content={siteName} />
-      
-      {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={url} />
-      <meta property="twitter:title" content={title} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
-      <meta property="twitter:creator" content={twitterHandle} />
-      
-      {/* Robots */}
-      <meta name="robots" content="index, follow" />
-    </Head>
+    <html lang="en">
+      <body>{children}</body>
+    </html>
   );
 }
 
 
-// ===== pages/products/[id].js =====
-export default function ProductPage({ product }) {
-  const productUrl = `https://example.com/products/${product.id}`;
-  const productImage = `https://example.com${product.image}`;
-  
-  return (
-    <>
-      <SEO
-        title={`${product.name} - $${product.price} | YourSite`}
-        description={product.description.substring(0, 155)}
-        image={productImage}
-        url={productUrl}
-        type="product"
-      />
-      
-      <div>
-        <h1>{product.name}</h1>
-        <p>${product.price}</p>
-        <img src={product.image} alt={product.name} />
-      </div>
-    </>
-  );
-}
+// ===== app/products/[id]/page.js =====
+// Per-route metadata is computed asynchronously from the same data
+// the page itself uses — Next dedupes the fetch.
 
-export async function getStaticProps({ params }) {
+export async function generateMetadata({ params }) {
   const product = await fetchProduct(params.id);
-  return { props: { product } };
+  const url = `/products/${product.id}`;
+
+  return {
+    title: `${product.name} - $${product.price}`,
+    description: product.description.slice(0, 155),
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'product',
+      url,
+      title: product.name,
+      description: product.description.slice(0, 155),
+      images: [product.image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      images: [product.image],
+    },
+  };
+}
+
+export default async function ProductPage({ params }) {
+  const product = await fetchProduct(params.id);
+
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>${product.price}</p>
+      <img src={product.image} alt={product.name} />
+    </div>
+  );
 }
 ```
 
@@ -277,163 +300,95 @@ const faqSchema = {
 ```
 {% endraw %}
 
-### Advanced Example: Dynamic Sitemap Generation
+### Advanced Example: App Router Sitemap, Robots, and Vitals
 
-XML sitemap with automatic updates:
+App Router exposes file conventions for `sitemap.xml` and `robots.txt`, and the root layout handles preconnect/manifest links — no `pages/_document.js` needed.
 
-```javascript
-// ===== pages/sitemap.xml.js =====
-// Dynamic sitemap generation
+```typescript
+// ===== app/sitemap.ts =====
+// Returning an array of MetadataRoute.Sitemap entries; Next emits sitemap.xml.
 
-function generateSiteMap(posts, products) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Static pages -->
-  <url>
-    <loc>https://example.com</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://example.com/about</loc>
-    <lastmod>2026-01-01T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Dynamic blog posts -->
-  ${posts.map(post => `
-  <url>
-    <loc>https://example.com/blog/${post.slug}</loc>
-    <lastmod>${post.updatedAt}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  `).join('')}
-  
-  <!-- Dynamic products -->
-  ${products.map(product => `
-  <url>
-    <loc>https://example.com/products/${product.id}</loc>
-    <lastmod>${product.updatedAt}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  `).join('')}
-</urlset>`;
-}
+import type { MetadataRoute } from 'next';
 
-export async function getServerSideProps({ res }) {
-  // Fetch all posts and products
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, products] = await Promise.all([
     fetchAllPosts(),
-    fetchAllProducts()
+    fetchAllProducts(),
   ]);
-  
-  const sitemap = generateSiteMap(posts, products);
-  
-  res.setHeader('Content-Type', 'text/xml');
-  res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
-  res.write(sitemap);
-  res.end();
-  
-  return { props: {} };
-}
 
-export default function SitemapPage() {
-  // This component never renders
-  return null;
-}
+  const staticUrls: MetadataRoute.Sitemap = [
+    { url: 'https://example.com', lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+    { url: 'https://example.com/about', lastModified: '2026-01-01', changeFrequency: 'monthly', priority: 0.8 },
+  ];
 
+  const postUrls = posts.map((post) => ({
+    url: `https://example.com/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
 
-// ===== robots.txt =====
-// pages/robots.txt.js
+  const productUrls = products.map((product) => ({
+    url: `https://example.com/products/${product.id}`,
+    lastModified: product.updatedAt,
+    changeFrequency: 'daily' as const,
+    priority: 0.9,
+  }));
 
-export async function getServerSideProps({ res }) {
-  const robotsTxt = `
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /api
-
-Sitemap: https://example.com/sitemap.xml
-`.trim();
-  
-  res.setHeader('Content-Type', 'text/plain');
-  res.write(robotsTxt);
-  res.end();
-  
-  return { props: {} };
-}
-
-export default function RobotsPage() {
-  return null;
+  return [...staticUrls, ...postUrls, ...productUrls];
 }
 
 
-// ===== Core Web Vitals Optimization =====
-// next.config.js
+// ===== app/robots.ts =====
+// File-convention robots.txt — Next serves it at /robots.txt.
+
+import type { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: { userAgent: '*', allow: '/', disallow: ['/admin', '/api'] },
+    sitemap: 'https://example.com/sitemap.xml',
+  };
+}
+
+
+// ===== next.config.js =====
+// Modern config: no swcMinify (default since 13) and no optimizeFonts (handled by next/font).
 
 module.exports = {
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
   },
-  
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
-  // Enable SWC minification for faster builds
-  swcMinify: true,
-  
-  // Optimize fonts
-  optimizeFonts: true,
-  
   headers: async () => [
     {
       source: '/:all*(svg|jpg|png)',
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'public, max-age=31536000, immutable',
-        },
-      ],
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
     },
   ],
 };
 
 
-// ===== Preconnect to external domains =====
-// pages/_document.js
+// ===== app/layout.js =====
+// Preconnect + manifest live in the root layout's <head>.
 
-import { Html, Head, Main, NextScript } from 'next/document';
-
-export default function Document() {
+export default function RootLayout({ children }) {
   return (
-    <Html lang="en">
-      <Head>
-        {/* Preconnect to improve loading speed */}
+    <html lang="en">
+      <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://cdn.example.com" />
         <link rel="dns-prefetch" href="https://analytics.google.com" />
-        
-        {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        
-        {/* Manifest for PWA */}
         <link rel="manifest" href="/manifest.json" />
-        
-        {/* Theme color */}
         <meta name="theme-color" content="#000000" />
-      </Head>
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
+      </head>
+      <body>{children}</body>
+    </html>
   );
 }
 ```
@@ -481,19 +436,15 @@ export default function BlogPost() {
 ```
 
 ```javascript
-// ✅ GOOD: SSR/SSG for indexable content
-export async function getStaticProps({ params }) {
+// ✅ GOOD: SSR/SSG for indexable content (App Router)
+export default async function BlogPost({ params }) {
   const post = await fetchPost(params.slug);
-  return { props: { post } };
-}
-
-export default function BlogPost({ post }) {
   return <h1>{post.title}</h1>;
   // Crawlers receive fully-rendered HTML
 }
 ```
 
-**Why it matters:** Google can execute JavaScript, but SSR guarantees immediate indexing and proper social previews.
+**Why it matters:** Google can execute JavaScript, but SSR/SSG (see [ssr.md](ssr.html), [ssg.md](ssg.html)) guarantees immediate indexing and proper social previews.
 
 ### 3. Missing Alt Text on Images
 **Mistake:** Images without descriptive alt attributes.
@@ -550,8 +501,10 @@ export default function BlogPost({ post }) {
 
 ## References
 
-- [Google Search Central SEO Guide](https://developers.google.com/search/docs/beginner/seo-starter-guide)
-- [Schema.org Structured Data](https://schema.org/)
-- [Open Graph Protocol](https://ogp.me/)
-- [Core Web Vitals](https://web.dev/vitals/)
-- [Google Rich Results Test](https://search.google.com/test/rich-results)
+- [Google Search Central — SEO Starter Guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide) — the canonical overview of crawling, indexing, and best practices.
+- [web.dev — Core Web Vitals](https://web.dev/vitals/) — definitions and target thresholds for LCP, INP, and CLS.
+- [Schema.org vocabulary](https://schema.org/) — full reference for Product, Article, Recipe, FAQ, BreadcrumbList, and other types.
+- [Open Graph Protocol](https://ogp.me/) — the og:* meta-tag spec used by Facebook, LinkedIn, Discord, Slack, and others.
+- [Google Rich Results Test](https://search.google.com/test/rich-results) — validate JSON-LD and preview rich snippets before shipping.
+- [Next.js — Metadata in the App Router](https://nextjs.org/docs/app/building-your-application/optimizing/metadata) — `generateMetadata`, `app/sitemap.ts`, `app/robots.ts`.
+- [Google Search Central — hreflang for international SEO](https://developers.google.com/search/docs/specialty/international/localized-versions) — the bidirectional-link rules for language/region targeting.

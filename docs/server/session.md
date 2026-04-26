@@ -8,19 +8,43 @@ slug: session
 
 HTTP forgets you the moment a request finishes. Sessions are how the web pretends otherwise — and getting that pretence right is the difference between "stayed logged in for a week" and "got silently signed out mid-checkout."
 
-## Key Insight
+## Glossary
 
-Session management in frontend applications balances stateless authentication (JWT tokens for API authorization) with stateful user experience (persisting preferences, cart data, form progress across page reloads and browser sessions) through layered storage strategies—HTTP-only cookies for security-critical auth tokens preventing XSS theft, localStorage for persistent user preferences surviving browser restarts, sessionStorage for temporary tab-specific state, and server-side sessions for sensitive data requiring server validation—while implementing token rotation, silent refresh, and cross-tab synchronization to maintain seamless authentication across multiple windows without re-login prompts or data loss.
+- **Session:** the illusion of continuity layered on top of stateless HTTP — the server (or a token) remembering who you are between requests.
+- **JWT (JSON Web Token):** a signed, base64-encoded payload of user claims that a server can verify without a database lookup.
+- **IdP (Identity Provider):** an external authority such as Google, Okta, or Auth0 that proves who the user is and issues tokens on the app's behalf.
+- **Silent auth:** refreshing a session in the background (typically via a hidden iframe or refresh-token call) without prompting the user.
+- **Refresh-token rotation:** issuing a brand-new refresh token every time one is used and invalidating the old one, so a stolen token has a short shelf life.
+- **Sliding timeout:** a session expiry that resets on user activity — opposite of an absolute timeout, which expires N hours after login no matter what.
 
 ## Detailed Description
 
-Session management addresses the fundamental challenge of maintaining user state in stateless HTTP environments: web applications need to remember who you are (authentication), what you're doing (application state), and your preferences (personalization) across requests, page reloads, and browser sessions, while balancing security (preventing token theft, XSS, CSRF attacks), performance (minimizing server roundtrips), and user experience (no unexpected logouts, data persistence, cross-tab consistency). Traditional server-rendered apps store everything server-side with session cookies, but modern SPAs distribute state across client storage (localStorage, sessionStorage, cookies) and server sessions, requiring careful orchestration.
+Session management addresses the fundamental challenge of maintaining user state in stateless HTTP environments. Web applications need to remember three things across requests, reloads, and browser restarts:
 
-The three-layer session architecture separates concerns: (1) **Application Session** (client-side state managing UI preferences, shopping cart, form drafts, navigation history using localStorage/sessionStorage/IndexedDB, survives page reloads, may persist across browser sessions), (2) **Authentication Session** (auth provider like Auth0/Okta tracking logged-in user with refresh tokens in HTTP-only cookies, access tokens short-lived 15min in memory, refresh tokens long-lived 30 days rotating on use, silent authentication via hidden iframe refreshing tokens before expiration), (3) **Identity Provider Session** (Google/Facebook/Microsoft SSO remembering user login, enables single sign-on across multiple apps, controlled by IdP not your application, logout requires IdP logout endpoint). These layers interact—IdP session enables Auth session creation, Auth session gates Application session access—but expire independently causing logout confusion ("I was just logged into Gmail, why did your app log me out?").
+- **Who you are** (authentication).
+- **What you're doing** (application state — cart, form drafts, navigation).
+- **Your preferences** (personalization — theme, language, notifications).
+
+All three must be balanced against security (token theft, XSS, CSRF), performance (minimising server roundtrips) and user experience (no unexpected logouts, no lost data, consistent state across tabs). Traditional server-rendered apps store everything server-side with session cookies, but modern SPAs distribute state across client storage (localStorage, sessionStorage, cookies) and server sessions, requiring careful orchestration.
+
+The three-layer session architecture separates concerns:
+
+1. **Application Session** — client-side state for UI preferences, shopping cart, form drafts, and navigation history. Lives in localStorage / sessionStorage / IndexedDB, survives page reloads, may persist across browser sessions.
+2. **Authentication Session** — your auth provider (Auth0, Okta, your own server) tracking the logged-in user. Refresh tokens sit in HTTP-only cookies, access tokens stay short-lived (~15 min) in memory, refresh tokens last 30 days and rotate on use. Silent authentication via a hidden iframe refreshes tokens before they expire.
+3. **Identity Provider Session** — Google / Facebook / Microsoft SSO remembering the user's login. Enables single sign-on across many apps, controlled by the IdP rather than your code, and logging out requires hitting the IdP's logout endpoint.
+
+These layers interact — IdP session enables Auth session creation, Auth session gates Application session access — but expire independently, causing logout confusion ("I was just logged into Gmail, why did your app log me out?").
 
 Token-based authentication using JWTs replaces session IDs: **Access Tokens** (short-lived 15-60min, included in Authorization header for API requests, contains user claims encoded in JWT payload, stateless server validation via signature checking no database lookup, expires quickly limiting damage if stolen), **Refresh Tokens** (long-lived 30-90 days, stored in HTTP-only cookies preventing JavaScript access, used exclusively to obtain new access tokens via `/oauth/token` endpoint, rotates on each use invalidating old token, server tracks in database enabling revocation). Access tokens stay in memory (JavaScript variable, React state) never localStorage avoiding XSS theft—if attacker injects script they can't read HTTP-only refresh token cookie. Silent authentication refreshes access tokens before expiration using hidden iframe calling `/authorize` with `prompt=none` parameter, seamlessly maintaining session without user interruption.
 
-Storage strategies balance security vs persistence vs scope: **Cookies** (HTTP-only secure SameSite cookies for refresh tokens, 4KB limit, sent automatically with requests, vulnerable to CSRF requiring CSRF tokens, scoped to domain/path, accessible across tabs, survive browser restart if persistent), **localStorage** (5-10MB limit, persists across browser restarts, accessible from all tabs same origin, synchronizes via storage event listener, vulnerable to XSS attacks avoid storing tokens, ideal for user preferences theme/language, cart data, draft content), **sessionStorage** (5-10MB limit, scoped to single tab, clears on tab close, isolated between tabs, ideal for wizard progress, temporary filters, tab-specific state), **IndexedDB** (50MB+ limit, asynchronous key-value store, structured data with indexes, ideal for offline data caching, large datasets, transaction support). Never store sensitive tokens in localStorage—if XSS attacker injects `<script>` they can read localStorage but not HTTP-only cookies.
+Storage strategies balance security, persistence, and scope:
+
+- **Cookies** — HTTP-only / Secure / SameSite cookies for refresh tokens. ~4KB limit, sent automatically with same-origin requests, vulnerable to CSRF (so pair with CSRF tokens), scoped to domain/path, shared across tabs, survive browser restart if persistent.
+- **localStorage** — 5-10MB, persists across restarts, shared by all tabs of the same origin, observable via the `storage` event. **Vulnerable to XSS — never put tokens here.** Ideal for user preferences (theme, language), cart data, draft content.
+- **sessionStorage** — 5-10MB, scoped to a single tab, cleared on tab close, isolated between tabs. Ideal for wizard progress, temporary filters, and other tab-specific state.
+- **IndexedDB** — 50MB+, async key-value store with indexes and transactions. Ideal for offline data caching and large structured datasets.
+
+The XSS rule is the load-bearing one: an injected `<script>` can read everything in localStorage, but it cannot read an HTTP-only cookie.
 
 Cross-tab synchronization keeps multiple windows consistent: BroadcastChannel API sends messages to all tabs (logout in one tab logs out all tabs, cart update reflects everywhere, permission changes propagate), localStorage storage event fires when other tabs modify localStorage (listen for token changes indicating logout/login), SharedWorker maintains single background process coordinating tabs (centralized token refresh avoiding race conditions, single WebSocket connection shared across tabs), ServiceWorker intercepts all fetch requests applying consistent authentication (inject access token into API requests, refresh token if expired, logout all tabs on 401). Without synchronization, user logs out in Tab A but Tab B remains "logged in" with expired token causing confusing 401 errors.
 
@@ -31,6 +55,10 @@ Silent authentication maintains sessions transparently: access token expires in 
 Session timeout strategies balance security vs UX: **Absolute timeout** (30-day maximum regardless of activity, refresh token expires forcing re-login, prevents indefinite sessions), **Sliding timeout** (extends session on activity, "remember me" checkbox enables longer absolute timeout 90 days vs 30 days, last_activity timestamp updates on API calls, logout if inactive >30min), **Hybrid approach** (sliding timeout up to absolute maximum, activity extends up to 2 hours, absolute maximum 30 days, balances convenience and security). Implement activity tracking (mouse/keyboard listeners update last_activity localStorage, before API call check Date.now() - last_activity > 30min, if inactive too long logout locally, server validates timestamp preventing client manipulation).
 
 Cross-domain session management for multi-domain SPAs (app.example.com, shop.example.com, blog.example.com sharing authentication): **Push approach** (main domain maintains WebSocket connection to auth server, other domains embed iframe from main domain, iframe postMessage sends tokens to parent window, all domains stay synchronized), **Poll approach** (each domain polls auth server every 5min checking session validity, /session/status endpoint returns logged-in state, creates new session if IdP session valid, race condition window between domains), **Subdomain cookie sharing** (set refresh token cookie with domain=.example.com, accessible across all subdomains, requires all subdomains on same root domain, doesn't work for completely different domains app.com and shop.net). Third-party cookie deprecation (Safari ITP, Chrome Privacy Sandbox) breaks iframe approach—fallback to server-side session tracking with client polling.
+
+## Key Insight
+
+Session management balances *stateless* authentication (JWTs for API authorization) with *stateful* user experience (preferences, cart, form drafts surviving reloads). The trick is layered storage: HTTP-only cookies for security-critical auth tokens, localStorage for persistent preferences, sessionStorage for tab-specific state, and a server session for anything truly sensitive. On top of that you need token rotation, silent refresh, and cross-tab sync so the user never sees a re-login prompt or loses data.
 
 ## Code Examples
 
@@ -478,16 +506,18 @@ function broadcastToAll(message) {
 
 async function scheduleRefresh(expiresIn) {
   clearTimeout(refreshTimeout);
-  
+
+  // Cache the outer expiresIn to schedule the timer, then rename the
+  // refreshed value on the inside so we don't shadow the parameter.
   refreshTimeout = setTimeout(async () => {
     // Refresh token
     const response = await fetch('/api/auth/refresh', {
       credentials: 'include'
     });
-    const { accessToken: newToken, expiresIn } = await response.json();
-    
+    const { accessToken: newToken, expiresIn: nextExpiresIn } = await response.json();
+
     accessToken = newToken;
-    scheduleRefresh(expiresIn);
+    scheduleRefresh(nextExpiresIn);
     broadcastToAll({ type: 'TOKEN_UPDATED', accessToken: newToken });
   }, (expiresIn - 300) * 1000);
 }
@@ -708,25 +738,33 @@ class StatePersistence {
     localStorage.removeItem(this.STORAGE_KEY);
   }
   
-  // Auto-save state on changes (debounced)
+  // Auto-save state on changes (debounced).
+  // Returns { schedule, flush, dispose } so callers can hook the
+  // beforeunload listener up *and* tear it down again on unmount.
   setupAutoSave(getStateFunction, debounceMs = 1000) {
     let saveTimeout = null;
-    
-    const debouncedSave = () => {
+
+    const flush = () => {
       clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        const state = getStateFunction();
-        this.saveState(state);
-      }, debounceMs);
+      saveTimeout = null;
+      this.saveState(getStateFunction());
     };
-    
-    // Save before page unload
-    window.addEventListener('beforeunload', () => {
-      const state = getStateFunction();
-      this.saveState(state);
-    });
-    
-    return debouncedSave;
+
+    const schedule = () => {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(flush, debounceMs);
+    };
+
+    // Save before page unload (synchronously, not via the debounce).
+    const handleBeforeUnload = () => flush();
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    const dispose = () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      clearTimeout(saveTimeout);
+    };
+
+    return { schedule, flush, dispose };
   }
 }
 
@@ -736,7 +774,7 @@ export const statePersistence = new StatePersistence();
 // ===== Usage example =====
 // React app with session and state persistence
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
   const [userPreferences, setUserPreferences] = useState({
@@ -744,21 +782,35 @@ function App() {
     language: 'en',
     notifications: true
   });
-  
+
+  // Hold the latest preferences in a ref so the auto-save closure
+  // always reads fresh state without re-running the effect.
+  const preferencesRef = useRef(userPreferences);
+  preferencesRef.current = userPreferences;
+
+  // Mount-only effect: restore state and wire up auto-save exactly once.
+  // The `beforeunload` listener is registered inside setupAutoSave and
+  // removed by the returned `dispose` on unmount.
+  const autoSaveRef = useRef(null);
   useEffect(() => {
-    // Restore state on mount
     const restored = statePersistence.restoreState();
     if (restored?.userPreferences) {
       setUserPreferences(restored.userPreferences);
     }
-    
-    // Setup auto-save
-    const saveState = statePersistence.setupAutoSave(() => ({
-      userPreferences
-    }));
-    
-    // Save on preference changes
-    return () => saveState();
+
+    autoSaveRef.current = statePersistence.setupAutoSave(
+      () => ({ userPreferences: preferencesRef.current })
+    );
+
+    return () => {
+      autoSaveRef.current?.flush();
+      autoSaveRef.current?.dispose();
+    };
+  }, []);
+
+  // Schedule a debounced save whenever preferences actually change.
+  useEffect(() => {
+    autoSaveRef.current?.schedule();
   }, [userPreferences]);
   
   // Listen for timeout warnings
@@ -945,6 +997,49 @@ async function logout() {
 ```
 
 **Why it matters:** Inconsistent authentication state across tabs confuses users and causes unexpected 401 errors.
+
+### 4. Logging Out Only Client-Side
+**Mistake:** Clearing the in-memory token (and maybe redirecting) without telling the server to revoke the refresh token.
+
+```javascript
+// BAD: client-side-only logout
+function logout() {
+  authService.accessToken = null;
+  // Refresh token cookie still valid on the server!
+  // Anyone replaying it (stolen laptop, shared computer, leaked log)
+  // can mint fresh access tokens until it naturally expires.
+  window.location.href = '/login';
+}
+```
+
+```javascript
+// GOOD: revoke server-side, then clear locally
+async function logout() {
+  try {
+    // Server deletes the refresh token from its store and clears the cookie.
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include'
+    });
+  } finally {
+    // Always clear client state, even if the server call fails,
+    // so the UI doesn't get stuck in a half-logged-in state.
+    authService.accessToken = null;
+    sessionSync.broadcastLogout();
+    window.location.href = '/login';
+  }
+}
+
+// Server side (Express): actually invalidate the token.
+app.post('/api/auth/logout', (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  refreshTokens.delete(refreshToken);   // remove from store / DB
+  res.clearCookie('refreshToken');
+  res.json({ ok: true });
+});
+```
+
+**Why it matters:** A logout that only forgets the access token in the current tab leaves the long-lived refresh token alive. Anyone with access to the cookie (shared machine, browser sync to another device, exfiltrated session) can keep minting access tokens until rotation or absolute expiry. Real logout means the server stops accepting that refresh token immediately.
 
 ## Quick Quiz
 
