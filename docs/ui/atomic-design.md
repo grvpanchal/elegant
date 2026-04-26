@@ -926,4 +926,9 @@ function CategoryPage() {
 
 ## References
 
-- [1] https://atomicdesign.bradfrost.com/chapter-2/
+- [Atomic Design — Chapter 2: Atomic Design Methodology (Brad Frost)](https://atomicdesign.bradfrost.com/chapter-2/)
+- [Atomic Design — Chapter 3: Tools of the Trade](https://atomicdesign.bradfrost.com/chapter-3/)
+- [Atomic Design — Chapter 4: The Atomic Workflow](https://atomicdesign.bradfrost.com/chapter-4/)
+- [Brad Frost: Atomic Design (original blog post, 2013)](https://bradfrost.com/blog/post/atomic-web-design/)
+- [Storybook docs — Component-Driven Development](https://storybook.js.org/docs/writing-stories/introduction)
+- [Pattern Lab — reference implementation of atomic design](https://patternlab.io/)

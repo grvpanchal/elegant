@@ -222,6 +222,129 @@
         "Cadence: the doc front-loads with a long Detailed Description (~30 lines of bullet lists) before the first code, then dumps two ~100-200 line examples back-to-back with no narrative glue between them. Could benefit from short transitional paragraphs.",
         "Basic Example's intra-tab comments mention 'The chota-react-rtk variant is identical' and 'WC-Saga TodoListContainer does the same thing' but no separate RTK tab is shown — readers may want either an explicit RTK tab or that note moved to the post-tab summary."
       ]
+    },
+    "ui/atomic-design": {
+      "doc": "ui/atomic-design",
+      "last_sha": "b7112afc45cefdaf940cde4234b433691eb48741",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Expanded References from a single bare URL to 6 named topical links (Brad Frost chapters 2-4, the original 2013 blog post, Storybook component-driven development, Pattern Lab)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the prescribed template: 'Key Insight' currently appears before 'Detailed Description'. Reordering would touch heading anchors and is structural.",
+        "No cross-framework code tabs anywhere in the doc. Basic Example is HTML-only, Practical is React-only, Advanced is Vue-only — none use the `{::nomarkdown}<div class=\"code-tabs\">{:/}` + `<p>FrameworkName</p>` structure used by sibling pages. Adding tabs would require restructuring three example sections.",
+        "Glossary blockquote at the top is just three bullets with no leading definitional sentence; sibling docs typically open with a one-line definition before the bullet list.",
+        "Practical Example mixes design tokens, atoms, molecules, organisms, templates, and pages in one ~280-line JS block with no intermediate prose — a cadence problem for learners. Splitting into shorter narrated chunks would exceed the 40-line/structural threshold.",
+        "Common Mistakes section has no transitional prose between the three numbered mistakes and no closing sentence before the quiz; engagement glue is thin throughout."
+      ]
+    },
+    "ui/attributes": {
+      "doc": "ui/attributes",
+      "last_sha": "12dac41132d208ec9b83f60b9beb73a84617b7e2",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Expanded References section from a single bare MDN link to 6 named topical links (MDN attributes reference, data attributes howto, ARIA states/properties, HTML spec on boolean attributes, Lit attributes-vs-properties, React DOM supported attributes)",
+        "Tightened awkward phrasing in Detailed Description ('to meet the criteria the users want' -> 'to meet the developer's needs')"
+      ],
+      "issues_reported": [
+        "Section order deviates from the canonical template: 'Key Insight' appears before 'Detailed Description'. Reordering is structural.",
+        "Two trailing top-level sections after Common Mistakes ('Boolean Attributes' and 'Event Handler Attributes') sit between Common Mistakes and the Quiz, which is unusual for the template — they read like reference appendices rather than learner narrative; consider folding into Detailed Description or Practical/Advanced examples.",
+        "'Event Handler Attributes' section quotes spec-like prose verbatim without attribution to the HTML spec; add a source link or rephrase.",
+        "Glossary blockquote is terse (3 bullets) and lacks a one-sentence hook framing 'why care'; the page jumps straight from glossary to Key Insight, so the hook score is moderate.",
+        "Quiz option D in attributes-1 contains a long compound sentence with an em dash mid-clause; consider splitting for readability — but cannot edit per constraint on quiz content."
+      ]
+    },
+    "ui/dom": {
+      "doc": "ui/dom",
+      "last_sha": "3988733833e036ed9e34f28872ff2c57dcdb5b5c",
+      "last_reviewed_at": "2026-04-26T13:15:49Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 2
+      },
+      "issues_fixed": [
+        "Tightened wordy opening of Detailed Description ('document currently loaded in each one of your browser tabs is represented by a document object model' was awkward and repetitive)",
+        "Softened the 'improving performance 100x' claim in the reflow Why-it-matters and made the takeaway more concrete",
+        "Rewrote the innerHTML Why-it-matters to actually explain *how* XSS happens (parsing vs execution) instead of restating the mistake"
+      ],
+      "issues_reported": [
+        "Section order deviates from the standard template: 'Key Insight' appears before 'Detailed Description', and the page uses a single 'Code Examples' header with three h3 subsections instead of the canonical Basic/Practical/Advanced top-level structure.",
+        "No cross-framework tabs at all. DOM is framework-agnostic, but the page could still benefit from a small tab block contrasting vanilla DOM access with React refs / Vue template refs / Angular ViewChild / Lit query decorators — that would tie it to the rest of the docs set.",
+        "Glossary blockquote is only three terse bullets and lacks a one-line plain-English definition; readers landing here from search may want a sentence-form summary first.",
+        "No transitional/engagement glue between sections — sections jump straight into headings with no 'why this next' framing.",
+        "Quiz Q1 has a trivially long correct option (C is far longer than A/B/D), which gives away the answer by length alone."
+      ]
+    },
+    "ui/element": {
+      "doc": "ui/element",
+      "last_sha": "ed75dba4636049fe88998a9ce1e827a9ad5f44d4",
+      "last_reviewed_at": "2026-04-26T13:16:00Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 3,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed duplicated 'The anatomy of a React element is simple:' sentence above the element-shape code block"
+      ],
+      "issues_reported": [
+        "Section ordering inverts the page convention (Glossary -> Detailed Description -> Key Insight -> Examples). This page places Key Insight before Detailed Description; consider reordering for consistency.",
+        "Basic Example is React-only and lacks the cross-framework tabbed structure (no `<p>FrameworkName</p>` labels for Angular/Vue/Web Components). Consider adding tabs so learners can compare React.createElement, Angular's createComponent / Renderer2, Vue's h(), and customElements.define.",
+        "Detailed Description is dense and React-centric; six paragraphs of prose before a code block hurts cadence. Consider breaking the second/third paragraphs with a small diagram or callout, and trimming the Universal Frontend Architecture paragraph which feels promotional rather than instructive.",
+        "Custom Element States subsection mixes a near-verbatim spec quote with a friendlier bulleted list — the redundancy could be collapsed into a single explanation. Also, 'precustomized' is mentioned in the spec quote but never explained in the bullet list.",
+        "Quiz Q3 lists 'constructed (element upgraded)' as option A then says in the explanation that 'custom' is 'sometimes called constructed'. That conflation is misleading — 'constructed' is not an alias for 'custom' in the WHATWG spec.",
+        "References section is sparse (2 links). Adding links to the WHATWG custom-element-state definition, MDN customElements, and React's reconciliation docs would strengthen learner follow-up paths."
+      ]
+    },
+    "ui/rwd": {
+      "doc": "ui/rwd",
+      "last_sha": "712d9070ee864ce6bffc83e180b2a9d1352a1ca7",
+      "last_reviewed_at": "2026-04-26T13:16:03Z",
+      "score": 27,
+      "axes": {
+        "hook": 4,
+        "cadence": 5,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Expanded References section from a single bare-link plus a `[1]` raw URL into 6 named topical links (web.dev RWD basics, MDN media queries, MDN container queries, MDN responsive images, MDN clamp(), CSS-Tricks Grid guide), each with a one-line topical hint"
+      ],
+      "issues_reported": [
+        "Common Mistakes section has only 3 entries — could add a 4th on missing/incorrect viewport meta tag (mentioned in Core Principles but never shown as a mistake), since omitting it is one of the most common real-world RWD bugs.",
+        "Hook (Key Insight) is a single dense ~150-word paragraph; splitting the three pillars onto their own line or bullet would make it scannable and lift the hook score.",
+        "No mention of `prefers-reduced-motion` / `prefers-color-scheme` media features even though they're listed implicitly under 'color scheme' in principle 4 — would strengthen the modern-RWD framing and cross-link to accessibility.md and theme.md.",
+        "Advanced Example mixes two unrelated concepts (responsive images + container queries) in one block without a transition sentence between them; consider splitting into two labelled sub-examples for cleaner cadence."
+      ]
     }
   }
 }

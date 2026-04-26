@@ -16,7 +16,7 @@ The DOM is the "living blueprint" of your webpage—it's not the HTML file you w
 
 ## Detailed Description
 
-Document Object Model (DOM) is a set of APIs for controlling HTML and styling information that makes heavy use of the Document object. The document currently loaded in each one of your browser tabs is represented by a document object model. This is a "tree structure" representation created by the browser that enables the HTML structure to be easily accessed by programming languages.
+Document Object Model (DOM) is a set of APIs for controlling HTML and styling information that makes heavy use of the `Document` object. Each browser tab holds its own DOM — a tree structure built from the page's HTML that programming languages can read, traverse, and mutate.
 
 The browser parses HTML into a tree of objects called nodes. Every HTML tag becomes an element node, text becomes a text node, and the document itself is the root node. This tree structure mirrors the nesting of HTML tags, creating parent-child relationships that JavaScript can traverse and manipulate.
 
@@ -291,7 +291,7 @@ items.forEach(item => {
 list.appendChild(fragment);  // Single reflow
 ```
 
-**Why it matters:** Each DOM append triggers reflow (recalculating layout). Batching reduces 1000 reflows to 1, improving performance 100x.
+**Why it matters:** Each DOM append can trigger a reflow (recalculating layout). Batching with a fragment collapses N reflows into one, which can be the difference between a janky list and an instant one.
 
 ### 2. Using innerHTML for User-Generated Content
 **Mistake:** Security vulnerability (XSS) when using innerHTML with untrusted data.
@@ -315,7 +315,7 @@ p.textContent = userInput;
 div.appendChild(p);
 ```
 
-**Why it matters:** innerHTML executes scripts in untrusted content, enabling XSS attacks. textContent treats content as plain text, preventing script execution.
+**Why it matters:** `innerHTML` parses its value as HTML, so any `<script>`, `onerror=`, or other handler in untrusted input becomes live code (the classic XSS vector). `textContent` treats the value as plain text — no parsing, no execution.
 
 ### 3. Not Removing Event Listeners
 **Mistake:** Memory leaks from orphaned event listeners.
