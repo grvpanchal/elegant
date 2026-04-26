@@ -8,7 +8,7 @@ slug: forms
 
 ## Key Insight
 
-**Controlled components** in React mean form inputs are driven by React state (`value={email}` + `onChange={e => setEmail(e.target.value)}`), making React the **single source of truth** instead of letting DOM manage input values. This pattern enables real-time validation, dynamic field visibility, conditional submission buttons, and prevents the "stale data" problem where React doesn't know what the user typed. Every keystroke updates state, state flows back to input via `value` prop, creating a **one-way data flow loop** that keeps UI and state perfectly synchronized.
+**Controlled components** in React mean form inputs are driven by React state (`value={email}` + `onChange={e => setEmail(e.target.value)}`), making React the **single source of truth** instead of letting the DOM manage input values. This pattern enables real-time validation, dynamic field visibility, and conditional submission buttons — and it eliminates the "stale data" problem where React's view of the input drifts from what the user actually typed. Every keystroke updates state, state flows back to the input via the `value` prop, creating a **one-way data flow loop** that keeps UI and state perfectly synchronized.
 
 ## Detailed Description
 
@@ -20,7 +20,7 @@ Forms are the primary mechanism for user input in web applications, but HTML for
 - Quick to implement but hard to validate, manipulate, or synchronize with other UI
 - Example: `<input type="text" />` with no `value` prop
 
-**Controlled Components Pattern (React Preferred):**
+**Controlled Components Pattern (React default):**
 - React state is the single source of truth for input values
 - Input's `value` prop is bound to state variable: `<input value={email} />`
 - Input's `onChange` handler updates state: `onChange={e => setEmail(e.target.value)}`

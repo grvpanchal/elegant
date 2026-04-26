@@ -690,6 +690,134 @@
         "References list is all third-party blog posts; no link to React Router / Vue Router / Angular Router official docs."
       ]
     },
+    "server/app-shell": {
+      "doc": "server/app-shell",
+      "last_sha": "316f05da9ec8d94f70847cba8924f99236a51d5f",
+      "last_reviewed_at": "2026-04-26T13:28:06Z",
+      "score": 22,
+      "axes": {
+        "hook": 3,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 1
+      },
+      "issues_fixed": [
+        "Removed duplicated paragraph at lines 266-267 about Modern/Legacy bundle sizes (the same sentence appeared twice in the Polyfills section)"
+      ],
+      "issues_reported": [
+        "Section ordering deviates from the standard structure: 'Key Insight' appears before 'Detailed Description'.",
+        "Missing the cross-framework code tabs (`<p>FrameworkName</p>` labels with framework-specific implementations). The three examples are presented as 'Code Examples' with vanilla JS, Next.js, and Module Federation rather than per-framework tabs.",
+        "No Glossary section heading — the doc opens with a blockquote bullet list then a definitional paragraph, but the conventional `## Glossary` heading is absent.",
+        "Engagement glue is weak: no explicit transitional sentences linking the 9 numbered subsections of Detailed Description, no callouts/admonitions, no diagrams or ASCII layout sketches.",
+        "Hook is functional but unremarkable — a concrete pain-point opener (e.g. '50KB of identical chrome on every navigation') would land harder.",
+        "Quiz Q1's option D ('They are the same thing with different marketing names') is too obviously wrong to be useful.",
+        "'Practical Example' / 'Advanced Example' labelling is replaced by 'Example 1/2/3' — naming drift from sibling docs.",
+        "Example 1 is ~200 lines of vanilla JS in a single fenced block mixing index.html, sw.js, and app.js — splitting would aid scannability."
+      ]
+    },
+    "server/authentication": {
+      "doc": "server/authentication",
+      "last_sha": "0501c1b8f4ec90ac797f97d4d6a94f59043e5fcf",
+      "last_reviewed_at": "2026-04-26T13:28:27Z",
+      "score": 24,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fixed grammar in Key Insight: 'The access token includes in Authorization header proves identity' rewritten as a properly punctuated compound sentence; normalized '15min'/'7days' to '15 min'/'7 days'",
+        "Fixed bug in ProtectedRoute Basic Example: imported and called useLocation() instead of referencing an undefined global location",
+        "Replaced two stray references to 'The ACC' (an undefined acronym) with generic phrasing in the JWT Authentication and Roles & Permissions subsections"
+      ],
+      "issues_reported": [
+        "Structural: doc inserts seven non-standard subsections between Common Mistakes and Quiz — 'Token Service', 'Roles and Permissions', 'Session Management', 'MFA', 'API Endpoints', 'Error Handling', 'Security Considerations'. These read like a separate API-reference doc spliced in.",
+        "Structural: no cross-framework code tabs; all three code examples are React-only.",
+        "Structural: section order is Key Insight precedes Detailed Description; standard is Glossary -> Detailed Description -> Key Insight.",
+        "Quiz tell: in Q1, Q2, and Q3 the correct option is several lines longer than every distractor.",
+        "The Practical and Advanced code examples are not wrapped in {% raw %} markers like the Basic example is; contain template literals (`${...}`) but no Liquid `{{ }}` so it likely renders fine — worth confirming during a Jekyll build."
+      ]
+    },
+    "server/forms": {
+      "doc": "server/forms",
+      "last_sha": "a98c2b829ecf6919125fa8ff7a13283e2687ede6",
+      "last_reviewed_at": "2026-04-26T13:28:25Z",
+      "score": 25,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 5,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Tightened Key Insight wording at line 11: clarified 'DOM' article and reframed the 'stale data' clause so the cause-effect reads cleanly",
+        "Changed 'React Preferred' label at line 23 to 'React default' — more accurate in a React 19 / React Hook Form era"
+      ],
+      "issues_reported": [
+        "Doc is React-only across all three code examples and all three Common Mistakes. The repo ships Angular (NgRx), Vue (Pinia), and Lit/WC templates. Adding tabbed equivalents would lift engagement_glue substantially.",
+        "The 'Controlled Components Pattern' bullet list and the 'Trade-offs' bullet list repeat the same controlled-vs-uncontrolled framing three times across the Detailed Description.",
+        "Password-strength helper thresholds ('<8 → Weak') overlap with the Yup `min(8)` validator which already blocks <8 from submission, so 'Weak' is unreachable in the live form.",
+        "Multi-step checkout example elides 'other billing fields' with a comment — readers copying this snippet will miss the city/state/zip handlers.",
+        "No coverage of accessible error announcement patterns beyond `role='alert'` and `aria-describedby`. A short note on focus management after submit failure would round out the Accessibility bullet."
+      ]
+    },
+    "server/images": {
+      "doc": "server/images",
+      "last_sha": "ddfe219fc0a285d85e80f5749e136af464d79319",
+      "last_reviewed_at": "2026-04-26T13:28:34Z",
+      "score": 26,
+      "axes": {
+        "hook": 5,
+        "cadence": 4,
+        "concreteness": 5,
+        "common_mistakes": 5,
+        "quiz_quality": 3,
+        "engagement_glue": 4
+      },
+      "issues_fixed": [
+        "Removed duplicate Sustainability/Accessibility bullets that appeared twice in the 'Why Image Optimization Matters' list",
+        "Removed two stray dangling sentences appended after the References list (about <picture>/<source> fallback) that were not part of any section",
+        "Fixed quiz images-1: the question asked about srcset vs sizes, but all four options described image CDN behavior and correct=B was the CDN answer — realigned the question stem and explanation to match the CDN-themed options (correct letter unchanged)"
+      ],
+      "issues_reported": [
+        "Quiz images-1 and images-5 now both cover image CDNs (after the images-1 question was aligned to its options). The original intent was clearly for images-1 to cover srcset vs sizes — restoring requires editing options or correct=, both disallowed.",
+        "Quiz images-3 distractors are very weak ('only works in Safari', 'is deprecated', 'interchangeable') — consider strengthening with plausible misconceptions.",
+        "Detailed Description is dense (six numbered subsections + table + bullet list before any code). Consider promoting one or two subsections into shorter callouts."
+      ]
+    },
+    "server/links": {
+      "doc": "server/links",
+      "last_sha": "10c1acd3405c2efcff2e384629b2fbf976914441",
+      "last_reviewed_at": "2026-04-26T13:28:37Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 3,
+        "concreteness": 5,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Corrected misleading accessibility comment in 'Using Buttons for Navigation' anti-pattern (buttons ARE in tab order; the real problem is wrong semantics, not Tab focus)",
+        "Updated outdated Next.js Link API pattern (`<Link><a>...</a></Link>`) in two places to the modern Next.js 13+ form where Link renders the `<a>` internally",
+        "Removed inaccurate '~300ms' hover prefetch timing claim and the matching '300ms delay might not be enough' bullet; replaced with accurate description of hover/focus-triggered prefetching"
+      ],
+      "issues_reported": [
+        "Doc is very long (~1780 lines) and code-dense; consider splitting Sections 5 (Deep Linking/Universal Links) and 6 (SEO/Crawlability) into their own pages or trimming — they overlap with seo.md.",
+        "The `<link rel='prerender'>` example is labeled DEPRECATED but no pointer to the modern replacement (Speculation Rules API).",
+        "Section 9 ('Link State and Styling') is very thin (two short snippets) compared to the surrounding sections — feels like an afterthought.",
+        "The 'When <Link> causes full reload' example claims `<Link to='https://external.com'>` triggers a full reload; should clarify that you should use `<a>` for external URLs rather than relying on `<Link>` to detect them.",
+        "Quiz Q2's decision matrix marks 'Theme' as URL-unfriendly but many sites do encode `?theme=dark` for SSR; could note this nuance."
+      ]
+    },
     "ui/theme": {
       "doc": "ui/theme",
       "last_sha": "b4d81da37495070ccc4ed5583b002dd79e30ab13",
