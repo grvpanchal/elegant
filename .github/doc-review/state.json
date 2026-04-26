@@ -47,6 +47,32 @@
         "Detailed Description has five 100-180 word paragraphs back-to-back with no list, callout, or code break — cadence is uniform and skim-resistant; one paragraph could be a 3-bullet list (e.g., the design-system-consistency paragraph at line 23)",
         "Common Mistakes are solid but all three pick the same straw target (button doing too much / inconsistent props / missing aria); a fourth on 'baking a specific data shape into the atom' would broaden the failure modes covered"
       ]
+    },
+    "ui/molecule": {
+      "doc": "ui/molecule",
+      "last_sha": "98990fb906765dcdfff89f4d5764941846812731",
+      "last_reviewed_at": "2026-04-26T06:55:49Z",
+      "score": 23,
+      "axes": {
+        "hook": 4,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 4,
+        "quiz_quality": 4,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Fixed grammar in opening blockquote (line 8-10): 'a grouped or assembled sections' -> 'grouped or assembled sections', and 'with single purpose' -> 'with a single purpose'",
+        "Renamed 'Practical Example: Form Field Molecule with Validation' to 'Practical Example: LoginForm Molecule' so the heading matches the code (the snippet has no validation)",
+        "Fixed pronoun mix in LoginForm narration: 'we can use the LoginForm molecule in your application' -> '...in our application'",
+        "Expanded References from a single bare link to 5 named entries (Brad Frost, Atomic Design overview, Atom/Organism cross-links, Component Driven UIs, Storybook CDD tutorial)"
+      ],
+      "issues_reported": [
+        "Practical (LoginForm) and Advanced (Card/CardHeader) examples are React-only and import imaginary './Input', './Button', './atoms/...' paths — they don't correspond to anything shipped in templates/ and partly duplicate the cross-framework AddTodoForm. Consider trimming or rewriting against real template paths like the canonical AddTodoForm section.",
+        "Detailed Description is five paragraphs of uniform length and abstraction — no list, callout, or diagram breaks the wall of prose. A short bulleted 'molecule checklist' (single purpose / no business logic / props in, callbacks out / composes atoms or smaller molecules) would improve skimmability for the 3-minute read.",
+        "Quiz question 4 has only 2 options (A/B) while the rest have 3-4. Adding a third plausible distractor (e.g. 'Yes, but only one level of nesting is allowed') would make it less guessable.",
+        "Engagement glue is thin: Detailed Description never forward-points to Common Mistakes, and there's no cross-link to containers/state until deep inside Common Mistakes."
+      ]
     }
   }
 }
