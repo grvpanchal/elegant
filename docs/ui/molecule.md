@@ -73,6 +73,7 @@ export default AddTodoForm;
 ```
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/molecules/AddTodoForm/AddTodoForm.component.ts
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
@@ -109,11 +110,8 @@ export default class AddTodoFormComponent implements OnChanges {
     else this.onTodoAdd.emit(trimmed);
   }
 }
-```
 
-{% raw %}
-```html
-<!-- AddTodoForm.component.html -->
+// AddTodoForm.component.html
 <form (submit)="onSubmit($event)" class="add-todo-form">
   <div class="grouped">
     <app-input [value]="inputValue" [disabled]="isLoading"

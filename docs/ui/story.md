@@ -477,6 +477,7 @@ export const MobileView: Story = {
   }
 };
 ```
+{% endraw %}
 
 ## Common Mistakes
 

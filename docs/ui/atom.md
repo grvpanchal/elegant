@@ -55,6 +55,7 @@ export default function Button(props) {
 ```
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/atoms/Button/Button.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
@@ -78,10 +79,8 @@ export default class ButtonComponent {
 
   @Output() onClick = new EventEmitter<Event>();
 }
-```
 
-```html
-<!-- Button.component.html -->
+// Button.component.html
 @if (isLoading) {
   <button [class]="computedClasses" [disabled]="isLoading">
     <app-loader width="2px" size="1.2rem" color="#fff"></app-loader>
@@ -92,6 +91,7 @@ export default class ButtonComponent {
   </button>
 }
 ```
+{% endraw %}
 
 Vue
 ```vue

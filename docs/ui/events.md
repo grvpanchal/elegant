@@ -52,6 +52,7 @@ export default function Button(props) {
 ```
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/atoms/Button/Button.component.ts
 // @Output + EventEmitter is Angular's way of exposing "custom events"
@@ -63,10 +64,8 @@ export default class ButtonComponent {
   @Input() isLoading = false;
   @Output() onClick = new EventEmitter<Event>();
 }
-```
 
-```html
-<!-- Button.component.html -->
+// Button.component.html
 <button [type]="type || 'button'"
         (click)="onClick.emit($event)"
         [class]="computedClasses">
@@ -76,6 +75,7 @@ export default class ButtonComponent {
 <!-- Parent usage -->
 <app-button (onClick)="handleClick($event)">Save</app-button>
 ```
+{% endraw %}
 
 Vue
 ```vue

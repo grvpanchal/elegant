@@ -95,6 +95,7 @@ export default function Skeleton({ variant, height, width, style }) {
 {% endraw %}
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/skeletons/Skeleton/Skeleton.component.ts
 import { Component, Input } from '@angular/core';
@@ -119,12 +120,11 @@ export default class SkeletonComponent {
     return `height: ${this.height}; width: ${this.width};`;
   }
 }
-```
 
-```html
-<!-- Skeleton.component.html -->
+// Skeleton.component.html
 <div [class]="classes" [style]="computedStyle"></div>
 ```
+{% endraw %}
 
 Vue
 ```vue

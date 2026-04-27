@@ -57,6 +57,7 @@ export default function Input(props) {
 ```
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/atoms/Input/Input.component.ts
 // Angular distinguishes attribute binding ([attr.x]="...") from property
@@ -88,11 +89,8 @@ export default class InputComponent {
   @Output() onInput = new EventEmitter<Event>();
   onInputHandler(e: Event) { this.onInput.emit(e); }
 }
-```
 
-{% raw %}
-```html
-<!-- Input.component.html -->
+// Input.component.html
 <label [for]="id" class="sr-only">{{ name || 'Some Label' }}</label>
 <input
   [id]="id"

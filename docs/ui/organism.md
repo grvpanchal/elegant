@@ -85,6 +85,7 @@ export default function TodoList({ todoData, events }) {
 {% endraw %}
 
 Angular
+{% raw %}
 ```ts
 // templates/chota-angular-ngrx/src/ui/organisms/TodoList/TodoList.component.ts
 @Component({
@@ -110,10 +111,8 @@ export default class TodoListComponent {
     };
   }
 }
-```
 
-```html
-<!-- TodoList.component.html -->
+// TodoList.component.html
 @if (todoData.error) {
   <app-alert variant="error" [show]="!!todoData.error" [message]="todoData.error"></app-alert>
 }
@@ -139,6 +138,7 @@ export default class TodoListComponent {
   ></app-todo-items>
 }
 ```
+{% endraw %}
 
 Vue
 ```vue
