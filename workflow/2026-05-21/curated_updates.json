@@ -1,0 +1,151 @@
+{
+  "week_of": "2026-05-21",
+  "window": "2026-05-14 to 2026-05-21",
+  "generated_by": "Elegant Frontend research agent (Phase 1)",
+  "items": [
+    {
+      "rank": 1,
+      "title": "Vercel AI Gateway adds Grok Build 0.1, a coding-specialised agentic model",
+      "summary": "Vercel quietly added a beta model called Grok Build 0.1 to AI Gateway for early-access users. It's positioned specifically for agentic coding workflows, not general chat.",
+      "why_it_matters": "Architects routing through AI Gateway can now A/B coding-tuned models behind the same provider-agnostic interface without locking the app to one vendor.",
+      "source_url": "https://vercel.com/changelog/grok-build-0-1-now-available-on-vercel-ai-gateway",
+      "category": "AI tool",
+      "date": "2026-05-20"
+    },
+    {
+      "rank": 2,
+      "title": "Nuxt MCP Toolkit ships MCP apps — agent tools that return interactive HTML",
+      "summary": "The Nuxt MCP toolkit added a defineMcpApp macro so an MCP tool can return a rendered HTML response embedded inline in the agent's UI instead of plain text. It collapses the gap between an LLM tool call and a real interactive widget.",
+      "why_it_matters": "This is the first credible pattern for shipping micro-frontends into the agent surface itself — relevant if your roadmap includes agent-embedded UI for internal tools.",
+      "source_url": "https://vercel.com/changelog/nuxt-mcp-toolkit-mcp-apps",
+      "category": "architecture",
+      "date": "2026-05-19"
+    },
+    {
+      "rank": 3,
+      "title": "Vite ships 8.0.13 and 8.0.14 patch releases one week apart",
+      "summary": "Vite cut two patch releases in the past seven days (8.0.13 on May 14, 8.0.14 on May 21) on the Rolldown-powered v8 line. plugin-legacy 8.0.2 and create-vite 9.0.7 landed alongside.",
+      "why_it_matters": "If you're on v8 the upgrade is non-breaking and worth tracking — Rolldown is still maturing and most regressions show up in these patch windows.",
+      "source_url": "https://github.com/vitejs/vite/releases/tag/v8.0.14",
+      "category": "framework",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 4,
+      "title": "Vercel Chat SDK now bundles AI SDK tools through a subpath",
+      "summary": "The Chat SDK exposes AI SDK tools via a new subpath import, so agents can read and write chat actions automatically without bespoke glue. It also picked up message subjects and direct platform SDK access.",
+      "why_it_matters": "Cuts a meaningful integration layer for any team using Vercel Chat for internal copilots — fewer bespoke adapters, one tool surface.",
+      "source_url": "https://vercel.com/changelog/chat-sdk-now-includes-ai-sdk-tools",
+      "category": "AI tool",
+      "date": "2026-05-20"
+    },
+    {
+      "rank": 5,
+      "title": "Vercel AI Gateway adds Qwen 3.7 Max",
+      "summary": "Alibaba's Qwen 3.7 Max became available on Vercel AI Gateway, marketed as optimised for agent development and complex engineering tasks. It joins a growing fleet of non-OpenAI / non-Anthropic options behind the same gateway.",
+      "why_it_matters": "Multi-vendor cost arbitrage is a real architectural lever now — gateways like this are where it actually gets cheap to do.",
+      "source_url": "https://vercel.com/changelog/qwen-3-7-max-now-available-on-vercel-ai-gateway",
+      "category": "AI tool",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 6,
+      "title": "Formal verification gates for AI coding loops (135 pts on HN)",
+      "summary": "An essay arguing that the way to make agents reliable isn't smarter models, it's structural backpressure — verification gates that the agent must pass before each loop iteration. The discussion hit 30+ comments and surfaced concrete CI-integration patterns.",
+      "why_it_matters": "If your team is shipping agent-built code, this is the architectural framing to anchor your PR-gate policy on.",
+      "source_url": "https://reubenbrooks.dev/blog/structural-backpressure-beats-smarter-agents/",
+      "category": "architecture",
+      "date": "2026-05-20"
+    },
+    {
+      "rank": 7,
+      "title": "codegraph — pre-indexed code knowledge graph for Claude Code, Codex, Cursor",
+      "summary": "An open-source TypeScript project that builds a queryable graph of your codebase and exposes it to AI coding agents. Picked up 6.7k stars this week and now sits on top of the GitHub Trending TypeScript list.",
+      "why_it_matters": "Context-engineering at the repo level is becoming a discipline of its own — knowledge-graph layers are the next likely standard between IDE agents and large codebases.",
+      "source_url": "https://github.com/colbymchenry/codegraph",
+      "category": "DX",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 8,
+      "title": "agentmemory — persistent memory layer for AI coding agents",
+      "summary": "A TypeScript library implementing persistent agent memory benchmarked against real-world workflows. Roughly 8k stars in seven days, marketed against the standard 'agent forgets everything between sessions' failure mode.",
+      "why_it_matters": "Stateful agents are about to become the default — picking the memory layer is a one-way architectural decision, so it's worth knowing what the field looks like.",
+      "source_url": "https://github.com/rohitg00/agentmemory",
+      "category": "AI tool",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 9,
+      "title": "12-factor-agents framework crosses 21k stars",
+      "summary": "humanlayer's 12-factor-agents project — a Heroku-style manifesto and TypeScript scaffold for production-grade LLM apps — gained 1.6k stars this past week. It codifies things like statelessness, explicit context boundaries and config-as-code for agents.",
+      "why_it_matters": "Useful reference architecture if you're being asked 'how should we structure our agent code' — gives you a vocabulary to push back with.",
+      "source_url": "https://github.com/humanlayer/12-factor-agents",
+      "category": "architecture",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 10,
+      "title": "InsForge — open-source Heroku for coding agents (Show HN, 61 pts)",
+      "summary": "A control plane for running coding agents (Claude Code, Codex, etc.) on managed sandboxes with secret injection and isolated environments. Pitched at teams who want internal copilots without granting every dev raw cloud credentials.",
+      "why_it_matters": "If your security org is blocking Claude Code or Cursor on access-control grounds, infrastructure like this is the unblock — worth scoping.",
+      "source_url": "https://github.com/InsForge/InsForge",
+      "category": "DX",
+      "date": "2026-05-18"
+    },
+    {
+      "rank": 11,
+      "title": "Haystack — PR triage tool that surfaces only the reviews that need a human (Show HN, 44 pts)",
+      "summary": "An editor that filters incoming pull requests and flags the ones where human attention actually moves the needle, suppressing the noise from auto-generated agent PRs. Targeted at teams drowning in machine-authored diffs.",
+      "why_it_matters": "Review-load math changes when half your PRs come from agents — tooling that re-prioritises will become table stakes for any team running agents at scale.",
+      "source_url": "https://haystackeditor.com/",
+      "category": "DX",
+      "date": "2026-05-18"
+    },
+    {
+      "rank": 12,
+      "title": "Vercel CLI gains AI-investigated anomaly alerts",
+      "summary": "vercel alerts now pulls anomaly details from the CLI, and the --ai flag attaches a model-generated investigation of likely cause. It's positioned as a first step toward agent-driven incident triage.",
+      "why_it_matters": "Observability tools are quietly absorbing the 'first responder' layer of incident response — your runbook story should account for it.",
+      "source_url": "https://vercel.com/changelog/pull-anomaly-alert-details-using-the-vercel-cli",
+      "category": "DX",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 13,
+      "title": "agent-skills — secure skill registry for production AI coding agents",
+      "summary": "A TypeScript registry that publishes vetted, signed agent skills following the open Agent Skills format. Picked up 2k stars this week as more teams move from ad-hoc prompt libraries to versioned skill packages.",
+      "why_it_matters": "Skill governance is the new dependency governance — for any org publishing internal skills, sign-and-publish workflows matter more than the prompts themselves.",
+      "source_url": "https://github.com/tech-leads-club/agent-skills",
+      "category": "DX",
+      "date": "2026-05-21"
+    },
+    {
+      "rank": 14,
+      "title": "OpenAPI codegen showdown: openapi-typescript vs hey-api vs Orval vs Kubb",
+      "summary": "Dev.to's top frontend post this week is a side-by-side comparison of four mainstream OpenAPI-to-TypeScript codegen tools, scored on runtime size, tree-shakability, framework integration and type fidelity. Concrete output diffs included.",
+      "why_it_matters": "Most teams pick a codegen tool once and live with it for years — this is the cleanest current reference if you're standardising the API client layer.",
+      "source_url": "https://dev.to/nyaomaru/which-openapi-codegen-should-you-choose-openapi-typescript-vs-hey-api-vs-orval-vs-kubb-100p",
+      "category": "architecture",
+      "date": "2026-05-19"
+    }
+  ],
+  "discarded": [
+    {
+      "title": "Next.js 16.2.6 / React 19.x security patches",
+      "reason": "Patches landed May 6–7, 2026, just outside the 7-day window. Still worth a sidebar mention in the script if upgrade chatter is ongoing."
+    },
+    {
+      "title": "Cursor 3.2 Background Agents / SDK launch",
+      "reason": "Released April 2026 — outside the 7-day window."
+    },
+    {
+      "title": "Vercel AI SDK v6",
+      "reason": "Major v6 release predates the 7-day window; covered already in earlier issues."
+    },
+    {
+      "title": "Various Show HN posts with <5 points and no traction",
+      "reason": "Didn't pass the 'so what?' test for an engineering-lead audience."
+    }
+  ]
+}
