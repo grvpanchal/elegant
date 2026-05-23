@@ -5,15 +5,6 @@
   "items": [
     {
       "rank": 1,
-      "title": "Vercel AI Gateway adds Grok Build 0.1, a coding-specialised agentic model",
-      "summary": "Vercel quietly added a beta model called Grok Build 0.1 to AI Gateway for early-access users. It's positioned specifically for agentic coding workflows, not general chat.",
-      "why_it_matters": "Architects routing through AI Gateway can now A/B coding-tuned models behind the same provider-agnostic interface without locking the app to one vendor.",
-      "source_url": "https://vercel.com/changelog/grok-build-0-1-now-available-on-vercel-ai-gateway",
-      "category": "AI tool",
-      "date": "2026-05-20"
-    },
-    {
-      "rank": 2,
       "title": "Nuxt MCP Toolkit ships MCP apps — agent tools that return interactive HTML",
       "summary": "The Nuxt MCP toolkit added a defineMcpApp macro so an MCP tool can return a rendered HTML response embedded inline in the agent's UI instead of plain text. It collapses the gap between an LLM tool call and a real interactive widget.",
       "why_it_matters": "This is the first credible pattern for shipping micro-frontends into the agent surface itself — relevant if your roadmap includes agent-embedded UI for internal tools.",
@@ -22,13 +13,22 @@
       "date": "2026-05-19"
     },
     {
-      "rank": 3,
+      "rank": 2,
       "title": "Vite ships 8.0.13 and 8.0.14 patch releases one week apart",
       "summary": "Vite cut two patch releases in the past seven days (8.0.13 on May 14, 8.0.14 on May 21) on the Rolldown-powered v8 line. plugin-legacy 8.0.2 and create-vite 9.0.7 landed alongside.",
       "why_it_matters": "If you're on v8 the upgrade is non-breaking and worth tracking — Rolldown is still maturing and most regressions show up in these patch windows.",
       "source_url": "https://github.com/vitejs/vite/releases/tag/v8.0.14",
       "category": "framework",
       "date": "2026-05-21"
+    },
+    {
+      "rank": 3,
+      "title": "Vercel AI Gateway adds Grok Build 0.1, a coding-specialised agentic model",
+      "summary": "Vercel quietly added a beta model called Grok Build 0.1 to AI Gateway for early-access users. It's positioned specifically for agentic coding workflows, not general chat.",
+      "why_it_matters": "Architects routing through AI Gateway can now A/B coding-tuned models behind the same provider-agnostic interface without locking the app to one vendor.",
+      "source_url": "https://vercel.com/changelog/grok-build-0-1-now-available-on-vercel-ai-gateway",
+      "category": "AI tool",
+      "date": "2026-05-20"
     },
     {
       "rank": 4,
