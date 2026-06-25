@@ -1,6 +1,6 @@
 # Elegant Agent Skills
 
-![Agent Skills](https://img.shields.io/badge/Agent%20Skills-35-3F51B5)
+[![skills.sh](https://skills.sh/b/grvpanchal/elegant)](https://skills.sh/grvpanchal/elegant)
 ![Standard](https://img.shields.io/badge/standard-agentskills.io-blue)
 
 This folder contains the **Agent Skills** that document the architecture every

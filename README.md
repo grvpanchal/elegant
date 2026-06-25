@@ -1,6 +1,6 @@
 # Elegant
 
-[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-35-3F51B5)](./skills/README.md)
+[![skills.sh](https://skills.sh/b/grvpanchal/elegant)](https://skills.sh/grvpanchal/elegant)
 
 Elegant is a command line tool to build an Elegant Front end Architecture
 
