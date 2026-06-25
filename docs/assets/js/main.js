@@ -67,6 +67,7 @@ if (window.location.pathname === '/') {
     'chota-angular-ngrx',
     'chota-react-redux',
     'chota-react-rtk',
+    'chota-react-zustand',
     'chota-vue-pinia',
     'chota-wc-saga',
   ];
