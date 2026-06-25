@@ -23,6 +23,11 @@ React with Redux Toolkit
 npx elegant chota-react-rtk
 ```
 
+React with Zustand
+```sh
+npx elegant chota-react-zustand
+```
+
 Angular with NgRx
 ```sh
 npx elegant chota-angular-ngrx

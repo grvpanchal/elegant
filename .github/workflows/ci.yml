@@ -44,6 +44,7 @@ jobs:
           npm install --prefix templates/chota-react-redux
           npm install --prefix templates/chota-react-rtk
           npm install --prefix templates/chota-react-saga
+          npm install --prefix templates/chota-react-zustand
           npm install --prefix templates/chota-vue-pinia
           npm install --prefix templates/chota-wc-saga
 

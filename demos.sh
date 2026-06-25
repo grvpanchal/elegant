@@ -40,6 +40,15 @@ npm run build-storybook
 cp -R storybook-static ../../docs/demos/storybooks/chota-react-saga
 
 
+echo "building chota-react-zustand..."
+cd ../chota-react-zustand/
+npm install
+npm run build
+cp -R build ../../docs/demos/chota-react-zustand
+npm run build-storybook
+cp -R storybook-static ../../docs/demos/storybooks/chota-react-zustand
+
+
 echo "building chota-vue-pinia..."
 cd ../chota-vue-pinia/
 npm install
