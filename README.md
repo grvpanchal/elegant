@@ -1,5 +1,7 @@
 # Elegant
 
+[![skills.sh](https://skills.sh/b/grvpanchal/elegant)](https://skills.sh/grvpanchal/elegant)
+
 Elegant is a command line tool to build an Elegant Front end Architecture
 
 ## Cloning Boilerplates
@@ -53,5 +55,12 @@ To start working to build component with atomic design approach
 ```sh
 npm run storybook
 ```
+
+## Agent Skills
+
+This repo ships 35 [Agent Skills](https://agentskills.io) under [`skills/`](./skills/README.md)
+that document the architecture every template implements — atomic-design UI
+layers, state-management patterns, and server/routing concerns. See the
+[skills README](./skills/README.md) for the full catalogue.
 
 ### Happy Coding!!!
