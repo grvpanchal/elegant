@@ -15,7 +15,7 @@ Designing the root layout and service-worker cache strategy for a PWA; separatin
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-app-shell
+npx skills add grvpanchal/elegant --skill server-app-shell
 ```
 
 Or copy the [`server-app-shell/`](.) folder into `~/.claude/skills/`.

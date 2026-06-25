@@ -15,7 +15,7 @@ Creating or reviewing organism-level components; wiring data fetching and store 
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-organism
+npx skills add grvpanchal/elegant --skill ui-organism
 ```
 
 Or copy the [`ui-organism/`](.) folder into `~/.claude/skills/`.

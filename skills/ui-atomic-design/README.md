@@ -15,7 +15,7 @@ Laying out an atoms/molecules/organisms/templates/pages folder structure; classi
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-atomic-design
+npx skills add grvpanchal/elegant --skill ui-atomic-design
 ```
 
 Or copy the [`ui-atomic-design/`](.) folder into `~/.claude/skills/`.

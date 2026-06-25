@@ -15,7 +15,7 @@ Debugging boolean-attribute bugs (disabled="false" stays disabled); distinguishi
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-attributes
+npx skills add grvpanchal/elegant --skill ui-attributes
 ```
 
 Or copy the [`ui-attributes/`](.) folder into `~/.claude/skills/`.

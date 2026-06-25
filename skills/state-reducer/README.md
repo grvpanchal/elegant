@@ -15,7 +15,7 @@ Writing new reducers or RTK slices; auditing for accidental state mutation or im
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-reducer
+npx skills add grvpanchal/elegant --skill state-reducer
 ```
 
 Or copy the [`state-reducer/`](.) folder into `~/.claude/skills/`.

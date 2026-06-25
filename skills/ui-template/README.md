@@ -15,7 +15,7 @@ Creating a reusable page layout that accepts content via slots/props; keeping da
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-template
+npx skills add grvpanchal/elegant --skill ui-template
 ```
 
 Or copy the [`ui-template/`](.) folder into `~/.claude/skills/`.

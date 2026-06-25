@@ -15,7 +15,7 @@ Reviewing a component for single-responsibility and encapsulation; splitting a "
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-component
+npx skills add grvpanchal/elegant --skill ui-component
 ```
 
 Or copy the [`ui-component/`](.) folder into `~/.claude/skills/`.

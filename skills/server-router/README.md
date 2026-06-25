@@ -15,7 +15,7 @@ Setting up or restructuring the route table; extracting params with useParams/us
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-router
+npx skills add grvpanchal/elegant --skill server-router
 ```
 
 Or copy the [`server-router/`](.) folder into `~/.claude/skills/`.

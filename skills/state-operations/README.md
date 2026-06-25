@@ -15,7 +15,7 @@ Tracking loading/success/error per operation; implementing optimistic UI with ro
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-operations
+npx skills add grvpanchal/elegant --skill state-operations
 ```
 
 Or copy the [`state-operations/`](.) folder into `~/.claude/skills/`.

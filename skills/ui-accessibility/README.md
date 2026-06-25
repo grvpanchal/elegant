@@ -15,7 +15,7 @@ Reviewing components for WCAG AA compliance; replacing `<div onclick>` with sema
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-accessibility
+npx skills add grvpanchal/elegant --skill ui-accessibility
 ```
 
 Or copy the [`ui-accessibility/`](.) folder into `~/.claude/skills/`.

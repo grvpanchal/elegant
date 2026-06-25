@@ -15,7 +15,7 @@ Delegating click handling from many children to one parent; wiring keyboard supp
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-events
+npx skills add grvpanchal/elegant --skill ui-events
 ```
 
 Or copy the [`ui-events/`](.) folder into `~/.claude/skills/`.

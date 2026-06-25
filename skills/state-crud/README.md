@@ -15,7 +15,7 @@ Designing a new entity slice (todos, users, products); standardising request/suc
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-crud
+npx skills add grvpanchal/elegant --skill state-crud
 ```
 
 Or copy the [`state-crud/`](.) folder into `~/.claude/skills/`.

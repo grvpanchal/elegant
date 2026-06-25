@@ -15,7 +15,7 @@ Adding SSR to pages/server code; debugging hydration mismatches or "window is no
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-ssr
+npx skills add grvpanchal/elegant --skill server-ssr
 ```
 
 Or copy the [`server-ssr/`](.) folder into `~/.claude/skills/`.

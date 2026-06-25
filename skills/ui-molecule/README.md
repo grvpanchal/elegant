@@ -15,7 +15,7 @@ Creating or reviewing molecule-level components; deciding whether a component is
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-molecule
+npx skills add grvpanchal/elegant --skill ui-molecule
 ```
 
 Or copy the [`ui-molecule/`](.) folder into `~/.claude/skills/`.

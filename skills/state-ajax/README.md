@@ -15,7 +15,7 @@ Choosing between fetch and axios; setting up an apiClient with interceptors; int
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-ajax
+npx skills add grvpanchal/elegant --skill state-ajax
 ```
 
 Or copy the [`state-ajax/`](.) folder into `~/.claude/skills/`.

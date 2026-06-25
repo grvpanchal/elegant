@@ -15,7 +15,7 @@ Replacing generic spinners with content-shaped placeholders (CardSkeleton, ListS
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-skeleton
+npx skills add grvpanchal/elegant --skill ui-skeleton
 ```
 
 Or copy the [`ui-skeleton/`](.) folder into `~/.claude/skills/`.
