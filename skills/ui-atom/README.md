@@ -15,7 +15,7 @@ Creating or reviewing Atom-level components; deciding whether a component is an 
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-atom
+npx skills add grvpanchal/elegant --skill ui-atom
 ```
 
 Or copy the [`ui-atom/`](.) folder into `~/.claude/skills/`.

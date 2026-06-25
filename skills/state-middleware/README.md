@@ -15,7 +15,7 @@ Adding logger/analytics/crash-reporting middleware; writing a custom thunk-style
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-middleware
+npx skills add grvpanchal/elegant --skill state-middleware
 ```
 
 Or copy the [`state-middleware/`](.) folder into `~/.claude/skills/`.

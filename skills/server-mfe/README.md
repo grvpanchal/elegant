@@ -15,7 +15,7 @@ Splitting a UI by bounded context or team ownership; configuring Module Federati
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-mfe
+npx skills add grvpanchal/elegant --skill server-mfe
 ```
 
 Or copy the [`server-mfe/`](.) folder into `~/.claude/skills/`.

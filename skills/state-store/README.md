@@ -15,7 +15,7 @@ Scaffolding a new configureStore; organising slices by domain; enforcing a singl
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-store
+npx skills add grvpanchal/elegant --skill state-store
 ```
 
 Or copy the [`state-store/`](.) folder into `~/.claude/skills/`.

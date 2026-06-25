@@ -15,7 +15,7 @@ Authoring or reviewing action creators, type constants, or RTK slice reducers; d
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-actions
+npx skills add grvpanchal/elegant --skill state-actions
 ```
 
 Or copy the [`state-actions/`](.) folder into `~/.claude/skills/`.

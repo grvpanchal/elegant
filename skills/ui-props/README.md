@@ -15,7 +15,7 @@ Designing or reviewing a component's prop interface; replacing prop mutation wit
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-props
+npx skills add grvpanchal/elegant --skill ui-props
 ```
 
 Or copy the [`ui-props/`](.) folder into `~/.claude/skills/`.

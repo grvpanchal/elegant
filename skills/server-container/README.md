@@ -15,7 +15,7 @@ Splitting a component into container + presentational pair; connecting a view to
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-container
+npx skills add grvpanchal/elegant --skill server-container
 ```
 
 Or copy the [`server-container/`](.) folder into `~/.claude/skills/`.

@@ -15,7 +15,7 @@ Creating or refactoring API clients and service modules; adding auth-refresh or 
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-api
+npx skills add grvpanchal/elegant --skill server-api
 ```
 
 Or copy the [`server-api/`](.) folder into `~/.claude/skills/`.

@@ -15,7 +15,7 @@ Configuring Vite/webpack/CRA dev proxies to avoid CORS; writing Nginx/Cloudflare
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-proxy
+npx skills add grvpanchal/elegant --skill server-proxy
 ```
 
 Or copy the [`server-proxy/`](.) folder into `~/.claude/skills/`.

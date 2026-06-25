@@ -15,7 +15,7 @@ Writing `selectXxx` helpers colocated with slices; memoising derived data (filte
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-selectors
+npx skills add grvpanchal/elegant --skill state-selectors
 ```
 
 Or copy the [`state-selectors/`](.) folder into `~/.claude/skills/`.

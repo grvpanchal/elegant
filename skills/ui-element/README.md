@@ -15,7 +15,7 @@ Clarifying Component vs Element vs DOM-node terminology; reading how JSX desugar
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-element
+npx skills add grvpanchal/elegant --skill ui-element
 ```
 
 Or copy the [`ui-element/`](.) folder into `~/.claude/skills/`.

@@ -15,7 +15,7 @@ Writing or reviewing `.stories.{js,jsx,ts,tsx}` files; adding argTypes for the C
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-story
+npx skills add grvpanchal/elegant --skill ui-story
 ```
 
 Or copy the [`ui-story/`](.) folder into `~/.claude/skills/`.

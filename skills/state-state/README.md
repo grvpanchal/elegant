@@ -15,7 +15,7 @@ Deciding local vs lifted vs global vs server vs URL state for new data; eliminat
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/state-state
+npx skills add grvpanchal/elegant --skill state-state
 ```
 
 Or copy the [`state-state/`](.) folder into `~/.claude/skills/`.

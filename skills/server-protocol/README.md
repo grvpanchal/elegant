@@ -15,7 +15,7 @@ Setting up HTTPS in production or local dev (mkcert, Vite https); configuring HS
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-protocol
+npx skills add grvpanchal/elegant --skill server-protocol
 ```
 
 Or copy the [`server-protocol/`](.) folder into `~/.claude/skills/`.

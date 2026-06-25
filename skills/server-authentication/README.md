@@ -15,7 +15,7 @@ Implementing login/logout and session bootstrap; wiring access/refresh-token ref
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-authentication
+npx skills add grvpanchal/elegant --skill server-authentication
 ```
 
 Or copy the [`server-authentication/`](.) folder into `~/.claude/skills/`.

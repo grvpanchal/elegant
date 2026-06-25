@@ -15,7 +15,7 @@ Adding a new route/page file; deciding between getServerSideProps, getStaticProp
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-page
+npx skills add grvpanchal/elegant --skill server-page
 ```
 
 Or copy the [`server-page/`](.) folder into `~/.claude/skills/`.

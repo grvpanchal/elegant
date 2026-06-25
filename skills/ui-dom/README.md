@@ -15,7 +15,7 @@ Writing vanilla-JS DOM code; batching inserts via DocumentFragment; using refs i
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/ui-dom
+npx skills add grvpanchal/elegant --skill ui-dom
 ```
 
 Or copy the [`ui-dom/`](.) folder into `~/.claude/skills/`.

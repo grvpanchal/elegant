@@ -15,7 +15,7 @@ Deciding SSG vs SSR vs CSR for a given page; setting up getStaticProps/getStatic
 Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 
 ```sh
-npx skills add grvpanchal/elegant/server-ssg
+npx skills add grvpanchal/elegant --skill server-ssg
 ```
 
 Or copy the [`server-ssg/`](.) folder into `~/.claude/skills/`.
