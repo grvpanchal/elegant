@@ -4,11 +4,11 @@
 
 > `server-page` — an [Agent Skill](https://agentskills.io) from [elegant](../../README.md).
 
-Page components — the thin data-fetching layer that binds a route to a template, invoking getServerSideProps/getStaticProps and passing props down. Use when creating a new route, choosing SSR vs SSG vs ISR for a page, or reviewing whether a page is doing template-level work it shouldn't.
+Page components — the thin route-level composition layer that binds a route to a layout template and the containers it hosts. In the elegant SPA templates a page is pure composition (no data fetching); in a Next.js app it additionally invokes getServerSideProps/getStaticProps. Use when creating a new route, composing containers inside a layout, or reviewing whether a page is doing template-level work it shouldn't.
 
 ## When to use
 
-Adding a new route/page file; deciding between getServerSideProps, getStaticProps, and ISR; wiring SEO head tags; keeping pages thin and templates dumb.
+Adding a new route/page file; composing containers inside a layout template; (Next.js only) deciding between getServerSideProps, getStaticProps, and ISR; keeping pages thin and templates dumb.
 
 ## Install
 

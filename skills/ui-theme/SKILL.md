@@ -1,7 +1,7 @@
 ---
 name: ui-theme
-description: Design-token systems — semantic CSS custom properties for colours, spacing, typography, and shadows, with light/dark theme switching via `[data-theme]` overrides. Use when setting up a token catalogue, auditing components for hardcoded colours/magic numbers, or adding dark-mode support via token swaps.
-when_to_use: Setting up or extending a design-token catalogue; replacing hardcoded colours/spacing with `var(--token)` references; implementing dark-mode via `[data-theme="dark"]` overrides; enforcing semantic names (--color-error) over value names (--color-red).
+description: Design-token systems — semantic CSS custom properties for colours, spacing, typography, and shadows, with light/dark theme switching via a `body.dark` class override. Use when setting up a token catalogue, auditing components for hardcoded colours/magic numbers, or adding dark-mode support via token swaps.
+when_to_use: Setting up or extending a design-token catalogue; replacing hardcoded colours/spacing with `var(--token)` references; implementing dark-mode via a `body.dark` class override; enforcing semantic names (--color-error) over value names (--color-red).
 paths:
   - "**/theme/**/*.{css,scss,less}"
   - "**/styles/**/*.{css,scss,less}"
@@ -73,8 +73,8 @@ Themes are systematic design languages implemented through CSS—design tokens c
   --font-size-lg: 1.25rem;
 }
 
-/* Dark mode via token override */
-[data-theme="dark"] {
+/* Dark mode via token override (toggle a `dark` class on <body>) */
+body.dark {
   --color-surface: #0f172a;
   --color-text: #f1f5f9;
 }

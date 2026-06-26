@@ -1,7 +1,7 @@
 ---
 name: state-selectors
-description: Selector functions for reading state — Reselect/createSelector memoisation, input-selector composition, parameterised selector factories, and colocating selectors with slices. Use when extracting state into components, avoiding redundant re-renders from filtered lists, or abstracting state shape behind `selectXxx` helpers.
-when_to_use: Writing `selectXxx` helpers colocated with slices; memoising derived data (filtered/sorted lists, aggregated stats) with createSelector; factoring parameterised selectors (selectTodoById); replacing raw `state.x.y` access in components.
+description: Selector functions for reading state — plain selector functions colocated with slices, optional Reselect/createSelector memoisation, input-selector composition, and parameterised selector factories. Use when extracting state into components, avoiding redundant re-renders from filtered lists, or abstracting state shape behind selector helpers.
+when_to_use: Writing selector helpers colocated with slices; deriving data (filtered/sorted lists, aggregated stats), optionally memoising with createSelector; factoring parameterised selectors; replacing raw `state.x.y` access in components.
 paths:
   - "**/store/**/*.{js,ts}"
   - "**/selectors/**/*.{js,ts}"
