@@ -4,11 +4,11 @@
 
 > `ui-organism` — an [Agent Skill](https://agentskills.io) from [elegant](../../README.md).
 
-Atomic-design guidance for Organisms — complex feature-level sections (Header, ProductGrid, CommentSection) that compose molecules, connect to state, handle loading/error/empty states, and own responsive layout decisions. Use when authoring components under ui/organisms or deciding molecule vs organism boundaries.
+Atomic-design guidance for Organisms — complex feature-level sections (Header, ProductGrid, CommentSection) that compose molecules, render loading/error/empty states from props, and own responsive layout decisions. Organisms stay presentational; a Container connects them to state and passes data/events down. Use when authoring components under ui/organisms or deciding molecule vs organism boundaries.
 
 ## When to use
 
-Creating or reviewing organism-level components; wiring data fetching and store hooks at the organism boundary; keeping loading/error/empty states at this layer (not in molecules); defining responsive breakpoint behaviour per feature.
+Creating or reviewing organism-level components; keeping organisms presentational (data and event callbacks arrive as props from a Container, not from store hooks inside the organism); keeping loading/error/empty rendering at this layer (not in molecules); defining responsive breakpoint behaviour per feature.
 
 ## Install
 
