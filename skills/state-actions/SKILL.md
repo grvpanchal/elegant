@@ -1,7 +1,7 @@
 ---
 name: state-actions
-description: Redux/NgRx/RTK action design — plain-object events describing what happened, FSA-compliant structure, and request/success/failure patterns for async flows. Use when writing action creators, RTK slices, or reviewing action-type naming and payload shape.
-when_to_use: Authoring or reviewing action creators, type constants, or RTK slice reducers; designing async action triples (request/success/failure); enforcing FSA compliance and serialisable payloads.
+description: Redux/NgRx/RTK action design — plain-object events describing what happened, FSA-compliant structure, and request/success/error patterns for async flows. Use when writing action creators, RTK slices, or reviewing action-type naming and payload shape.
+when_to_use: Authoring or reviewing action creators, type constants, or RTK slice reducers; designing async action triples (request/success/error); enforcing FSA compliance and serialisable payloads.
 paths:
   - "**/store/**/*.{js,ts}"
   - "**/actions/**/*.{js,ts}"
@@ -30,7 +30,7 @@ Actions are plain JavaScript objects describing "what happened"—not how state 
 - Follow FSA (Flux Standard Action) format
 - Use action creators to encapsulate creation
 - Define type constants to prevent typos
-- Use request/success/failure for async actions
+- Use request/success/error for async actions
 
 ❌ **DON'T**:
 - Put non-serializable values in actions
@@ -105,7 +105,7 @@ export const { addTodo, toggleTodo } = todosSlice.actions;
 ### Async Action Pattern
 
 ```javascript
-// Request/Success/Failure pattern
+// Request/Success/Error pattern
 export const fetchUsers = createAsyncThunk(
   'users/fetch',
   async (_, { rejectWithValue }) => {
@@ -179,7 +179,7 @@ function TodoForm() {
 - [ ] Actions are plain objects
 - [ ] Type follows domain/event naming
 - [ ] Payloads are serializable
-- [ ] Async uses request/success/failure
+- [ ] Async uses request/success/error
 - [ ] Action creators used for complex actions
 - [ ] TypeScript types for actions
 

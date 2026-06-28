@@ -45,7 +45,7 @@ ATOMS        → Button, Input, Icon, Label, Image
 MOLECULES    → SearchBar, FormField, CardHeader, NavLink
   ↓            Composed of atoms, single function
 ORGANISMS    → Header, ProductGrid, CommentSection, Footer
-  ↓            Complex sections, may connect to state
+  ↓            Complex sections, stay presentational (a container connects them to state)
 TEMPLATES    → ProductPageTemplate, BlogTemplate, DashboardLayout
   ↓            Page wireframes, content slots
 PAGES        → iPhone15Page, BlogPost123, UserDashboard

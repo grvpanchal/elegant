@@ -1,7 +1,7 @@
 ---
 name: state-crud
-description: CRUD patterns for state slices — consistent `domain/create|read|update|delete` action naming, request/success/failure triples per operation, and normalised `{ byId, allIds }` entity shapes for O(1) lookups. Use when designing a new entity slice, standardising action-type names, or refactoring array-shaped state.
-when_to_use: Designing a new entity slice (todos, users, products); standardising request/success/failure naming across async operations; normalising state from arrays to byId/allIds; wiring RTK createAsyncThunks for all four CRUD ops.
+description: CRUD patterns for state slices — consistent `domain/create|read|update|delete` action naming, request/success/error triples per operation, and normalised `{ byId, allIds }` entity shapes for O(1) lookups. Use when designing a new entity slice, standardising action-type names, or refactoring array-shaped state.
+when_to_use: Designing a new entity slice (todos, users, products); standardising request/success/error naming across async operations; normalising state from arrays to byId/allIds; wiring async thunks or sagas for all four CRUD ops.
 paths:
   - "**/store/**/*.{js,ts}"
   - "**/slices/**/*.{js,ts}"
@@ -18,7 +18,7 @@ CRUD (Create, Read, Update, Delete) are the four basic operations for persistent
 
 1. **Consistent Naming**: Use `domain/operation` pattern—`todos/create`, `todos/read`, `todos/update`, `todos/delete`. Consistency aids debugging.
 
-2. **Request/Success/Failure**: Each CRUD operation needs three action types for async handling: `todos/createRequest`, `todos/createSuccess`, `todos/createFailure`.
+2. **Request/Success/Error**: Each CRUD operation needs three action types for async handling: `todos/createRequest`, `todos/createSuccess`, `todos/createError`.
 
 3. **Normalized State**: Store entities by ID for efficient CRUD. `{ byId: { '1': {...} }, allIds: ['1'] }` enables O(1) lookups.
 
@@ -27,7 +27,7 @@ CRUD (Create, Read, Update, Delete) are the four basic operations for persistent
 ✅ **DO**:
 - Follow `domain/operationName` convention
 - Define action types as constants
-- Use request/success/failure for async
+- Use request/success/error for async
 - Normalize state for entities
 - Handle optimistic updates thoughtfully
 
@@ -47,19 +47,19 @@ CRUD (Create, Read, Update, Delete) are the four basic operations for persistent
 const TODO_ACTIONS = {
   CREATE_REQUEST: 'todos/createRequest',
   CREATE_SUCCESS: 'todos/createSuccess',
-  CREATE_FAILURE: 'todos/createFailure',
+  CREATE_ERROR: 'todos/createError',
   
   READ_REQUEST: 'todos/readRequest',
   READ_SUCCESS: 'todos/readSuccess',
-  READ_FAILURE: 'todos/readFailure',
+  READ_ERROR: 'todos/readError',
   
   UPDATE_REQUEST: 'todos/updateRequest',
   UPDATE_SUCCESS: 'todos/updateSuccess',
-  UPDATE_FAILURE: 'todos/updateFailure',
+  UPDATE_ERROR: 'todos/updateError',
   
   DELETE_REQUEST: 'todos/deleteRequest',
   DELETE_SUCCESS: 'todos/deleteSuccess',
-  DELETE_FAILURE: 'todos/deleteFailure',
+  DELETE_ERROR: 'todos/deleteError',
 };
 ```
 
@@ -195,7 +195,7 @@ function TodoManager() {
 ## Quality Gates
 
 - [ ] Consistent naming convention
-- [ ] Request/success/failure for async
+- [ ] Request/success/error for async
 - [ ] Normalized state for entities
 - [ ] Loading/error states handled
 - [ ] Optimistic updates considered

@@ -1,7 +1,7 @@
 ---
 name: server-page
-description: Page components — the thin data-fetching layer that binds a route to a template, invoking getServerSideProps/getStaticProps and passing props down. Use when creating a new route, choosing SSR vs SSG vs ISR for a page, or reviewing whether a page is doing template-level work it shouldn't.
-when_to_use: Adding a new route/page file; deciding between getServerSideProps, getStaticProps, and ISR; wiring SEO head tags; keeping pages thin and templates dumb.
+description: Page components — the thin route-level composition layer that binds a route to a layout template and the containers it hosts. In the elegant SPA templates a page is pure composition (no data fetching); in a Next.js app it additionally invokes getServerSideProps/getStaticProps. Use when creating a new route, composing containers inside a layout, or reviewing whether a page is doing template-level work it shouldn't.
+when_to_use: Adding a new route/page file; composing containers inside a layout template; (Next.js only) deciding between getServerSideProps, getStaticProps, and ISR; keeping pages thin and templates dumb.
 paths:
   - "**/pages/**/*.{jsx,tsx,vue}"
   - "**/app/**/*.{jsx,tsx}"
@@ -11,13 +11,31 @@ paths:
 
 ## What is a Page?
 
-Pages are concrete instances of templates filled with real data—where abstract layouts meet actual content. ProductTemplate + iPhone data = iPhone Product Page. Pages handle data fetching (SSR/SSG) and pass props to templates.
+A page is the thin composition layer that maps a route to a layout template and the containers that fill it. In the elegant SPA templates a page composes containers inside a layout — it does **not** fetch data (the templates are client-side SPAs with no `getServerSideProps`/`getStaticProps`); state reaches the UI through containers. In a Next.js app, a page additionally becomes the data-fetching boundary (`getServerSideProps`/`getStaticProps`) — the pattern below covers both.
+
+```jsx
+// src/pages/index.jsx (elegant SPA) — route-level composition of containers in a layout
+import SiteHeaderContainer from '../containers/SiteHeaderContainer';
+import TodoFiltersContainer from '../containers/TodoFiltersContainer';
+import TodoListContainer from '../containers/TodoListContainer';
+import Layout from '../ui/templates/Layout/Layout.component';
+
+export default function HomePage() {
+  return (
+    <Layout>
+      <SiteHeaderContainer />
+      <TodoListContainer />
+      <TodoFiltersContainer />
+    </Layout>
+  );
+}
+```
 
 ## Key Principles
 
-1. **Template + Data = Page**: Templates define structure (slots), pages fill those slots with fetched data. Same template, different pages.
+1. **Template + Containers = Page**: Templates define structure (slots/layout); pages fill those slots with containers (elegant SPA) or fetched data (Next.js). Same template, different pages.
 
-2. **Data Fetching Boundary**: Pages are where `getServerSideProps`/`getStaticProps` live. Pages fetch, templates render.
+2. **Data Fetching Boundary (Next.js)**: In a Next.js app, pages are where `getServerSideProps`/`getStaticProps` live — pages fetch, templates render. The elegant SPA templates have no such hooks; data flows in via containers instead.
 
 3. **Route Mapping**: Pages correspond to URLs. `/products/[id].js` creates pages for `/products/1`, `/products/2`, etc.
 

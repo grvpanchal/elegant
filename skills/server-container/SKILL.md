@@ -40,51 +40,74 @@ Containers are "smart" components that handle data fetching, state management, a
 
 ### Container/Presentational Pattern
 
+The container is the **connection point**: it reads the store, builds a `data` value and an `events` object, and passes them to a purely presentational organism. The organism (`TodoList`) never connects to state directly — state → container → organism.
+
 ```jsx
-// TodoListContainer.jsx - SMART (Container)
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchTodos, toggleTodo } from '../state/todoSlice';
-import TodoList from '../components/TodoList';  // DUMB
+// TodoListContainer.jsx - SMART (Container), connects state to the organism
+import TodoList from '../ui/organisms/TodoList/TodoList.component';  // DUMB organism
+import { useDispatch, useSelector } from 'react-redux';
+import { createTodo, deleteTodo, readTodo, toggleTodo } from '../state/todo/todo.actions';
+import { getSelectedFilter } from '../state/filters/filters.selectors';
+import { getVisibleTodos } from '../state/todo/todo.selectors';
+import { useEffect } from 'react';
 
-const TodoListContainer = () => {
+export default function TodoListContainer() {
   const dispatch = useDispatch();
-  const { todos, loading, error } = useSelector(state => state.todos);
-  
-  useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
-  
-  const handleToggle = (id) => dispatch(toggleTodo(id));
-  
-  return (
-    <TodoList
-      todos={todos}
-      loading={loading}
-      error={error}
-      onToggle={handleToggle}
-    />
+  const selectedFilter = useSelector(getSelectedFilter);
+  const todoData = useSelector((state) =>
+    getVisibleTodos(state.todo, selectedFilter.id)
   );
-};
 
-// TodoList.jsx - DUMB (Presentational)
-const TodoList = ({ todos, loading, error, onToggle }) => {
-  if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage error={error} />;
-  if (!todos.length) return <EmptyState />;
-  
-  return (
-    <ul>
-      {todos.map(todo => (
-        <TodoItem 
-          key={todo.id} 
-          todo={todo} 
-          onToggle={() => onToggle(todo.id)} 
-        />
-      ))}
-    </ul>
-  );
-};
+  useEffect(() => {
+    dispatch(readTodo());
+  }, [dispatch]);
+
+  const events = {
+    onTodoCreate: (payload) => dispatch(createTodo(payload)),
+    onTodoToggleUpdate: (id) => dispatch(toggleTodo(id)),
+    onTodoDelete: (payload) => dispatch(deleteTodo(payload)),
+  };
+
+  // Container passes `data` + `events` to the presentational organism
+  return <TodoList todoData={todoData} events={events} />;
+}
+
+// TodoList.component.jsx - DUMB (Presentational organism): props in, events out, no store
+const TodoList = ({ todoData, events }) => (
+  <ul>
+    {todoData.items.map((todo) => (
+      <TodoItem
+        key={todo.id}
+        todo={todo}
+        onToggle={() => events.onTodoToggleUpdate(todo.id)}
+      />
+    ))}
+  </ul>
+);
 ```
+
+The same shape applies with Zustand — only the store-read changes (`useStore` instead of `useSelector`/`useDispatch`), while the `data` + `events` hand-off to the organism is identical:
+
+```jsx
+// TodoListContainer.jsx (Zustand variant)
+import useStore from '../state';
+
+export default function TodoListContainer() {
+  const selectedFilter = useStore(getSelectedFilter);
+  const todoState = useStore((state) => state.todo);
+  const todoData = getVisibleTodos(todoState, selectedFilter.id);
+
+  const readTodo = useStore((state) => state.readTodo);
+  const toggleTodo = useStore((state) => state.toggleTodo);
+
+  useEffect(() => { readTodo(); }, [readTodo]);
+
+  const events = { onTodoToggleUpdate: (id) => toggleTodo(id) };
+  return <TodoList todoData={todoData} events={events} />;
+}
+```
+
+A container can also be side-effect only — reading state and returning `null` (e.g. `ConfigContainer.js` toggles the `dark` body class from `state.config.theme`).
 
 ### Modern Hook-Based Pattern
 
@@ -121,16 +144,16 @@ const TodoListContainer = () => {
 ### Testing Benefits
 
 ```jsx
-// Presentational component easy to test
+// Presentational organism easy to test (Vitest)
 test('TodoList renders items', () => {
-  const mockTodos = [{ id: 1, text: 'Test', completed: false }];
-  
-  render(<TodoList todos={mockTodos} onToggle={jest.fn()} />);
-  
+  const todoData = { items: [{ id: 1, text: 'Test', completed: false }] };
+
+  render(<TodoList todoData={todoData} events={{ onTodoToggleUpdate: vi.fn() }} />);
+
   expect(screen.getByText('Test')).toBeInTheDocument();
 });
 
-// No Redux mocking needed for presentational!
+// No store mocking needed for presentational organisms!
 ```
 
 ## Related Terminologies

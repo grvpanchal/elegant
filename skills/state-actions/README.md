@@ -4,11 +4,11 @@
 
 > `state-actions` — an [Agent Skill](https://agentskills.io) from [elegant](../../README.md).
 
-Redux/NgRx/RTK action design — plain-object events describing what happened, FSA-compliant structure, and request/success/failure patterns for async flows. Use when writing action creators, RTK slices, or reviewing action-type naming and payload shape.
+Redux/NgRx/RTK action design — plain-object events describing what happened, FSA-compliant structure, and request/success/error patterns for async flows. Use when writing action creators, RTK slices, or reviewing action-type naming and payload shape.
 
 ## When to use
 
-Authoring or reviewing action creators, type constants, or RTK slice reducers; designing async action triples (request/success/failure); enforcing FSA compliance and serialisable payloads.
+Authoring or reviewing action creators, type constants, or RTK slice reducers; designing async action triples (request/success/error); enforcing FSA compliance and serialisable payloads.
 
 ## Install
 
