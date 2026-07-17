@@ -3,6 +3,7 @@ name: state-middleware
 description: Redux middleware — the `store => next => action => {}` pipeline for side effects, logging, analytics, and async (thunk/saga). Use when writing custom middleware, wiring async thunks, ordering middleware in configureStore, or keeping side effects out of reducers.
 when_to_use: Adding logger/analytics/crash-reporting middleware; writing a custom thunk-style middleware; ordering middleware in configureStore (logger last); moving side effects out of reducers.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/middleware/**/*.{js,ts}"
   - "**/*Middleware*.{js,ts}"
@@ -166,6 +167,10 @@ dispatch(action)
     ↓
 reducer → updates state
 ```
+
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand's middleware wraps the store *creator* rather than the dispatch pipeline. `chota-react-zustand` uses the built-in `devtools` middleware — `create(devtools(fn, { name: 'elegant-zustand' }))` — to get Redux DevTools traces (the action name is the 3rd argument to `set`). `persist`, `immer`, and `subscribeWithSelector` compose the same way by nesting the wrappers.
 
 ## Related Terminologies
 

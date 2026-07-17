@@ -3,6 +3,7 @@ name: state-store
 description: Redux store architecture — configureStore setup, slice organisation by domain, normalised state shape, Provider wiring, typed hooks (useAppDispatch/useAppSelector), and DevTools. Use when scaffolding a new Redux store, splitting state into slices, or auditing state shape for normalisation and serialisability.
 when_to_use: Scaffolding a new configureStore; organising slices by domain; enforcing a single-store rule; shaping state as `{ byId, allIds }`; wiring `<Provider>` and typed hooks at the app root.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/redux/**/*.{js,ts}"
   - "**/*Store*.{js,ts}"
@@ -143,6 +144,23 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
     { id: '1', name: 'John', posts: [{ id: 'a', title: '...' }] }
   ]
 }
+```
+
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand is a single store too — but with no `<Provider>`, no dispatch, and no reducer. `create()` wraps a store creator, per-domain slices `(set, get) => ({ ... })` are merged in a `rootStore` (the `combineReducers` analogue), and components read it with the `useStore` hook. State stays namespaced (`todo`, `filters`, `config`) so the same selectors work as in the Redux templates.
+
+```js
+// state/index.js
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import createRootSlice from './rootStore';
+
+export const createAppStore = (preloadedState = {}) =>
+  create(devtools((set, get, api) => ({ ...createRootSlice(set, get, api) }), { name: 'elegant-zustand' }));
+
+const useStore = createAppStore(); // usage: useStore((s) => s.todo.todoItems)
+export default useStore;
 ```
 
 ## Related Terminologies

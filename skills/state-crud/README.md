@@ -8,7 +8,7 @@ CRUD patterns for state slices — consistent `domain/create|read|update|delete`
 
 ## When to use
 
-Designing a new entity slice (todos, users, products); standardising request/success/error naming across async operations; normalising state from arrays to byId/allIds; wiring async thunks or sagas for all four CRUD ops.
+Designing a new entity slice (todos, users, products); standardising request/success/error naming across async operations; normalising state from arrays to byId/allIds; wiring async thunks, sagas, or Zustand store actions for all four CRUD ops.
 
 ## Install
 

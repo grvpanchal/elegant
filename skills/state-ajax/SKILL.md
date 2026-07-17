@@ -3,6 +3,7 @@ name: state-ajax
 description: Async data-fetching patterns — Fetch vs Axios, service-layer organisation, AbortController cancellation, and integration with Redux Toolkit's createAsyncThunk for pending/fulfilled/rejected state transitions. Use when writing or reviewing HTTP call sites, standardising loading/error handling, or wiring request cancellation in effects.
 when_to_use: Choosing between fetch and axios; setting up an apiClient with interceptors; integrating async requests with Redux/NgRx slices; cancelling in-flight requests on unmount via AbortController; handling loading/error/success state uniformly.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/api/**/*.{js,ts}"
   - "**/services/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
@@ -181,6 +182,22 @@ source.cancel('Cancelled');
 | Auto JSON | ❌ | ✅ |
 | Timeout | Manual | Built-in |
 | Cancel | AbortController | CancelToken |
+
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand needs no thunk/saga middleware for data fetching — an async store action awaits the fetch-style `utils/api` directly and `set`s loading/success/error as it goes:
+
+```js
+readTodo: async () => {
+  get().setTodo({ isContentLoading: true });
+  try {
+    const res = await getTodoApi();
+    get().setTodo({ isContentLoading: false, todoItems: await res.json() });
+  } catch (e) {
+    get().setTodo({ isContentLoading: false, error: e.toString() });
+  }
+},
+```
 
 ## Related Terminologies
 

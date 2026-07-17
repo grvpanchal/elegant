@@ -3,6 +3,7 @@ name: state-selectors
 description: Selector functions for reading state — plain selector functions colocated with slices, optional Reselect/createSelector memoisation, input-selector composition, and parameterised selector factories. Use when extracting state into components, avoiding redundant re-renders from filtered lists, or abstracting state shape behind selector helpers.
 when_to_use: Writing selector helpers colocated with slices; deriving data (filtered/sorted lists, aggregated stats), optionally memoising with createSelector; factoring parameterised selectors; replacing raw `state.x.y` access in components.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/selectors/**/*.{js,ts}"
   - "**/*Selectors*.{js,ts}"
@@ -160,6 +161,16 @@ function TodoList() {
     </div>
   );
 }
+```
+
+## In the Zustand template (`chota-react-zustand`)
+
+Because selectors are plain functions of state, the elegant templates reuse the **same** ones across Redux and Zustand. `chota-react-zustand` keeps the identical `state.todo/filters/config` shape and calls the same `getVisibleTodos`/`getSelectedFilter` selectors through the `useStore` hook — no rewrite:
+
+```js
+const selectedFilter = useStore(getSelectedFilter);
+const todoState = useStore((s) => s.todo);
+const todoData = getVisibleTodos(todoState, selectedFilter.id);
 ```
 
 ## Related Terminologies

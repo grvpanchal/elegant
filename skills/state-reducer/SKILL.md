@@ -3,6 +3,7 @@ name: state-reducer
 description: Reducer design — pure `(state, action) => newState` functions, immutable updates (spread or Immer), default-case handling, and combineReducers composition. Use when writing or reviewing slice reducers, fixing accidental mutations, or splitting a monolithic reducer by domain.
 when_to_use: Writing new reducers or RTK slices; auditing for accidental state mutation or impure operations (Date.now, fetch) inside reducers; composing reducers with combineReducers; testing reducer cases in isolation.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/reducers/**/*.{js,ts}"
   - "**/*Reducer*.{js,ts}"
@@ -180,6 +181,17 @@ describe('todosReducer', () => {
     expect(result).not.toBe(initial);  // New reference
   });
 });
+```
+
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand has no reducer or `switch`. Each slice action updates state with an immutable `set((state) => ({ ... }))` updater — the same "return new state, never mutate" rule as a reducer, colocated with the action instead of keyed by action type:
+
+```js
+setVisibilityFilter: (filter) =>
+  set((state) => ({
+    filters: state.filters.map((f) => ({ ...f, selected: f.id === filter })),
+  }), false, 'filters/setVisibilityFilter'),
 ```
 
 ## Related Terminologies

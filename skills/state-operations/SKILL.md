@@ -3,6 +3,7 @@ name: state-operations
 description: Async operation patterns — explicit idle/loading/succeeded/failed status tracking, optimistic updates with rollback, debouncing/batching, and race-condition handling via request cancellation. Use when designing async workflows, wiring createAsyncThunk pending/fulfilled/rejected handlers, or fixing stale-data bugs from out-of-order responses.
 when_to_use: Tracking loading/success/error per operation; implementing optimistic UI with rollback on failure; debouncing search/autosave; cancelling stale requests to avoid race conditions; showing skeleton/error/empty states uniformly.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/operations/**/*.{js,ts}"
   - "**/*thunk*.{js,ts}"
@@ -181,6 +182,10 @@ function TodoList() {
   return items.map(todo => <TodoItem key={todo.id} todo={todo} />);
 }
 ```
+
+## In the Zustand template (`chota-react-zustand`)
+
+The Zustand template runs the same idle → loading → succeeded/failed flow with optimistic updates and rollback, but inside a single async store action: it `set`s the optimistic state, awaits `utils/api`, then confirms on success or (on failure) waits `500ms` and restores the `previousStateTodoItems` snapshot it saved. It is the saga request/success/error operation collapsed into one function — no watcher, no effect middleware.
 
 ## Related Terminologies
 

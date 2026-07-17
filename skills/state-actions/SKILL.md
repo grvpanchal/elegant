@@ -3,6 +3,7 @@ name: state-actions
 description: Redux/NgRx/RTK action design — plain-object events describing what happened, FSA-compliant structure, and request/success/error patterns for async flows. Use when writing action creators, RTK slices, or reviewing action-type naming and payload shape.
 when_to_use: Authoring or reviewing action creators, type constants, or RTK slice reducers; designing async action triples (request/success/error); enforcing FSA compliance and serialisable payloads.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/actions/**/*.{js,ts}"
   - "**/*Actions*.{js,ts}"
@@ -165,6 +166,15 @@ function TodoForm() {
   meta: { timestamp: Date.now() },  // Optional metadata
   error: false                 // true if action represents error
 }
+```
+
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand keeps no separate action creators or type constants — actions are functions on the store that call `set()`. The request/success/error triple collapses into one async action (optimistic `set` → await API → confirm or roll back). The 3rd argument to `set` is the DevTools action label, so traces still read like Redux:
+
+```js
+updateConfig: (payload) =>
+  set((state) => ({ config: { ...state.config, ...payload } }), false, 'config/updateConfig'),
 ```
 
 ## Related Terminologies
