@@ -3,6 +3,7 @@ name: state-middleware
 description: Redux middleware — the `store => next => action => {}` pipeline for side effects, logging, analytics, and async (thunk/saga). Use when writing custom middleware, wiring async thunks, ordering middleware in configureStore, or keeping side effects out of reducers.
 when_to_use: Adding logger/analytics/crash-reporting middleware; writing a custom thunk-style middleware; ordering middleware in configureStore (logger last); moving side effects out of reducers.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/middleware/**/*.{js,ts}"
   - "**/*Middleware*.{js,ts}"

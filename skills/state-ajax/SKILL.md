@@ -3,6 +3,7 @@ name: state-ajax
 description: Async data-fetching patterns — Fetch vs Axios, service-layer organisation, AbortController cancellation, and integration with Redux Toolkit's createAsyncThunk for pending/fulfilled/rejected state transitions. Use when writing or reviewing HTTP call sites, standardising loading/error handling, or wiring request cancellation in effects.
 when_to_use: Choosing between fetch and axios; setting up an apiClient with interceptors; integrating async requests with Redux/NgRx slices; cancelling in-flight requests on unmount via AbortController; handling loading/error/success state uniformly.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/api/**/*.{js,ts}"
   - "**/services/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"

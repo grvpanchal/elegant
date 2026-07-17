@@ -3,6 +3,7 @@ name: state-reducer
 description: Reducer design — pure `(state, action) => newState` functions, immutable updates (spread or Immer), default-case handling, and combineReducers composition. Use when writing or reviewing slice reducers, fixing accidental mutations, or splitting a monolithic reducer by domain.
 when_to_use: Writing new reducers or RTK slices; auditing for accidental state mutation or impure operations (Date.now, fetch) inside reducers; composing reducers with combineReducers; testing reducer cases in isolation.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/reducers/**/*.{js,ts}"
   - "**/*Reducer*.{js,ts}"

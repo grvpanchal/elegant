@@ -3,6 +3,7 @@ name: state-store
 description: Redux store architecture — configureStore setup, slice organisation by domain, normalised state shape, Provider wiring, typed hooks (useAppDispatch/useAppSelector), and DevTools. Use when scaffolding a new Redux store, splitting state into slices, or auditing state shape for normalisation and serialisability.
 when_to_use: Scaffolding a new configureStore; organising slices by domain; enforcing a single-store rule; shaping state as `{ byId, allIds }`; wiring `<Provider>` and typed hooks at the app root.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/redux/**/*.{js,ts}"
   - "**/*Store*.{js,ts}"

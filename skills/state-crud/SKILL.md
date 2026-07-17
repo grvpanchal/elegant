@@ -3,6 +3,7 @@ name: state-crud
 description: CRUD patterns for state slices — consistent `domain/create|read|update|delete` action naming, request/success/error triples per operation, and normalised `{ byId, allIds }` entity shapes for O(1) lookups. Use when designing a new entity slice, standardising action-type names, or refactoring array-shaped state.
 when_to_use: Designing a new entity slice (todos, users, products); standardising request/success/error naming across async operations; normalising state from arrays to byId/allIds; wiring async thunks, sagas, or Zustand store actions for all four CRUD ops.
 paths:
+  - "**/state/**/*.{js,ts}"
   - "**/store/**/*.{js,ts}"
   - "**/slices/**/*.{js,ts}"
   - "**/*Actions*.{js,ts}"
