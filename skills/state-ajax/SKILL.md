@@ -182,6 +182,22 @@ source.cancel('Cancelled');
 | Timeout | Manual | Built-in |
 | Cancel | AbortController | CancelToken |
 
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand needs no thunk/saga middleware for data fetching — an async store action awaits the fetch-style `utils/api` directly and `set`s loading/success/error as it goes:
+
+```js
+readTodo: async () => {
+  get().setTodo({ isContentLoading: true });
+  try {
+    const res = await getTodoApi();
+    get().setTodo({ isContentLoading: false, todoItems: await res.json() });
+  } catch (e) {
+    get().setTodo({ isContentLoading: false, error: e.toString() });
+  }
+},
+```
+
 ## Related Terminologies
 
 - **API** (Server) - Service layer abstraction

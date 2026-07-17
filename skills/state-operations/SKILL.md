@@ -182,6 +182,10 @@ function TodoList() {
 }
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+The Zustand template runs the same idle → loading → succeeded/failed flow with optimistic updates and rollback, but inside a single async store action: it `set`s the optimistic state, awaits `utils/api`, then confirms on success or (on failure) waits `500ms` and restores the `previousStateTodoItems` snapshot it saved. It is the saga request/success/error operation collapsed into one function — no watcher, no effect middleware.
+
 ## Related Terminologies
 
 - **Ajax** (State) - HTTP requests in operations

@@ -145,6 +145,23 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 }
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand is a single store too — but with no `<Provider>`, no dispatch, and no reducer. `create()` wraps a store creator, per-domain slices `(set, get) => ({ ... })` are merged in a `rootStore` (the `combineReducers` analogue), and components read it with the `useStore` hook. State stays namespaced (`todo`, `filters`, `config`) so the same selectors work as in the Redux templates.
+
+```js
+// state/index.js
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import createRootSlice from './rootStore';
+
+export const createAppStore = (preloadedState = {}) =>
+  create(devtools((set, get, api) => ({ ...createRootSlice(set, get, api) }), { name: 'elegant-zustand' }));
+
+const useStore = createAppStore(); // usage: useStore((s) => s.todo.todoItems)
+export default useStore;
+```
+
 ## Related Terminologies
 
 - **Actions** (State) - Events that trigger state changes

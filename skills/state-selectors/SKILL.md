@@ -162,6 +162,16 @@ function TodoList() {
 }
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+Because selectors are plain functions of state, the elegant templates reuse the **same** ones across Redux and Zustand. `chota-react-zustand` keeps the identical `state.todo/filters/config` shape and calls the same `getVisibleTodos`/`getSelectedFilter` selectors through the `useStore` hook — no rewrite:
+
+```js
+const selectedFilter = useStore(getSelectedFilter);
+const todoState = useStore((s) => s.todo);
+const todoData = getVisibleTodos(todoState, selectedFilter.id);
+```
+
 ## Related Terminologies
 
 - **Store** (State) - Selectors read from store

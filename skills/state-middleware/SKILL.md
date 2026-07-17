@@ -167,6 +167,10 @@ dispatch(action)
 reducer → updates state
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand's middleware wraps the store *creator* rather than the dispatch pipeline. `chota-react-zustand` uses the built-in `devtools` middleware — `create(devtools(fn, { name: 'elegant-zustand' }))` — to get Redux DevTools traces (the action name is the 3rd argument to `set`). `persist`, `immer`, and `subscribeWithSelector` compose the same way by nesting the wrappers.
+
 ## Related Terminologies
 
 - **Actions** (State) - Flow through middleware

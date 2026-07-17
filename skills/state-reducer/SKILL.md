@@ -182,6 +182,17 @@ describe('todosReducer', () => {
 });
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand has no reducer or `switch`. Each slice action updates state with an immutable `set((state) => ({ ... }))` updater — the same "return new state, never mutate" rule as a reducer, colocated with the action instead of keyed by action type:
+
+```js
+setVisibilityFilter: (filter) =>
+  set((state) => ({
+    filters: state.filters.map((f) => ({ ...f, selected: f.id === filter })),
+  }), false, 'filters/setVisibilityFilter'),
+```
+
 ## Related Terminologies
 
 - **Actions** (State) - Trigger reducer execution

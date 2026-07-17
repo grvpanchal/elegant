@@ -167,6 +167,15 @@ function TodoForm() {
 }
 ```
 
+## In the Zustand template (`chota-react-zustand`)
+
+Zustand keeps no separate action creators or type constants — actions are functions on the store that call `set()`. The request/success/error triple collapses into one async action (optimistic `set` → await API → confirm or roll back). The 3rd argument to `set` is the DevTools action label, so traces still read like Redux:
+
+```js
+updateConfig: (payload) =>
+  set((state) => ({ config: { ...state.config, ...payload } }), false, 'config/updateConfig'),
+```
+
 ## Related Terminologies
 
 - **Reducer** (State) - Handles actions to update state
