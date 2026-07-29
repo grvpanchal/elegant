@@ -25,7 +25,7 @@ on the file being edited (e.g. `ui-atom` activates under `**/ui/atoms/**`).
 
 ## Skills
 
-The 36 skills are grouped into three layers that mirror the template source
+The 38 skills are grouped into three layers that mirror the template source
 layout (`src/ui`, `src/state`, and the server/routing concerns).
 
 ### UI — `src/ui/{atoms,molecules,organisms,templates,skeletons}` and primitives

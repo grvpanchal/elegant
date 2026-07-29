@@ -1,11 +1,14 @@
 # Auto-maintained list of skill slugs that exist under /skills/.
 # Used by _includes/doc-skill-download.html to only render the
 # download widget on docs whose matching SKILL.md exists.
+# Regenerate with: python3 scripts/sync-skills-registry.py
 - server-api
 - server-app-shell
 - server-authentication
 - server-container
+- server-forms
 - server-images
+- server-index-file
 - server-mfe
 - server-page
 - server-protocol
