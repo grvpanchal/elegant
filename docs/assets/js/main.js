@@ -155,6 +155,25 @@ document.querySelectorAll('.highlight > .highlight').forEach((block) => {
   
   block.appendChild(copyBtn);
 });
+// Skill alert: copy the `npx skills add ...` install command.
+document.querySelectorAll('.skill-alert__copy').forEach((btn) => {
+  const label = btn.querySelector('.skill-alert__copy-label');
+
+  btn.addEventListener('click', () => {
+    navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+      btn.classList.add('copied');
+      if (label) label.textContent = 'Copied!';
+
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        if (label) label.textContent = 'Copy';
+      }, 2000);
+    }).catch((err) => {
+      console.error('Failed to copy:', err);
+    });
+  });
+});
+
 // MCQ quiz: on submit, mark the chosen option, reveal the correct answer + explanation.
 document.querySelectorAll('.quiz-mcq').forEach((form) => {
   const result = form.querySelector('.quiz-mcq__result');

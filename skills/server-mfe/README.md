@@ -18,7 +18,7 @@ Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 npx skills add grvpanchal/elegant --skill server-mfe
 ```
 
-Or copy the [`server-mfe/`](.) folder into `~/.claude/skills/`.
+Or copy the [`server-mfe/`](.) folder into your agent's skills directory.
 
 ## Auto-activates on
 

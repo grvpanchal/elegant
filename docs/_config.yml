@@ -9,6 +9,10 @@ author:
 
 url: "https://elegantfrontend.training"
 baseurl: "/"
+
+# GitHub repo the Agent Skills are published from — used to build the
+# `npx skills add <repo> --skill <slug>` command in the skill alert.
+skills_repo: "grvpanchal/elegant"
 google_analytics: "G-R8YKPS191K"
 
 plugins:

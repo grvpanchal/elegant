@@ -9,9 +9,9 @@ folder with a `SKILL.md` written to the [Agent Skills open standard](https://age
 prose design guidance an AI agent (or a human) can load when authoring or
 reviewing code in that area.
 
-Skills can be published to [skills.sh](https://skills.sh) or dropped into
-`~/.claude/skills/` to give an agent durable, on-demand knowledge of the
-elegant front-end architecture.
+Install any skill with one command — `npx skills add grvpanchal/elegant --skill <name>` —
+to give an agent durable, on-demand knowledge of the elegant front-end
+architecture.
 
 ## How a skill is structured
 
@@ -25,7 +25,7 @@ on the file being edited (e.g. `ui-atom` activates under `**/ui/atoms/**`).
 
 ## Skills
 
-The 36 skills are grouped into three layers that mirror the template source
+The 45 skills are grouped into three layers that mirror the template source
 layout (`src/ui`, `src/state`, and the server/routing concerns).
 
 ### UI — `src/ui/{atoms,molecules,organisms,templates,skeletons}` and primitives
@@ -46,9 +46,10 @@ layout (`src/ui`, `src/state`, and the server/routing concerns).
 | [`ui-props`](./ui-props/SKILL.md) | Component props design — read-only data, unidirectional flow, typed interfaces, defaults. |
 | [`ui-accessibility`](./ui-accessibility/SKILL.md) | Web accessibility — semantic HTML, ARIA, keyboard nav, focus management, WCAG POUR. |
 | [`ui-theme`](./ui-theme/SKILL.md) | Design-token systems — semantic CSS custom properties and light/dark theming. |
+| [`ui-rwd`](./ui-rwd/SKILL.md) | Responsive web design — mobile-first media queries, fluid type with `clamp()`, container queries. |
 | [`ui-story`](./ui-story/SKILL.md) | Storybook story authoring — CSF, argTypes, play functions, edge-state coverage. |
 
-### State — `src/state` (Redux / RTK / NgRx / Pinia)
+### State — `src/state` (Redux / RTK / Saga / Zustand / NgRx / Pinia)
 
 | Skill | What it covers |
 | --- | --- |
@@ -66,24 +67,33 @@ layout (`src/ui`, `src/state`, and the server/routing concerns).
 
 | Skill | What it covers |
 | --- | --- |
-| [`server-page`](./server-page/SKILL.md) | Page components — the thin data-fetching layer binding a route to a template. |
+| [`server-page`](./server-page/SKILL.md) | Page components — the thin route-level composition binding a route to a layout template. |
 | [`server-container`](./server-container/SKILL.md) | Container/presentational split — smart containers vs dumb presentational children. |
+| [`server-index-file`](./server-index-file/SKILL.md) | Index files as entry-point contracts — `index.html`, module resolution, `package.json` `main`. |
 | [`server-router`](./server-router/SKILL.md) | Client-side routing — route tables, dynamic segments, guards, lazy chunks, scroll/focus. |
+| [`server-links`](./server-links/SKILL.md) | Links — link-vs-button semantics, router navigation, `rel` safety, prefetching, `aria-current`. |
+| [`server-forms`](./server-forms/SKILL.md) | Forms — controlled inputs, validation strategy, submit guards, accessible error messaging. |
 | [`server-ssr`](./server-ssr/SKILL.md) | Server-Side Rendering — HTML generation, hydration, prefetching, mismatch debugging. |
 | [`server-ssg`](./server-ssg/SKILL.md) | Static Site Generation — build-time pre-rendering, getStaticPaths, ISR revalidation. |
+| [`server-seo`](./server-seo/SKILL.md) | Technical SEO — per-route metadata, Open Graph, JSON-LD, canonicals, sitemaps, Core Web Vitals. |
 | [`server-app-shell`](./server-app-shell/SKILL.md) | App Shell architecture — cached skeleton served via Service Worker, offline fallbacks. |
+| [`server-pwa`](./server-pwa/SKILL.md) | Progressive Web Apps — manifest and icons, service-worker lifecycle, cache strategies, push. |
 | [`server-images`](./server-images/SKILL.md) | Image optimisation — responsive `srcset`/`sizes`, `<picture>` formats, lazy loading, LCP/CLS. |
+| [`server-localization`](./server-localization/SKILL.md) | Localization — translation catalogues, ICU plurals, `Intl` formatting, RTL, locale bundles. |
 | [`server-api`](./server-api/SKILL.md) | API service-layer — client with interceptors, domain services, token refresh, cancellation. |
 | [`server-authentication`](./server-authentication/SKILL.md) | Authentication — JWT access+refresh flows, secure storage, route guards. |
+| [`server-session`](./server-session/SKILL.md) | Sessions — cookie vs token sessions, `httpOnly`/`SameSite` attributes, timeouts, rotation. |
 | [`server-proxy`](./server-proxy/SKILL.md) | Proxy configuration — dev-server proxies for CORS and production reverse proxies. |
 | [`server-protocol`](./server-protocol/SKILL.md) | HTTPS/TLS guidance — mandatory HTTPS, HSTS, certs, security headers. |
 | [`server-mfe`](./server-mfe/SKILL.md) | Micro-frontend architecture — independently deployable modules, shared runtimes, event bus. |
+| [`server-widget`](./server-widget/SKILL.md) | Widgets — embeddable self-contained UI, style isolation, embed snippet, versioned public API. |
 
 ## Using these skills
 
-- **With Claude Code / agents:** copy a skill folder into `~/.claude/skills/`,
-  or reference it from a project. The agent loads the `SKILL.md` when its
-  `paths` match the file you're editing.
+- **Install:** `npx skills add grvpanchal/elegant --skill <name>` — works with any
+  Agent-Skills-compatible runtime. Or copy a skill folder into your agent's
+  skills directory. The agent loads the `SKILL.md` when its `paths` match the
+  file you're editing.
 - **Publish:** push to [skills.sh](https://skills.sh) following the
   [Agent Skills standard](https://agentskills.io).
 - **Read as docs:** every `SKILL.md` is plain Markdown — open it directly to
