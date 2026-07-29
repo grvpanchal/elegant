@@ -142,16 +142,14 @@ async function submit(data) {
   if ('sync' in reg) await reg.sync.register('sync-forms');
 }
 
-// sw.js: replay on reconnect, then notify
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'sync-forms') event.waitUntil(drainQueue());
+// sw.js: replay on reconnect, then show what arrived by push
+self.addEventListener('sync', (e) => {
+  if (e.tag === 'sync-forms') e.waitUntil(drainQueue());
 });
 
-self.addEventListener('push', (event) => {
-  const { title = 'Update', body = '', url = '/' } = event.data?.json() ?? {};
-  event.waitUntil(
-    self.registration.showNotification(title, { body, icon: '/logo192.png', data: { url } })
-  );
+self.addEventListener('push', (e) => {
+  const { title = 'Update', body = '', url = '/' } = e.data?.json() ?? {};
+  e.waitUntil(self.registration.showNotification(title, { body, icon: '/logo192.png', data: { url } }));
 });
 ```
 
@@ -162,29 +160,24 @@ Push is transport (server → worker, authenticated with a VAPID key pair); the 
 ```javascript
 let deferred;
 window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
+  event.preventDefault();          // suppress the browser's own mini-infobar
   deferred = event;
-  installButton.hidden = false;
+  installButton.hidden = false;    // surface your own affordance
 });
 
 installButton.addEventListener('click', async () => {
-  if (!deferred) return;
-  deferred.prompt();
-  await deferred.userChoice;
+  deferred?.prompt();
+  await deferred?.userChoice;
   deferred = null;
   installButton.hidden = true;
 });
 ```
 
+Load order follows **PRPL**: *push* critical resources (`<link rel="preload">`, inlined critical CSS), *render* the initial route immediately, *pre-cache* remaining routes in the worker's `install`, *lazy-load* the rest via `import()` per route.
+
 ### In the elegant templates
 
-`templates/chota-react-saga` (and its mirrors, e.g. `chota-react-zustand`) is **manifest-ready but not yet a PWA**. It ships `public/manifest.json` with `start_url: "."`, `display: "standalone"`, `theme_color: "#000000"`, and favicon/`logo192.png`/`logo512.png` icons, and `index.html` links the manifest, an `apple-touch-icon`, and a `theme-color`. There is **no service worker** anywhere in the template and nothing calls `navigator.serviceWorker.register` — so the app is not installable and has no offline capability. To finish the job:
-
-1. Add a `public/sw.js` (or adopt `vite-plugin-pwa` for precache-manifest generation) and register it from `src/index.jsx`.
-2. Replace the stock Create-React-App manifest values — `short_name: "React App"` and `name: "Create React App Sample"` are placeholders that would ship as the installed app's name.
-3. Mark the 192px icon `"purpose": "any maskable"` so Android does not letterbox it.
-
-Note `vite.config.js` sets `base: './'`; a service worker's `scope` is tied to its own served path, so verify registration when the build is hosted from a subdirectory.
+`templates/chota-react-saga` (and its mirrors, e.g. `chota-react-zustand`) is **manifest-ready but not yet a PWA**. It ships `public/manifest.json` with `start_url: "."`, `display: "standalone"`, `theme_color: "#000000"`, and favicon/`logo192.png`/`logo512.png` icons, and `index.html` links the manifest, an `apple-touch-icon`, and a `theme-color`. There is **no service worker** anywhere in the template and nothing calls `navigator.serviceWorker.register` — so the app is not installable and has no offline capability. To finish the job: add a `public/sw.js` (or adopt `vite-plugin-pwa` for precache-manifest generation) and register it from `src/index.jsx`; replace the stock Create-React-App manifest values, since `short_name: "React App"` and `name: "Create React App Sample"` are placeholders that would ship as the installed app's name; and mark the 192px icon `"purpose": "any maskable"` so Android does not letterbox it. Note `vite.config.js` sets `base: './'` — a worker's `scope` is tied to its own served path, so verify registration when the build is hosted from a subdirectory.
 
 ## Related Terminologies
 

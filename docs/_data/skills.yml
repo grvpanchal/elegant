@@ -9,13 +9,19 @@
 - server-forms
 - server-images
 - server-index-file
+- server-links
+- server-localization
 - server-mfe
 - server-page
 - server-protocol
 - server-proxy
+- server-pwa
 - server-router
+- server-seo
+- server-session
 - server-ssg
 - server-ssr
+- server-widget
 - state-actions
 - state-ajax
 - state-crud
@@ -36,6 +42,7 @@
 - ui-molecule
 - ui-organism
 - ui-props
+- ui-rwd
 - ui-skeleton
 - ui-story
 - ui-template
