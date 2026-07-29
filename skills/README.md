@@ -25,7 +25,7 @@ on the file being edited (e.g. `ui-atom` activates under `**/ui/atoms/**`).
 
 ## Skills
 
-The 35 skills are grouped into three layers that mirror the template source
+The 36 skills are grouped into three layers that mirror the template source
 layout (`src/ui`, `src/state`, and the server/routing concerns).
 
 ### UI — `src/ui/{atoms,molecules,organisms,templates,skeletons}` and primitives
@@ -72,6 +72,7 @@ layout (`src/ui`, `src/state`, and the server/routing concerns).
 | [`server-ssr`](./server-ssr/SKILL.md) | Server-Side Rendering — HTML generation, hydration, prefetching, mismatch debugging. |
 | [`server-ssg`](./server-ssg/SKILL.md) | Static Site Generation — build-time pre-rendering, getStaticPaths, ISR revalidation. |
 | [`server-app-shell`](./server-app-shell/SKILL.md) | App Shell architecture — cached skeleton served via Service Worker, offline fallbacks. |
+| [`server-images`](./server-images/SKILL.md) | Image optimisation — responsive `srcset`/`sizes`, `<picture>` formats, lazy loading, LCP/CLS. |
 | [`server-api`](./server-api/SKILL.md) | API service-layer — client with interceptors, domain services, token refresh, cancellation. |
 | [`server-authentication`](./server-authentication/SKILL.md) | Authentication — JWT access+refresh flows, secure storage, route guards. |
 | [`server-proxy`](./server-proxy/SKILL.md) | Proxy configuration — dev-server proxies for CORS and production reverse proxies. |
