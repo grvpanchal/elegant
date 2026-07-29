@@ -18,7 +18,7 @@ Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 npx skills add grvpanchal/elegant --skill server-forms
 ```
 
-Or copy the [`server-forms/`](.) folder into `~/.claude/skills/`.
+Or copy the [`server-forms/`](.) folder into your agent's skills directory.
 
 ## Auto-activates on
 

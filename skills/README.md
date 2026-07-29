@@ -9,9 +9,9 @@ folder with a `SKILL.md` written to the [Agent Skills open standard](https://age
 prose design guidance an AI agent (or a human) can load when authoring or
 reviewing code in that area.
 
-Skills can be published to [skills.sh](https://skills.sh) or dropped into
-`~/.claude/skills/` to give an agent durable, on-demand knowledge of the
-elegant front-end architecture.
+Install any skill with one command — `npx skills add grvpanchal/elegant --skill <name>` —
+to give an agent durable, on-demand knowledge of the elegant front-end
+architecture.
 
 ## How a skill is structured
 
@@ -90,9 +90,10 @@ layout (`src/ui`, `src/state`, and the server/routing concerns).
 
 ## Using these skills
 
-- **With Claude Code / agents:** copy a skill folder into `~/.claude/skills/`,
-  or reference it from a project. The agent loads the `SKILL.md` when its
-  `paths` match the file you're editing.
+- **Install:** `npx skills add grvpanchal/elegant --skill <name>` — works with any
+  Agent-Skills-compatible runtime. Or copy a skill folder into your agent's
+  skills directory. The agent loads the `SKILL.md` when its `paths` match the
+  file you're editing.
 - **Publish:** push to [skills.sh](https://skills.sh) following the
   [Agent Skills standard](https://agentskills.io).
 - **Read as docs:** every `SKILL.md` is plain Markdown — open it directly to

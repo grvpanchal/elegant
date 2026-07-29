@@ -18,7 +18,7 @@ Add this skill to your agent with the [skills.sh](https://skills.sh) CLI:
 npx skills add grvpanchal/elegant --skill ui-element
 ```
 
-Or copy the [`ui-element/`](.) folder into `~/.claude/skills/`.
+Or copy the [`ui-element/`](.) folder into your agent's skills directory.
 
 ## Auto-activates on
 

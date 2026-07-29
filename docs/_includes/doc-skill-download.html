@@ -2,6 +2,7 @@
 {% assign skill_slug = domain | append: "-" | append: page.slug %}
 {% if domain == "ui" or domain == "server" or domain == "state" %}
 {% if site.data.skills contains skill_slug %}
+{% assign install_command = "npx skills add " | append: site.skills_repo | append: " --skill " | append: skill_slug %}
 <div class="skill-alert">
   <div class="skill-alert__content">
     <svg class="skill-alert__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -9,18 +10,33 @@
     </svg>
     <div class="skill-alert__text">
       <strong>Agent Skill Available</strong>
-      <span>Download this Agent Skill (SKILL.md) to drop into <code>~/.claude/skills/</code> or any Agent-Skills-compatible runtime for AI-assisted {{ page.title }} work.</span>
+      <span>Install this Agent Skill for AI-assisted {{ page.title }} work, or download the <code>SKILL.md</code> for any Agent-Skills-compatible runtime.</span>
     </div>
   </div>
-  <a href="{{ '/skills/' | append: skill_slug | append: '/SKILL.md' | relative_url }}"
-     class="skill-alert__download"
-     download="{{ skill_slug }}-SKILL.md"
-     title="Download {{ page.title }} Skill">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-    </svg>
-    <span>Download</span>
-  </a>
+  <div class="skill-alert__actions">
+    <div class="skill-alert__command">
+      <code>{{ install_command }}</code>
+      <button type="button"
+              class="skill-alert__copy"
+              data-copy="{{ install_command }}"
+              aria-label="Copy install command"
+              title="Copy install command">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+        <span class="skill-alert__copy-label">Copy</span>
+      </button>
+    </div>
+    <a href="{{ '/skills/' | append: skill_slug | append: '/SKILL.md' | relative_url }}"
+       class="skill-alert__download"
+       download="{{ skill_slug }}-SKILL.md"
+       title="Download {{ page.title }} Skill">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+      </svg>
+      <span>Download</span>
+    </a>
+  </div>
 </div>
 {% endif %}
 {% endif %}
