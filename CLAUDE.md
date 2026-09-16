@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 43 capabilities benchmarked against
+site under `docs/` must be able to do — 53 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -85,10 +85,15 @@ reviewable) and `check_harness.py` (the measurement, a `@check("<id>")`
 function). A spec entry with no implementation fails loudly. Then run
 `gen_readme.py` — `harness/README.md` is generated, never hand-edited.
 
+The capability count stated above is itself checked: `harness.docs` compares
+any "N capabilities" claim in this file, `README.md` and `harness/README.md`
+against the spec, because that sentence went stale the first time the count
+changed and nothing noticed.
+
 ### Functional capabilities (`harness/functional/`)
 
-Seven of the capabilities are not file checks — they drive a real Chromium
-against the built site and assert behaviour: a coding question's **starter must
+The capabilities in the `functional` group are not file checks — they drive a
+real Chromium against the built site and assert behaviour: a coding question's **starter must
 fail** its own tests while the reference solution **passes in the browser**,
 the quiz grades, the filters narrow and compose, progress survives a reload, a
 plan renders its steps, no page throws, and the workspace is operable from the

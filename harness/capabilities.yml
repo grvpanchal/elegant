@@ -561,4 +561,4 @@ checks:
     weight: 1
     required: true
     threshold: 1.0
-    why: "harness/README.md must document how to run the guardrail and what each capability means."
+    why: "harness/README.md must document every capability, and any prose file stating a capability count must state the real one."

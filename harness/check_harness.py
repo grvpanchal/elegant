@@ -1279,18 +1279,47 @@ def _h_skill_cov(site: Site, threshold):
         f"{len(covered)}/{len(known)} skills exercised ({got:.0%}, need {threshold:.0%})"
 
 
+# "43 capabilities" in a prose file is a fact with an expiry date. This one
+# expired the moment the functional group was added, and nothing noticed —
+# which is the same drift `bank.registry` and `content.house_rules` exist to
+# catch, one level up in the documentation.
+COUNT_CLAIM_RE = re.compile(r"(\d+)\s+capabilit(?:y|ies)\b", re.I)
+
+# Prose that describes the guardrail and may therefore state its size.
+COUNT_CLAIM_FILES = ("harness/README.md", "CLAUDE.md", "README.md")
+
+
 @check("harness.docs")
 def _h_docs(site: Site, threshold):
     path = HARNESS_DIR / "README.md"
     if not path.is_file():
         return 0.0, ["harness/README.md is missing"], "missing"
     src = path.read_text(encoding="utf-8")
-    missing = [c["id"] for c in site.spec["checks"] if c["id"] not in src]
-    if missing:
-        return ratio(len(site.spec["checks"]) - len(missing), len(site.spec["checks"])), \
-            [f"harness/README.md does not document check `{cid}`" for cid in missing[:MAX_DEFICITS]], \
-            f"{len(missing)} undocumented checks"
-    return 1.0, [], "documented"
+    total = len(site.spec["checks"])
+    deficits = [f"harness/README.md does not document check `{cid}`"
+                for cid in (c["id"] for c in site.spec["checks"]) if cid not in src]
+    documented = total - len(deficits)
+
+    # Every prose file that states a capability count must state the real one.
+    claims, wrong = 0, 0
+    for rel in COUNT_CLAIM_FILES:
+        doc = ROOT / rel
+        if not doc.is_file():
+            continue
+        for m in COUNT_CLAIM_RE.finditer(doc.read_text(encoding="utf-8")):
+            claims += 1
+            if int(m.group(1)) != total:
+                wrong += 1
+                line = doc.read_text(encoding="utf-8")[:m.start()].count("\n") + 1
+                deficits.append(
+                    f"{rel}:{line}: says \"{m.group(0)}\" but capabilities.yml declares {total}. "
+                    "Update the sentence, or drop the number so it cannot rot.")
+
+    if deficits:
+        score = ratio(documented + (claims - wrong), total + claims)
+        return score, deficits[:MAX_DEFICITS], \
+            f"{len(deficits)} documentation defect(s) across {total} capabilities"
+    return 1.0, [], f"documented, and {claims} stated count(s) agree"
 
 
 # ------------------------------------------------------------------- runner
