@@ -1,0 +1,426 @@
+// Practice bank, question pages, in-browser workspace, plans and progress.
+// Shares the palette in _sass/variables.scss so the training surfaces look
+// like the rest of the site rather than a bolted-on app.
+
+$practice-surface: #f8fafc;
+$practice-pass: #1a7f5a;
+$practice-fail: #b4341f;
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.breadcrumb {
+  font-size: 0.85rem;
+  color: $blockquote-text-color;
+  margin-bottom: 0.5rem;
+
+  a { color: inherit; }
+}
+
+// ---------------------------------------------------------------- filters
+.practice-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: $blockquote-text-color;
+
+    input,
+    select {
+      min-width: 10rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.9rem;
+      color: $body-text-color;
+      background: #fff;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+    }
+  }
+
+  &__clear {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.85rem;
+    color: $body-link-color;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__count {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+}
+
+// ------------------------------------------------------------ question list
+.question-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-top: 1px solid $border-color;
+}
+
+.question-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.7rem 0.25rem;
+  border-bottom: 1px solid $border-color;
+
+  &.is-done .question-row__link { color: $blockquote-text-color; }
+
+  &__link {
+    flex: 1 1 18rem;
+    font-weight: 600;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+}
+
+.tag {
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $code-text-color;
+  background: $code-bg-color;
+  border-radius: 10px;
+
+  &--easy   { color: #14532d; background: #dcfce7; }
+  &--medium { color: #7c4a03; background: #fef3c7; }
+  &--hard   { color: #7f1d1d; background: #fee2e2; }
+  &--harness { color: #3b1d7f; background: #e9e0ff; }
+}
+
+.question-empty {
+  padding: 1.5rem 0;
+  color: $blockquote-text-color;
+}
+
+// -------------------------------------------------------------- question page
+.question-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  list-style: none;
+
+  &__item {
+    padding: 0.15rem 0.6rem;
+    font-size: 0.78rem;
+    color: $code-text-color;
+    background: $code-bg-color;
+    border-radius: 10px;
+
+    &--easy   { color: #14532d; background: #dcfce7; }
+    &--medium { color: #7c4a03; background: #fef3c7; }
+    &--hard   { color: #7f1d1d; background: #fee2e2; }
+    &--done   { background: transparent; }
+  }
+}
+
+.question-footer-nav {
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  border-top: 1px solid $border-color;
+}
+
+// ------------------------------------------------------------- playground
+.playground {
+  padding: 1rem;
+  margin: 2rem 0;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__header { margin-bottom: 0.75rem; }
+
+  &__title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  &__hint {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    color: $blockquote-text-color;
+  }
+
+  &__editor {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    tab-size: 2;
+    color: $code-text-color;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.75rem 0;
+  }
+
+  &__run,
+  &__reset {
+    padding: 0.45rem 1rem;
+    font-size: 0.9rem;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__run {
+    color: #fff;
+    background: $header-bg-color;
+    border-color: $header-bg-color;
+
+    &[disabled] { opacity: 0.5; cursor: progress; }
+  }
+
+  &__reset {
+    color: $body-text-color;
+    background: #fff;
+  }
+
+  &__summary {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+
+    &.is-pass { color: $practice-pass; }
+    &.is-fail { color: $practice-fail; }
+  }
+
+  &__results {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+
+    &.is-pass .playground__mark { color: $practice-pass; }
+    &.is-fail .playground__mark { color: $practice-fail; }
+  }
+
+  &__message {
+    flex: 1 1 100%;
+    padding-left: 1.5rem;
+    font-family: ui-monospace, monospace;
+    font-size: 0.8rem;
+    color: $practice-fail;
+  }
+
+  &__error {
+    padding: 0.75rem;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    color: $practice-fail;
+    background: #fff5f5;
+    border-radius: 4px;
+  }
+}
+
+// --------------------------------------------------------------- progress
+.progress-tracker {
+  margin: 1rem 0 1.5rem;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+
+  &__rail {
+    height: 8px;
+    margin-top: 0.35rem;
+    overflow: hidden;
+    background: $border-color;
+    border-radius: 4px;
+  }
+
+  &__bar {
+    height: 100%;
+    background: $header-bg-color;
+    transition: width 0.2s ease-out;
+  }
+
+  &.is-complete &__bar { background: $practice-pass; }
+
+  &__reset {
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    color: $blockquote-text-color;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+// ------------------------------------------------------------------ plans
+.plan-list,
+.playbook-list {
+  padding: 0;
+  margin: 1.5rem 0;
+  list-style: none;
+}
+
+.plan-card,
+.playbook-card {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__title {
+    margin: 0 0 0.25rem;
+    font-size: 1.15rem;
+  }
+
+  &__summary,
+  &__meta {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: $blockquote-text-color;
+  }
+}
+
+.plan-steps {
+  padding-left: 1.2rem;
+}
+
+.plan-step {
+  padding: 0.4rem 0;
+
+  &__link { font-weight: 600; }
+
+  &__meta {
+    margin-left: 0.5rem;
+    font-size: 0.78rem;
+    color: $blockquote-text-color;
+  }
+
+  &__note {
+    margin: 0.2rem 0 0;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+
+  &__check { margin-right: 0.4rem; }
+}
+
+// ------------------------------------------------------------ certificate
+.certificate-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: $blockquote-text-color;
+
+    input,
+    select {
+      min-width: 12rem;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+    }
+  }
+
+  button {
+    padding: 0.45rem 1rem;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+.certificate {
+  padding: 2.5rem;
+  margin: 2rem 0;
+  text-align: center;
+  border: 3px double $header-bg-color;
+  border-radius: 6px;
+
+  &__kicker {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $blockquote-text-color;
+  }
+
+  &__name {
+    margin: 0.5rem 0;
+    font-size: 2rem;
+  }
+
+  &__score,
+  &__date {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: $blockquote-text-color;
+  }
+}
+
+@media print {
+  .page-header-fixed,
+  .site-footer,
+  .certificate-form,
+  .certificate__note { display: none; }
+}

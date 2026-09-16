@@ -56,6 +56,85 @@ To run a single test file, use the template's native test runner directly:
 - Test-framework compat: Vitest is the runner in React/Vue templates. Tests use `vi.*` (not `jest.*`); mocks use `vi.mock(path, async (importOriginal) => ...)` and import the mocked members directly rather than using the removed `vi.requireActual` / `vi.requireMock`. `clearMocks` and `restoreMocks` are on in `vite.config.js` / `vitest.config.js` for test isolation.
 - Don't introduce a bundler, TypeScript, or lint config at the repo root — the root package is intentionally a thin CLI with only `colors`, `fs-extra`, `readline-sync` as runtime deps.
 
+## The capability guardrail (`harness/`)
+
+`harness/capabilities.yml` is the executable definition of what the training
+site under `docs/` must be able to do — 43 capabilities benchmarked against
+greatfrontend.com (question formats, an in-browser workspace with tests, worked
+solutions, study plans, playbooks, progress tracking) plus one that is ours:
+every unit of practice is also an Agent Skill, and `harness`-format exercises
+ship their own eval. `harness/check_harness.py` measures every one of them.
+
+```bash
+python3 harness/check_harness.py                  # full report, exit 1 on failure
+python3 harness/check_harness.py --next           # the single highest-priority deficit
+python3 harness/check_harness.py --failures-only --scope incremental --changed <paths>
+python3 harness/gen_readme.py                     # regenerate harness/README.md from the spec
+```
+
+**Run it before opening a PR that touches `docs/`.** Two flags decide what you
+are judged by: `--scope incremental` drops whole-site volume targets ("write 12
+quiz questions") that no single change can close, and `--changed <paths>`
+restricts per-page capabilities to the files you actually wrote. Capabilities
+declare `requires:` (a plan is pointless before the bank exists, so `--next`
+never hands out blocked work) and `owns:` (a capability whose territory your
+change never touched is skipped, not failed).
+
+Adding a capability means editing **both** `capabilities.yml` (the intent,
+reviewable) and `check_harness.py` (the measurement, a `@check("<id>")`
+function). A spec entry with no implementation fails loudly. Then run
+`gen_readme.py` — `harness/README.md` is generated, never hand-edited.
+
+### Functional capabilities (`harness/functional/`)
+
+Seven of the capabilities are not file checks — they drive a real Chromium
+against the built site and assert behaviour: a coding question's **starter must
+fail** its own tests while the reference solution **passes in the browser**,
+the quiz grades, the filters narrow and compose, progress survives a reload, a
+plan renders its steps, no page throws, and the workspace is operable from the
+keyboard.
+
+```bash
+node harness/functional/run.mjs --site <built-dir>      # the browser suite alone
+python3 harness/check_harness.py --group functional     # via the guardrail (builds first)
+```
+
+They need `node`, `playwright` and the Jekyll gems; each is skipped with an
+explicit reason when missing, never silently passed. The site is built once per
+process and shared with `health.build`, so a full run costs about ten seconds.
+
+This group is the reason no human review is required to call the site healthy:
+static checks prove form, these prove function. **Never edit a scenario to make
+it pass** — it is the standard, not the test of the test.
+
+`--next` sorts regressions (`scope: incremental`, "what exists is wrong") ahead
+of growth (`scope: cumulative`, "not enough yet"), so a broken filter is handed
+out before a missing question.
+
+## Training-site sections under `docs/`
+
+Beyond the concept docs, `docs/` carries the practice surfaces:
+
+- `docs/practice/<slug>.md` — one question per file, `layout: question`. Front
+  matter is a contract (`format`, `difficulty`, `layer`, `topics`, `skill`,
+  `minutes`); `harness/README.md` has the full schema. `docs/_data/questions.yml`
+  is **generated** by `scripts/sync-questions-registry.py` — never hand-edit it.
+- `docs/practice/workspace/<slug>/{starter,solution,tests}.js` — required for
+  `format: coding`. `tests.js` default-exports `async (subject) => [{name, pass,
+  message?}]` and runs unchanged in the browser playground and under Node in the
+  guardrail, so "solved" means the same thing in both. Keep it dependency-free.
+- `docs/plans/` + `docs/_data/plans.yml` — study plans, `layout: plan`. The
+  budget is checked twice: against the questions it contains, and against
+  `plan_horizons` in the spec, so a plan named `three-months` cannot be an
+  afternoon.
+- `docs/playbooks/` — long reads, `layout: doc`, 800+ words of body prose.
+- `docs/assets/js/{playground,progress,practice-index,certificate}.js` — the
+  workspace runner, localStorage progress, the bank's client-side filtering,
+  and the printable certificate. No backend: the site is static.
+
+The benzene agent that grows these sections against the guardrail lives in
+`grvpanchal/benezene-agent` (`manifests/frontend-harness-openrouter.yaml`).
+
 ## Doc reviewer subagent
 
 A custom subagent at `.claude/agents/doc-reviewer.md` reviews terminology docs (`docs/{ui,server,state}/*.md`) for readability + learner engagement, with durable memory in `.github/doc-review/state.json`. **Before opening a PR that touches any doc under those paths**: list the modified docs, invoke the `doc-reviewer` subagent on each (one at a time so memory updates are resumable), commit any fixes it applies, and surface in the PR description any issues it reports. The agent is allowed to fix small issues in place (paragraph rewrites, stale headings, missing transitions) but stops and reports for anything structural or that would touch >40 lines. See `.github/doc-review/README.md` for the schema and workflow.

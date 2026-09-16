@@ -54,7 +54,7 @@ title: Frontend Architecture Principles
     </p>
   </div>
   <div class="text-item">
-    <img style="width: 100%;" src="{{ '/assets/img/ui-server-state.png' | relative_url }}" />
+    <img style="width: 100%;" alt="The three layers of the Universal Frontend Architecture: UI, web server and state, drawn as a stack" src="{{ '/assets/img/ui-server-state.png' | relative_url }}" />
   </div>
 </div>
 
@@ -62,17 +62,17 @@ title: Frontend Architecture Principles
 
 <div class="card-container">
   <div class="card">
-    <img style="width: 100%;" src="{{ '/assets/img/ui-ux-designer.png' | relative_url }}" />
+    <img style="width: 100%;" alt="A designer splitting work between UX research and wireframes on one side and visual design on the other" src="{{ '/assets/img/ui-ux-designer.png' | relative_url }}" />
     <h3>Designer's perspective</h3>
     <p>UX handles analytical functions like research and wireframes, while UI focuses on visual design and aesthetics.</p>
   </div>
   <div class="card">
-    <img style="width: 100%;" src="{{ '/assets/img/ui-ux-developer.png' | relative_url }}">
+    <img style="width: 100%;" alt="A developer's split of the same work: HTML and JavaScript for behaviour, CSS for presentation" src="{{ '/assets/img/ui-ux-developer.png' | relative_url }}">
     <h3>Developer's Perspective</h3>
     <p>UX uses HTML and JavaScript for functionality, while UI relies on CSS for visual presentation.</p>
   </div>
   <div class="card">
-    <img style="width: 100%;" src="{{ '/assets/img/ui-ux-enterprise.png' | relative_url }}">
+    <img style="width: 100%;" alt="An enterprise view combining the UI layer, web server operations and state management into one architecture" src="{{ '/assets/img/ui-ux-enterprise.png' | relative_url }}">
     <h3>Enterprise Perspective</h3>
     <p>Frontend  architecture combines UI layer, web server operations, and state management for comprehensive application development.</p>
   </div>
@@ -80,4 +80,4 @@ title: Frontend Architecture Principles
 
 # Development Process with Atomic Design
 
-<img style="display: block; margin: 0 auto;" src="{{ '/assets/img/ai-sdlc-flow.png' | relative_url }}">
+<img style="display: block; margin: 0 auto;" alt="The AI-assisted software development lifecycle used by Elegant, from prompt through generated code to review" src="{{ '/assets/img/ai-sdlc-flow.png' | relative_url }}">

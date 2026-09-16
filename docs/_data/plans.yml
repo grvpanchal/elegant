@@ -1,0 +1,117 @@
+# Study plans. `items[].ref` is a question slug from questions.yml or a
+# <layer>/<page> concept doc (counted as 15 minutes).
+# `budget_minutes` is checked twice by harness/check_harness.py: against the sum
+# of the steps (plans.duration_fit) and against what the plan's NAME claims
+# (plans.horizon_fit, via plan_horizons in harness/capabilities.yml).
+- slug: one-week
+  title: One week
+  summary: Seven focused sessions across UI, State and Server — enough to hold your own in a frontend
+    interview loop, assuming you already write JavaScript for a living.
+  budget_minutes: 345
+  items:
+  - ref: ui/atom
+    note: Start where every component starts.
+  - ref: atom-boundaries
+    note: Four minutes that decide where half your components belong.
+  - ref: ui/props
+  - ref: ui-props-basics
+  - ref: props-defaults
+  - ref: presentational-vs-container
+    note: The oldest split in the vocabulary, still the most useful.
+  - ref: ui/events
+  - ref: ui-events-basics
+  - ref: loading-button-atom
+    note: Your first component from scratch, in two frameworks.
+  - ref: ui/skeleton
+  - ref: skeleton-list
+    note: The layout-shift bug every list has until someone fixes it.
+  - ref: state/store
+  - ref: state/actions
+  - ref: action-creators
+  - ref: state/reducer
+  - ref: counter-reducer
+    note: Immutability, with the tests that prove it.
+  - ref: state/selectors
+  - ref: selector-memoization
+  - ref: memoized-selector
+    note: Build the memoizer, then watch the recomputation count.
+  - ref: server/ssr
+  - ref: render-strategy-choice
+    note: Four briefs, four rendering decisions.
+  - ref: server/protocol
+  - ref: cache-headers-basics
+    note: The design round in twenty minutes.
+- slug: ui-foundations
+  title: UI foundations
+  summary: 'The UI layer end to end: atoms through organisms, props, events, accessibility and the loading
+    states nobody designs until they ship.'
+  budget_minutes: 330
+  items:
+  - ref: ui/element
+  - ref: ui/component
+  - ref: ui/props
+  - ref: ui/events
+  - ref: ui/atomic-design
+  - ref: ui/atom
+  - ref: ui/molecule
+  - ref: ui/organism
+  - ref: ui/skeleton
+  - ref: ui/accessibility
+  - ref: atom-boundaries
+  - ref: ui-props-basics
+  - ref: props-defaults
+  - ref: presentational-vs-container
+  - ref: ui-events-basics
+  - ref: loading-button-atom
+  - ref: skeleton-list
+  - ref: accessible-combobox
+    note: The hard one. Do it without a mouse.
+  - ref: harness-atom-guardrail
+    note: Turn everything above into a script that enforces it.
+- slug: state-essentials
+  title: State essentials
+  summary: Where a value belongs, why server state is not client state, and the mechanisms underneath
+    every Redux-family store.
+  budget_minutes: 315
+  items:
+  - ref: state/state
+  - ref: state/store
+  - ref: state/actions
+  - ref: state/reducer
+  - ref: state/selectors
+  - ref: state/middleware
+  - ref: state/ajax
+  - ref: state/crud
+  - ref: action-creators
+  - ref: counter-reducer
+  - ref: middleware-order
+  - ref: selector-memoization
+  - ref: memoized-selector
+  - ref: normalize-entities
+    note: The one that makes every later screen cheaper.
+  - ref: offline-first-list
+    note: 'Design round: writes without a network.'
+  - ref: harness-state-shape
+    note: Encode 'well shaped' as a script and watch what an agent does to it.
+- slug: interview-sprint
+  title: Interview sprint
+  summary: 'The shortest path to being dangerous in a loop: one question per round type, chosen because
+    each one is where candidates most often come apart.'
+  budget_minutes: 210
+  items:
+  - ref: atom-boundaries
+    note: The component-boundary question, asked four ways.
+  - ref: memoized-selector
+    note: A JavaScript round that is really about when caching pays.
+  - ref: loading-button-atom
+    note: A UI round in miniature.
+  - ref: accessible-combobox
+    note: A UI round with the keyboard requirement people skip.
+  - ref: render-strategy-choice
+    note: The first decision in any design answer.
+  - ref: design-embeddable-widget
+    note: A full design round with real constraints.
+  - ref: session-and-tokens
+    note: Where the plausible answer is the insecure one.
+  - ref: normalize-entities
+    note: The data-shape question behind half of 'why is this slow'.

@@ -1,0 +1,28 @@
+{%- comment -%}
+In-browser practice workspace for a `format: coding` question.
+
+Loads /practice/workspace/<page.slug>/starter.js into the editor and runs the
+question's own tests.js against whatever the learner typed. The same tests.js
+runs under Node in harness/check_harness.py (`workspace.tests_pass`), so the
+browser and CI agree on what "solved" means.
+
+Requires docs/practice/workspace/<slug>/{starter,solution,tests}.js to exist.
+{%- endcomment -%}
+<section class="playground" data-playground data-slug="{{ include.slug | default: page.slug }}">
+  <header class="playground__header">
+    <h3 class="playground__title">Workspace</h3>
+    <p class="playground__hint">Edit the module below and run the question's tests. Your draft is kept in this browser.</p>
+  </header>
+  <label class="playground__label" for="playground-{{ include.slug | default: page.slug }}">Your solution</label>
+  <textarea id="playground-{{ include.slug | default: page.slug }}"
+            class="playground__editor"
+            data-playground-editor
+            spellcheck="false"
+            rows="16"
+            disabled>Loading starter code…</textarea>
+  <div class="playground__actions">
+    <button type="button" class="playground__run" data-playground-run disabled>Run tests</button>
+    <button type="button" class="playground__reset" data-playground-reset>Reset</button>
+  </div>
+  <div class="playground__output" data-playground-output role="status" aria-live="polite"></div>
+</section>
