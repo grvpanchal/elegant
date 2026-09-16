@@ -43,7 +43,7 @@ slug: ui-skills
    - What makes a component and why they matter
    - Presentational vs container patterns
    - Component lifecycle fundamentals
-   - **Practice:** [Component questions](../practice/) — filter the bank by layer *UI*, topic *component*
+   - **Practice:** [Presentational vs container components](../practice/presentational-vs-container.html)
 
 2. **[Element](element.html)** (15 min)
    - DOM elements vs React elements
@@ -54,7 +54,7 @@ slug: ui-skills
    - Component interfaces and contracts
    - Prop types and validation
    - Default props and spreading
-   - **Practice:** [Props questions](../practice/) — filter the bank by topic *props*
+   - **Practice:** [Setting default values for props](../practice/props-defaults.html)
 
 **Checkpoint:** You should be able to create basic components that accept props and render UI elements.
 
@@ -79,7 +79,7 @@ slug: ui-skills
    - Composing atoms into functional groups
    - When to create molecules vs organisms
    - State management in molecules
-   - **Practice:** [Molecule questions](../practice/) — filter the bank by topic *molecule*
+   - **Practice:** [Build an accessible form field](../practice/form-field-molecule.html)
 
 7. **[Organism](organism.html)** (30 min)
    - Complex, self-contained UI sections
@@ -102,13 +102,13 @@ slug: ui-skills
    - Design system implementation
    - CSS-in-JS vs CSS Modules
    - Dark mode and theme switching
-   - **Practice:** [Theme questions](../practice/) — filter the bank by topic *theme*
+   - **Practice:** [Build a theme toggle with no flash](../practice/theme-toggle.html)
 
 10. **[RWD](rwd.html)** (30 min)
     - Mobile-first design principles
     - Breakpoint strategies
     - Responsive components
-    - **Practice:** [RWD questions](../practice/) — filter the bank by topic *rwd*
+    - **Practice:** [Ship a responsive image the browser can choose](../practice/responsive-image-set.html)
 
 11. **[Skeleton](skeleton.html)** (20 min)
     - Loading state patterns
@@ -120,7 +120,7 @@ slug: ui-skills
     - ARIA attributes
     - Keyboard navigation
     - Screen reader testing
-    - **Practice:** [Accessibility questions](../practice/) — filter the bank by topic *accessibility*
+    - **Practice:** [Build an accessible combobox](../practice/accessible-combobox.html)
 
 **Checkpoint:** Your components are responsive, themed, and accessible to all users.
 
