@@ -528,6 +528,90 @@ checks:
     threshold: 1.0
     why: "The workspace must be reachable and operable from the keyboard. A site that teaches accessibility cannot need a mouse."
 
+  # ------------------------------------------------- accounts (no server here)
+  # greatfrontend.com has real accounts. This site is static Jekyll on GitHub
+  # Pages: no session to hold, nowhere to hold it. So an account here is a named
+  # profile on this device, with progress namespaced to it and a portable
+  # export — a smaller promise, kept exactly. A real identity provider goes
+  # behind `registerProvider`, which the seam capability proves actually works.
+  - id: account.honest_copy
+    scope: incremental
+    owns: ["docs/account/*", "docs/assets/js/account.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The account page must keep saying a profile is not authentication, and account.js must keep the registerProvider seam."
+  - id: account.profiles
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/progress.js", "docs/account/*", "docs/_includes/account-widget.html"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Two profiles must keep separate progress, and the signed-in one must survive a reload. Sharing a laptop must not mean sharing a record."
+  - id: account.portable
+    scope: incremental
+    requires: [health.liquid_syntax, account.profiles]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/account-page.js", "docs/account/*"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "A profile and its progress must survive an export / wipe / import round trip — with no server to sync to, that IS the account following you."
+  - id: account.guest_progress
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/progress.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Accounts arrived after progress did. Signing in and out must not strand work done before a profile existed."
+  - id: account.provider_seam
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A third-party provider must be swappable through registerProvider, with progress following its identity. An abstraction nobody has exercised is not a seam."
+
+  # ------------------------------------------------------------------ frontier
+  # Declared, measured, and NOT required: parity targets the site does not have
+  # yet. They drag the composite so the gap stays visible, never block a
+  # contribution, and `--next` hands them out after everything required — which
+  # is how the cluster grows into them one at a time instead of all at once.
+  - id: workspace.framework_runtime
+    scope: cumulative
+    requires: [functional.playground]
+    owns: ["docs/assets/js/playground.js", "docs/practice/*"]
+    group: frontier
+    weight: 3
+    required: false
+    threshold: 1.0
+    why: "A coding question should be able to declare a framework runtime and run component tests in the browser. Today the runner executes plain ES modules only, so every ui-coding exercise is read-only."
+  - id: workspace.editor_affordances
+    scope: cumulative
+    requires: [functional.playground]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 1.0
+    why: "The workspace should have syntax highlighting, a resizable editor and a console pane. Today it is a textarea, and a learner debugging with console.log has to open devtools."
+  - id: content.company_guides
+    scope: cumulative
+    requires: [bank.formats]
+    owns: ["docs/guides/*"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 4
+    why: "Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it."
+
   # ------------------------------------------- the AI-harness axis (ours, not GFE's)
   - id: harness.skill_map
     owns: ["docs/practice/*"]

@@ -424,3 +424,167 @@ $practice-fail: #b4341f;
   .certificate-form,
   .certificate__note { display: none; }
 }
+
+// ------------------------------------------------------------------ account
+// A profile lives in this browser. The styling deliberately keeps it small and
+// secondary — it is not a sign-in wall, and it should not look like one.
+.account-widget {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  font-size: 0.85rem;
+
+  &__in,
+  &__out {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: inherit;
+  }
+
+  &__signout,
+  &__signin-link {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    color: inherit;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.85;
+
+    &:hover { opacity: 1; }
+  }
+}
+
+.account-lede {
+  max-width: 60ch;
+  color: $blockquote-text-color;
+}
+
+.account-panel {
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  h2 { margin-top: 0; }
+}
+
+.account-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: $blockquote-text-color;
+
+    input {
+      min-width: 14rem;
+      padding: 0.45rem 0.6rem;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+    }
+  }
+
+  button {
+    padding: 0.5rem 1.1rem;
+    color: #fff;
+    background: $header-bg-color;
+    border: 1px solid $header-bg-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__error {
+    flex: 1 1 100%;
+    margin: 0;
+    color: $practice-fail;
+  }
+
+  &__hint {
+    flex: 1 1 100%;
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+}
+
+.account-transfer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0 2rem;
+
+  button {
+    padding: 0.45rem 1rem;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__import {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: $blockquote-text-color;
+  }
+
+  &__status {
+    flex: 1 1 100%;
+    margin: 0;
+    font-size: 0.9rem;
+
+    &.is-pass { color: $practice-pass; }
+    &.is-fail { color: $practice-fail; }
+  }
+}
+
+.account-list {
+  padding: 0;
+  margin: 0 0 2rem;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid $border-color;
+
+    &.is-current { font-weight: 600; }
+  }
+
+  &__name { flex: 1 1 12rem; }
+
+  &__use,
+  &__remove {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__remove { color: $practice-fail; }
+
+  &__empty {
+    padding: 0.55rem 0;
+    color: $blockquote-text-color;
+  }
+}

@@ -41,5 +41,6 @@ raw JSON if you would rather keep the record yourself.
 
 <p class="certificate__note" id="cert-note" hidden></p>
 
+<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/certificate.js' | relative_url }}"></script>

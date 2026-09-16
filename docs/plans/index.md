@@ -30,4 +30,5 @@ cannot quietly rot as questions change.
 
 <p>Finished one? <a href="{{ '/plans/certificate.html' | relative_url }}">Print your certificate</a>.</p>
 
+<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>

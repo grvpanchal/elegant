@@ -33,6 +33,8 @@ GROUP_BLURB = {
     "discovery": "Filtering, search and navigation. A capability nobody can find does not exist.",
     "health": "Front matter, links, alt text, heading order and the Jekyll build. The floor everything else stands on.",
     "functional": "A real Chromium against the built site (`harness/functional/run.mjs`). Everything above proves the site is well *formed*; this group proves it *works* — the Run button executes the question's tests, the quiz grades, the filter filters, progress survives a reload. This is the group that removes the human from the healing loop, because a functional capability no longer needs anyone to click it.",
+    "account": "Accounts on a site with no server. greatfrontend.com has real ones; this is static Jekyll on GitHub Pages, so an account here is a named profile on this device, with progress namespaced to it and a portable export \u2014 a smaller promise, kept exactly. It is not authentication, and the page says so. A real identity provider goes behind `registerProvider`, and `account.provider_seam` proves that abstraction actually works rather than merely existing.",
+    "frontier": "Parity targets the site does not have yet. Declared and measured so the gap stays visible, `required: false` so they never block a contribution, and ordered after everything required so the cluster grows into them one at a time instead of all at once. A frontier check is a real measurement \u2014 when someone builds the feature it turns green without being rewritten.",
     "harness": "The axis GreatFrontend does not have: every unit of practice is also an Agent Skill, and every `harness` exercise ships its own eval with a numeric threshold.",
 }
 

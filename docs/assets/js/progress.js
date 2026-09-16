@@ -11,9 +11,20 @@
 
   var KEY = "elegant.progress.v1";
 
+  // Progress belongs to whoever is signed in. With no profile the key is the
+  // original one, so a guest keeps the progress they had before accounts
+  // existed and nothing is stranded.
+  function key() {
+    try {
+      return KEY + (window.ElegantAccount ? window.ElegantAccount.namespace() : "");
+    } catch (err) {
+      return KEY;
+    }
+  }
+
   function load() {
     try {
-      return JSON.parse(window.localStorage.getItem(KEY) || "{}") || {};
+      return JSON.parse(window.localStorage.getItem(key()) || "{}") || {};
     } catch (err) {
       return {};
     }
@@ -21,7 +32,7 @@
 
   function save(state) {
     try {
-      window.localStorage.setItem(KEY, JSON.stringify(state));
+      window.localStorage.setItem(key(), JSON.stringify(state));
     } catch (err) {
       /* storage unavailable: progress degrades to this page view only */
     }
@@ -102,6 +113,9 @@
       });
     }
     document.addEventListener("progress:changed", paint);
+    // Switching profile changes which progress is current, so every surface
+    // has to repaint — otherwise the previous profile's ticks stay on screen.
+    document.addEventListener("account:changed", paint);
     paint();
   }
 

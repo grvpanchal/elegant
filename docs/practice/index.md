@@ -91,5 +91,6 @@ your repository.
 
 <p class="question-empty" data-question-empty hidden>No question matches those filters yet.</p>
 
+<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/practice-index.js' | relative_url }}"></script>

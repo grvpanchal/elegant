@@ -1,0 +1,19 @@
+{%- comment -%}
+Account state for the site nav.
+
+A profile is stored on this device — there is no server to authenticate
+against, and the sign-in copy says so rather than implying a real account.
+Backed by docs/assets/js/account.js.
+{%- endcomment -%}
+<div class="account-widget" data-account-widget data-signed-in="false">
+  <div class="account-widget__in" data-account-signed-in hidden>
+    <a class="account-widget__name" href="{{ '/account/' | relative_url }}">
+      <span class="sr-only">Signed in as</span>
+      <span data-account-name></span>
+    </a>
+    <button type="button" class="account-widget__signout" data-account-signout>Sign out</button>
+  </div>
+  <div class="account-widget__out" data-account-signed-out>
+    <a class="account-widget__signin-link" href="{{ '/account/' | relative_url }}">Sign in</a>
+  </div>
+</div>

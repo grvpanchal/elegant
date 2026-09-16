@@ -253,6 +253,200 @@ const SCENARIOS = {
     return `${paths.length} pages loaded with no uncaught errors and no broken local assets`;
   },
 
+  /** Two people sharing a laptop must not overwrite each other's progress. */
+  async account_profiles(page, origin) {
+    const rows = await bank(page, origin);
+    const [first, second] = [rows[0].slug, rows[1].slug];
+
+    await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantAccount), null, { timeout: 10000 });
+
+    // Sign in as Ada and record one question.
+    await page.locator("[data-account-signin-name]").first().fill("Ada");
+    await page.locator("[data-account-signin-form] button[type=submit]").first().click();
+    ok(await page.locator("[data-account-widget][data-signed-in='true']").count() > 0,
+      "signing in did not flip the widget to its signed-in state");
+    await page.evaluate((s) => window.ElegantProgress.setDone(s, true), first);
+    ok(await page.evaluate((s) => window.ElegantProgress.isDone(s), first),
+      "the signed-in profile did not record a completion");
+
+    // Switch to Grace: a fresh profile must start empty.
+    await page.locator("[data-account-signout]").first().click();
+    await page.locator("[data-account-signin-name]").first().fill("Grace");
+    await page.locator("[data-account-signin-form] button[type=submit]").first().click();
+    ok((await page.evaluate((s) => window.ElegantProgress.isDone(s), first)) === false,
+      "a second profile inherited the first profile's progress — the namespace is not applied");
+    await page.evaluate((s) => window.ElegantProgress.setDone(s, true), second);
+
+    // Back to Ada: her progress is intact and Grace's is not visible.
+    await page.locator("[data-account-signout]").first().click();
+    await page.locator("[data-account-signin-name]").first().fill("Ada");
+    await page.locator("[data-account-signin-form] button[type=submit]").first().click();
+    const restored = await page.evaluate(
+      ([a, b]) => [window.ElegantProgress.isDone(a), window.ElegantProgress.isDone(b)], [first, second]);
+    ok(restored[0] === true, "the first profile's progress was lost when switching back");
+    ok(restored[1] === false, "the second profile's progress leaked into the first");
+
+    // And it survives a reload, which is the whole point of storing it.
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantAccount), null, { timeout: 10000 });
+    ok(await page.evaluate(() => window.ElegantAccount.current()?.name) === "Ada",
+      "the signed-in profile did not survive a reload");
+    return "two profiles keep separate progress, and the active one survives a reload";
+  },
+
+  /** With no server to sync to, an export IS the account following you. */
+  async account_portable(page, origin) {
+    const rows = await bank(page, origin);
+    const slug = rows[2].slug;
+
+    await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantAccount), null, { timeout: 10000 });
+
+    await page.locator("[data-account-signin-name]").first().fill("Traveller");
+    await page.locator("[data-account-signin-form] button[type=submit]").first().click();
+    await page.evaluate((s) => window.ElegantProgress.setDone(s, true), slug);
+
+    const exported = await page.evaluate(() => window.ElegantAccount.export());
+    const payload = JSON.parse(exported);
+    ok(payload.version === 1 && payload.profile && payload.profile.name === "Traveller",
+      `the export does not describe the profile: ${exported.slice(0, 120)}`);
+    ok(payload.progress && Object.keys(payload.progress).length > 0,
+      "the export carried the profile but not its progress");
+
+    // A different device: wipe everything this origin stored, then import.
+    await page.evaluate(() => window.localStorage.clear());
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantAccount), null, { timeout: 10000 });
+    ok(await page.evaluate(() => window.ElegantAccount.current()) === null,
+      "clearing storage left someone signed in");
+
+    await page.evaluate((json) => window.ElegantAccount.import(json), exported);
+    const after = await page.evaluate(
+      (s) => ({ name: window.ElegantAccount.current()?.name, done: window.ElegantProgress.isDone(s) }), slug);
+    ok(after.name === "Traveller", `import did not sign in as the profile, got ${after.name}`);
+    ok(after.done === true, "import restored the profile but not its progress");
+    return "a profile and its progress survive an export / wipe / import round trip";
+  },
+
+  /** Accounts arrived after progress did; nobody's existing work may be stranded. */
+  async account_guest_progress(page, origin) {
+    const rows = await bank(page, origin);
+    const slug = rows[3].slug;
+
+    await page.goto(`${origin}/practice/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantProgress), null, { timeout: 10000 });
+    await page.evaluate((s) => window.ElegantProgress.setDone(s, true), slug);
+
+    const guestKey = await page.evaluate(() => "elegant.progress.v1" + window.ElegantAccount.namespace());
+    ok(guestKey === "elegant.progress.v1",
+      `a guest must use the original un-namespaced key, got ${guestKey}`);
+
+    await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-account-signin-name]").first().fill("Newcomer");
+    await page.locator("[data-account-signin-form] button[type=submit]").first().click();
+    await page.locator("[data-account-signout]").first().click();
+
+    await page.goto(`${origin}/practice/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantProgress), null, { timeout: 10000 });
+    ok(await page.evaluate((s) => window.ElegantProgress.isDone(s), slug),
+      "signing in and out destroyed the progress made before accounts existed");
+    return "guest progress is untouched by signing in and out";
+  },
+
+  /** The seam a hosted deployment swaps for a real identity provider. */
+  async account_provider_seam(page, origin) {
+    await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => Boolean(window.ElegantAccount), null, { timeout: 10000 });
+
+    const result = await page.evaluate(() => {
+      // Stand in for a hosted provider: identity comes from somewhere else
+      // entirely, and no caller has to know.
+      let who = null;
+      window.ElegantAccount.registerProvider("mock-idp", {
+        name: "mock-idp",
+        signIn: (name) => (who = { id: "idp-" + name.toLowerCase(), name }),
+        signOut: () => { who = null; },
+        current: () => who,
+      });
+      window.ElegantAccount.useProvider("mock-idp");
+      const profile = window.ElegantAccount.signIn("Remote");
+      const ns = window.ElegantAccount.namespace();
+      window.ElegantProgress.setDone("seam-check", true);
+      const done = window.ElegantProgress.isDone("seam-check");
+      window.ElegantAccount.signOut();
+      return { provider: window.ElegantAccount.providerName(), id: profile.id, ns,
+               done, afterSignOut: window.ElegantAccount.current() };
+    });
+
+    ok(result.provider === "mock-idp", `useProvider did not switch, got ${result.provider}`);
+    ok(result.id === "idp-remote", `the provider's identity was not used, got ${result.id}`);
+    ok(result.ns === ":idp-remote",
+      `progress did not follow the provider's identity, namespace was "${result.ns}"`);
+    ok(result.done === true, "progress did not record under the swapped provider");
+    ok(result.afterSignOut === null, "signOut did not reach the swapped provider");
+    return "a third-party provider can be swapped in and progress follows its identity";
+  },
+
+  // ---------------------------------------------------------------- frontier
+  // Capabilities greatfrontend.com has and this site does not yet. They are
+  // declared `required: false` so they never block a contribution, and they
+  // fail honestly so `--next` can hand them to the cluster one at a time.
+  // A frontier scenario is a real measurement, not a placeholder: when someone
+  // builds the feature, this turns green without being rewritten.
+
+  /** GreatFrontend runs React and Vue component tests in the browser; we run plain modules. */
+  async workspace_framework_runtime(page, origin) {
+    const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
+    ok(coding.length > 0, "no coding question to check");
+
+    // The contract this capability implies: a question declares a runtime, and
+    // the playground loads that framework and runs DOM-based tests against it.
+    const withRuntime = [];
+    for (const q of coding) {
+      const res = await page.request.get(`${origin}/practice/workspace/${q.slug}/runtime.json`);
+      if (res.ok()) withRuntime.push(q.slug);
+    }
+    ok(withRuntime.length > 0,
+      "no coding question declares a framework runtime. A question should be able to ship " +
+      "practice/workspace/<slug>/runtime.json ({\"framework\":\"react\"}) and have the playground " +
+      "load that framework, transform JSX in-browser and run component tests — today the runner " +
+      "only executes plain ES modules, so every ui-coding exercise is read-only.");
+
+    await page.goto(`${origin}/practice/${withRuntime[0]}.html`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
+      null, { timeout: 15000 });
+    await page.locator("[data-playground-run]").click();
+    await page.waitForSelector(".playground__summary", { timeout: 30000 });
+    ok(await page.locator(".playground__summary.is-pass").count() > 0,
+      `${withRuntime[0]}: a framework-runtime question did not run green in the browser`);
+    return `${withRuntime.length} question(s) run component tests in a framework runtime`;
+  },
+
+  /** Their workspace has highlighting, resizable panes and a console; ours is a textarea. */
+  async workspace_editor_affordances(page, origin) {
+    const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
+    ok(coding.length > 0, "no coding question to check");
+    await page.goto(`${origin}/practice/${coding[0].slug}.html`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
+      null, { timeout: 15000 });
+
+    const missing = await page.evaluate(() => {
+      const gaps = [];
+      if (!document.querySelector("[data-playground-highlight]")) gaps.push("syntax highlighting");
+      if (!document.querySelector("[data-playground-resize]")) gaps.push("a resizable editor");
+      if (!document.querySelector("[data-playground-console]")) gaps.push("a console pane for console.log");
+      return gaps;
+    });
+    ok(missing.length === 0,
+      `the workspace is a plain textarea — missing ${missing.join(", ")}. Reading a 40-line ` +
+      "starter with no highlighting is the difference between practising and squinting, and a " +
+      "learner debugging with console.log currently has to open devtools to see the output.");
+    return "the workspace has highlighting, a resize handle and a console pane";
+  },
+
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
   async keyboard(page, origin) {
     const coding = (await bank(page, origin)).filter((q) => q.format === "coding");

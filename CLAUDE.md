@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 53 capabilities benchmarked against
+site under `docs/` must be able to do — 61 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -115,6 +115,30 @@ it pass** — it is the standard, not the test of the test.
 `--next` sorts regressions (`scope: incremental`, "what exists is wrong") ahead
 of growth (`scope: cumulative`, "not enough yet"), so a broken filter is handed
 out before a missing question.
+
+### Accounts, and the frontier
+
+Two groups need context before you change them.
+
+**`account`** — greatfrontend.com has real accounts; this site is static Jekyll
+on GitHub Pages with no server, so an account here is a *named profile on this
+device*: progress namespaced per profile, a portable JSON export that carries a
+profile to another browser, and `registerProvider` as the seam a hosted
+deployment swaps for a real identity provider. It is **not authentication** —
+nothing is verified — and `account.honest_copy` fails if `docs/account/index.md`
+stops saying so, because that caveat is exactly what gets edited out for looking
+untidy. `docs/assets/js/account.js` owns identity; `progress.js` reads the
+namespace from it, so **account.js must load before progress.js** on any page
+that shows progress.
+
+**`frontier`** — parity targets the site does not have yet (a framework runtime
+in the workspace, editor affordances, company guides). They are declared and
+measured so the gap stays visible, `required: false` so they never block a
+contribution, and `scope: cumulative` so `--next` hands them out only after
+everything required is green. **A frontier check is a real measurement, not a
+placeholder**: when someone builds the feature it turns green without being
+rewritten. The composite sits below `pass_threshold` while the frontier is
+open, and that is the honest reading — do not lower the threshold to go green.
 
 ## Training-site sections under `docs/`
 

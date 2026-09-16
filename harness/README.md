@@ -242,6 +242,28 @@ A real Chromium against the built site (`harness/functional/run.mjs`). Everythin
 | `functional.console_clean` | 3 | yes | incremental | all | No uncaught exception and no broken local asset on any key page — either one silently disables a capability while every static check still passes. |
 | `functional.keyboard` | 2 | yes | incremental | all | The workspace must be reachable and operable from the keyboard. A site that teaches accessibility cannot need a mouse. |
 
+### account
+
+Accounts on a site with no server. greatfrontend.com has real ones; this is static Jekyll on GitHub Pages, so an account here is a named profile on this device, with progress namespaced to it and a portable export — a smaller promise, kept exactly. It is not authentication, and the page says so. A real identity provider goes behind `registerProvider`, and `account.provider_seam` proves that abstraction actually works rather than merely existing.
+
+| check | weight | required | scope | threshold | fails when |
+|---|---|---|---|---|---|
+| `account.honest_copy` | 2 | yes | incremental | all | The account page must keep saying a profile is not authentication, and account.js must keep the registerProvider seam. |
+| `account.profiles` | 3 | yes | incremental | all | Two profiles must keep separate progress, and the signed-in one must survive a reload. Sharing a laptop must not mean sharing a record. |
+| `account.portable` | 3 | yes | incremental | all | A profile and its progress must survive an export / wipe / import round trip — with no server to sync to, that IS the account following you. |
+| `account.guest_progress` | 2 | yes | incremental | all | Accounts arrived after progress did. Signing in and out must not strand work done before a profile existed. |
+| `account.provider_seam` | 2 | yes | incremental | all | A third-party provider must be swappable through registerProvider, with progress following its identity. An abstraction nobody has exercised is not a seam. |
+
+### frontier
+
+Parity targets the site does not have yet. Declared and measured so the gap stays visible, `required: false` so they never block a contribution, and ordered after everything required so the cluster grows into them one at a time instead of all at once. A frontier check is a real measurement — when someone builds the feature it turns green without being rewritten.
+
+| check | weight | required | scope | threshold | fails when |
+|---|---|---|---|---|---|
+| `workspace.framework_runtime` | 3 | no | cumulative | all | A coding question should be able to declare a framework runtime and run component tests in the browser. Today the runner executes plain ES modules only, so every ui-coding exercise is read-only. |
+| `workspace.editor_affordances` | 2 | no | cumulative | all | The workspace should have syntax highlighting, a resizable editor and a console pane. Today it is a textarea, and a learner debugging with console.log has to open devtools. |
+| `content.company_guides` | 2 | no | cumulative | `4` | Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it. |
+
 ### harness
 
 The axis GreatFrontend does not have: every unit of practice is also an Agent Skill, and every `harness` exercise ships its own eval with a numeric threshold.

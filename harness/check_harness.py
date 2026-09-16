@@ -1226,6 +1226,59 @@ def _functional(scenario: str):
 for _scenario in ("playground", "quiz", "filters", "progress", "plans", "console_clean", "keyboard"):
     CHECKS[f"functional.{_scenario}"] = _functional(_scenario)
 
+# Capabilities whose id does not match their scenario name, because the group
+# they belong to reads better than `functional.*` would.
+for _cid, _scenario in (
+    ("account.profiles", "account_profiles"),
+    ("account.portable", "account_portable"),
+    ("account.guest_progress", "account_guest_progress"),
+    ("account.provider_seam", "account_provider_seam"),
+    ("workspace.framework_runtime", "workspace_framework_runtime"),
+    ("workspace.editor_affordances", "workspace_editor_affordances"),
+):
+    CHECKS[_cid] = _functional(_scenario)
+
+
+# ---- accounts
+@check("account.honest_copy")
+def _account_honest(site: Site, threshold):
+    """The account page must keep saying what an account here is NOT.
+
+    There is no server, so nothing is authenticated. That sentence is the only
+    thing standing between a useful local profile and a sign-in box that lies
+    to a learner on a site about frontend architecture — and it is exactly the
+    kind of caveat that gets edited out for looking untidy.
+    """
+    path = site.docs / "account" / "index.md"
+    if not path.is_file():
+        return 0.0, ["docs/account/index.md is missing"], "missing"
+    page = read_page(path)
+    body = page.prose.lower()
+    deficits = []
+    if not re.search(r"not authentication|no password|nothing is verified", body):
+        deficits.append("docs/account/index.md: no longer says a profile is not authentication. "
+                        "Without a server nothing here is verified, and the page has to say so.")
+    runner = site.docs / "assets" / "js" / "account.js"
+    if not runner.is_file():
+        deficits.append("docs/assets/js/account.js is missing")
+    elif "registerProvider" not in runner.read_text(encoding="utf-8"):
+        deficits.append("account.js: no `registerProvider` seam — a hosted deployment has no way "
+                        "to swap the local store for a real identity provider")
+    return (1.0 if not deficits else 0.0), deficits, "present and honest"
+
+
+@check("content.company_guides")
+def _content_company_guides(site: Site, threshold):
+    """GreatFrontend ships company-specific preparation guides; we ship none."""
+    guides = md_files(site.docs / "guides")
+    guides = [g for g in guides if g.stem != "index"]
+    if len(guides) >= threshold:
+        return 1.0, [], f"{len(guides)} guides"
+    return min(1.0, len(guides) / threshold), \
+        [f"docs/guides/ has {len(guides)} company guides, need {threshold}. A guide names the "
+         "loop a company actually runs and which questions in the bank map to it."], \
+        f"{len(guides)}/{threshold}"
+
 
 # ---- the AI-harness axis
 @check("harness.skill_map")
