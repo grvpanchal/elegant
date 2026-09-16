@@ -1,0 +1,174 @@
+# One purpose: "grow and maintain the Frontend AI Harness training site against
+# its capability guardrail". Four skills, one workspace, no human in the loop.
+#
+# The guardrail is not this manifest's opinion — it is the site's own checker,
+# harness/check_harness.py, which measures 41 capabilities benchmarked against
+# greatfrontend.com (question formats, an in-browser workspace with tests,
+# worked solutions, study plans, playbooks, progress tracking) plus the axis
+# that is ours: every unit of practice is also an Agent Skill with its own eval.
+#
+# THE CELL NEVER NEEDS A HUMAN. There is no `strategy:` block, so this lineage
+# stays in the heal stage for good: its standard is the site's own checker and
+# nothing else. That is only honest because the checker now covers *function* as
+# well as form — harness/functional/run.mjs drives a real Chromium against the
+# built site and asserts that the Run button executes a question's tests, that
+# the quiz grades, that filters narrow, that progress survives a reload. Those
+# were the capabilities that used to need someone to click them, which was the
+# only reason the life system was ever in the loop here.
+#
+# So the cluster can grow without supervision: six skills means it can divide up
+# to six ways, `develop_skill_after_orphans: 3` lets it earn new skills from
+# verified work no existing skill claimed, and every generation is judged by the
+# same scripts as the first.
+#
+# Growth has a queue, not just a direction. The site declares `frontier`
+# capabilities — parity targets it does not have yet — as measured, failing,
+# `required: false` checks. They never block a contribution, they keep the gap
+# visible in the composite, and `--next` hands them out one at a time once
+# everything required is green. `build-capability` is the skill that closes
+# them; `fix-functional` is for something that worked and broke.
+#
+# Two verifiers, two jobs:
+#   verify:capabilities  the site-wide target. `--next` prints the single
+#                        highest-priority deficit, so bza discovers *one*
+#                        instruction rather than a wall of them. required:false
+#                        because no single contribution can close a volume
+#                        target ("write 12 quiz questions") and a cell must not
+#                        be scored down for that.
+#   verify:contribution  what the cell just wrote, scoped with --changed to the
+#                        files of this task. required:true — this is the loop
+#                        that closes, and its output is the correction message.
+#
+# Every role runs on a free OpenRouter model. The point of the exercise is to
+# find where a free model cannot hold the contract, and to move that part of the
+# contract out of the prompt and into the checker.
+name: frontend-harness
+description: Grow and maintain the Frontend AI Harness training site against its capability guardrail
+system: |
+  You are a Benzene cell whose base purpose is to grow and maintain a frontend
+  training site that lives in the workspace. The site is Jekyll: `docs/` is the
+  site, `skills/` holds Agent Skills, and `harness/capabilities.yml` is the
+  written contract every page is measured against.
+
+  Everything about your work is measured by scripts before anyone reads it:
+  front matter schemas, link resolution, word counts, and — for a coding
+  question — the question's own tests run under Node. Be exact. Read a file
+  before you edit it, write it back whole, and never invent a path, a slug or
+  a topic name: `list_workspace_files` is cheap and guessing is not.
+
+  Follow the active skill's procedure and answer format precisely.
+capability: Author and maintain measured training content for the Universal Frontend Architecture
+efficacy: 1.0
+
+skills: [author-question, author-plan, author-playbook, fix-site-health, fix-functional, build-capability]
+tools: [list_workspace_files, read_workspace_file, write_workspace_file]
+
+# Measured on OpenRouter's free tier before this manifest was written, because
+# "free" is not a capability claim. Of 20 free models, 5 answered 403/429/503
+# outright, and `nex-agi/nex-n2.5-pro:free` returned HTTP 200 with an EMPTY
+# content field on a 200-word task: a reasoning model spends the budget on its
+# private chain of thought and stops on `length`. So every role names its
+# fallbacks, every role has a timeout, and `max_tokens` is sized for reasoning
+# overhead rather than for the answer.
+models:
+  - role: primary
+    provider: openrouter
+    id: nvidia/nemotron-3-super-120b-a12b:free
+    fallback_ids:
+      - cohere/north-mini-code:free
+      - nex-agi/nex-n2.5-pro:free
+      - dots-studio/dots-3-note-preview:free
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 12000        # ~2/3 of this can go to reasoning tokens
+    temperature: 0.3
+    timeout_s: 240
+    price_per_mtok: [0, 0]
+  - role: judge
+    provider: openrouter
+    id: cohere/north-mini-code:free
+    fallback_ids: [inclusionai/ling-3.0-flash-vl:free, nvidia/nemotron-3-super-120b-a12b:free]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 3000
+    temperature: 0
+    timeout_s: 120
+    price_per_mtok: [0, 0]
+  - role: router
+    provider: openrouter
+    id: inclusionai/ling-3.0-flash-vl:free
+    fallback_ids: [cohere/north-mini-code:free, nvidia/nemotron-3-super-120b-a12b:free]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 1500
+    timeout_s: 90
+    price_per_mtok: [0, 0]
+  - role: evolver
+    provider: openrouter
+    id: nvidia/nemotron-3-super-120b-a12b:free
+    fallback_ids: [nex-agi/nex-n2.5-pro:free, cohere/north-mini-code:free]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    timeout_s: 240
+    price_per_mtok: [0, 0]
+
+hooks:
+  - event: on_divide
+    handler: log_event
+  - event: on_evolve
+    handler: log_event
+  - event: on_apoptosis
+    handler: log_event
+
+feedbacks: []
+
+guardrail:
+  min_chars: 40
+  max_chars: 16000
+  forbidden_patterns: ["as an ai language model", "I cannot help with that"]
+  verifiers:
+    - type: command
+      name: verify:capabilities
+      command: [python3, harness/check_harness.py, --sync, --next]
+      cwd: "."
+      required: false
+      skip_if_untouched: false
+      timeout_s: 900
+    - type: command
+      name: verify:contribution
+      # --failures-only matters more than it looks: this output becomes the
+      # correction message, and an agent acts on the first thing it reads.
+      # Two defects under forty "pass" lines get answered by writing a new file.
+      # --scope incremental includes the functional group, so this one command
+      # builds the site and drives a browser over it. It costs ~10s and it is
+      # what makes the loop autonomous: form and function in one exit code.
+      command: [python3, harness/check_harness.py, --sync, --scope, incremental, --failures-only, --changed, "{touched}"]
+      cwd: "."
+      required: true
+      timeout_s: 900
+  verifier_fail_cap: 0.40
+  max_cost_usd: 0.50
+  max_latency_s: 1800
+  judge_rubric: |
+    1. The answer reports exactly which files were written, and nothing else was touched.
+    2. Nothing was invented: every slug, topic, skill name and link target came from the workspace.
+    3. The answer follows the active skill's answer format and ends with a Confidence line.
+    4. Prose explains the reasoning, not just the result.
+  judge_weight: 0.3
+  pass_threshold: 0.70
+
+homeostasis:
+  divide_below: 0.66
+  evolve_below: 0.80
+  apoptosis_below: 0.33
+  heal_max_attempts: 2
+  ema_alpha: 0.30
+  min_tasks_before_divide: 3
+  daughter_efficacy: 0.85
+  evolve_after_negative_feedback: 2
+  negative_feedback_below: 0.5
+  evolution_cooldown_tasks: 3
+  feedback_requires_verification: true
+  autophagy_below: 0.80
+  renew_below: 0.50
+  max_renewals: 2
+  max_regenerations: 2
+  mature_after_verified_tasks: 3
+  develop_skill_after_orphans: 3

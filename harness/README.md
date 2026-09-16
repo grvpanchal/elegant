@@ -273,6 +273,8 @@ The axis GreatFrontend does not have: every unit of practice is also an Agent Sk
 | `harness.skill_map` | 3 | yes | incremental | all | Every question names a `skill:` that exists under skills/<slug>/SKILL.md — practice and agent capability are the same artefact. |
 | `harness.eval_spec` | 3 | yes | incremental | all | Every harness-format question must declare an `eval:` block with rubric items and a numeric threshold. Teaching people to build guardrails means shipping one per exercise. |
 | `harness.skill_coverage` | 2 | no | cumulative | 50% | At least 50% of the Agent Skills in skills/ should be exercised by a question. |
+| `harness.scoping` | 3 | yes | incremental | all | The scoping flags must keep discriminating: out-of-scope work must not fail a contribution, and a capability the task was dispatched to fix must. A regression in either is silent and expensive. |
+| `harness.agent_manifest` | 2 | yes | incremental | all | agents/frontend-harness.yaml must name only skills that exist and keep pointing its verifiers at harness/check_harness.py with --changed. A genome that drifts off the guardrail is an agent nobody is measuring. |
 | `harness.docs` | 1 | yes | incremental | all | harness/README.md must document every capability, and any prose file stating a capability count must state the real one. |
 
 ## Using it as an agent verifier

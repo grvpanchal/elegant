@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 61 capabilities benchmarked against
+site under `docs/` must be able to do — 63 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -140,6 +140,14 @@ placeholder**: when someone builds the feature it turns green without being
 rewritten. The composite sits below `pass_threshold` while the frontier is
 open, and that is the honest reading — do not lower the threshold to go green.
 
+`required: false` stops a frontier item blocking an unrelated contribution. It
+must **not** stop it blocking the task sent to build it, or a cell writes one
+file, the composite still clears threshold and it is told the work is done — it
+did exactly that for four rounds. So a capability named in `--must` (or in
+`$BENZENE_INSTRUCTION`) is required *for that run* whatever the spec says, and
+`harness.scoping` runs the checker against itself both ways to prove the two
+behaviours still differ.
+
 ## Training-site sections under `docs/`
 
 Beyond the concept docs, `docs/` carries the practice surfaces:
@@ -161,8 +169,31 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
   workspace runner, localStorage progress, the bank's client-side filtering,
   and the printable certificate. No backend: the site is static.
 
-The benzene agent that grows these sections against the guardrail lives in
-`grvpanchal/benezene-agent` (`manifests/frontend-harness-openrouter.yaml`).
+## The agents that build the site (`agents/`)
+
+`agents/frontend-harness.yaml` is the Benzene genome for the cell that grows and
+maintains `docs/` against `harness/`. It lives here, not in the framework repo,
+because it is **about this site**: its verifiers run `harness/check_harness.py`
+and its skills name `docs/practice/`, `docs/_data/plans.yml` and
+`harness/capabilities.yml`. Rename a capability and the genome answering to it
+moves in the same commit — `harness.agent_manifest` fails when they drift.
+
+```bash
+export OPENROUTER_API_KEY=sk-or-...   # every role uses a free model
+bza agents/frontend-harness.yaml .    # the workspace is this repository
+```
+
+`agents/skills/` holds the six operating skills (`author-question`,
+`author-plan`, `author-playbook`, `fix-site-health`, `fix-functional`,
+`build-capability`). `AgentManifest.load` resolves `skills: [name]` against
+`agents/skills/<name>/SKILL.md` first, so genome and skills travel together.
+
+**These are not the Agent Skills under `/skills/`.** Those are content
+(`ui-atom`, `server-ssr`) published for learners, listed in
+`docs/_data/skills.yml`, and offered by the download widget. Keeping the cell's
+operating instructions out of that registry is deliberate — `agents/skills/` is
+never synced into it. The engine itself is
+[`grvpanchal/benezene-agent`](https://github.com/grvpanchal/benezene-agent).
 
 ## Doc reviewer subagent
 

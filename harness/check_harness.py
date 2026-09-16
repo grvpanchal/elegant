@@ -1342,6 +1342,90 @@ COUNT_CLAIM_RE = re.compile(r"(\d+)\s+capabilit(?:y|ies)\b", re.I)
 COUNT_CLAIM_FILES = ("harness/README.md", "CLAUDE.md", "README.md")
 
 
+@check("harness.scoping")
+def _h_scoping(site: Site, threshold):
+    """The scoping flags must still discriminate, because they are load-bearing.
+
+    Two rules pull in opposite directions and both matter:
+      - a capability outside a contribution's scope must NOT fail it, or an
+        author is blamed for debt they inherited and the loop never converges;
+      - a capability the task was DISPATCHED to fix must fail it, or a cell
+        writes one file, the composite still clears threshold and it is told
+        the work is done.
+    A regression in either is silent and expensive, so the checker runs itself
+    both ways on a cheap static capability and asserts the exit codes differ.
+    """
+    probe = "content.company_guides"          # cumulative, required:false, no browser
+    base = [sys.executable, str(HARNESS_DIR / "check_harness.py"),
+            "--only", probe, "--scope", "incremental"]
+    env = {**os.environ, "BENZENE_INSTRUCTION": ""}
+    deficits = []
+    try:
+        out_of_scope = subprocess.run(base, cwd=str(ROOT), capture_output=True,
+                                      text=True, timeout=120, env=env)
+        dispatched = subprocess.run(base + ["--must", probe], cwd=str(ROOT), capture_output=True,
+                                    text=True, timeout=120, env=env)
+    except (subprocess.TimeoutExpired, OSError) as exc:
+        return 0.0, [f"could not run the checker against itself: {exc}"], "error"
+
+    if out_of_scope.returncode != 0:
+        deficits.append(f"`--scope incremental` alone failed on the cumulative capability "
+                        f"`{probe}` (exit {out_of_scope.returncode}). A volume target must not "
+                        "block a contribution that was never asked to close it.")
+    if dispatched.returncode == 0:
+        deficits.append(f"`--must {probe}` did not fail even though `{probe}` is failing. A "
+                        "capability a task was dispatched to fix has to block that task, "
+                        "whatever its spec-level `required` says.")
+    return (1.0 if not deficits else 0.0), deficits, \
+        f"out-of-scope exit {out_of_scope.returncode}, dispatched exit {dispatched.returncode}"
+
+
+@check("harness.agent_manifest")
+def _h_agent_manifest(site: Site, threshold):
+    """The genome that maintains this site must stay in step with the guardrail.
+
+    The manifest lives here rather than in the framework repo precisely so a
+    renamed capability and the agent answering to it move in one commit. That
+    only helps if something notices when they drift — a genome naming a skill
+    that no longer exists, or pointing its verifiers at a checker that moved,
+    is an agent nobody is measuring.
+    """
+    path = ROOT / "agents" / "frontend-harness.yaml"
+    if not path.is_file():
+        return 0.0, ["agents/frontend-harness.yaml is missing"], "missing"
+    try:
+        genome = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as exc:
+        return 0.0, [f"agents/frontend-harness.yaml does not parse: {exc}"], "unparseable"
+
+    deficits = []
+    declared = [s for s in (genome.get("skills") or []) if isinstance(s, str)]
+    if not declared:
+        deficits.append("agents/frontend-harness.yaml declares no skills")
+    for name in declared:
+        if not (ROOT / "agents" / "skills" / name / "SKILL.md").is_file():
+            deficits.append(f"genome names skill `{name}` but agents/skills/{name}/SKILL.md does not exist")
+
+    # Skills on disk that nothing runs are dead weight the next reader trusts.
+    on_disk = sorted(d.name for d in (ROOT / "agents" / "skills").glob("*")
+                     if (d / "SKILL.md").is_file()) if (ROOT / "agents" / "skills").is_dir() else []
+    for name in on_disk:
+        if name not in declared:
+            deficits.append(f"agents/skills/{name}/ exists but the genome never lists it")
+
+    verifiers = ((genome.get("guardrail") or {}).get("verifiers") or [])
+    commands = [" ".join(v.get("command") or []) for v in verifiers if isinstance(v, dict)]
+    if not any("harness/check_harness.py" in c for c in commands):
+        deficits.append("no verifier runs harness/check_harness.py — the genome is judged by "
+                        "something other than this site's guardrail")
+    if not any("--changed" in c for c in commands):
+        deficits.append("no verifier passes --changed {touched}; without it a contribution is "
+                        "judged by debt it did not cause")
+
+    return (1.0 if not deficits else 0.0), deficits[:MAX_DEFICITS], \
+        f"{len(declared)} skills, {len(verifiers)} verifiers"
+
+
 @check("harness.docs")
 def _h_docs(site: Site, threshold):
     path = HARNESS_DIR / "README.md"
@@ -1579,7 +1663,19 @@ def main(argv: list[str] | None = None) -> int:
 
     results = run(spec, set(args.only), set(args.group), args.build, args.scope, args.changed, args.must)
     comp = composite(results)
-    failed_required = [r for r in results if r.required and not r.passed]
+
+    # A capability this run was DISPATCHED to fix is required for this run,
+    # whatever the spec says globally. `required: false` is the right policy for
+    # a frontier item against an unrelated contribution — it must not block
+    # someone writing a question. It is the wrong policy for the task whose
+    # entire purpose is that capability: without this, a cell sent to build a
+    # frontier feature writes one file, the composite still clears threshold,
+    # the verifier exits 0, and the cell is told the work is done. Observed
+    # doing exactly that for four rounds, shipping an orphan runtime.json each
+    # time.
+    dispatched = dispatched_targets(args.must)
+    failed_required = [r for r in results
+                       if (r.required or r.id in dispatched) and not r.passed]
     passing = not failed_required and comp >= spec["pass_threshold"]
 
     if args.json:

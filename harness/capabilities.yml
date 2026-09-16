@@ -638,6 +638,22 @@ checks:
     required: false
     threshold: 0.50
     why: "At least {threshold:.0%} of the Agent Skills in skills/ should be exercised by a question."
+  - id: harness.scoping
+    scope: incremental
+    owns: ["harness/check_harness.py", "harness/capabilities.yml"]
+    group: harness
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "The scoping flags must keep discriminating: out-of-scope work must not fail a contribution, and a capability the task was dispatched to fix must. A regression in either is silent and expensive."
+  - id: harness.agent_manifest
+    scope: incremental
+    owns: ["agents/*", "agents/skills/*", "harness/check_harness.py"]
+    group: harness
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "agents/frontend-harness.yaml must name only skills that exist and keep pointing its verifiers at harness/check_harness.py with --changed. A genome that drifts off the guardrail is an agent nobody is measuring."
   - id: harness.docs
     owns: ["harness/*"]
     scope: incremental
