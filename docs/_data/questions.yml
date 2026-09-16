@@ -89,6 +89,23 @@
   skill: state-reducer
   minutes: 20
   summary: Build a reducer that handles state updates immutably for a simple counter.
+- slug: data-table-sort
+  title: Make a data table sortable
+  format: ui-coding
+  difficulty: hard
+  layer: ui
+  topics:
+  - organism
+  - events
+  - accessibility
+  - rwd
+  skill: ui-organism
+  minutes: 45
+  frameworks:
+  - react
+  - vue
+  summary: Column sorting that is stable, announced, keyboard-operable and does not
+    re-sort 5,000 rows on every render.
 - slug: debounce-utility
   title: Create a debounce utility
   format: coding
@@ -99,6 +116,18 @@
   skill: ui-atom
   minutes: 15
   summary: Create a debounce function that delays invocation until after a wait period.
+- slug: deep-clone
+  title: Deep clone a value
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - operations
+  - state
+  skill: state-operations
+  minutes: 30
+  summary: Copy nested data without sharing references — including the cycle that
+    makes the naive version hang forever.
 - slug: design-embeddable-widget
   title: Design an embeddable widget
   format: system-design
@@ -114,6 +143,49 @@
   minutes: 45
   summary: A review widget third parties paste into their own pages — isolation, versioning,
     auth and a sub-50KB budget.
+- slug: design-localized-app
+  title: Design a localized application
+  format: system-design
+  difficulty: easy
+  layer: server
+  topics:
+  - localization
+  - seo
+  - router
+  - ssr
+  skill: server-localization
+  minutes: 25
+  summary: Locale detection, URL shape, bundle splitting and the formatting bugs that
+    only appear in someone else's language.
+- slug: design-micro-frontends
+  title: Split a monolith into micro-frontends
+  format: system-design
+  difficulty: hard
+  layer: server
+  topics:
+  - mfe
+  - app-shell
+  - protocol
+  - container
+  - router
+  skill: server-mfe
+  minutes: 50
+  summary: Four teams, one URL, and the shared state, routing and version skew that
+    decide whether this helps or hurts.
+- slug: design-search-experience
+  title: Design a search-as-you-type experience
+  format: system-design
+  difficulty: medium
+  layer: server
+  topics:
+  - api
+  - ajax
+  - router
+  - seo
+  skill: server-api
+  minutes: 35
+  summary: Debounce, cancellation, out-of-order responses, caching and the URL — the
+    five things that decide whether search feels instant or broken.
 - slug: event-delegation
   title: How to delegate events in the DOM
   format: quiz
@@ -125,6 +197,47 @@
   skill: ui-events
   minutes: 7
   summary: Use event delegation to handle events efficiently on dynamic lists.
+- slug: event-emitter
+  title: Build an event emitter
+  format: coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - events
+  - dom
+  skill: ui-events
+  minutes: 25
+  summary: Subscribe, emit, unsubscribe — and survive a handler that removes itself
+    while the event is being dispatched.
+- slug: form-field-molecule
+  title: Build an accessible form field
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - molecule
+  - props
+  - accessibility
+  skill: ui-molecule
+  minutes: 30
+  frameworks:
+  - react
+  - angular
+  summary: Label, control, hint and error wired together by id so a screen reader
+    reads the whole field, not just the box.
+- slug: harness-a11y-gate
+  title: Gate a pull request on accessibility
+  format: harness
+  difficulty: hard
+  layer: ui
+  topics:
+  - accessibility
+  - story
+  - component
+  skill: ui-accessibility
+  minutes: 50
+  summary: Turn an accessibility audit into a check that runs on every change — and
+    confront the baseline problem that makes most of them useless.
 - slug: harness-atom-guardrail
   title: Write a guardrail for the ui-atom skill
   format: harness
@@ -139,6 +252,19 @@
   minutes: 40
   summary: Turn "this is a good atom" into a script an agent cannot argue with, then
     run an agent against it.
+- slug: harness-bundle-budget
+  title: Guardrail a performance budget
+  format: harness
+  difficulty: medium
+  layer: server
+  topics:
+  - protocol
+  - app-shell
+  - images
+  skill: server-app-shell
+  minutes: 35
+  summary: A size budget that fails a change, attributes the growth to a dependency,
+    and survives the week someone genuinely needs to exceed it.
 - slug: harness-link-checker
   title: Guardrail a docs site's links
   format: harness
@@ -152,6 +278,20 @@
   minutes: 25
   summary: The smallest useful guardrail — write a link checker, point an agent at
     a site with broken links, and measure how many rounds it takes to go green.
+- slug: harness-skill-eval
+  title: Write an eval set for an Agent Skill
+  format: harness
+  difficulty: hard
+  layer: state
+  topics:
+  - state
+  - store
+  - reducer
+  - operations
+  skill: state-operations
+  minutes: 55
+  summary: Score a skill instead of arguing about it — build the cases, the grader
+    and the threshold, then use the results to change the skill.
 - slug: harness-state-shape
   title: Guardrail a store's shape
   format: harness
@@ -166,6 +306,22 @@
   minutes: 50
   summary: Encode "this store is well shaped" as a script, then discover which of
     your rules an agent can satisfy without doing what you meant.
+- slug: infinite-scroll-list
+  title: Build an infinite-scroll list
+  format: ui-coding
+  difficulty: hard
+  layer: ui
+  topics:
+  - organism
+  - skeleton
+  - events
+  skill: ui-organism
+  minutes: 45
+  frameworks:
+  - react
+  - vue
+  summary: A sentinel, an IntersectionObserver, and all the ways an infinite list
+    traps the people using it.
 - slug: loading-button-atom
   title: Build a loading Button atom
   format: ui-coding
@@ -327,6 +483,19 @@
   - vue
   summary: Build an Image component that emits srcset, sizes and an aspect-ratio box,
     so the browser downloads the right file and nothing shifts.
+- slug: retry-with-backoff
+  title: Retry a request with backoff
+  format: coding
+  difficulty: hard
+  layer: state
+  topics:
+  - ajax
+  - operations
+  - middleware
+  skill: state-ajax
+  minutes: 35
+  summary: Retry only what is worth retrying, back off exponentially, add jitter,
+    and stop when the caller walks away.
 - slug: selector-memoization
   title: Selector Memoization Basics
   format: quiz
@@ -350,6 +519,17 @@
   skill: server-session
   minutes: 12
   summary: Four questions where the plausible answer is the insecure one.
+- slug: simple-store
+  title: Create a Redux-like store
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - store
+  - reducer
+  skill: state-store
+  minutes: 20
+  summary: Implement a minimal store with getState, dispatch, and subscribe.
 - slug: skeleton-list
   title: Replace a spinner with a skeleton
   format: ui-coding
@@ -366,6 +546,54 @@
   - angular
   summary: Build a loading placeholder that reserves the exact space the real rows
     will take, so nothing shifts when data arrives.
+- slug: tabs-molecule
+  title: Build a tabs molecule the arrow keys drive
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - molecule
+  - events
+  - accessibility
+  skill: ui-molecule
+  minutes: 35
+  frameworks:
+  - vue
+  - angular
+  summary: Roving tabindex, arrow-key navigation and one tab stop — the pattern that
+    separates a tab list from a row of buttons.
+- slug: theme-toggle
+  title: Build a theme toggle with no flash
+  format: ui-coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - theme
+  - attributes
+  - dom
+  skill: ui-theme
+  minutes: 25
+  frameworks:
+  - react
+  - wc
+  summary: Respect the system theme, remember an override, and never show the wrong
+    colours before hydration.
+- slug: toast-notifications
+  title: Build a toast notification stack
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - organism
+  - events
+  - accessibility
+  skill: ui-organism
+  minutes: 40
+  frameworks:
+  - react
+  - vue
+  summary: Stacked, auto-dismissing toasts that a screen reader announces and a keyboard
+    can reach — without stealing focus.
 - slug: ui-events-basics
   title: Handling DOM Events
   format: quiz
