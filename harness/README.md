@@ -164,6 +164,7 @@ The in-browser workspace and the executable contract behind it. `tests.js` runs 
 | `workspace.include` | 1 | yes | incremental | all | docs/_includes/code-playground.html must exist so a question page can embed the workspace. |
 | `workspace.wired` | 2 | yes | incremental | all | Every coding question must embed the playground with a ```js starter and a ```js tests block. |
 | `workspace.tests_pass` | 4 | yes | incremental | all | Executable: each coding question's reference solution must pass its own tests under Node. A question whose tests do not pass is not a question. |
+| `workspace.framework_runtime` | 3 | yes | incremental | all | A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them. |
 
 ### frameworks
 
@@ -260,7 +261,6 @@ Parity targets the site does not have yet. Declared and measured so the gap stay
 
 | check | weight | required | scope | threshold | fails when |
 |---|---|---|---|---|---|
-| `workspace.framework_runtime` | 3 | no | cumulative | all | A coding question should be able to declare a framework runtime and run component tests in the browser. Today the runner executes plain ES modules only, so every ui-coding exercise is read-only. |
 | `workspace.editor_affordances` | 2 | no | cumulative | all | The workspace should have syntax highlighting, a resizable editor and a console pane. Today it is a textarea, and a learner debugging with console.log has to open devtools. |
 | `content.company_guides` | 2 | no | cumulative | `4` | Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it. |
 

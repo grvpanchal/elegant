@@ -78,6 +78,19 @@
   minutes: 20
   summary: Implement a function that combines multiple reducer functions into a single
     reducer.
+- slug: counter-component
+  title: Build a Counter component
+  format: coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - component
+  - props
+  - events
+  skill: ui-component
+  minutes: 25
+  summary: The first question that renders a real component in the browser — props,
+    state, clamping and a disabled button, tested against a live DOM.
 - slug: counter-reducer
   title: Implement a Redux-style reducer with immutability
   format: coding

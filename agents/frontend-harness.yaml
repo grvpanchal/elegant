@@ -63,51 +63,66 @@ efficacy: 1.0
 skills: [author-question, author-plan, author-playbook, fix-site-health, fix-functional, build-capability]
 tools: [list_workspace_files, read_workspace_file, write_workspace_file]
 
-# Measured on OpenRouter's free tier before this manifest was written, because
-# "free" is not a capability claim. Of 20 free models, 5 answered 403/429/503
-# outright, and `nex-agi/nex-n2.5-pro:free` returned HTTP 200 with an EMPTY
-# content field on a 200-word task: a reasoning model spends the budget on its
-# private chain of thought and stops on `length`. So every role names its
-# fallbacks, every role has a timeout, and `max_tokens` is sized for reasoning
-# overhead rather than for the answer.
+# Model roster, measured on OpenRouter before it was written — "cheap" and
+# "famous" are claims, and the prices and behaviour below are observations.
+#
+# The free tier got the bank built and stalled on the frontier: hard
+# implementation work (a framework runtime in the playground) is where a free
+# model's ceiling binds rather than the harness. So the roster is now the
+# cheapest well-known PAID models that are an actual step up, with the free
+# models kept as the last fallback so an outage degrades rather than stops.
+#
+# Blended $/Mtok at roughly this workload's 3:1 input:output ratio, and the
+# smoke test each one passed (write an ES module, reply with code only):
+#
+#   openai/gpt-oss-120b            0.070   1.5s  correct   <- primary
+#   deepseek/deepseek-v4-flash     0.075   3.2s  correct
+#   openai/gpt-oss-20b             0.055   1.3s  correct   <- judge
+#   mistralai/mistral-nemo         0.022   1.4s  correct   <- router (cheapest famous)
+#   qwen/qwen3.7-flash             0.055  11.0s  EMPTY content — reasoning ate the
+#                                                budget, so it is not in the roster
+#
+# price_per_mtok is now real, which makes max_cost_usd a real gate for the
+# first time: at these prices a task costs around $0.003, so the 0.25 ceiling
+# catches a runaway heal loop rather than sitting unreachable at zero.
 models:
   - role: primary
     provider: openrouter
-    id: nvidia/nemotron-3-super-120b-a12b:free
+    id: openai/gpt-oss-120b
     fallback_ids:
-      - cohere/north-mini-code:free
-      - nex-agi/nex-n2.5-pro:free
-      - dots-studio/dots-3-note-preview:free
+      - deepseek/deepseek-v4-flash-0731
+      - openai/gpt-oss-20b
+      - nvidia/nemotron-3-super-120b-a12b:free
     api_key_env: OPENROUTER_API_KEY
-    max_tokens: 12000        # ~2/3 of this can go to reasoning tokens
+    max_tokens: 12000
     temperature: 0.3
     timeout_s: 240
-    price_per_mtok: [0, 0]
+    price_per_mtok: [0.037, 0.170]
   - role: judge
     provider: openrouter
-    id: cohere/north-mini-code:free
-    fallback_ids: [inclusionai/ling-3.0-flash-vl:free, nvidia/nemotron-3-super-120b-a12b:free]
+    id: openai/gpt-oss-20b
+    fallback_ids: [mistralai/mistral-nemo, cohere/north-mini-code:free]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 3000
     temperature: 0
     timeout_s: 120
-    price_per_mtok: [0, 0]
+    price_per_mtok: [0.030, 0.130]
   - role: router
     provider: openrouter
-    id: inclusionai/ling-3.0-flash-vl:free
-    fallback_ids: [cohere/north-mini-code:free, nvidia/nemotron-3-super-120b-a12b:free]
+    id: mistralai/mistral-nemo
+    fallback_ids: [openai/gpt-oss-20b, inclusionai/ling-3.0-flash-vl:free]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 1500
     timeout_s: 90
-    price_per_mtok: [0, 0]
+    price_per_mtok: [0.019, 0.030]
   - role: evolver
     provider: openrouter
-    id: nvidia/nemotron-3-super-120b-a12b:free
-    fallback_ids: [nex-agi/nex-n2.5-pro:free, cohere/north-mini-code:free]
+    id: openai/gpt-oss-120b
+    fallback_ids: [deepseek/deepseek-v4-flash-0731, openai/gpt-oss-20b]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 8000
     timeout_s: 240
-    price_per_mtok: [0, 0]
+    price_per_mtok: [0.037, 0.170]
 
 hooks:
   - event: on_divide
@@ -144,7 +159,7 @@ guardrail:
       required: true
       timeout_s: 900
   verifier_fail_cap: 0.40
-  max_cost_usd: 0.50
+  max_cost_usd: 0.25
   max_latency_s: 1800
   judge_rubric: |
     1. The answer reports exactly which files were written, and nothing else was touched.

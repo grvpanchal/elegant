@@ -730,8 +730,14 @@ def _ws_wired(site: Site, threshold):
 @check("workspace.tests_pass")
 def _ws_tests(site: Site, threshold):
     subjects = site.sel(site.questions_by_format("coding"))
+    # A question with a runtime.json renders components against a real DOM, so
+    # its tests cannot run under bare Node. They are not unchecked: the browser
+    # covers them in workspace.framework_runtime. Saying which questions were
+    # skipped and why is the difference between a scoped check and a silent one.
+    browser_only = [q.slug for q in subjects if (site.workspace_dir(q.slug) / "runtime.json").is_file()]
     runnable = [q for q in subjects
-                if (site.workspace_dir(q.slug) / "solution.js").is_file()
+                if q.slug not in browser_only
+                and (site.workspace_dir(q.slug) / "solution.js").is_file()
                 and (site.workspace_dir(q.slug) / "tests.js").is_file()]
     if not runnable:
         return (1.0 if not subjects else 0.0), \
@@ -747,7 +753,10 @@ def _ws_tests(site: Site, threshold):
             ok += 1
         else:
             deficits.append(f"{q.slug}: {detail}")
-    return ratio(ok, len(runnable)), deficits[:MAX_DEFICITS], f"{ok}/{len(runnable)} solutions pass their own tests"
+    note = (f", {len(browser_only)} browser-only (runtime.json), checked by "
+            "workspace.framework_runtime" if browser_only else "")
+    return ratio(ok, len(runnable)), deficits[:MAX_DEFICITS], \
+        f"{ok}/{len(runnable)} solutions pass their own tests{note}"
 
 
 def _which_node() -> str | None:

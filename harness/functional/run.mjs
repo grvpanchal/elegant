@@ -413,15 +413,36 @@ const SCENARIOS = {
       "load that framework, transform JSX in-browser and run component tests — today the runner " +
       "only executes plain ES modules, so every ui-coding exercise is read-only.");
 
-    await page.goto(`${origin}/practice/${withRuntime[0]}.html`, { waitUntil: "domcontentloaded" });
+    // Same contract as `playground`, and for the same reason: a starter that
+    // passes its own tests means the tests assert nothing. The first version of
+    // this scenario ran only the starter and expected green, which was wrong in
+    // exactly that way — it would have been satisfied by a component question
+    // whose tests never ran.
+    const slug = withRuntime[0];
+    await page.goto(`${origin}/practice/${slug}.html`, { waitUntil: "domcontentloaded" });
+    const editor = page.locator("[data-playground-editor]");
     await page.waitForFunction(
       () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
       null, { timeout: 15000 });
+
     await page.locator("[data-playground-run]").click();
     await page.waitForSelector(".playground__summary", { timeout: 30000 });
-    ok(await page.locator(".playground__summary.is-pass").count() > 0,
-      `${withRuntime[0]}: a framework-runtime question did not run green in the browser`);
-    return `${withRuntime.length} question(s) run component tests in a framework runtime`;
+    ok(/is-fail/.test((await page.locator(".playground__summary").getAttribute("class")) || ""),
+      `${slug}: the starter passed its own component tests — they assert nothing`);
+
+    const solution = await (await page.request.get(
+      `${origin}/practice/workspace/${slug}/solution.js`)).text();
+    ok(solution.trim().length > 0, `${slug}: solution.js is empty or not served`);
+    await editor.fill(solution);
+    await page.locator("[data-playground-run]").click();
+    await page.waitForFunction(
+      () => document.querySelector(".playground__summary.is-pass") !== null,
+      null, { timeout: 30000 });
+
+    const summary = await page.locator(".playground__summary").innerText();
+    ok(/passing/.test(summary), `${slug}: unexpected summary "${summary}"`);
+    return `${withRuntime.length} question(s) render components in a runtime: ` +
+           `${slug} starter fails, solution ${summary.trim().toLowerCase()}`;
   },
 
   /** Their workspace has highlighting, resizable panes and a console; ours is a textarea. */

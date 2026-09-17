@@ -131,8 +131,10 @@ untidy. `docs/assets/js/account.js` owns identity; `progress.js` reads the
 namespace from it, so **account.js must load before progress.js** on any page
 that shows progress.
 
-**`frontier`** — parity targets the site does not have yet (a framework runtime
-in the workspace, editor affordances, company guides). They are declared and
+**`frontier`** — parity targets the site does not have yet (editor affordances,
+company guides). A capability that gets built **leaves** this group: it moves to
+the group it belongs in and becomes `required`, which is what stops the frontier
+being a place things go to be forgotten. They are declared and
 measured so the gap stays visible, `required: false` so they never block a
 contribution, and `scope: cumulative` so `--next` hands them out only after
 everything required is green. **A frontier check is a real measurement, not a
@@ -168,6 +170,16 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
 - `docs/assets/js/{playground,progress,practice-index,certificate}.js` — the
   workspace runner, localStorage progress, the bank's client-side filtering,
   and the printable certificate. No backend: the site is static.
+- `docs/practice/workspace/<slug>/runtime.json` — marks a **component**
+  question. Its starter, solution and tests import `@runtime`, a bare specifier
+  the question layout's import map points at
+  `docs/assets/vendor/runtime-preact.mjs` (vendored preact + htm, ~16 KB, no
+  build step and no CDN — the guardrail's browser has no outbound network).
+  It must be a bare specifier: the learner's code runs from a `blob:` URL, and
+  `blob:` is not hierarchical, so an absolute path has no base to resolve
+  against and throws. These tests need a DOM, so `workspace.tests_pass` skips
+  them under Node and says which ones; `workspace.framework_runtime` covers
+  them in Chromium.
 
 ## The agents that build the site (`agents/`)
 

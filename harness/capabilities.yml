@@ -585,14 +585,14 @@ checks:
   # contribution, and `--next` hands them out after everything required — which
   # is how the cluster grows into them one at a time instead of all at once.
   - id: workspace.framework_runtime
-    scope: cumulative
+    scope: incremental
     requires: [functional.playground]
-    owns: ["docs/assets/js/playground.js", "docs/practice/*"]
-    group: frontier
+    owns: ["docs/assets/js/playground.js", "docs/assets/vendor/*", "docs/_layouts/question.html", "docs/practice/*"]
+    group: workspace
     weight: 3
-    required: false
+    required: true
     threshold: 1.0
-    why: "A coding question should be able to declare a framework runtime and run component tests in the browser. Today the runner executes plain ES modules only, so every ui-coding exercise is read-only."
+    why: "A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them."
   - id: workspace.editor_affordances
     scope: cumulative
     requires: [functional.playground]

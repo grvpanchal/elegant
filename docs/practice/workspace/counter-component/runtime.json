@@ -1,0 +1,5 @@
+{
+  "framework": "preact",
+  "module": "@runtime",
+  "note": "Component question: starter, solution and tests all run in the browser against a real DOM. Skipped by workspace.tests_pass under Node, covered by workspace.framework_runtime in Chromium."
+}
