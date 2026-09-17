@@ -465,7 +465,55 @@ const SCENARIOS = {
       `the workspace is a plain textarea — missing ${missing.join(", ")}. Reading a 40-line ` +
       "starter with no highlighting is the difference between practising and squinting, and a " +
       "learner debugging with console.log currently has to open devtools to see the output.");
-    return "the workspace has highlighting, a resize handle and a console pane";
+
+    // Presence is not the capability. Three empty divs with the right data-
+    // attributes satisfy the check above, so each affordance has to be made to
+    // do its job before this passes.
+
+    // 1. the overlay must paint the editor's actual text, with tokens coloured.
+    const paint = await page.evaluate(() => {
+      const editor = document.querySelector("[data-playground-editor]");
+      const pre = document.querySelector("[data-playground-highlight]");
+      return {
+        aligned: pre.textContent.trim() === editor.value.trim(),
+        tokens: pre.querySelectorAll("[class^='tok-']").length,
+      };
+    });
+    ok(paint.aligned, "the highlight overlay does not show the same text as the editor — " +
+      "a decorative layer behind the textarea is worse than none, it just misaligns.");
+    ok(paint.tokens > 0, "the highlight overlay paints the text but colours nothing: no token spans.");
+
+    // 2. the handle must resize the editor, from the keyboard as well as a pointer.
+    const grew = await (async () => {
+      const editor = page.locator("[data-playground-editor]");
+      const before = (await editor.boundingBox()).height;
+      await page.locator("[data-playground-resize]").focus();
+      for (let i = 0; i < 3; i += 1) await page.keyboard.press("ArrowDown");
+      const after = (await editor.boundingBox()).height;
+      return { before, after };
+    })();
+    ok(grew.after > grew.before + 1,
+      `the resize handle did not resize anything: the editor stayed ${Math.round(grew.before)}px ` +
+      "after three ArrowDown presses. A drag-only handle is also unusable without a pointer.");
+
+    // 3. console.log from the learner's own code must reach the pane, which is
+    //    the whole point — otherwise they still open devtools.
+    const probe = "harness-console-probe-" + Date.now();
+    const starter = await (await page.request.get(
+      `${origin}/practice/workspace/${coding[0].slug}/starter.js`)).text();
+    await page.locator("[data-playground-editor]").fill(`${starter}\nconsole.log(${JSON.stringify(probe)});\n`);
+    await page.locator("[data-playground-run]").click();
+    await page.waitForSelector("[data-playground-console]:not([hidden])", { timeout: 20000 })
+      .catch(() => {});
+    const logged = await page.evaluate(() => {
+      const pane = document.querySelector("[data-playground-console]");
+      return { hidden: pane.hidden, text: pane.innerText };
+    });
+    ok(!logged.hidden && logged.text.includes(probe),
+      "console.log from the learner's code never reached the console pane " +
+      `(hidden=${logged.hidden}). The pane exists but is not wired to the runner.`);
+
+    return "highlighting paints tokens, the handle resizes from the keyboard, console.log reaches the pane";
   },
 
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
@@ -477,12 +525,26 @@ const SCENARIOS = {
       () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
       null, { timeout: 15000 });
 
+    // Tabbing forward from the editor must reach Run without a mouse. This
+    // deliberately allows controls in between: the resize handle is focusable
+    // on purpose, and demanding Run in exactly one press would make ADDING a
+    // keyboard-operable control fail the keyboard check. What is not allowed
+    // is Run being unreachable, or focus passing through something inert.
     await page.locator("[data-playground-editor]").focus();
-    await page.keyboard.press("Tab");
-    const focused = await page.evaluate(() => document.activeElement?.getAttribute("data-playground-run") !== null
-      ? "run"
-      : document.activeElement?.className || "unknown");
-    ok(focused === "run", `Tab from the editor reached "${focused}", not the Run button`);
+    const path = [];
+    let focused = "unknown";
+    for (let i = 0; i < 4 && focused !== "run"; i += 1) {
+      await page.keyboard.press("Tab");
+      focused = await page.evaluate(() => {
+        const el = document.activeElement;
+        if (!el) return "unknown";
+        if (el.getAttribute("data-playground-run") !== null) return "run";
+        return el.getAttribute("aria-label") || el.className || el.tagName.toLowerCase();
+      });
+      path.push(focused);
+    }
+    ok(focused === "run",
+      `tabbing forward from the editor never reached the Run button (visited ${path.join(" -> ")})`);
 
     await page.keyboard.press("Enter");
     await page.waitForSelector(".playground__summary", { timeout: 20000 });

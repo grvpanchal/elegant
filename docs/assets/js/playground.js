@@ -9,6 +9,13 @@
  * The same tests.js is what harness/check_harness.py runs under Node against
  * solution.js (capability `workspace.tests_pass`), so a question that is green
  * here is green in CI and vice versa — one contract, two runners.
+ *
+ * The editor is a plain textarea with three affordances layered on top:
+ *   - syntax highlighting: a transparent <pre> behind the textarea paints the
+ *     same text in colour (data-playground-highlight);
+ *   - a resize handle drags the editor taller/shorter (data-playground-resize);
+ *   - a console pane captures console.log from the learner's code so they can
+ *     debug without opening devtools (data-playground-console).
  */
 (function () {
   "use strict";
@@ -46,14 +53,129 @@
     }
   }
 
+  // ------------------------------------------------------- syntax highlighting
+  // A tiny, dependency-free tokeniser for the subset of JavaScript a starter
+  // and a learner's solution actually use. It is deliberately not a full
+  // grammar: it only has to make a 40-line starter readable, not compile it.
+  var KEYWORDS = /\b(?:const|let|var|function|return|if|else|for|while|of|in|new|typeof|class|export|default|import|from|async|await|try|catch|throw|switch|case|break|continue|this|null|undefined|true|false|=>)\b/;
+
+  function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function highlight(code) {
+    var out = "";
+    var re = /(\/\/[^\n]*)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(\d+(?:\.\d+)?)\b|([A-Za-z_$][\w$]*)/g;
+    var last = 0;
+    var m;
+    while ((m = re.exec(code)) !== null) {
+      out += escapeHtml(code.slice(last, m.index));
+      if (m[1]) {
+        out += '<span class="tok-comment">' + escapeHtml(m[1]) + "</span>";
+      } else if (m[2]) {
+        out += '<span class="tok-string">' + escapeHtml(m[2]) + "</span>";
+      } else if (m[3]) {
+        out += '<span class="tok-number">' + escapeHtml(m[3]) + "</span>";
+      } else if (KEYWORDS.test(m[4])) {
+        out += '<span class="tok-keyword">' + escapeHtml(m[4]) + "</span>";
+      } else {
+        out += escapeHtml(m[4]);
+      }
+      last = m.index + m[0].length;
+    }
+    out += escapeHtml(code.slice(last));
+    return out;
+  }
+
+  function syncHighlight(editor, pre) {
+    if (!pre) return;
+    pre.innerHTML = highlight(editor.value) + "\n";
+    pre.scrollTop = editor.scrollTop;
+    pre.scrollLeft = editor.scrollLeft;
+  }
+
+  // ------------------------------------------------------------- console pane
+  function makeConsole(root) {
+    var pane = root.querySelector("[data-playground-console]");
+    var body = root.querySelector("[data-playground-console-body]");
+    if (!pane || !body) return null;
+    var lines = 0;
+    return {
+      show: function () { pane.hidden = false; },
+      clear: function () { body.innerHTML = ""; lines = 0; },
+      line: function (text) {
+        var item = el("div", "playground__console-line", String(text));
+        body.appendChild(item);
+        lines += 1;
+        body.scrollTop = body.scrollHeight;
+      },
+      hasLines: function () { return lines > 0; }
+    };
+  }
+
+  // ------------------------------------------------------------ resize handle
+  // Pointer events so mouse, touch and pen all work from one handler, plus
+  // arrow keys so the handle is operable without a pointer at all — a
+  // drag-only affordance would be invisible to anyone on a keyboard.
+  var MIN_EDITOR_H = 80;
+  var KEY_STEP = 24;
+
+  function setEditorHeight(editor, px) {
+    editor.style.height = Math.max(MIN_EDITOR_H, px) + "px";
+  }
+
+  function wireResize(editor, handle) {
+    if (!handle) return;
+    var startY = 0;
+    var startH = 0;
+
+    handle.addEventListener("pointerdown", function (e) {
+      startY = e.clientY;
+      startH = editor.offsetHeight;
+      handle.setPointerCapture(e.pointerId);
+      document.body.classList.add("playground__resizing");
+      e.preventDefault();
+    });
+    handle.addEventListener("pointermove", function (e) {
+      if (!handle.hasPointerCapture(e.pointerId)) return;
+      setEditorHeight(editor, startH + (e.clientY - startY));
+    });
+    function release(e) {
+      if (handle.hasPointerCapture(e.pointerId)) handle.releasePointerCapture(e.pointerId);
+      document.body.classList.remove("playground__resizing");
+    }
+    handle.addEventListener("pointerup", release);
+    handle.addEventListener("pointercancel", release);
+
+    handle.addEventListener("keydown", function (e) {
+      var step = e.key === "ArrowDown" ? KEY_STEP : e.key === "ArrowUp" ? -KEY_STEP : 0;
+      if (!step) return;
+      setEditorHeight(editor, editor.offsetHeight + step);
+      e.preventDefault();
+    });
+  }
+
   /**
    * Import the learner's source as a real ES module, then hand the module
-   * namespace to the question's tests.
+   * namespace to the question's tests. console.log calls made while the module
+   * body runs (and while the tests run) are forwarded to the console pane.
    */
-  async function runTests(slug, source) {
+  async function runTests(slug, source, consolePane) {
     var blob = new Blob([source], { type: "text/javascript" });
     var url = URL.createObjectURL(blob);
+    var originalLog = window.console.log;
+    var originalError = window.console.error;
     try {
+      if (consolePane) {
+        window.console.log = function () {
+          originalLog.apply(window.console, arguments);
+          consolePane.line(Array.prototype.slice.call(arguments).join(" "));
+        };
+        window.console.error = function () {
+          originalError.apply(window.console, arguments);
+          consolePane.line("error: " + Array.prototype.slice.call(arguments).join(" "));
+        };
+      }
       var subject = await import(/* webpackIgnore: true */ url);
       var tests = await import(/* webpackIgnore: true */ base(slug) + "tests.js");
       var runner = tests.default || tests.tests;
@@ -66,6 +188,8 @@
       }
       return results;
     } finally {
+      window.console.log = originalLog;
+      window.console.error = originalError;
       URL.revokeObjectURL(url);
     }
   }
@@ -106,9 +230,14 @@
     var output = root.querySelector("[data-playground-output]");
     var runBtn = root.querySelector("[data-playground-run]");
     var resetBtn = root.querySelector("[data-playground-reset]");
+    var painted = root.querySelector("[data-playground-highlight]");
+    var resize = root.querySelector("[data-playground-resize]");
+    var consolePane = makeConsole(root);
     if (!editor || !output || !runBtn) return;
 
     var pristine = "";
+
+    wireResize(editor, resize);
 
     fetch(base(slug) + "starter.js")
       .then(function (res) {
@@ -121,17 +250,26 @@
         editor.value = draft != null ? draft : text;
         editor.removeAttribute("disabled");
         runBtn.removeAttribute("disabled");
+        syncHighlight(editor, painted);
       })
       .catch(function (err) {
         fail(output, String(err && err.message ? err.message : err));
       });
 
-    editor.addEventListener("input", function () { writeDraft(slug, editor.value); });
+    editor.addEventListener("input", function () {
+      writeDraft(slug, editor.value);
+      syncHighlight(editor, painted);
+    });
+    editor.addEventListener("scroll", function () { syncHighlight(editor, painted); });
 
     runBtn.addEventListener("click", function () {
       output.textContent = "Running…";
-      runTests(slug, editor.value)
-        .then(function (results) { render(output, results); })
+      if (consolePane) consolePane.clear();
+      runTests(slug, editor.value, consolePane)
+        .then(function (results) {
+          render(output, results);
+          if (consolePane && consolePane.hasLines()) consolePane.show();
+        })
         .catch(function (err) { fail(output, String(err && err.stack ? err.stack : err)); });
     });
 
@@ -140,6 +278,8 @@
         editor.value = pristine;
         writeDraft(slug, pristine);
         output.innerHTML = "";
+        if (consolePane) { consolePane.clear(); consolePane.show(); }
+        syncHighlight(editor, painted);
       });
     }
   }

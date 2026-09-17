@@ -181,6 +181,24 @@ checks:
     required: true
     threshold: 1.0
     why: "A slug is a permanent URL. `quiz-sample-1` passes every other check and tells nobody what the page contains."
+  - id: content.company_guides
+    scope: cumulative
+    requires: [bank.formats]
+    owns: ["docs/guides/*"]
+    group: content
+    weight: 2
+    required: true
+    threshold: 4
+    why: "Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it."
+  - id: content.guides_honest
+    scope: incremental
+    requires: [content.company_guides]
+    owns: ["docs/guides/*"]
+    group: content
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A company guide asserts a named third party's hiring process. It must say on the page that the loop is the commonly reported shape, not sourced from or endorsed by the company, and subject to change — the caveat is the first thing edited out for looking untidy."
   - id: content.house_rules
     scope: incremental
     owns: ["docs/practice/*", "docs/playbooks/*"]
@@ -584,6 +602,15 @@ checks:
   # yet. They drag the composite so the gap stays visible, never block a
   # contribution, and `--next` hands them out after everything required — which
   # is how the cluster grows into them one at a time instead of all at once.
+  - id: workspace.editor_affordances
+    scope: incremental
+    requires: [functional.playground]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html", "docs/_sass/components/practice.scss"]
+    group: workspace
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The workspace must have syntax highlighting, a resizable editor and a console pane, so a learner debugging with console.log does not have to open devtools."
   - id: workspace.framework_runtime
     scope: incremental
     requires: [functional.playground]
@@ -593,24 +620,6 @@ checks:
     required: true
     threshold: 1.0
     why: "A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them."
-  - id: workspace.editor_affordances
-    scope: cumulative
-    requires: [functional.playground]
-    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html"]
-    group: frontier
-    weight: 2
-    required: false
-    threshold: 1.0
-    why: "The workspace should have syntax highlighting, a resizable editor and a console pane. Today it is a textarea, and a learner debugging with console.log has to open devtools."
-  - id: content.company_guides
-    scope: cumulative
-    requires: [bank.formats]
-    owns: ["docs/guides/*"]
-    group: frontier
-    weight: 2
-    required: false
-    threshold: 4
-    why: "Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it."
 
   # ------------------------------------------- the AI-harness axis (ours, not GFE's)
   - id: harness.skill_map
@@ -638,6 +647,14 @@ checks:
     required: false
     threshold: 0.50
     why: "At least {threshold:.0%} of the Agent Skills in skills/ should be exercised by a question."
+  - id: harness.scoping_probe
+    scope: cumulative
+    group: harness
+    weight: 0
+    required: false
+    fixture: true
+    threshold: 1.0
+    why: "A fixture, not a capability: it always fails, so `harness.scoping` has a target whose verdict is known in advance. It is skipped unless named with --only, so it never reaches the report, the composite or --next."
   - id: harness.scoping
     scope: incremental
     owns: ["harness/check_harness.py", "harness/capabilities.yml"]

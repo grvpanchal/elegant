@@ -125,6 +125,8 @@ The reference layer under `docs/{ui,server,state}/`. Practice without a concept 
 | `content.concept_docs` | 2 | yes | cumulative | `45` | A reference layer is the prerequisite for practice: >= `45` concept docs under docs/{ui,server,state}. |
 | `content.concept_quiz` | 2 | yes | cumulative | 90% | At least 90% of concept docs must carry an inline MCQ (recall before practice). |
 | `content.skill_registry_sync` | 1 | yes | incremental | all | docs/_data/skills.yml must list exactly the skills/<slug>/SKILL.md folders that exist. |
+| `content.company_guides` | 2 | yes | cumulative | `4` | Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it. |
+| `content.guides_honest` | 2 | yes | incremental | all | A company guide asserts a named third party's hiring process. It must say on the page that the loop is the commonly reported shape, not sourced from or endorsed by the company, and subject to change — the caveat is the first thing edited out for looking untidy. |
 | `content.house_rules` | 2 | yes | incremental | all | No page may teach a claim this repo already knows is false — see house_rules. |
 
 ### question_bank
@@ -164,6 +166,7 @@ The in-browser workspace and the executable contract behind it. `tests.js` runs 
 | `workspace.include` | 1 | yes | incremental | all | docs/_includes/code-playground.html must exist so a question page can embed the workspace. |
 | `workspace.wired` | 2 | yes | incremental | all | Every coding question must embed the playground with a ```js starter and a ```js tests block. |
 | `workspace.tests_pass` | 4 | yes | incremental | all | Executable: each coding question's reference solution must pass its own tests under Node. A question whose tests do not pass is not a question. |
+| `workspace.editor_affordances` | 2 | yes | incremental | all | The workspace must have syntax highlighting, a resizable editor and a console pane, so a learner debugging with console.log does not have to open devtools. |
 | `workspace.framework_runtime` | 3 | yes | incremental | all | A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them. |
 
 ### frameworks
@@ -254,15 +257,6 @@ Accounts on a site with no server. greatfrontend.com has real ones; this is stat
 | `account.portable` | 3 | yes | incremental | all | A profile and its progress must survive an export / wipe / import round trip — with no server to sync to, that IS the account following you. |
 | `account.guest_progress` | 2 | yes | incremental | all | Accounts arrived after progress did. Signing in and out must not strand work done before a profile existed. |
 | `account.provider_seam` | 2 | yes | incremental | all | A third-party provider must be swappable through registerProvider, with progress following its identity. An abstraction nobody has exercised is not a seam. |
-
-### frontier
-
-Parity targets the site does not have yet. Declared and measured so the gap stays visible, `required: false` so they never block a contribution, and ordered after everything required so the cluster grows into them one at a time instead of all at once. A frontier check is a real measurement — when someone builds the feature it turns green without being rewritten.
-
-| check | weight | required | scope | threshold | fails when |
-|---|---|---|---|---|---|
-| `workspace.editor_affordances` | 2 | no | cumulative | all | The workspace should have syntax highlighting, a resizable editor and a console pane. Today it is a textarea, and a learner debugging with console.log has to open devtools. |
-| `content.company_guides` | 2 | no | cumulative | `4` | Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it. |
 
 ### harness
 

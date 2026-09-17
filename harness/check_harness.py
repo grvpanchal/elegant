@@ -1290,6 +1290,36 @@ def _content_company_guides(site: Site, threshold):
 
 
 # ---- the AI-harness axis
+@check("content.guides_honest")
+def _c_guides_honest(site: Site, threshold):
+    """A guide about a real company's loop has to admit where it came from.
+
+    `content.company_guides` counts guides and checks they map questions. It
+    cannot tell the difference between a loop someone reported and a loop a
+    language model inferred, and the four guides in this repo were written by a
+    model with no source at all — they still assert "X's loop is four rounds"
+    in the voice of someone who knows. The caveat is what makes that honest,
+    and it is exactly the paragraph that gets deleted for spoiling the tone,
+    so it is measured. Same reason as `account.honest_copy`.
+    """
+    guides = md_files(site.docs / "guides")
+    if not guides:
+        return 1.0, [], "no company guides yet"
+    needed = [("not sourced from", "who it is not from"),
+              ("commonly reported", "that the shape is reported, not given"),
+              ("change without notice", "that hiring processes change")]
+    deficits = []
+    for g in guides:
+        text = g.read_text(encoding="utf-8").lower()
+        gaps = [label for phrase, label in needed if phrase not in text]
+        if gaps:
+            deficits.append(f"docs/guides/{g.name} does not say {'; '.join(gaps)}. "
+                            "Add the provenance note rather than softening the claims.")
+    honest = len(guides) - len(deficits)
+    return ratio(honest, len(guides)), deficits[:MAX_DEFICITS], \
+        f"{honest}/{len(guides)} guides say where the loop came from"
+
+
 @check("harness.skill_map")
 def _h_skill_map(site: Site, threshold):
     known = set(site.skill_slugs)
@@ -1351,6 +1381,19 @@ COUNT_CLAIM_RE = re.compile(r"(\d+)\s+capabilit(?:y|ies)\b", re.I)
 COUNT_CLAIM_FILES = ("harness/README.md", "CLAUDE.md", "README.md")
 
 
+@check("harness.scoping_probe")
+def _h_scoping_probe(site: Site, threshold):
+    """Always fails, on purpose. `harness.scoping` needs a target whose verdict
+    it knows in advance, so it can assert that the scoping flags changed the
+    EXIT CODE rather than the site. It used to borrow a real frontier
+    capability for that, which worked right up until someone built the feature:
+    the probe started passing and the self-test reported a regression in the
+    flags that had not happened. A fixture cannot be built, so it cannot lie.
+    `fixture: true` keeps it out of the report, the composite and --next.
+    """
+    return 0.0, ["this fixture always fails; that is what it is for"], "fixture"
+
+
 @check("harness.scoping")
 def _h_scoping(site: Site, threshold):
     """The scoping flags must still discriminate, because they are load-bearing.
@@ -1364,7 +1407,8 @@ def _h_scoping(site: Site, threshold):
     A regression in either is silent and expensive, so the checker runs itself
     both ways on a cheap static capability and asserts the exit codes differ.
     """
-    probe = "content.company_guides"          # cumulative, required:false, no browser
+    probe = "harness.scoping_probe"           # a fixture: cumulative, required:false,
+                                             # no browser, and failing by construction
     base = [sys.executable, str(HARNESS_DIR / "check_harness.py"),
             "--only", probe, "--scope", "incremental"]
     env = {**os.environ, "BENZENE_INSTRUCTION": ""}
@@ -1385,8 +1429,21 @@ def _h_scoping(site: Site, threshold):
         deficits.append(f"`--must {probe}` did not fail even though `{probe}` is failing. A "
                         "capability a task was dispatched to fix has to block that task, "
                         "whatever its spec-level `required` says.")
+
+    # Third arm: --next must report work by its exit code, not only in its text.
+    try:
+        nxt = subprocess.run([sys.executable, str(HARNESS_DIR / "check_harness.py"),
+                              "--next", "--only", probe],
+                             cwd=str(ROOT), capture_output=True, text=True, timeout=120, env=env)
+    except (subprocess.TimeoutExpired, OSError) as exc:
+        return 0.0, [f"could not run --next against itself: {exc}"], "error"
+    if nxt.returncode == 0 and "fails" in nxt.stdout:
+        deficits.append("`--next` printed a deficit and still exited 0. An agent's discovery "
+                        "verifier reads the exit code, so work that is failing but not "
+                        "`required` would never be handed out at all.")
+
     return (1.0 if not deficits else 0.0), deficits, \
-        f"out-of-scope exit {out_of_scope.returncode}, dispatched exit {dispatched.returncode}"
+        f"out-of-scope {out_of_scope.returncode}, dispatched {dispatched.returncode}, --next {nxt.returncode}"
 
 
 @check("harness.agent_manifest")
@@ -1441,9 +1498,13 @@ def _h_docs(site: Site, threshold):
     if not path.is_file():
         return 0.0, ["harness/README.md is missing"], "missing"
     src = path.read_text(encoding="utf-8")
-    total = len(site.spec["checks"])
+    # A fixture is scaffolding for another check, not a capability of the site.
+    # Counting it would inflate every "N capabilities" sentence in the repo and
+    # put a check nobody can ever make pass into the generated README.
+    real = [c for c in site.spec["checks"] if not c.get("fixture")]
+    total = len(real)
     deficits = [f"harness/README.md does not document check `{cid}`"
-                for cid in (c["id"] for c in site.spec["checks"]) if cid not in src]
+                for cid in (c["id"] for c in real) if cid not in src]
     documented = total - len(deficits)
 
     # Every prose file that states a capability count must state the real one.
@@ -1525,6 +1586,12 @@ def run(spec: dict, only: set[str], groups: set[str], want_build: bool,
     for c in spec["checks"]:
         cid = c["id"]
         if only and cid not in only:
+            continue
+        # A fixture is not a capability of the site: it exists so a check can
+        # run the checker against a known-failing target. It would otherwise sit
+        # in the report forever, drag the composite and be handed out by --next
+        # as work nobody can ever finish, so it runs only when named outright.
+        if c.get("fixture") and cid not in only:
             continue
         if groups and c.get("group") not in groups:
             continue
@@ -1701,6 +1768,13 @@ def main(argv: list[str] | None = None) -> int:
     elif args.next_:
         text = next_deficit(results, spec)
         print(text or f"All capabilities pass (composite {comp:.3f}).")
+        # --next is work DISCOVERY, not a gate. Its exit code has to mean
+        # "there is work to hand out", not "the site passes" — otherwise a
+        # capability that is failing but not `required` prints here and exits
+        # 0, an agent's discovery verifier reads that as a clean workspace, and
+        # the frontier becomes unreachable the moment the composite clears
+        # threshold. It did exactly that, silently, for a whole run.
+        return 1 if text else 0
     else:
         print(f"Frontend AI Harness — capability guardrail (scope: {args.scope})")
         print(report_text(results, spec, args.verbose, args.failures_only))

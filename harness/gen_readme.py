@@ -197,8 +197,12 @@ def fmt_threshold(t) -> str:
 
 def main() -> int:
     spec = yaml.safe_load(SPEC.read_text(encoding="utf-8"))
+    # Fixtures are scaffolding for other checks, not capabilities of the site.
+    # `harness.docs` counts them out of every "N capabilities" claim, so the
+    # generated README has to leave them out too or the two disagree.
+    real = [c for c in spec["checks"] if not c.get("fixture")]
     groups: dict[str, list[dict]] = {}
-    for c in spec["checks"]:
+    for c in real:
         groups.setdefault(c["group"], []).append(c)
 
     out = [PROLOGUE.replace("{pass_threshold}", str(spec["pass_threshold"]))]
@@ -219,7 +223,7 @@ def main() -> int:
     out.append(EPILOGUE)
 
     OUT.write_text("\n".join(out), encoding="utf-8")
-    print(f"wrote {OUT.relative_to(HARNESS.parent)} ({len(spec['checks'])} capabilities)")
+    print(f"wrote {OUT.relative_to(HARNESS.parent)} ({len(real)} capabilities)")
     return 0
 
 

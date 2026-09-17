@@ -75,12 +75,20 @@ tools: [list_workspace_files, read_workspace_file, write_workspace_file]
 # Blended $/Mtok at roughly this workload's 3:1 input:output ratio, and the
 # smoke test each one passed (write an ES module, reply with code only):
 #
-#   openai/gpt-oss-120b            0.070   1.5s  correct   <- primary
-#   deepseek/deepseek-v4-flash     0.075   3.2s  correct
+#   deepseek/deepseek-v4-flash-0731 0.075  3.2s  correct   <- primary
+#   openai/gpt-oss-120b            0.070   1.5s  correct
 #   openai/gpt-oss-20b             0.055   1.3s  correct   <- judge
 #   mistralai/mistral-nemo         0.022   1.4s  correct   <- router (cheapest famous)
 #   qwen/qwen3.7-flash             0.055  11.0s  EMPTY content — reasoning ate the
 #                                                budget, so it is not in the roster
+#
+# gpt-oss-120b was primary first and did not work out. Given tools it returns
+# tool calls and nothing else, indefinitely — it kept calling tools with no
+# `tools` in the body at all — so a task cost $0.0128 and produced no answer.
+# DeepSeek was the only model in the probe that returned content AND tool calls,
+# and only with `effort: low`; at medium or above it behaves like the others.
+# That setting had no route to an OpenAI-compatible provider until now, which is
+# why the roster could not express what the measurement showed.
 #
 # price_per_mtok is now real, which makes max_cost_usd a real gate for the
 # first time: at these prices a task costs around $0.003, so the 0.25 ceiling
@@ -88,19 +96,21 @@ tools: [list_workspace_files, read_workspace_file, write_workspace_file]
 models:
   - role: primary
     provider: openrouter
-    id: openai/gpt-oss-120b
+    id: deepseek/deepseek-v4-flash-0731
+    effort: low                # the setting that makes it answer as well as call tools
     fallback_ids:
-      - deepseek/deepseek-v4-flash-0731
+      - openai/gpt-oss-120b
       - openai/gpt-oss-20b
       - nvidia/nemotron-3-super-120b-a12b:free
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 12000
     temperature: 0.3
     timeout_s: 240
-    price_per_mtok: [0.037, 0.170]
+    price_per_mtok: [0.060, 0.120]
   - role: judge
     provider: openrouter
     id: openai/gpt-oss-20b
+    effort: low                # judging a rubric is not a reasoning problem
     fallback_ids: [mistralai/mistral-nemo, cohere/north-mini-code:free]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 3000
@@ -110,6 +120,7 @@ models:
   - role: router
     provider: openrouter
     id: mistralai/mistral-nemo
+    effort: low                # routing is a one-word classification
     fallback_ids: [openai/gpt-oss-20b, inclusionai/ling-3.0-flash-vl:free]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 1500
@@ -117,12 +128,13 @@ models:
     price_per_mtok: [0.019, 0.030]
   - role: evolver
     provider: openrouter
-    id: openai/gpt-oss-120b
-    fallback_ids: [deepseek/deepseek-v4-flash-0731, openai/gpt-oss-20b]
+    id: deepseek/deepseek-v4-flash-0731
+    effort: low
+    fallback_ids: [openai/gpt-oss-120b, openai/gpt-oss-20b]
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 8000
     timeout_s: 240
-    price_per_mtok: [0.037, 0.170]
+    price_per_mtok: [0.060, 0.120]
 
 hooks:
   - event: on_divide

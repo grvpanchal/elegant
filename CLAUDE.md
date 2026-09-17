@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 63 capabilities benchmarked against
+site under `docs/` must be able to do — 64 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -131,16 +131,29 @@ untidy. `docs/assets/js/account.js` owns identity; `progress.js` reads the
 namespace from it, so **account.js must load before progress.js** on any page
 that shows progress.
 
-**`frontier`** — parity targets the site does not have yet (editor affordances,
-company guides). A capability that gets built **leaves** this group: it moves to
-the group it belongs in and becomes `required`, which is what stops the frontier
-being a place things go to be forgotten. They are declared and
-measured so the gap stays visible, `required: false` so they never block a
-contribution, and `scope: cumulative` so `--next` hands them out only after
+**`frontier`** — parity targets the site does not have yet. **The group is
+currently empty**: editor affordances and company guides were its two members
+and both have been built, so both left. That departure is the rule, not a
+tidy-up — a capability that gets built moves to the group it belongs in and
+becomes `required`, which is what stops the frontier being a place things go to
+be forgotten. While a frontier item is open it is declared and measured so the
+gap stays visible, `required: false` so it never blocks an unrelated
+contribution, and `scope: cumulative` so `--next` hands it out only after
 everything required is green. **A frontier check is a real measurement, not a
 placeholder**: when someone builds the feature it turns green without being
 rewritten. The composite sits below `pass_threshold` while the frontier is
 open, and that is the honest reading — do not lower the threshold to go green.
+
+Promotion is not free. A frontier check written to prove a gap exists is often
+a *presence* check — `workspace.editor_affordances` originally passed if three
+`<div>`s carried the right `data-` attributes, which is fine as evidence of
+absence and worthless as evidence of a working feature. Promoting it meant
+rewriting the scenario to assert the overlay paints the editor's real text, the
+handle actually resizes from the keyboard, and `console.log` actually reaches
+the pane. **Tightening a scenario on promotion is the one edit the "never edit
+a scenario to make it pass" rule permits** — it raises the standard rather than
+lowering it — and it is the moment to do it, because after promotion the check
+is `required` and nobody looks again.
 
 `required: false` stops a frontier item blocking an unrelated contribution. It
 must **not** stop it blocking the task sent to build it, or a cell writes one
@@ -149,6 +162,16 @@ did exactly that for four rounds. So a capability named in `--must` (or in
 `$BENZENE_INSTRUCTION`) is required *for that run* whatever the spec says, and
 `harness.scoping` runs the checker against itself both ways to prove the two
 behaviours still differ.
+
+It runs those arms against `harness.scoping_probe`, a capability carrying
+`fixture: true` that always fails. A fixture is scaffolding, not a capability:
+it is skipped unless `--only` names it, so it never reaches the report, the
+composite, `--next` or the capability count. It exists because the self-test
+needs a target whose verdict is known in advance, and it used to borrow a real
+frontier capability for that — which worked until someone built the feature and
+the self-test reported a regression in flags that had not regressed. **Do not
+point `harness.scoping` at a real capability again**, and do not add a second
+fixture without the same justification.
 
 ## Training-site sections under `docs/`
 
@@ -167,6 +190,11 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
   `plan_horizons` in the spec, so a plan named `three-months` cannot be an
   afternoon.
 - `docs/playbooks/` — long reads, `layout: doc`, 800+ words of body prose.
+- `docs/guides/` — company interview-loop guides, `layout: doc`, each naming the
+  rounds and linking the bank questions that map to them. They assert a named
+  third party's hiring process, so `content.guides_honest` requires each one to
+  carry the provenance note (commonly reported, not sourced from the company,
+  subject to change). Soften the claims or delete a guide; never delete the note.
 - `docs/assets/js/{playground,progress,practice-index,certificate}.js` — the
   workspace runner, localStorage progress, the bank's client-side filtering,
   and the printable certificate. No backend: the site is static.
