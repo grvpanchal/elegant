@@ -642,10 +642,19 @@ checks:
     required: false
     threshold: 1.0
     why: "Signing in must be a real Authorization Code + PKCE flow against a configured issuer — response_type=code, an S256 challenge, state and nonce — not a typed name."
+  - id: account.verified_credentials
+    scope: cumulative
+    requires: [account.provider_seam]
+    owns: ["docs/assets/js/account-supabase.js", "docs/assets/js/account-supabase-page.js", "docs/account/*"]
+    group: frontier
+    weight: 3
+    required: false
+    threshold: 1.0
+    why: "Signing in must cost a credential the site did not invent — checked by the provider, never by this page — and a wrong password must be refused out loud. A name you type is not a credential."
   - id: account.token_verified
     scope: cumulative
-    requires: [account.oauth_pkce]
-    owns: ["docs/assets/js/account-oidc.js"]
+    requires: [account.verified_credentials]
+    owns: ["docs/assets/js/account-supabase.js"]
     group: frontier
     weight: 3
     required: false
@@ -653,8 +662,8 @@ checks:
     why: "The ID token's signature must be checked against the issuer's JWKS and its iss/aud matched. Decoding a JWT's payload is base64, not authentication, and a client that only decodes accepts an identity anyone can type."
   - id: account.session_expiry
     scope: cumulative
-    requires: [account.oauth_pkce]
-    owns: ["docs/assets/js/account-oidc.js", "docs/account/*"]
+    requires: [account.verified_credentials]
+    owns: ["docs/assets/js/account-supabase.js", "docs/account/*"]
     group: frontier
     weight: 2
     required: false
@@ -671,12 +680,45 @@ checks:
   - id: account.identity_sync
     scope: cumulative
     requires: [account.token_verified]
-    owns: ["docs/assets/js/account-oidc.js", "docs/assets/js/progress.js"]
+    owns: ["docs/assets/js/account-supabase.js", "docs/assets/js/progress.js"]
     group: frontier
     weight: 3
     required: false
     threshold: 1.0
     why: "Progress recorded under a verified identity must be there on another device. Credentials that do not carry progress leave the learner exactly where a named local profile already left them."
+
+  # Parity gaps found by auditing greatfrontend.com's advertised features
+  # against ours. It calls its workspace "customizable: resize, syntax
+  # highlighting, theming, keyboard shortcuts" — the first two are built, these
+  # are the rest of that sentence — and ships curated named lists (GFE 75,
+  # Blind 75) that are not the same thing as our time-boxed study plans.
+  - id: workspace.theming
+    scope: cumulative
+    requires: [workspace.editor_affordances]
+    owns: ["docs/_sass/**", "docs/assets/css/**", "docs/_includes/code-playground.html"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 1.0
+    why: "The site must follow prefers-color-scheme in both directions, workspace included. A learner practising at night gets a white rectangle, and that is where they stop."
+  - id: workspace.shortcuts
+    scope: cumulative
+    requires: [workspace.editor_affordances]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 1.0
+    why: "Ctrl/Cmd+Enter must run the question's tests from the editor, and the page must say so. Every editor a candidate has used runs on that chord."
+  - id: bank.curated_lists
+    scope: cumulative
+    requires: [bank.formats]
+    owns: ["docs/_data/lists.yml", "docs/lists/*"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 2
+    why: "Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first."
 
   # ------------------------------------------- the AI-harness axis (ours, not GFE's)
   - id: harness.skill_map

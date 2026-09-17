@@ -1,0 +1,22 @@
+{%- comment -%}
+The identity provider, in the one order that works.
+
+account.js defines the seam and must be first. The config assignment must come
+before account-supabase.js, which reads it at load and stays dormant without it
+— that is what keeps a fork with no Supabase project working. progress.js reads
+the namespace from account.js, and progress-sync.js needs both it and the
+provider, so it is last.
+
+`||` on the assignment lets an embedder — or the guardrail, whose browser has no
+outbound network and points this at a local stand-in — override the project.
+{%- endcomment -%}
+<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
+{%- if site.supabase.url and site.supabase.anon_key %}
+<script type="text/javascript">
+  window.ELEGANT_SUPABASE = window.ELEGANT_SUPABASE ||
+    { url: {{ site.supabase.url | jsonify }}, anonKey: {{ site.supabase.anon_key | jsonify }} };
+</script>
+{%- endif %}
+<script type="text/javascript" src="{{ '/assets/js/account-supabase.js' | relative_url }}"></script>
+<script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
+<script type="text/javascript" src="{{ '/assets/js/progress-sync.js' | relative_url }}"></script>

@@ -20,6 +20,45 @@ other's progress, and an export moves everything you have done to another
 device.
 </p>
 
+<h2>Sign in with an account</h2>
+
+<p class="account-lede">
+If this deployment is configured with an identity provider, you can sign in with
+a real credential instead. That <em>is</em> verified: the password is checked by
+the provider, never by this page, and the session it returns is accepted only
+after its signature is checked against the provider's published keys. A token
+this site merely decoded would prove nothing — the payload of a sign-in token is
+readable by anyone, so reading a name out of it is not the same as knowing it.
+</p>
+
+<p class="account-lede">
+The key this page ships is a <strong>publishable</strong> key. It is meant to be
+public and is safe to read, because the database enforces row-level security:
+the key alone cannot reach anybody's rows, only a verified sign-in can. If you
+are forking this site, that is the setting to check first.
+</p>
+
+<div class="account-panel" data-account-supabase hidden>
+  <form class="account-form" data-account-supabase-form>
+    <label class="account-form__field">
+      <span>Email</span>
+      <input type="email" data-account-supabase-email autocomplete="email" required>
+    </label>
+    <label class="account-form__field">
+      <span>Password</span>
+      <input type="password" data-account-supabase-password autocomplete="current-password" required minlength="8">
+    </label>
+    <button type="submit" data-account-supabase-signin>Sign in</button>
+    <button type="button" data-account-supabase-signup>Create an account</button>
+    <p class="account-form__error" role="alert" data-account-supabase-error hidden></p>
+  </form>
+</div>
+
+<p class="account-lede" data-account-supabase-absent>
+This deployment has no identity provider configured, so only device profiles are
+available here.
+</p>
+
 <div class="account-panel" data-account-widget data-signed-in="false">
   <div data-account-signed-out>
     <h2>Sign in</h2>
@@ -66,6 +105,6 @@ version of "your account follows you" on a site with nowhere to sync to.
 
 {% include progress-tracker.html all=true title="This profile" reset=true %}
 
-<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
-<script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
+{% include identity-scripts.html %}
 <script type="text/javascript" src="{{ '/assets/js/account-page.js' | relative_url }}"></script>
+<script type="text/javascript" src="{{ '/assets/js/account-supabase-page.js' | relative_url }}"></script>

@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 69 capabilities benchmarked against
+site under `docs/` must be able to do — 73 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -120,16 +120,36 @@ out before a missing question.
 
 Two groups need context before you change them.
 
-**`account`** — greatfrontend.com has real accounts; this site is static Jekyll
-on GitHub Pages with no server, so an account here is a *named profile on this
-device*: progress namespaced per profile, a portable JSON export that carries a
-profile to another browser, and `registerProvider` as the seam a hosted
-deployment swaps for a real identity provider. It is **not authentication** —
-nothing is verified — and `account.honest_copy` fails if `docs/account/index.md`
-stops saying so, because that caveat is exactly what gets edited out for looking
-untidy. `docs/assets/js/account.js` owns identity; `progress.js` reads the
-namespace from it, so **account.js must load before progress.js** on any page
-that shows progress.
+**`account`** — there are now two ways to be someone here, and they are not the
+same thing.
+
+A **device profile** (`account.js`, provider `local`) is a name you type:
+progress namespaced per profile, a portable JSON export, no verification at all.
+`account.honest_copy` fails if `docs/account/index.md` stops saying so, because
+that caveat is exactly what gets edited out for looking untidy.
+
+A **real account** (`account-supabase.js`, provider `supabase`) is a credential
+checked by Supabase. The rule that file exists to enforce: **a token you decoded
+is not a token you verified.** A JWT payload is base64, so reading a name out of
+it proves nothing — every session is checked against the project's published
+JWKS (ES256 / EC P-256) for signature, `iss` and `exp` before it is allowed to
+mean anything, on every page load and not just at sign-in. `progress-sync.js`
+then mirrors progress to the identity, so it reaches the next browser.
+
+Load order is fixed and lives in **one** place, `_includes/identity-scripts.html`:
+account.js (the seam) → the `window.ELEGANT_SUPABASE` config → account-supabase.js
+→ progress.js (reads the namespace from account.js) → progress-sync.js (needs
+both). The config is assigned with `||` so an embedder, or the guardrail, can
+override it. Two mistakes already made here, both silent: the provider registers
+on `window.ElegantAccount`, **not** `window.Account`; and `restore()` runs inside
+the provider rather than the page controller, because every page that records
+progress needs to know who is signed in and only the account page has a
+controller.
+
+The **publishable key is in `_config.yml` on purpose** — `sb_publishable_*` is
+designed to ship in client code. It is safe *only* while row-level security is
+on, because the key alone is what the database sees. Never add a service-role
+key: `account.no_client_secret` scans everything under `docs/` for exactly that.
 
 **`frontier`** — parity targets the site does not have yet. Editor affordances
 and company guides were its first two members; both were built and both left,
@@ -137,31 +157,43 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It now holds **real credentials**, the largest remaining gap against
-greatfrontend.com. An account here is a named local profile: nothing is
-verified and nothing follows a learner off this browser, which is a different
-product from theirs. A static site on GitHub Pages cannot check a password, but
-it does not have to — OAuth 2.0 Authorization Code + PKCE exists for public
-clients that cannot keep a secret, and `registerProvider` in `account.js` is
-already the seam. The five capabilities are `account.oauth_pkce` (the flow),
-`account.token_verified` (the ID token's signature checked against the issuer's
-JWKS, `iss`/`aud` matched), `account.session_expiry`, `account.no_client_secret`
-(a file check: everything under `docs/` is published, so a secret there is
-leaked, not configured) and `account.identity_sync` (progress that reaches a
-second device, without which credentials buy the learner nothing a named
-profile did not).
+It holds what is left after the credential work landed: `account.oauth_pkce`
+(social sign-in — **blocked on the Supabase project, where every external
+provider is currently disabled**), `workspace.theming`, `workspace.shortcuts`
+and `bank.curated_lists`. The last three came from auditing greatfrontend.com's
+own feature copy against ours; it calls its workspace "customizable: resize,
+syntax highlighting, theming, keyboard shortcuts" and ships curated named lists
+that are not the same thing as our time-boxed plans.
 
-`harness/functional/issuer.mjs` is a **real OIDC issuer in-process** — RS256
-signing, a published JWKS, PKCE enforced at the token endpoint — so these are
-measured against the protocol rather than against a vendor being reachable,
-which also suits a browser with no outbound network. It can mint deliberately
-bad tokens (`flaw: "signature" | "issuer" | "audience" | "expired" | "nonce"`),
-because "does the site verify?" is only answerable by handing it something it
-should refuse. That is what makes `account.token_verified` catch the bug worth
-catching: an implementation that runs a flawless PKCE flow and then
-base64-decodes the ID token without checking it passes `account.oauth_pkce` and
-fails `account.token_verified`, which is exactly the split those two names
-promise. **Do not merge them.**
+### Testing auth without a network
+
+**The guardrail's Chromium has no outbound network.** A `fetch` to supabase.co
+from a page under test fails, every time — verified, not assumed. So the live
+project can never be the test target, and a suite that pointed at it would only
+pass on a laptop with wifi. Two in-process servers stand in:
+
+- `harness/functional/supabase.mjs` — the shapes the site actually uses: GoTrue
+  signup/token/user/logout, a PostgREST-ish `/rest/v1/progress`, and an ES256
+  JWKS, because that is what the real project publishes. A client written
+  against this one verifies against that one. It **enforces row ownership from
+  the token's `sub`**, so a sync implementation that forgets row-level security
+  cannot pass by reading rows it was never entitled to.
+- `harness/functional/issuer.mjs` — a generic OIDC issuer (RS256, PKCE enforced
+  at the token endpoint), for the social-sign-in frontier item.
+
+Both mint deliberately bad tokens on request (`flaw: "signature" | "expired"`,
+plus `"issuer" | "audience" | "nonce"` on the OIDC one), because **"does the
+site verify?" is only answerable by handing it something it should refuse.**
+That is the difference between these and a presence check, and it is checked
+both ways: `account_token_verified` asserts a forged token is refused *and* that
+a correctly signed one is still accepted, because "refuses everything" is not
+verification either.
+
+One trap worth keeping in mind: a scenario that only asserts "not signed in,
+with an error on screen" passes just as happily when the network is broken.
+`account_session_expiry` therefore asserts the signup call and the JWKS fetch
+actually reached the stand-in first. It passed for the wrong reason before that
+was added.
 
 While a frontier item is open it is declared and measured so the
 gap stays visible, `required: false` so it never blocks an unrelated

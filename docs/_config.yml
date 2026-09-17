@@ -17,3 +17,11 @@ google_analytics: "G-R8YKPS191K"
 
 plugins:
   - jekyll-sitemap
+
+# Identity provider for docs/account/. The publishable key is designed to ship
+# in client code and is safe here ONLY because row-level security is on in the
+# project — the key alone reaches no rows, a verified sign-in does. Leave both
+# blank in a fork with no project and the site falls back to device profiles.
+supabase:
+  url: https://ftknnfapxtqqyolggkpc.supabase.co
+  anon_key: sb_publishable_wBAMBBfjDfyKxomO-SJcxQ_hx4HfLMk

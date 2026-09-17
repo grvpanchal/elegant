@@ -1245,9 +1245,12 @@ for _cid, _scenario in (
     ("workspace.framework_runtime", "workspace_framework_runtime"),
     ("workspace.editor_affordances", "workspace_editor_affordances"),
     ("account.oauth_pkce", "account_oauth_pkce"),
+    ("account.verified_credentials", "account_verified_credentials"),
     ("account.token_verified", "account_token_verified"),
     ("account.session_expiry", "account_session_expiry"),
     ("account.identity_sync", "account_identity_sync"),
+    ("workspace.theming", "workspace_theming"),
+    ("workspace.shortcuts", "workspace_shortcuts"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 
@@ -1325,6 +1328,57 @@ def _account_no_client_secret(site: Site, threshold):
     if deficits:
         return 0.0, deficits[:MAX_DEFICITS], f"{len(deficits)} secret(s) in {scanned} published file(s)"
     return 1.0, [], f"no secrets in {scanned} published file(s)"
+
+
+@check("bank.curated_lists")
+def _bank_curated_lists(site: Site, threshold):
+    """A curated list is not a study plan, and the difference is the schedule.
+
+    A plan says "an hour a day for a month". A list says "these forty, in this
+    order, before anything else" — no calendar, no budget, and that is why most
+    people start with one. Measured against the bank so a list cannot name
+    questions that do not exist, which is the failure mode of a hand-written
+    one.
+    """
+    data = site.docs / "_data" / "lists.yml"
+    if not data.is_file():
+        return 0.0, ["docs/_data/lists.yml does not exist. A curated list is a name, a reason "
+                     "to do it, and an ordered set of question slugs from the bank."], "0 lists"
+    try:
+        lists = yaml.safe_load(data.read_text(encoding="utf-8")) or []
+    except yaml.YAMLError as exc:
+        return 0.0, [f"docs/_data/lists.yml does not parse: {exc}"], "unparseable"
+    if isinstance(lists, dict):
+        lists = list(lists.values())
+
+    known = {q["slug"] for q in site.questions if q.get("slug")}
+    deficits, good = [], 0
+    for entry in lists:
+        if not isinstance(entry, dict):
+            deficits.append("docs/_data/lists.yml: every entry needs slug, title, why and questions")
+            continue
+        name = entry.get("slug") or entry.get("title") or "?"
+        missing = [k for k in ("slug", "title", "why", "questions") if not entry.get(k)]
+        if missing:
+            deficits.append(f"list `{name}` is missing {', '.join(missing)}")
+            continue
+        items = entry.get("questions") or []
+        unknown = [q for q in items if q not in known]
+        if unknown:
+            deficits.append(f"list `{name}` names {len(unknown)} question(s) not in the bank: "
+                            + ", ".join(unknown[:4]))
+            continue
+        if len(items) < 10:
+            deficits.append(f"list `{name}` has {len(items)} questions; a curated list people "
+                            "start with is worth at least 10")
+            continue
+        if not (site.docs / "lists" / f"{entry['slug']}.md").is_file():
+            deficits.append(f"list `{name}` has no page at docs/lists/{entry['slug']}.md")
+            continue
+        good += 1
+    if good < threshold:
+        deficits.append(f"{good} usable curated list(s), need {threshold}")
+    return ratio(good, threshold), deficits[:MAX_DEFICITS], f"{good}/{threshold} curated lists"
 
 
 @check("content.company_guides")

@@ -16,6 +16,7 @@ import { createRequire } from "node:module";
 import { writeFileSync } from "node:fs";
 import { serve } from "./server.mjs";
 import { serveIssuer } from "./issuer.mjs";
+import { serveSupabase } from "./supabase.mjs";
 
 const require = createRequire(import.meta.url);
 
@@ -56,6 +57,48 @@ async function bank(page, origin) {
 }
 
 // ---------------------------------------------------------------- scenarios
+// The three below drive the site's REAL provider (Supabase) against a local
+// stand-in, because the guardrail's Chromium has no outbound network — a
+// fetch to supabase.co from a page under test fails every time. Testing the
+// live project would also assert somebody's dashboard settings rather than
+// this site's code. See harness/functional/supabase.mjs.
+const withSupabase = async (page, origin, opts, body) => {
+  const sb = await serveSupabase(opts);
+  try {
+    await page.addInitScript((cfg) => { window.ELEGANT_SUPABASE = cfg; },
+      { url: sb.origin, anonKey: sb.anonKey });
+    await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+    const form = page.locator("[data-account-supabase-form]");
+    ok(await form.count() === 1,
+      "no [data-account-supabase-form] on the account page. Signing in is still typing a " +
+      "name, so nothing is verified and the profile cannot leave this browser.");
+    return await body(sb);
+  } finally {
+    await sb.close();
+  }
+};
+
+const credentials = { email: "learner@example.com", password: "harness-pw-8812" };
+
+const submit = async (page, { email, password }, mode = "signin") => {
+  await page.locator("[data-account-supabase-email]").fill(email);
+  await page.locator("[data-account-supabase-password]").fill(password);
+  await page.locator(mode === "signup"
+    ? "[data-account-supabase-signup]" : "[data-account-supabase-signin]").click();
+  await page.waitForTimeout(900);
+};
+
+const state = (page) => page.evaluate(() => {
+  const w = document.querySelector("[data-account-widget]");
+  const e = document.querySelector("[data-account-supabase-error]");
+  const n = document.querySelector("[data-account-name]");
+  return {
+    signedIn: w ? w.getAttribute("data-signed-in") === "true" : false,
+    error: e && !e.hidden ? (e.textContent || "").trim() : "",
+    name: n ? (n.textContent || "").trim() : "",
+  };
+});
+
 const SCENARIOS = {
   /** The whole point of the workspace: the starter fails, the reference solution passes. */
   async playground(page, origin) {
@@ -587,91 +630,103 @@ const SCENARIOS = {
     }
   },
 
+  /** Signing in must cost a credential the site did not invent. */
+  async account_verified_credentials(page, origin) {
+    return withSupabase(page, origin, {}, async () => {
+      await submit(page, credentials, "signup");
+      let now = await state(page);
+      ok(now.signedIn, `creating an account did not sign anyone in (error: "${now.error}")`);
+      ok(now.name.includes(credentials.email),
+        `signed in, but [data-account-name] shows "${now.name}" rather than the verified email`);
+
+      // The half that matters: a WRONG password must be refused, out loud.
+      // Sign out, THEN reload: the page re-verifies a stored session on load,
+      // so reloading first just signs back in and hides the form.
+      await page.evaluate(() => window.ElegantSupabase.signOut());
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(400);
+      await submit(page, { email: credentials.email, password: "not-the-password" });
+      now = await state(page);
+      ok(!now.signedIn,
+        "a wrong password signed the learner in. The credential is not being checked by " +
+        "anything, which makes this a typed name with extra steps.");
+      ok(now.error.length > 0, "the wrong password was refused, but the page says nothing");
+      return "a real credential is required, and a wrong password is refused with a reason";
+    });
+  },
+
   /** A token you decoded is not a token you verified. This is THE bug to catch. */
-  async account_token_verified(page, origin, { browser }) {
-    const cases = [
-      ["signature", "signed by a key that is not in the issuer's JWKS"],
-      ["issuer", "carrying a different `iss` than the configured issuer"],
-      ["audience", "issued for a different `aud` than this client"],
-    ];
-    const accepted = [];
-    for (const [flaw, description] of cases) {
-      const issuer = await serveIssuer({ flaw });
-      const context = await browser.newContext();
-      const probe = await context.newPage();
+  async account_token_verified(page, origin) {
+    return withSupabase(page, origin, { flaw: "signature" }, async () => {
+      await submit(page, credentials, "signup");
+      const now = await state(page);
+      ok(!now.signedIn,
+        "the site accepted a session token signed by a key that is NOT in the provider's " +
+        "JWKS. Reading a JWT's payload is base64, not authentication — the signature has to " +
+        "be checked against the published key, or anyone can mint an identity by editing a string.");
+      ok(now.error.length > 0, "the forged token was refused but the page says nothing");
+
+      // And the same page must still work when the token is genuine, or
+      // "refuses everything" would pass this check.
+      const sb2 = await serveSupabase({});
       try {
-        await probe.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; },
-          { issuer: issuer.origin, clientId: issuer.clientId });
-        await probe.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
-        const btn = probe.locator("[data-account-oidc-signin]");
-        if (await btn.count() !== 1) {
-          throw new Error("no [data-account-oidc-signin] control — there is no token to verify yet");
-        }
-        await btn.click();
-        await probe.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 })
-          .catch(() => {});
-        await probe.waitForTimeout(500);
-        const signedIn = await probe.evaluate(() => {
-          const w = document.querySelector("[data-account-widget]");
-          return w ? w.getAttribute("data-signed-in") === "true" : false;
-        });
-        if (signedIn) accepted.push(`${flaw} (${description})`);
-      } finally {
+        const context = await page.context().browser().newContext();
+        const good = await context.newPage();
+        await good.addInitScript((cfg) => { window.ELEGANT_SUPABASE = cfg; },
+          { url: sb2.origin, anonKey: sb2.anonKey });
+        await good.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+        await submit(good, credentials, "signup");
+        const ok2 = await state(good);
+        ok(ok2.signedIn, "a correctly signed token was ALSO refused — this refuses everything, " +
+          "which is not verification");
         await context.close();
-        await issuer.close();
+      } finally {
+        await sb2.close();
       }
-    }
-    ok(accepted.length === 0,
-      `the site signed in on a token ${accepted.join("; and one ")}. Reading a JWT's payload is ` +
-      "base64, not authentication — the signature must be checked against the issuer's JWKS and " +
-      "iss/aud matched, or anyone can mint an identity by editing a string.");
-    return "tokens with a bad signature, issuer or audience are all refused";
+      return "a token signed by the wrong key is refused, a correctly signed one is accepted";
+    });
   },
 
   /** An expired credential is not a credential. */
   async account_session_expiry(page, origin) {
-    const issuer = await serveIssuer({ flaw: "expired" });
-    try {
-      await page.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; },
-        { issuer: issuer.origin, clientId: issuer.clientId });
-      await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
-      const btn = page.locator("[data-account-oidc-signin]");
-      ok(await btn.count() === 1, "no [data-account-oidc-signin] control — nothing can expire yet");
-      await btn.click();
-      await page.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 })
-        .catch(() => {});
-      await page.waitForTimeout(500);
-      const state = await page.evaluate(() => {
-        const w = document.querySelector("[data-account-widget]");
-        const err = document.querySelector("[data-account-error]");
-        return { signedIn: w ? w.getAttribute("data-signed-in") === "true" : false,
-                 error: err && !err.hidden ? err.innerText.trim() : "" };
-      });
-      ok(!state.signedIn, "an ID token whose `exp` is in the past was accepted");
-      ok(state.error.length > 0,
+    return withSupabase(page, origin, { flaw: "expired" }, async (sb) => {
+      await submit(page, credentials, "signup");
+      const now = await state(page);
+      // Prove the exchange actually happened first. "Not signed in, with an
+      // error on screen" is equally true when the network is broken, and a
+      // check that cannot tell those apart passes on a site that cannot sign
+      // anyone in at all — this one did, before the config override was fixed.
+      ok(sb.requests.some((r) => r.path === "/auth/v1/signup"),
+        "the site never called the identity provider, so nothing was refused — it failed " +
+        "before it got that far");
+      ok(sb.requests.some((r) => r.path === "/auth/v1/.well-known/jwks.json"),
+        "the site never fetched the provider's JWKS, so it cannot have verified anything; " +
+        "refusing the token here is an accident, not a check");
+      ok(!now.signedIn, "a session token whose `exp` is in the past was accepted");
+      ok(now.error.length > 0,
         "the expired token was refused but the page says nothing, so the learner sees a " +
         "sign-in button that silently does nothing");
-      return "an expired ID token is refused, and the page says so";
-    } finally {
-      await issuer.close();
-    }
+      return "an expired session token is refused after a real exchange, and the page says so";
+    });
   },
 
   /** A verified identity is only worth having if progress follows it. */
   async account_identity_sync(page, origin, { browser }) {
-    const issuer = await serveIssuer();
-    const config = { issuer: issuer.origin, clientId: issuer.clientId };
-    const signIn = async (target) => {
-      await target.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; }, config);
-      await target.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
-      const btn = target.locator("[data-account-oidc-signin]");
-      ok(await btn.count() === 1, "no [data-account-oidc-signin] control — there is no identity to sync to");
-      await btn.click();
-      await target.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 });
-    };
+    const sb = await serveSupabase({});
     let second = null;
     try {
-      await signIn(page);
+      const signIn = async (target, mode) => {
+        await target.addInitScript((cfg) => { window.ELEGANT_SUPABASE = cfg; },
+          { url: sb.origin, anonKey: sb.anonKey });
+        await target.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+        ok(await target.locator("[data-account-supabase-form]").count() === 1,
+          "no [data-account-supabase-form] — there is no identity to sync to");
+        await submit(target, credentials, mode);
+        const now = await state(target);
+        ok(now.signedIn, `could not sign in on this device (error: "${now.error}")`);
+      };
+
+      await signIn(page, "signup");
       const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
       ok(coding.length > 0, "no question to record progress against");
       const slug = coding[0].slug;
@@ -680,16 +735,18 @@ const SCENARIOS = {
       const done = page.locator("[data-progress-toggle]").first();
       ok(await done.count() === 1, "no progress control on the question page");
       await done.check().catch(async () => { await done.click(); });
-      await page.waitForTimeout(1500);   // let a write reach wherever it goes
+      await page.waitForTimeout(1500);
 
       // A SECOND browser: different localStorage, same verified person. If
-      // progress lives only on the device, this is where it stops.
+      // progress lives only on the device, this is where it stops. The fake
+      // backend enforces row ownership from the token, so an implementation
+      // that skips row-level security cannot pass this by reading everything.
       second = await browser.newContext();
       const other = await second.newPage();
       other.setDefaultTimeout(15000);
-      await signIn(other);
+      await signIn(other, "signin");
       await other.goto(`${origin}/practice/${slug}.html`, { waitUntil: "domcontentloaded" });
-      await other.waitForTimeout(1500);
+      await other.waitForTimeout(2000);
       const carried = await other.evaluate(() => {
         const box = document.querySelector("[data-progress-toggle]");
         return box ? box.checked === true : false;
@@ -697,12 +754,82 @@ const SCENARIOS = {
       ok(carried,
         `"${slug}" was completed while signed in, but a second browser signed in as the same ` +
         "verified identity shows it unfinished. Progress is still device-local, so an account " +
-        "buys the learner nothing they did not already have from a named profile.");
+        "buys the learner nothing a named profile did not already give them.");
       return "progress recorded under a verified identity is there on another device";
     } finally {
       if (second) await second.close();
-      await issuer.close();
+      await sb.close();
     }
+  },
+
+  // ---------------------------------------------- workspace parity (GFE)
+  // greatfrontend.com advertises a "customizable workspace: resize, syntax
+  // highlighting, theming, keyboard shortcuts". Resize and highlighting are
+  // done. These two are the rest of that sentence.
+
+  /** Practising at night on a white page is a real reason people stop. */
+  async workspace_theming(page, origin) {
+    const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
+    ok(coding.length > 0, "no coding question to check");
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto(`${origin}/practice/${coding[0].slug}.html`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
+      null, { timeout: 15000 });
+
+    const luminance = (rgb) => {
+      const m = String(rgb).match(/\d+/g);
+      if (!m) return 1;
+      const [r, g, b] = m.map(Number);
+      return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    };
+    const shades = await page.evaluate(() => {
+      const body = getComputedStyle(document.body).backgroundColor;
+      const ed = document.querySelector(".playground__editor-wrap");
+      return { body, editor: ed ? getComputedStyle(ed).backgroundColor : body };
+    });
+    ok(luminance(shades.body) < 0.5,
+      `with prefers-color-scheme: dark the page background is still ${shades.body}. A learner ` +
+      "practising at night gets a white rectangle, which is the point at which they stop.");
+    ok(luminance(shades.editor) < 0.5,
+      `the page went dark but the workspace did not (${shades.editor}) — a bright editor in a ` +
+      "dark page is worse than no dark mode");
+
+    // And it must still be readable in light: a dark mode that hardcodes dark
+    // colours breaks the default for everyone else.
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const light = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    ok(luminance(light) > 0.5,
+      `light mode is now dark too (${light}) — the theme is hardcoded rather than responding`);
+    return "the workspace follows prefers-color-scheme in both directions";
+  },
+
+  /** Reaching for the mouse to run tests is the friction an interview does not have. */
+  async workspace_shortcuts(page, origin) {
+    const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
+    ok(coding.length > 0, "no coding question to check");
+    await page.goto(`${origin}/practice/${coding[0].slug}.html`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
+      null, { timeout: 15000 });
+
+    // Deliberately never click Run: the shortcut is the whole assertion.
+    await page.locator("[data-playground-editor]").focus();
+    await page.keyboard.press("ControlOrMeta+Enter");
+    const ran = await page.waitForSelector(".playground__summary", { timeout: 12000 })
+      .then(() => true).catch(() => false);
+    ok(ran, "Ctrl/Cmd+Enter in the editor did not run the tests. Every editor a candidate has " +
+      "ever used runs on that chord; reaching for the mouse is friction an interview does not have.");
+
+    // The shortcut has to be discoverable, or only the person who wrote it knows.
+    const hinted = await page.evaluate(() => {
+      const text = document.body.innerText;
+      return /(ctrl|cmd|⌘|command)\s*\+\s*enter/i.test(text) ||
+        !!document.querySelector("[data-playground-run]")?.getAttribute("title");
+    });
+    ok(hinted, "the shortcut works but nothing on the page mentions it, so nobody will find it");
+    return "Ctrl/Cmd+Enter runs the tests, and the page says so";
   },
 
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
