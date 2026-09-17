@@ -1244,6 +1244,10 @@ for _cid, _scenario in (
     ("account.provider_seam", "account_provider_seam"),
     ("workspace.framework_runtime", "workspace_framework_runtime"),
     ("workspace.editor_affordances", "workspace_editor_affordances"),
+    ("account.oauth_pkce", "account_oauth_pkce"),
+    ("account.token_verified", "account_token_verified"),
+    ("account.session_expiry", "account_session_expiry"),
+    ("account.identity_sync", "account_identity_sync"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 
@@ -1274,6 +1278,53 @@ def _account_honest(site: Site, threshold):
         deficits.append("account.js: no `registerProvider` seam — a hosted deployment has no way "
                         "to swap the local store for a real identity provider")
     return (1.0 if not deficits else 0.0), deficits, "present and honest"
+
+
+@check("account.no_client_secret")
+def _account_no_client_secret(site: Site, threshold):
+    """A static site is a public client: everything it ships is readable.
+
+    This is the one credential capability that is a file check rather than a
+    browser run, and the one worth having BEFORE the flow exists — the moment
+    someone wires up an identity provider, the tempting shortcut is to paste
+    the confidential-client snippet from the vendor's quickstart, secret and
+    all. Under docs/ that is not configuration, it is publication: it goes to
+    GitHub Pages and into git history. PKCE exists so a public client needs no
+    secret at all.
+
+    Deliberately narrow. It matches credentials that are assigned a value, not
+    every line containing the word "secret", because a check that fires on the
+    prose explaining why there is no secret gets deleted within a week.
+    """
+    patterns = [
+        (re.compile(r"""client[_-]?secret\s*[:=]\s*["'][^"']{8,}""", re.I), "an OAuth client secret"),
+        (re.compile(r"""\b(api[_-]?key|secret[_-]?key)\s*[:=]\s*["'][^"']{12,}""", re.I), "an API key"),
+        (re.compile(r"-----BEGIN (RSA |EC )?PRIVATE KEY-----"), "a private key"),
+        (re.compile(r"\bsk-[A-Za-z0-9]{20,}"), "what looks like a live provider token"),
+    ]
+    deficits, scanned = [], 0
+    for path in sorted(site.docs.rglob("*")):
+        if not path.is_file() or path.suffix.lower() not in {".js", ".mjs", ".json", ".html", ".md", ".yml", ".yaml"}:
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        if site._excluded(path) or "/demos/" in f"/{rel}" or "/vendor/" in f"/{rel}":
+            continue
+        scanned += 1
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        for pattern, label in patterns:
+            m = pattern.search(text)
+            if m:
+                line = text[:m.start()].count("\n") + 1
+                deficits.append(f"{rel}:{line}: {label} is committed under docs/, which publishes it. "
+                                "A public client uses PKCE and needs no secret; if a secret is "
+                                "genuinely required, the flow belongs behind a server, not here.")
+                break
+    if deficits:
+        return 0.0, deficits[:MAX_DEFICITS], f"{len(deficits)} secret(s) in {scanned} published file(s)"
+    return 1.0, [], f"no secrets in {scanned} published file(s)"
 
 
 @check("content.company_guides")

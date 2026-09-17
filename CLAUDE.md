@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 64 capabilities benchmarked against
+site under `docs/` must be able to do — 69 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -131,12 +131,39 @@ untidy. `docs/assets/js/account.js` owns identity; `progress.js` reads the
 namespace from it, so **account.js must load before progress.js** on any page
 that shows progress.
 
-**`frontier`** — parity targets the site does not have yet. **The group is
-currently empty**: editor affordances and company guides were its two members
-and both have been built, so both left. That departure is the rule, not a
-tidy-up — a capability that gets built moves to the group it belongs in and
-becomes `required`, which is what stops the frontier being a place things go to
-be forgotten. While a frontier item is open it is declared and measured so the
+**`frontier`** — parity targets the site does not have yet. Editor affordances
+and company guides were its first two members; both were built and both left,
+which is the rule, not a tidy-up — a capability that gets built moves to the
+group it belongs in and becomes `required`, which is what stops the frontier
+being a place things go to be forgotten.
+
+It now holds **real credentials**, the largest remaining gap against
+greatfrontend.com. An account here is a named local profile: nothing is
+verified and nothing follows a learner off this browser, which is a different
+product from theirs. A static site on GitHub Pages cannot check a password, but
+it does not have to — OAuth 2.0 Authorization Code + PKCE exists for public
+clients that cannot keep a secret, and `registerProvider` in `account.js` is
+already the seam. The five capabilities are `account.oauth_pkce` (the flow),
+`account.token_verified` (the ID token's signature checked against the issuer's
+JWKS, `iss`/`aud` matched), `account.session_expiry`, `account.no_client_secret`
+(a file check: everything under `docs/` is published, so a secret there is
+leaked, not configured) and `account.identity_sync` (progress that reaches a
+second device, without which credentials buy the learner nothing a named
+profile did not).
+
+`harness/functional/issuer.mjs` is a **real OIDC issuer in-process** — RS256
+signing, a published JWKS, PKCE enforced at the token endpoint — so these are
+measured against the protocol rather than against a vendor being reachable,
+which also suits a browser with no outbound network. It can mint deliberately
+bad tokens (`flaw: "signature" | "issuer" | "audience" | "expired" | "nonce"`),
+because "does the site verify?" is only answerable by handing it something it
+should refuse. That is what makes `account.token_verified` catch the bug worth
+catching: an implementation that runs a flawless PKCE flow and then
+base64-decodes the ID token without checking it passes `account.oauth_pkce` and
+fails `account.token_verified`, which is exactly the split those two names
+promise. **Do not merge them.**
+
+While a frontier item is open it is declared and measured so the
 gap stays visible, `required: false` so it never blocks an unrelated
 contribution, and `scope: cumulative` so `--next` hands it out only after
 everything required is green. **A frontier check is a real measurement, not a

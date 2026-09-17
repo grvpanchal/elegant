@@ -258,6 +258,18 @@ Accounts on a site with no server. greatfrontend.com has real ones; this is stat
 | `account.guest_progress` | 2 | yes | incremental | all | Accounts arrived after progress did. Signing in and out must not strand work done before a profile existed. |
 | `account.provider_seam` | 2 | yes | incremental | all | A third-party provider must be swappable through registerProvider, with progress following its identity. An abstraction nobody has exercised is not a seam. |
 
+### frontier
+
+Parity targets the site does not have yet. Declared and measured so the gap stays visible, `required: false` so they never block a contribution, and ordered after everything required so the cluster grows into them one at a time instead of all at once. A frontier check is a real measurement — when someone builds the feature it turns green without being rewritten.
+
+| check | weight | required | scope | threshold | fails when |
+|---|---|---|---|---|---|
+| `account.oauth_pkce` | 3 | no | cumulative | all | Signing in must be a real Authorization Code + PKCE flow against a configured issuer — response_type=code, an S256 challenge, state and nonce — not a typed name. |
+| `account.token_verified` | 3 | no | cumulative | all | The ID token's signature must be checked against the issuer's JWKS and its iss/aud matched. Decoding a JWT's payload is base64, not authentication, and a client that only decodes accepts an identity anyone can type. |
+| `account.session_expiry` | 2 | no | cumulative | all | An ID token past its `exp` must be refused, and the page must say why — a sign-in button that silently does nothing is worse than no button. |
+| `account.no_client_secret` | 2 | no | incremental | all | A static site is a public client: everything it ships is readable. A client secret, API key or private key committed under docs/ is published, not configured — PKCE exists so none is needed. |
+| `account.identity_sync` | 3 | no | cumulative | all | Progress recorded under a verified identity must be there on another device. Credentials that do not carry progress leave the learner exactly where a named local profile already left them. |
+
 ### harness
 
 The axis GreatFrontend does not have: every unit of practice is also an Agent Skill, and every `harness` exercise ships its own eval with a numeric threshold.

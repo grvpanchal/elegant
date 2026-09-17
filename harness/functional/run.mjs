@@ -15,6 +15,7 @@
 import { createRequire } from "node:module";
 import { writeFileSync } from "node:fs";
 import { serve } from "./server.mjs";
+import { serveIssuer } from "./issuer.mjs";
 
 const require = createRequire(import.meta.url);
 
@@ -516,6 +517,194 @@ const SCENARIOS = {
     return "highlighting paints tokens, the handle resizes from the keyboard, console.log reaches the pane";
   },
 
+  // ------------------------------------------------------------- credentials
+  // greatfrontend.com has real accounts. This site has named local profiles,
+  // which is honest but is not the same product: nothing is verified and
+  // nothing follows you off this browser. The scenarios below are the standard
+  // for closing that gap WITHOUT a backend, using OAuth 2.0 Authorization Code
+  // + PKCE against a hosted issuer — the flow designed for public clients that
+  // cannot keep a secret.
+  //
+  // The contract they hold the site to:
+  //   window.ELEGANT_OIDC = { issuer, clientId }   set before account JS loads;
+  //                                                absent means stay dormant
+  //   [data-account-oidc-signin]                   starts the flow
+  //   [data-account-name]                          shows the VERIFIED identity
+  //   [data-account-error]                         says why a token was refused
+
+  /** The flow must actually be PKCE, not a redirect that looks like one. */
+  async account_oauth_pkce(page, origin) {
+    const issuer = await serveIssuer();
+    try {
+      await page.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; },
+        { issuer: issuer.origin, clientId: issuer.clientId });
+      await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+
+      const btn = page.locator("[data-account-oidc-signin]");
+      ok(await btn.count() === 1,
+        "no [data-account-oidc-signin] control. Signing in is still typing a name, so " +
+        "nothing is verified and the profile cannot leave this browser.");
+
+      await btn.click();
+      await page.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 });
+
+      ok(issuer.authorizeCalls.length === 1,
+        `the site made ${issuer.authorizeCalls.length} authorize requests, expected 1`);
+      const p = issuer.authorizeCalls[0];
+      ok(p.response_type === "code", `response_type was "${p.response_type}", must be "code" — ` +
+        "the implicit flow returns tokens in the URL fragment and is not safe here");
+      ok(p.code_challenge_method === "S256",
+        `code_challenge_method was "${p.code_challenge_method}", must be "S256"`);
+      ok((p.state || "").length >= 16, "state is missing or too short to be unguessable");
+      ok(p.nonce, "no nonce, so a replayed ID token cannot be detected");
+
+      ok(issuer.tokenCalls.length === 1,
+        "the code was never exchanged at the token endpoint, so no identity was obtained");
+      const verifier = issuer.tokenCalls[0].code_verifier;
+      ok(verifier && verifier.length >= 43, "code_verifier is missing or shorter than the 43 chars RFC 7636 requires");
+      ok(verifier !== p.code_challenge,
+        "the code_verifier was sent as the code_challenge. That is `plain` PKCE wearing an " +
+        "S256 label: anyone who intercepts the redirect can complete the exchange.");
+      ok(issuer.s256(verifier) === p.code_challenge,
+        "the code_challenge is not S256(code_verifier)");
+
+      // Two separate failures, told apart: the token never became an identity,
+      // versus it did and the panel was never painted with it.
+      const shown = await page.evaluate(() => {
+        const w = document.querySelector("[data-account-widget]");
+        const n = document.querySelector("[data-account-name]");
+        return { signedIn: w ? w.getAttribute("data-signed-in") === "true" : false,
+                 text: n ? (n.textContent || "").trim() : null,
+                 visible: n ? !!(n.offsetWidth || n.offsetHeight || n.getClientRects().length) : false };
+      });
+      ok(shown.signedIn, "the token was exchanged but the widget never reported a signed-in state");
+      ok(shown.text && shown.text.includes("Ada"),
+        `[data-account-name] holds "${shown.text}" — the name from the verified ID token never reached it`);
+      ok(shown.visible, "the signed-in identity is in the DOM but hidden, so the learner cannot see who they are");
+      return "authorization code + S256 PKCE, state and nonce, exchanged for a verified identity";
+    } finally {
+      await issuer.close();
+    }
+  },
+
+  /** A token you decoded is not a token you verified. This is THE bug to catch. */
+  async account_token_verified(page, origin, { browser }) {
+    const cases = [
+      ["signature", "signed by a key that is not in the issuer's JWKS"],
+      ["issuer", "carrying a different `iss` than the configured issuer"],
+      ["audience", "issued for a different `aud` than this client"],
+    ];
+    const accepted = [];
+    for (const [flaw, description] of cases) {
+      const issuer = await serveIssuer({ flaw });
+      const context = await browser.newContext();
+      const probe = await context.newPage();
+      try {
+        await probe.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; },
+          { issuer: issuer.origin, clientId: issuer.clientId });
+        await probe.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+        const btn = probe.locator("[data-account-oidc-signin]");
+        if (await btn.count() !== 1) {
+          throw new Error("no [data-account-oidc-signin] control — there is no token to verify yet");
+        }
+        await btn.click();
+        await probe.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 })
+          .catch(() => {});
+        await probe.waitForTimeout(500);
+        const signedIn = await probe.evaluate(() => {
+          const w = document.querySelector("[data-account-widget]");
+          return w ? w.getAttribute("data-signed-in") === "true" : false;
+        });
+        if (signedIn) accepted.push(`${flaw} (${description})`);
+      } finally {
+        await context.close();
+        await issuer.close();
+      }
+    }
+    ok(accepted.length === 0,
+      `the site signed in on a token ${accepted.join("; and one ")}. Reading a JWT's payload is ` +
+      "base64, not authentication — the signature must be checked against the issuer's JWKS and " +
+      "iss/aud matched, or anyone can mint an identity by editing a string.");
+    return "tokens with a bad signature, issuer or audience are all refused";
+  },
+
+  /** An expired credential is not a credential. */
+  async account_session_expiry(page, origin) {
+    const issuer = await serveIssuer({ flaw: "expired" });
+    try {
+      await page.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; },
+        { issuer: issuer.origin, clientId: issuer.clientId });
+      await page.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+      const btn = page.locator("[data-account-oidc-signin]");
+      ok(await btn.count() === 1, "no [data-account-oidc-signin] control — nothing can expire yet");
+      await btn.click();
+      await page.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 })
+        .catch(() => {});
+      await page.waitForTimeout(500);
+      const state = await page.evaluate(() => {
+        const w = document.querySelector("[data-account-widget]");
+        const err = document.querySelector("[data-account-error]");
+        return { signedIn: w ? w.getAttribute("data-signed-in") === "true" : false,
+                 error: err && !err.hidden ? err.innerText.trim() : "" };
+      });
+      ok(!state.signedIn, "an ID token whose `exp` is in the past was accepted");
+      ok(state.error.length > 0,
+        "the expired token was refused but the page says nothing, so the learner sees a " +
+        "sign-in button that silently does nothing");
+      return "an expired ID token is refused, and the page says so";
+    } finally {
+      await issuer.close();
+    }
+  },
+
+  /** A verified identity is only worth having if progress follows it. */
+  async account_identity_sync(page, origin, { browser }) {
+    const issuer = await serveIssuer();
+    const config = { issuer: issuer.origin, clientId: issuer.clientId };
+    const signIn = async (target) => {
+      await target.addInitScript((cfg) => { window.ELEGANT_OIDC = cfg; }, config);
+      await target.goto(`${origin}/account/`, { waitUntil: "domcontentloaded" });
+      const btn = target.locator("[data-account-oidc-signin]");
+      ok(await btn.count() === 1, "no [data-account-oidc-signin] control — there is no identity to sync to");
+      await btn.click();
+      await target.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 });
+    };
+    let second = null;
+    try {
+      await signIn(page);
+      const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
+      ok(coding.length > 0, "no question to record progress against");
+      const slug = coding[0].slug;
+
+      await page.goto(`${origin}/practice/${slug}.html`, { waitUntil: "domcontentloaded" });
+      const done = page.locator("[data-progress-toggle]").first();
+      ok(await done.count() === 1, "no progress control on the question page");
+      await done.check().catch(async () => { await done.click(); });
+      await page.waitForTimeout(1500);   // let a write reach wherever it goes
+
+      // A SECOND browser: different localStorage, same verified person. If
+      // progress lives only on the device, this is where it stops.
+      second = await browser.newContext();
+      const other = await second.newPage();
+      other.setDefaultTimeout(15000);
+      await signIn(other);
+      await other.goto(`${origin}/practice/${slug}.html`, { waitUntil: "domcontentloaded" });
+      await other.waitForTimeout(1500);
+      const carried = await other.evaluate(() => {
+        const box = document.querySelector("[data-progress-toggle]");
+        return box ? box.checked === true : false;
+      });
+      ok(carried,
+        `"${slug}" was completed while signed in, but a second browser signed in as the same ` +
+        "verified identity shows it unfinished. Progress is still device-local, so an account " +
+        "buys the learner nothing they did not already have from a named profile.");
+      return "progress recorded under a verified identity is there on another device";
+    } finally {
+      if (second) await second.close();
+      await issuer.close();
+    }
+  },
+
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
   async keyboard(page, origin) {
     const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
@@ -587,7 +776,7 @@ async function main() {
     page.setDefaultTimeout(15000);
     const started = Date.now();
     try {
-      const detail = await scenario(page, server.origin);
+      const detail = await scenario(page, server.origin, { browser, context });
       results[id] = { pass: true, detail, ms: Date.now() - started };
       console.log(`  pass  ${id}  ${detail}`);
     } catch (err) {
