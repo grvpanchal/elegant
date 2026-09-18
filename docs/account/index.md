@@ -54,6 +54,18 @@ are forking this site, that is the setting to check first.
   </form>
 </div>
 
+<div class="account-panel" data-account-oidc hidden>
+  <p class="account-lede">
+    Sign in with an OpenID Connect issuer. This is a real Authorization Code +
+    PKCE flow: the page redirects to the issuer, exchanges the code it gets back,
+    and verifies the returned ID token's signature before it means anything.
+  </p>
+  <button type="button" class="account-oidc__signin" data-account-oidc-signin hidden>
+    Sign in with your account
+  </button>
+  <p class="account-form__error" role="alert" data-account-oidc-error hidden></p>
+</div>
+
 <p class="account-lede" data-account-supabase-absent>
 This deployment has no identity provider configured, so only device profiles are
 available here.

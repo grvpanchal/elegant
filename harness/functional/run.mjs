@@ -590,6 +590,16 @@ const SCENARIOS = {
 
       await btn.click();
       await page.waitForURL((u) => u.toString().startsWith(`${origin}/account`), { timeout: 20000 });
+      // The redirect back is not the end of the flow: the page still has to
+      // exchange the code, fetch the JWKS and verify the signature. Asserting
+      // before that settles raced the client and failed one run in three on a
+      // correct implementation. Wait for it to report either way; the
+      // assertions below are unchanged.
+      await page.waitForFunction(() => {
+        const w = document.querySelector("[data-account-widget]");
+        const e = document.querySelector("[data-account-oidc-error], [data-account-error]");
+        return (w && w.getAttribute("data-signed-in") === "true") || (e && !e.hidden && e.textContent.trim());
+      }, null, { timeout: 10000 }).catch(() => {});
 
       ok(issuer.authorizeCalls.length === 1,
         `the site made ${issuer.authorizeCalls.length} authorize requests, expected 1`);

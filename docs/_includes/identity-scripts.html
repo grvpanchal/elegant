@@ -1,13 +1,13 @@
 {%- comment -%}
-The identity provider, in the one order that works.
+The identity providers, in the one order that works.
 
-account.js defines the seam and must be first. The config assignment must come
-before account-supabase.js, which reads it at load and stays dormant without it
-— that is what keeps a fork with no Supabase project working. progress.js reads
-the namespace from account.js, and progress-sync.js needs both it and the
-provider, so it is last.
+account.js defines the seam and must be first. The config assignments must come
+before the provider scripts, which read them at load and stay dormant without
+them — that is what keeps a fork with no Supabase project or no OIDC issuer
+working. progress.js reads the namespace from account.js, and progress-sync.js
+needs both it and the provider, so it is last.
 
-`||` on the assignment lets an embedder — or the guardrail, whose browser has no
+`||` on the assignments lets an embedder — or the guardrail, whose browser has no
 outbound network and points this at a local stand-in — override the project.
 {%- endcomment -%}
 <script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
@@ -18,5 +18,12 @@ outbound network and points this at a local stand-in — override the project.
 </script>
 {%- endif %}
 <script type="text/javascript" src="{{ '/assets/js/account-supabase.js' | relative_url }}"></script>
+{%- if site.oidc.issuer and site.oidc.client_id %}
+<script type="text/javascript">
+  window.ELEGANT_OIDC = window.ELEGANT_OIDC ||
+    { issuer: {{ site.oidc.issuer | jsonify }}, clientId: {{ site.oidc.client_id | jsonify }} };
+</script>
+{%- endif %}
+<script type="text/javascript" src="{{ '/assets/js/account-oidc.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/progress-sync.js' | relative_url }}"></script>

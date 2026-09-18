@@ -157,13 +157,25 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds what is left after the credential work landed: `account.oauth_pkce`
-(social sign-in — **blocked on the Supabase project, where every external
-provider is currently disabled**), `workspace.theming`, `workspace.shortcuts`
-and `bank.curated_lists`. The last three came from auditing greatfrontend.com's
-own feature copy against ours; it calls its workspace "customizable: resize,
-syntax highlighting, theming, keyboard shortcuts" and ships curated named lists
-that are not the same thing as our time-boxed plans.
+It holds three items, all from auditing greatfrontend.com's own feature copy
+against ours: `workspace.theming`, `workspace.shortcuts` and
+`bank.curated_lists`. It calls its workspace "customizable: resize, syntax
+highlighting, theming, keyboard shortcuts" and ships curated named lists that
+are not the same thing as our time-boxed plans.
+
+`account.oauth_pkce` left the frontier on the organisation's first live run:
+the CTO cell wrote `docs/assets/js/account-oidc.js` — a real Authorization
+Code + PKCE flow, S256, state and nonce, ID token verified against the
+issuer's JWKS — and it is now `required` in `account`. Two things about that
+are worth knowing. The cell's task was reported NOT_VIABLE (it blew the
+latency ceiling), yet the file it left was correct; the failing check was a
+race in the *scenario*, which asserted state on the redirect back before the
+client had finished the exchange. It failed one run in three on a correct
+implementation, and the fix was a bounded wait, not a weaker assertion. And
+the real Supabase project still has **every external provider disabled**, so
+this flow works against the harness's issuer and any OIDC issuer you
+configure via `site.oidc` — enabling a provider there is deployment
+configuration, not a site gap.
 
 ### Testing auth without a network
 
@@ -316,6 +328,18 @@ same folder.
 operating instructions out of that registry is deliberate — `agents/skills/` is
 never synced into it. The engine itself is
 [`grvpanchal/benezene-agent`](https://github.com/grvpanchal/benezene-agent).
+
+One behaviour to know about. When a discovery verifier itself fails to run
+— on the first live run `check_harness.py --sync --next` **timed out at 900s**
+— the timeout becomes the instruction ("fails its checks: timed out"). The
+cell cannot fix a timeout; it fixed something real nearby instead (broken
+Liquid in `begin-boilerplate.html`), the verifier finished on its re-run, and
+the cell was credited with a verified build — which is what **founded the
+COO**. A real improvement and a real founding, but not causally linked, and
+`--must` cannot bind here because no capability was named. Treat a verifier
+timeout as an infrastructure event, not a task: if it recurs, raise
+`timeout_s` on `verify:capabilities` or find what made the browser suite slow,
+rather than reading the founding as evidence the office earned it.
 
 Two numbers to distrust. The COO's default objective is **throughput 20**, a
 volume metric, which is exactly what a weak model games by opening twenty thin
