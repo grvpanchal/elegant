@@ -1,0 +1,131 @@
+# One purpose, six offices, founded in order by the record.
+#
+#   bza agents/organisation.yaml .                     # the CTO builds; work discovered by the guardrail
+#   bza agents/organisation.yaml . -i "..."             # a human instruction: through the COO once it exists
+#   bza agents/organisation.yaml . --milestone launch   # founds the CXO
+#   bza agents/organisation.yaml . --status --graph     # the offices, the treasury, and <root>/graph.html
+#
+# The purpose is the CEO seat: the one thing never chartered. Every office's
+# charter is derived from it by bza — the CTO's is written by hand because its
+# verifiers are the site's own checker; the others are the built-in charter for
+# that office, specialised for this purpose by the evolver model at founding.
+# So no cell's purpose is written below: the purpose is here, the cells' are
+# defined from it, and the work they take is defined by the guardrail's output.
+name: frontend-harness
+purpose: |
+  Build and maintain the Frontend AI Harness training site: a static site where every
+  unit of practice is measured by its own guardrail (harness/capabilities.yml, checked
+  by harness/check_harness.py against greatfrontend.com parity) and is also an Agent
+  Skill with its own eval. Grow it until the guardrail is green, keep it green, and
+  earn from it.
+scale: c-suite
+design_offices: true
+parallel: 4
+skills_dir: skills                      # agents/skills: the operating skills a charter may name
+board:                                  # where the COO's plans live as a timeline
+  kind: local                           # Linear: {kind: linear, team: <KEY>, project: <name>, api_key_env: LINEAR_API_KEY}
+evaluations:
+  cxo: {format: product_hunt, every: 3}
+  cio: {format: shark_tank, every: 5}
+  cmo: {format: launch_review}
+
+offices:
+  - office: cto
+    manifest: frontend-harness.yaml     # hand-written: its verifiers ARE the site's guardrail
+  - office: coo
+    founded_when: {after: cto, stage: healed}   # one verified build, then instructions go through the COO
+  - office: cmo
+    founded_when: {after: coo, verified_tasks: 1}
+    verifiers:
+      - type: file_pattern
+        name: verify:campaign
+        file: marketing/launch.md
+        pattern: "(?i)success criterion"
+  - office: cxo
+    founded_when: {milestone: launch}
+    verifiers:
+      - type: file_pattern
+        name: verify:perspective
+        file: experience/perspective.md
+        pattern: "(?i)maintain"
+  - office: cfo
+    founded_when: {any_metric: {revenue_usd: 1, investment_usd: 1}}
+    verifiers:
+      - type: file_pattern
+        name: verify:guardrails
+        file: finance/guardrails.md
+        pattern: "value_usd"
+  - office: cio
+    founded_when: {any_metric: {users: 100, satisfaction: 0.7}}
+    verifiers:
+      - type: file_pattern
+        name: verify:ledger
+        file: investors/ledger.md
+        pattern: "(?i)commitment"
+
+# The roster the CTO genome measured (see its comments): cheapest well-known paid
+# models that are a step up from free, free kept as the last fallback.
+models:
+  - role: primary
+    provider: openrouter
+    id: deepseek/deepseek-v4-flash-0731
+    effort: low
+    fallback_ids: [openai/gpt-oss-120b, openai/gpt-oss-20b, nvidia/nemotron-3-super-120b-a12b:free]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 12000
+    temperature: 0.3
+    timeout_s: 240
+    price_per_mtok: [0.060, 0.120]
+  - role: judge
+    provider: openrouter
+    id: openai/gpt-oss-20b
+    effort: low
+    fallback_ids: [mistralai/mistral-nemo]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 3000
+    temperature: 0
+    timeout_s: 120
+    price_per_mtok: [0.030, 0.130]
+  - role: router
+    provider: openrouter
+    id: mistralai/mistral-nemo
+    effort: low
+    fallback_ids: [openai/gpt-oss-20b]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 1500
+    timeout_s: 90
+    price_per_mtok: [0.019, 0.030]
+  - role: evolver                       # charters the offices from the purpose, repairs skills
+    provider: openrouter
+    id: deepseek/deepseek-v4-flash-0731
+    effort: low
+    fallback_ids: [openai/gpt-oss-120b]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    timeout_s: 240
+    price_per_mtok: [0.060, 0.120]
+
+guardrail:                              # base guardrail of every chartered office (the CTO has its own)
+  min_chars: 20
+  max_chars: 12000
+  forbidden_patterns: ["as an ai language model"]
+  verifier_fail_cap: 0.40
+  max_cost_usd: 0.25
+  value_usd: 0.05
+  max_latency_s: 1800
+  judge_weight: 0.5
+  pass_threshold: 0.70
+
+homeostasis:
+  divide_below: 0.66
+  evolve_below: 0.80
+  heal_max_attempts: 2
+  min_tasks_before_divide: 2
+  mature_after_verified_tasks: 1
+  repair_skill_on_failure: true
+
+financial:                              # the CFO's guardrail on the whole system
+  min_roi: 1.0
+  min_spent_usd: 0.01
+
+tools: [ask_operator]

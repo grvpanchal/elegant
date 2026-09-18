@@ -1553,26 +1553,55 @@ def _h_scoping(site: Site, threshold):
 
 @check("harness.agent_manifest")
 def _h_agent_manifest(site: Site, threshold):
-    """The genome that maintains this site must stay in step with the guardrail.
+    """The organisation that maintains this site must stay in step with the guardrail.
 
-    The manifest lives here rather than in the framework repo precisely so a
+    The manifests live here rather than in the framework repo precisely so a
     renamed capability and the agent answering to it move in one commit. That
     only helps if something notices when they drift — a genome naming a skill
     that no longer exists, or pointing its verifiers at a checker that moved,
     is an agent nobody is measuring.
+
+    Since the six-offices update the unit is an organisation: one purpose in
+    agents/organisation.yaml, a hand-written CTO genome whose verifiers are this
+    checker, and a COO founded from the record so instructions arrive as plans.
+    The other offices are chartered from the purpose by bza, so they have no
+    file here to check; what is checked is that the organisation declares them
+    only by the framework's names.
     """
-    path = ROOT / "agents" / "frontend-harness.yaml"
+    org_path = ROOT / "agents" / "organisation.yaml"
+    if not org_path.is_file():
+        return 0.0, ["agents/organisation.yaml is missing"], "missing"
+    try:
+        org = yaml.safe_load(org_path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as exc:
+        return 0.0, [f"agents/organisation.yaml does not parse: {exc}"], "unparseable"
+
+    deficits = []
+    if not str(org.get("purpose") or "").strip():
+        deficits.append("agents/organisation.yaml has no purpose — the CEO seat is empty")
+    offices = [o for o in (org.get("offices") or []) if isinstance(o, dict)]
+    names = [o.get("office") for o in offices]
+    for n in names:
+        if n not in ("cto", "coo", "cmo", "cxo", "cfo", "cio"):
+            deficits.append(f"office `{n}` is not one of the six the framework knows")
+    if "coo" not in names:
+        deficits.append("no COO office: human instructions have nowhere to arrive as a plan")
+    cto = next((o for o in offices if o.get("office") == "cto"), None)
+    if cto is None or not cto.get("manifest"):
+        return 0.0, deficits + ["no CTO office with a `manifest:` — the office that builds the site "
+                                "must be the hand-written genome whose verifiers are this checker"], "no cto genome"
+    path = org_path.parent / cto["manifest"]
     if not path.is_file():
-        return 0.0, ["agents/frontend-harness.yaml is missing"], "missing"
+        return 0.0, deficits + [f"CTO manifest {path.relative_to(ROOT)} does not exist"], "cto genome missing"
     try:
         genome = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as exc:
-        return 0.0, [f"agents/frontend-harness.yaml does not parse: {exc}"], "unparseable"
+        return 0.0, deficits + [f"{path.relative_to(ROOT)} does not parse: {exc}"], "unparseable"
 
-    deficits = []
+    rel = path.relative_to(ROOT).as_posix()
     declared = [s for s in (genome.get("skills") or []) if isinstance(s, str)]
     if not declared:
-        deficits.append("agents/frontend-harness.yaml declares no skills")
+        deficits.append(f"{rel} declares no skills")
     for name in declared:
         if not (ROOT / "agents" / "skills" / name / "SKILL.md").is_file():
             deficits.append(f"genome names skill `{name}` but agents/skills/{name}/SKILL.md does not exist")
@@ -1582,19 +1611,19 @@ def _h_agent_manifest(site: Site, threshold):
                      if (d / "SKILL.md").is_file()) if (ROOT / "agents" / "skills").is_dir() else []
     for name in on_disk:
         if name not in declared:
-            deficits.append(f"agents/skills/{name}/ exists but the genome never lists it")
+            deficits.append(f"agents/skills/{name}/ exists but the CTO genome never lists it")
 
     verifiers = ((genome.get("guardrail") or {}).get("verifiers") or [])
     commands = [" ".join(v.get("command") or []) for v in verifiers if isinstance(v, dict)]
     if not any("harness/check_harness.py" in c for c in commands):
-        deficits.append("no verifier runs harness/check_harness.py — the genome is judged by "
+        deficits.append("no CTO verifier runs harness/check_harness.py — the office is judged by "
                         "something other than this site's guardrail")
     if not any("--changed" in c for c in commands):
-        deficits.append("no verifier passes --changed {touched}; without it a contribution is "
+        deficits.append("no CTO verifier passes --changed {touched}; without it a contribution is "
                         "judged by debt it did not cause")
 
     return (1.0 if not deficits else 0.0), deficits[:MAX_DEFICITS], \
-        f"{len(declared)} skills, {len(verifiers)} verifiers"
+        f"{len(names)} offices, CTO: {len(declared)} skills, {len(verifiers)} verifiers"
 
 
 @check("harness.docs")

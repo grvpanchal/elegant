@@ -769,7 +769,7 @@ checks:
     weight: 2
     required: true
     threshold: 1.0
-    why: "agents/frontend-harness.yaml must name only skills that exist and keep pointing its verifiers at harness/check_harness.py with --changed. A genome that drifts off the guardrail is an agent nobody is measuring."
+    why: "agents/organisation.yaml must hold the purpose, a COO, and a CTO whose genome names only skills that exist and keeps its verifiers on harness/check_harness.py with --changed. An organisation that drifts off the guardrail is one nobody is measuring."
   - id: harness.docs
     owns: ["harness/*"]
     scope: incremental

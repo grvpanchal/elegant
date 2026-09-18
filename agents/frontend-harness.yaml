@@ -1,30 +1,21 @@
-# One purpose: "grow and maintain the Frontend AI Harness training site against
-# its capability guardrail". Four skills, one workspace, no human in the loop.
-#
-# The guardrail is not this manifest's opinion — it is the site's own checker,
-# harness/check_harness.py, which measures 41 capabilities benchmarked against
-# greatfrontend.com (question formats, an in-browser workspace with tests,
-# worked solutions, study plans, playbooks, progress tracking) plus the axis
-# that is ours: every unit of practice is also an Agent Skill with its own eval.
+# The CTO office of the frontend-harness organisation (agents/organisation.yaml):
+# the cluster that builds the product. One purpose lives in the organisation
+# file; this genome is the one office written by hand, because its verifiers
+# are not an opinion — they are the site's own checker, harness/check_harness.py,
+# which measures every capability in harness/capabilities.yml against
+# greatfrontend.com parity plus the axis that is ours: every unit of practice is
+# also an Agent Skill with its own eval.
 #
 # THE CELL NEVER NEEDS A HUMAN. There is no `strategy:` block, so this lineage
 # stays in the heal stage for good: its standard is the site's own checker and
-# nothing else. That is only honest because the checker now covers *function* as
+# nothing else. That is only honest because the checker covers *function* as
 # well as form — harness/functional/run.mjs drives a real Chromium against the
-# built site and asserts that the Run button executes a question's tests, that
-# the quiz grades, that filters narrow, that progress survives a reload. Those
-# were the capabilities that used to need someone to click them, which was the
-# only reason the life system was ever in the loop here.
-#
-# So the cluster can grow without supervision: six skills means it can divide up
-# to six ways, `develop_skill_after_orphans: 3` lets it earn new skills from
-# verified work no existing skill claimed, and every generation is judged by the
-# same scripts as the first.
+# built site. Those were the capabilities that used to need someone to click
+# them, which was the only reason the life system was ever in the loop here.
 #
 # Growth has a queue, not just a direction. The site declares `frontier`
 # capabilities — parity targets it does not have yet — as measured, failing,
-# `required: false` checks. They never block a contribution, they keep the gap
-# visible in the composite, and `--next` hands them out one at a time once
+# `required: false` checks; `--next` hands them out one at a time once
 # everything required is green. `build-capability` is the skill that closes
 # them; `fix-functional` is for something that worked and broke.
 #
@@ -33,17 +24,16 @@
 #                        highest-priority deficit, so bza discovers *one*
 #                        instruction rather than a wall of them. required:false
 #                        because no single contribution can close a volume
-#                        target ("write 12 quiz questions") and a cell must not
-#                        be scored down for that.
+#                        target and a cell must not be scored down for that.
 #   verify:contribution  what the cell just wrote, scoped with --changed to the
 #                        files of this task. required:true — this is the loop
 #                        that closes, and its output is the correction message.
 #
-# Every role runs on a free OpenRouter model. The point of the exercise is to
-# find where a free model cannot hold the contract, and to move that part of the
-# contract out of the prompt and into the checker.
+# Once this office has one verified build it is `healed`, and that founds the
+# COO: from then on human instructions arrive as a plan the COO dispatches
+# across the offices, and discovered work still comes here.
 name: frontend-harness
-description: Grow and maintain the Frontend AI Harness training site against its capability guardrail
+description: CTO office — build and keep the Frontend AI Harness training site green against its capability guardrail
 system: |
   You are a Benzene cell whose base purpose is to grow and maintain a frontend
   training site that lives in the workspace. The site is Jekyll: `docs/` is the
@@ -197,5 +187,5 @@ homeostasis:
   renew_below: 0.50
   max_renewals: 2
   max_regenerations: 2
-  mature_after_verified_tasks: 3
+  mature_after_verified_tasks: 1      # one verified build heals the office and founds the COO
   develop_skill_after_orphans: 3

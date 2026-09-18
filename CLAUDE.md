@@ -270,22 +270,45 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
 
 ## The agents that build the site (`agents/`)
 
-`agents/frontend-harness.yaml` is the Benzene genome for the cell that grows and
-maintains `docs/` against `harness/`. It lives here, not in the framework repo,
-because it is **about this site**: its verifiers run `harness/check_harness.py`
-and its skills name `docs/practice/`, `docs/_data/plans.yml` and
-`harness/capabilities.yml`. Rename a capability and the genome answering to it
-moves in the same commit — `harness.agent_manifest` fails when they drift.
+`agents/organisation.yaml` is the Benzene **organisation** for this site: one
+purpose (the CEO seat, the only thing never chartered) and six offices founded
+in order by the record, never by a clock. It lives here, not in the framework
+repo, because it is **about this site** — `harness.agent_manifest` fails when it
+drifts from the guardrail.
+
+- **CTO** — `agents/frontend-harness.yaml`, the one office written by hand,
+  because its verifiers are not an opinion: they run `harness/check_harness.py`.
+  With no instruction, `bza` discovers work from `--next` (one deficit at a
+  time), so what each cell works on is defined by the guardrail's output, not
+  by anyone's prompt. Founded at the start.
+- **COO** — founded when the CTO is `healed` (one verified build). From then
+  on a human instruction (`-i "..."`) goes to the COO, which answers with a
+  plan whose steps name **active offices only** — enforced by a JSON schema that
+  `_refresh_coo_contract` rewrites at every founding — and dispatches them in
+  waves. The COO has no write tools; it never does the work itself. Its plans
+  land on the board: `board.kind: local` writes `.benzene/board/board.md`;
+  `{kind: linear, team: <KEY>, project: <name>, api_key_env: LINEAR_API_KEY}`
+  moves the same steps through a Linear team's workflow states.
+- **CMO, CXO, CFO, CIO** — no genome file here. Each is chartered from the
+  purpose by `bza` at founding (built-in charter, specialised by the evolver
+  model), with the file-pattern verifiers in `organisation.yaml`. CXO founds on
+  `--milestone launch`; CFO and CIO on `--metric` values, real or from the
+  evaluation panels (`--evaluate cxo` is Product Hunt, `--evaluate cio` Shark
+  Tank).
 
 ```bash
-export OPENROUTER_API_KEY=sk-or-...   # every role uses a free model
-bza agents/frontend-harness.yaml .    # the workspace is this repository
+export OPENROUTER_API_KEY=sk-or-...
+bza agents/organisation.yaml .                       # the CTO takes what --next finds
+bza agents/organisation.yaml . -i "..."               # through the COO once founded
+bza agents/organisation.yaml . --status --graph       # offices, treasury, .benzene/graph.html
 ```
 
 `agents/skills/` holds the six operating skills (`author-question`,
 `author-plan`, `author-playbook`, `fix-site-health`, `fix-functional`,
 `build-capability`). `AgentManifest.load` resolves `skills: [name]` against
-`agents/skills/<name>/SKILL.md` first, so genome and skills travel together.
+`agents/skills/<name>/SKILL.md` first, so genome and skills travel together;
+`skills_dir: skills` in the organisation file points chartered offices at the
+same folder.
 
 **These are not the Agent Skills under `/skills/`.** Those are content
 (`ui-atom`, `server-ssr`) published for learners, listed in
@@ -293,6 +316,14 @@ bza agents/frontend-harness.yaml .    # the workspace is this repository
 operating instructions out of that registry is deliberate — `agents/skills/` is
 never synced into it. The engine itself is
 [`grvpanchal/benezene-agent`](https://github.com/grvpanchal/benezene-agent).
+
+Two numbers to distrust. The COO's default objective is **throughput 20**, a
+volume metric, which is exactly what a weak model games by opening twenty thin
+steps; the plan guardrail (steps must be complete instructions the office can
+verify alone) is what stands against that, and `skill repair` on `orchestrate`
+is how it improves. And the treasury will read **burning** while cells cost
+more than `value_usd: 0.05` per verified build — that is the CFO's honest
+reading at these model prices, not a fault to tune away.
 
 ## Doc reviewer subagent
 
