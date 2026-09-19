@@ -157,18 +157,26 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds seven items. Three are from auditing greatfrontend.com's feature
-copy against ours: `workspace.theming`, `workspace.shortcuts` and
-`bank.curated_lists`. Four are the **front door** — `landing.hero`,
-`landing.proof`, `landing.surfaces`, `landing.workspace_preview` — added
-after a screenshot showed the home page still selling the CLI while the
-practice product sat behind four nav links. Seventy-four capabilities measured
-what the site could do; none measured what a student saw first, so the
-organisation was never going to be handed the work. The standard is a
-conversion page: a headline about practising, a CTA that lands on the working
-bank, "no sign-up required" because it is true, numbers read back from the
-bank so they cannot rot, and a live Run button for one real question. The CLI
-content moves down or out; it is not the first screen.
+It holds three items, from auditing greatfrontend.com's feature copy against
+ours: `workspace.theming`, `workspace.shortcuts` and `bank.curated_lists`. It
+calls its workspace "customizable: resize, syntax highlighting, theming,
+keyboard shortcuts" and ships curated named lists that are not the same thing
+as our time-boxed plans.
+
+The **front door** left the frontier for the new `landing` group, all four
+`required`: `landing.hero` (a practice headline as the FIRST screen — the CLI
+template picker moved below, into the page body), `landing.proof` (the question
+total and per-format counts, computed by Liquid over `site.data.questions` so a
+figure cannot outlive the bank), `landing.surfaces` (the five surfaces linked
+with a line each; its check follows the page's includes, because a link is no
+less real for living in a partial) and `landing.workspace_preview` (a real
+coding question's editor and Run button on the home page itself, which needed
+`playground.js` added to the home layout). They were added after a screenshot
+showed the home page selling the CLI while the practice product sat behind four
+nav links — seventy-four capabilities measured what the site could do, and none
+measured what a student saw first. A `bza` run wrote the hero copy before a
+container restart killed it; the layout restructure and the other three were
+finished by hand against the same checks.
 
 `account.oauth_pkce` left the frontier on the organisation's first live run:
 the CTO cell wrote `docs/assets/js/account-oidc.js` — a real Authorization

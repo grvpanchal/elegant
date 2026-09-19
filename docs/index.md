@@ -3,6 +3,23 @@ layout: home
 title: Frontend Architecture Principles
 ---
 
+{% include landing-proof.html %}
+
+{% include landing-surfaces.html %}
+
+<section style="max-width: 80rem; margin: 0 auto; padding: 1rem 1rem 2rem;">
+  <h2 style="text-align: center;">Try a question right now</h2>
+  <p style="text-align: center; color: #555; margin-top: 0;">
+    No account, no setup. Edit the starter and press Run — the same tests grade you here and in every question.
+  </p>
+  {% include code-playground.html slug="action-creators" %}
+  <p style="text-align: center; margin-top: 1rem;">
+    <a class="btn" href="{{ '/practice/' | relative_url }}">See all questions</a>
+  </p>
+</section>
+
+<hr style="max-width: 80rem; margin: 2rem auto;">
+
 <style>
 .card-container {
   display: flex; /* Enables Flexbox layout */
@@ -46,15 +63,23 @@ title: Frontend Architecture Principles
   padding: 0.5rem 1rem 2rem;
 }
 </style>
+
+# Built with the Elegant CLI
+
 <div class="card-container">
   <div class="text-item">
-    <h1>What is Elegant?</h1>
     <p>
-    Elegant is a command-line tool for building frontend architecture with a focus on UI and UX. This framework-independent tool lets you build sites using your preferred technology—whether React, Angular, Vue, or Web Components. It generates components following atomic design principles and handles state management through Redux, NgRx, or Pinia. The generated files are comprehensive, including essential props, events, responsive design, CRUD operations, unit tests, and Storybook documentation.
+    The questions here are built on <strong>Elegant</strong>, a command-line tool for frontend architecture with a focus on UI and UX. This framework-independent tool lets you scaffold sites using your preferred technology—whether React, Angular, Vue, or Web Components. It generates components following atomic design principles and handles state management through Redux, NgRx, or Pinia, with essential props, events, responsive design, CRUD operations, unit tests, and Storybook documentation.
     </p>
+    <div class="flex">
+      <div class="title">Elegant Architecture is</div>
+      <div class="type-container">
+        <div id="container">&nbsp;</div>
+      </div>
+    </div>
   </div>
   <div class="text-item">
-    <img style="width: 100%;" alt="The three layers of the Universal Frontend Architecture: UI, web server and state, drawn as a stack" src="{{ '/assets/img/ui-server-state.png' | relative_url }}" />
+    {% include begin-boilerplate.html %}
   </div>
 </div>
 

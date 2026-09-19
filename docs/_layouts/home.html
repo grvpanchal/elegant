@@ -21,13 +21,7 @@
         <a id="skip-to-content" href="#content">Skip to the content.</a>
         <header class="page-header" role="banner">
             {% include site-nav.html class="dark" %}
-            <div class="flex">
-                <div class="title">Elegant Architecture is</div>
-                <div class="type-container">
-                    <div id="container">&nbsp;</div>
-                </div>
-            </div>
-            {% include begin-boilerplate.html %}
+            {% include landing-hero.html %}
         </header>
         <main id="content" class="main-content" role="main" style="max-width: 80rem; padding: 2rem 1rem;">
             {{ content }}
@@ -45,5 +39,6 @@
         </main>
         <script type="text/javascript" src="{{ '/assets/js/main.js' | relative_url }}"></script>
         {% unless page.identity_scripts == 'inline' %}{% include identity-scripts.html %}{% endunless %}
+        <script type="text/javascript" src="{{ '/assets/js/playground.js' | relative_url }}"></script>
   </body>
 </html>

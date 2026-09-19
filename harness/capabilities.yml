@@ -748,36 +748,36 @@ checks:
     scope: cumulative
     requires: [discovery.index]
     owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html", "docs/_sass/**"]
-    group: frontier
+    group: landing
     weight: 3
-    required: false
+    required: true
     threshold: 1.0
     why: "The first screen of the home page must be about practising frontend interviews — a headline that says so, a primary CTA that lands on the working question bank, and 'no sign-up required' because it is true — at 1440px and at 390px with no sideways scroll. Today the first screen sells a CLI."
   - id: landing.proof
     scope: cumulative
     requires: [bank.registry, landing.hero]
     owns: ["docs/index.md", "docs/_includes/landing-*.html"]
-    group: frontier
+    group: landing
     weight: 2
-    required: false
+    required: true
     threshold: 1.0
     why: "The home page must state how much there is to practise — the question total and the count per format — and every number must equal the bank as rendered, so a claim cannot outlive the content it describes."
   - id: landing.surfaces
     scope: cumulative
     requires: [plans.registry, content.company_guides]
     owns: ["docs/index.md", "docs/_includes/landing-*.html"]
-    group: frontier
+    group: landing
     weight: 2
-    required: false
+    required: true
     threshold: 1.0
     why: "The home page must link a student to every practice surface — the bank, plans, playbooks, company guides and the account page — each with a line saying what it is for. A surface the front door does not mention does not exist to a first visit."
   - id: landing.workspace_preview
     scope: cumulative
     requires: [functional.playground, landing.hero]
     owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html"]
-    group: frontier
+    group: landing
     weight: 3
-    required: false
+    required: true
     threshold: 1.0
     why: "The home page must carry a live workspace for one real question — editor enabled, Run executes that question's own tests — so a student can try the product before reading about it. A screenshot of an editor is a promise; a Run button is proof."
 

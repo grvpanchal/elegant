@@ -1398,7 +1398,15 @@ def _landing_surfaces(site: Site, threshold):
     index = site.docs / "index.md"
     if not index.is_file():
         return 0.0, ["docs/index.md is missing"], "missing"
+    # Read index.md AND any partial it includes: a surface link is no less real
+    # for living in landing-surfaces.html than in the page body. Reading only
+    # index.md would fail a page that factors its front door into includes,
+    # which is exactly how this one is built.
     text = index.read_text(encoding="utf-8")
+    for inc in re.findall(r"{%-?\s*include\s+([\w./-]+)", text):
+        part = site.docs / "_includes" / inc
+        if part.is_file():
+            text += "\n" + part.read_text(encoding="utf-8")
     wanted = {
         "/practice/": "the question bank",
         "/plans/": "study plans",
