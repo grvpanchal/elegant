@@ -696,3 +696,12 @@ $practice-fail: #b4341f;
   word-wrap: break-word;
 }
 body.playground__resizing { cursor: ns-resize; user-select: none; }
+
+// ---------------------------------------------------------------- hidden
+// `hidden` must mean hidden. normalize.scss sets `[hidden] { display: none }`
+// at attribute specificity, and any later class rule with `display: flex` —
+// `.account-widget__in`, `.playground__console` — ties it on specificity and
+// wins by order, so the element paints anyway. The account widget shipped
+// showing Sign in and Sign out side by side on every page because of it, and
+// the console pane needed its own patch above. This closes the class of bug.
+[hidden] { display: none !important; }

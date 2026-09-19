@@ -842,6 +842,33 @@ const SCENARIOS = {
     return "Ctrl/Cmd+Enter runs the tests, and the page says so";
   },
 
+  /** The nav's account widget must be painted on EVERY page, not only the ones that load its script. */
+  async account_widget_painted(page, origin) {
+    // One page per layout that renders the nav. The home page shipped for a
+    // while showing "Sign in" and "Sign out" side by side, because the widget
+    // was included by the nav on every layout and account.js by only two.
+    const pages = ["/", "/practice/", "/plans/", "/account/", "/ui/"];
+    const broken = [];
+    for (const path of pages) {
+      const res = await page.goto(`${origin}${path}`, { waitUntil: "domcontentloaded" }).catch(() => null);
+      if (!res || res.status() >= 400) continue;  // a layout with no such page is not this check's business
+      await page.waitForTimeout(300);
+      const seen = await page.evaluate(() => {
+        const w = document.querySelector("[data-account-widget]");
+        if (!w) return null;
+        const vis = (el) => !!el && !el.hidden && !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+        const inn = Array.from(w.querySelectorAll("[data-account-signout]")).filter(vis).length;
+        const out = Array.from(w.querySelectorAll("[data-account-signed-out], [data-account-signin-form], a[href*='account']")).filter(vis).length;
+        return { scripted: typeof window.ElegantAccount === "object", signout: inn, signin: out };
+      });
+      if (seen === null) continue;  // no widget on this page
+      if (!seen.scripted) broken.push(`${path}: the widget is rendered but account.js never loaded`);
+      else if (seen.signout > 0 && seen.signin > 0) broken.push(`${path}: shows both signed-in and signed-out controls at once`);
+    }
+    ok(broken.length === 0, "the account widget is unpainted on: " + broken.join("; "));
+    return `widget painted on ${pages.length} layouts, one state each`;
+  },
+
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
   async keyboard(page, origin) {
     const coding = (await bank(page, origin)).filter((q) => q.format === "coding");

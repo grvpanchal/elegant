@@ -642,6 +642,15 @@ checks:
     required: true
     threshold: 1.0
     why: "Signing in must be a real Authorization Code + PKCE flow against a configured issuer — response_type=code, an S256 challenge, state and nonce — not a typed name."
+  - id: account.widget_painted
+    scope: incremental
+    requires: [account.honest_copy]
+    owns: ["docs/_layouts/*", "docs/_includes/site-nav.html", "docs/_includes/account-widget.html", "docs/_includes/identity-scripts.html"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Every page that renders the account widget must load the script that paints it. The nav includes the widget on every layout; a layout that skips identity-scripts.html shows Sign in and Sign out side by side, and the home page did."
   - id: account.verified_credentials
     scope: incremental
     requires: [account.provider_seam]

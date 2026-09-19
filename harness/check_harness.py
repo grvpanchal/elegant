@@ -1251,6 +1251,7 @@ for _cid, _scenario in (
     ("account.identity_sync", "account_identity_sync"),
     ("workspace.theming", "workspace_theming"),
     ("workspace.shortcuts", "workspace_shortcuts"),
+    ("account.widget_painted", "account_widget_painted"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 

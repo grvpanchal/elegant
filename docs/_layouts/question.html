@@ -40,7 +40,7 @@
       </footer>
     </main>
     <script type="text/javascript" src="{{ '/assets/js/main.js' | relative_url }}"></script>
-    {% include identity-scripts.html %}
+    {% unless page.identity_scripts == 'inline' %}{% include identity-scripts.html %}{% endunless %}
     <script type="text/javascript" src="{{ '/assets/js/playground.js' | relative_url }}"></script>
   </body>
 </html>

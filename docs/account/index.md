@@ -1,6 +1,7 @@
 ---
 title: Account
 layout: default
+identity_scripts: inline   # this page loads the bundle itself, before its own controllers
 slug: account
 description: Name a profile so your progress is yours, move it between devices, or export it as JSON.
 ---
