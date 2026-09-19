@@ -8,3 +8,7 @@ dist
 **/project.json
 .benzene
 docs/vendor
+
+# Python bytecode (compiled artifacts, never source)
+__pycache__/
+*.pyc
