@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 74 capabilities benchmarked against
+site under `docs/` must be able to do — 78 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -157,11 +157,18 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds three items, all from auditing greatfrontend.com's own feature copy
-against ours: `workspace.theming`, `workspace.shortcuts` and
-`bank.curated_lists`. It calls its workspace "customizable: resize, syntax
-highlighting, theming, keyboard shortcuts" and ships curated named lists that
-are not the same thing as our time-boxed plans.
+It holds seven items. Three are from auditing greatfrontend.com's feature
+copy against ours: `workspace.theming`, `workspace.shortcuts` and
+`bank.curated_lists`. Four are the **front door** — `landing.hero`,
+`landing.proof`, `landing.surfaces`, `landing.workspace_preview` — added
+after a screenshot showed the home page still selling the CLI while the
+practice product sat behind four nav links. Seventy-four capabilities measured
+what the site could do; none measured what a student saw first, so the
+organisation was never going to be handed the work. The standard is a
+conversion page: a headline about practising, a CTA that lands on the working
+bank, "no sign-up required" because it is true, numbers read back from the
+bank so they cannot rot, and a live Run button for one real question. The CLI
+content moves down or out; it is not the first screen.
 
 `account.oauth_pkce` left the frontier on the organisation's first live run:
 the CTO cell wrote `docs/assets/js/account-oidc.js` — a real Authorization

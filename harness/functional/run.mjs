@@ -869,6 +869,96 @@ const SCENARIOS = {
     return `widget painted on ${pages.length} layouts, one state each`;
   },
 
+  // ------------------------------------------------------------ the front door
+  // greatfrontend.com's home page is a conversion page; ours sold the CLI while
+  // the practice product sat behind four nav links. These measure the front
+  // door the way a student meets it: first screen, first click, phone width.
+
+  /** The first screen is about practising, its CTA lands on a working bank, and it holds on a phone. */
+  async landing_hero(page, origin) {
+    await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(400);
+    const fold = await page.evaluate(() => {
+      const h1 = document.querySelector("h1");
+      const inFold = (el) => { const r = el.getBoundingClientRect(); return r.top >= 0 && r.top < innerHeight && r.height > 0; };
+      const ctas = Array.from(document.querySelectorAll("a[href]")).filter(inFold)
+        .map((a) => ({ text: (a.textContent || "").trim(), href: a.getAttribute("href") || "", primary: /btn|cta|button/i.test(a.className) }));
+      const text = Array.from(document.querySelectorAll("body *")).filter(inFold).map((e) => e.textContent || "").join(" ");
+      return { h1: h1 ? h1.textContent.trim() : "", h1InFold: !!h1 && inFold(h1), ctas, text };
+    });
+    ok(fold.h1InFold && /interview|practi[cs]e|train/i.test(fold.h1),
+      `the first screen's headline is "${fold.h1}" — a student looking for interview practice reads about a CLI. ` +
+      "The h1 above the fold must say what this is for.");
+    const cta = fold.ctas.find((c) => /\/practice\/?$/.test(c.href.replace(/\?.*$/, "")) && c.primary)
+      || fold.ctas.find((c) => /\/practice\/?$/.test(c.href.replace(/\?.*$/, "")));
+    ok(cta, "no call to action above the fold links to /practice/ — the first click has nowhere to go");
+    ok(/no sign[- ]?up required|no account needed|free/i.test(fold.text),
+      "the first screen does not say a student can start without an account. It is true (guest progress " +
+      "works), and greatfrontend.com says it under its button because it removes the first objection.");
+
+    // The click has to land somewhere that works, not just somewhere.
+    await page.click(`a[href="${cta.href}"]`);
+    await page.waitForURL((u) => /\/practice\/?(\?.*)?$/.test(u.pathname), { timeout: 15000 });
+    const rows = await page.$$eval("[data-question]", (r) => r.length);
+    ok(rows > 0, "the CTA landed on /practice/ but the bank rendered no questions");
+
+    // A phone is where most first visits happen.
+    const phone = await page.context().browser().newContext({ viewport: { width: 390, height: 844 }, isMobile: true, deviceScaleFactor: 2 });
+    try {
+      const p2 = await phone.newPage();
+      await p2.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
+      await p2.waitForTimeout(400);
+      const m = await p2.evaluate(() => {
+        const h1 = document.querySelector("h1"); const r = h1 && h1.getBoundingClientRect();
+        return { h1Visible: !!r && r.top >= 0 && r.top < innerHeight && r.height > 0,
+                 sideways: document.documentElement.scrollWidth > innerWidth + 1 };
+      });
+      ok(m.h1Visible, "at 390px the headline is not on the first screen");
+      ok(!m.sideways, "at 390px the home page scrolls sideways — something is wider than the phone");
+    } finally { await phone.close(); }
+    return `"${fold.h1}" → ${cta.href} → ${rows} questions; holds at 390px`;
+  },
+
+  /** Every number on the front door equals the bank as rendered. */
+  async landing_proof(page, origin) {
+    const rows = await bank(page, origin);
+    ok(rows.length > 0, "no bank to count");
+    const byFormat = {};
+    for (const r of rows) byFormat[r.format] = (byFormat[r.format] || 0) + 1;
+    await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
+    const text = await page.evaluate(() => document.body.innerText.replace(/\s+/g, " "));
+    const missing = [];
+    if (!new RegExp(`\\b${rows.length}\\b[^.]{0,40}\\bquestions?\\b`, "i").test(text))
+      missing.push(`the total (${rows.length} questions)`);
+    for (const [format, n] of Object.entries(byFormat)) {
+      const label = format.replace("-", "[- ]");
+      if (!new RegExp(`\\b${n}\\b[^.]{0,40}\\b${label}\\b|\\b${label}\\b[^.]{0,40}\\b${n}\\b`, "i").test(text))
+        missing.push(`${n} ${format}`);
+    }
+    ok(missing.length === 0,
+      `the home page does not state ${missing.join(", ")}. The numbers must come from the bank at build ` +
+      "time (site.data.questions), not be typed, so the claim cannot outlive the content.");
+    return `${rows.length} questions and ${Object.keys(byFormat).length} formats stated, all matching the bank`;
+  },
+
+  /** A real question's Run button works on the home page itself. */
+  async landing_workspace_preview(page, origin) {
+    const slugs = new Set((await bank(page, origin)).filter((q) => q.format === "coding").map((q) => q.slug));
+    await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
+    const host = page.locator("[data-playground]").first();
+    ok(await host.count() > 0, "the home page has no workspace. A student cannot try the product before reading about it; " +
+      "greatfrontend.com's home shows the editor and ours should let them press Run.");
+    const slug = await host.getAttribute("data-slug");
+    ok(slug && slugs.has(slug), `the home workspace names "${slug}", which is not a coding question in the bank`);
+    await page.waitForFunction(() => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
+      null, { timeout: 15000 }).catch(() => {});
+    ok(await page.locator("[data-playground-editor]").isEnabled(), "the home workspace's editor never enabled — playground.js is not loaded on this layout");
+    await page.locator("[data-playground-run]").first().click();
+    const ran = await page.waitForSelector(".playground__summary", { timeout: 20000 }).then(() => true).catch(() => false);
+    ok(ran, "Run on the home workspace produced no result");
+    return `live workspace for "${slug}" on the home page; Run executes its tests`;
+  },
+
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
   async keyboard(page, origin) {
     const coding = (await bank(page, origin)).filter((q) => q.format === "coding");

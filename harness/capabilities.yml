@@ -729,6 +729,49 @@ checks:
     threshold: 2
     why: "Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first."
 
+  # The front door. Everything above measures what the site can DO; nothing
+  # measured what a student SEES FIRST, and the home page still sold the CLI
+  # while 47 questions, a workspace, plans, guides and real accounts sat behind
+  # four nav links. greatfrontend.com's home is a conversion page: one
+  # headline, one CTA, "no signup required", proof, previews. These make ours
+  # one too — and every number on it is read back from the bank, not typed.
+  - id: landing.hero
+    scope: cumulative
+    requires: [discovery.index]
+    owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html", "docs/_sass/**"]
+    group: frontier
+    weight: 3
+    required: false
+    threshold: 1.0
+    why: "The first screen of the home page must be about practising frontend interviews — a headline that says so, a primary CTA that lands on the working question bank, and 'no sign-up required' because it is true — at 1440px and at 390px with no sideways scroll. Today the first screen sells a CLI."
+  - id: landing.proof
+    scope: cumulative
+    requires: [bank.registry, landing.hero]
+    owns: ["docs/index.md", "docs/_includes/landing-*.html"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 1.0
+    why: "The home page must state how much there is to practise — the question total and the count per format — and every number must equal the bank as rendered, so a claim cannot outlive the content it describes."
+  - id: landing.surfaces
+    scope: incremental
+    requires: [plans.registry, content.company_guides]
+    owns: ["docs/index.md", "docs/_includes/landing-*.html"]
+    group: frontier
+    weight: 2
+    required: false
+    threshold: 1.0
+    why: "The home page must link a student to every practice surface — the bank, plans, playbooks, company guides and the account page — each with a line saying what it is for. A surface the front door does not mention does not exist to a first visit."
+  - id: landing.workspace_preview
+    scope: cumulative
+    requires: [functional.playground, landing.hero]
+    owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html"]
+    group: frontier
+    weight: 3
+    required: false
+    threshold: 1.0
+    why: "The home page must carry a live workspace for one real question — editor enabled, Run executes that question's own tests — so a student can try the product before reading about it. A screenshot of an editor is a promise; a Run button is proof."
+
   # ------------------------------------------- the AI-harness axis (ours, not GFE's)
   - id: harness.skill_map
     owns: ["docs/practice/*"]

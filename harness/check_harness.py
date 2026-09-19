@@ -1252,6 +1252,9 @@ for _cid, _scenario in (
     ("workspace.theming", "workspace_theming"),
     ("workspace.shortcuts", "workspace_shortcuts"),
     ("account.widget_painted", "account_widget_painted"),
+    ("landing.hero", "landing_hero"),
+    ("landing.proof", "landing_proof"),
+    ("landing.workspace_preview", "landing_workspace_preview"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 
@@ -1380,6 +1383,37 @@ def _bank_curated_lists(site: Site, threshold):
     if good < threshold:
         deficits.append(f"{good} usable curated list(s), need {threshold}")
     return ratio(good, threshold), deficits[:MAX_DEFICITS], f"{good}/{threshold} curated lists"
+
+
+@check("landing.surfaces")
+def _landing_surfaces(site: Site, threshold):
+    """The front door must mention every room.
+
+    A surface the home page never links does not exist to a first visit. This
+    reads the source rather than the build so it can run without Jekyll, and
+    it asks for a line of copy next to each link because a bare nav-style
+    link says where, not why.
+    """
+    index = site.docs / "index.md"
+    if not index.is_file():
+        return 0.0, ["docs/index.md is missing"], "missing"
+    text = index.read_text(encoding="utf-8")
+    wanted = {
+        "/practice/": "the question bank",
+        "/plans/": "study plans",
+        "/playbooks/": "playbooks",
+        "/guides/": "company guides",
+        "/account/": "the account page",
+    }
+    deficits = []
+    for href, what in wanted.items():
+        if href not in text:
+            deficits.append(f"docs/index.md never links {href} ({what})")
+    if not re.search(r"^\s*<h1|^# ", text, re.M) and "landing-" not in text:
+        deficits.append("docs/index.md has no headline of its own and includes no landing-* partial")
+    ok_n = len(wanted) - len([d for d in deficits if "never links" in d])
+    return ratio(ok_n, len(wanted)) if not deficits else min(ratio(ok_n, len(wanted)), 0.99), \
+        deficits[:MAX_DEFICITS], f"{ok_n}/{len(wanted)} surfaces linked from the front door"
 
 
 @check("content.company_guides")
