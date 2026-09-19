@@ -73,7 +73,7 @@ your repository.
       data-difficulty="{{ q.difficulty }}"
       data-layer="{{ q.layer }}"
       data-topic="{{ q.topics | join: ' ' }}"
-      data-searchtext="{{ q.title | downcase }} {{ q.summary | downcase }} {{ q.topics | join: ' ' | downcase }} {{ q.skill }}">
+      data-searchtext="{{ q.title | downcase | escape }} {{ q.summary | downcase | escape }} {{ q.topics | join: ' ' | downcase | escape }} {{ q.skill | escape }}">
     <label class="question-row__check">
       <input type="checkbox" data-progress-toggle="{{ q.slug }}">
       <span class="sr-only">Mark {{ q.title }} done</span>

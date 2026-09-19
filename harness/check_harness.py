@@ -1255,6 +1255,7 @@ for _cid, _scenario in (
     ("landing.hero", "landing_hero"),
     ("landing.proof", "landing_proof"),
     ("landing.workspace_preview", "landing_workspace_preview"),
+    ("bank.rendered", "bank_rendered"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 

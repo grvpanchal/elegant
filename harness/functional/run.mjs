@@ -959,6 +959,25 @@ const SCENARIOS = {
     return `live workspace for "${slug}" on the home page; Run executes its tests`;
   },
 
+  /** Every question the server rendered must survive the browser's parse. */
+  async bank_rendered(page, origin) {
+    // Two harness questions were in the HTML and gone from the DOM: a `"` in a
+    // summary closed data-searchtext early and the parser ate the rest of the
+    // row. bank.registry counts files and filters counts whatever rendered, so
+    // neither noticed. This compares what Jekyll wrote with what the browser kept.
+    const html = await (await page.request.get(`${origin}/practice/`)).text();
+    const written = (html.match(/<li\b[^>]*\bdata-question\b/gs) || []).length;
+    const header = (html.match(/data-question-count[^>]*>\s*(\d+)/) || [])[1];
+    const rows = await bank(page, origin);
+    ok(written > 0, "no question rows in the served HTML");
+    ok(rows.length === written,
+      `Jekyll wrote ${written} question rows but the browser kept ${rows.length} — a row is malformed ` +
+      "(most likely an unescaped quote in an attribute) and the questions it drops are invisible to a learner");
+    ok(!header || Number(header) === written,
+      `the page's own count says ${header} but ${written} rows were rendered`);
+    return `${written} rows written, ${rows.length} kept, header agrees`;
+  },
+
   /** A workspace you can only use with a mouse fails the site's own accessibility topic. */
   async keyboard(page, origin) {
     const coding = (await bank(page, origin)).filter((q) => q.format === "coding");

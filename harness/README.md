@@ -141,6 +141,7 @@ The five practice formats and the registry that makes them findable. This is the
 | `bank.difficulty_mix` | 1 | yes | cumulative | `1` | Every format needs at least `1` question at each difficulty (easy/medium/hard). |
 | `bank.layer_coverage` | 2 | yes | cumulative | `8` | Each architecture layer (ui/server/state) needs >= `8` questions. |
 | `bank.topic_coverage` | 2 | no | cumulative | 60% | At least 60% of the topics in docs/_data/topics/*.csv must be practised by a question. |
+| `bank.rendered` | 3 | yes | incremental | all | Every question row Jekyll writes must survive the browser's parse, and the page's own count must match. Two questions were in the HTML and gone from the DOM because a quote in a summary broke an attribute; the file count and the filter check both said fine. |
 | `bank.slug_quality` | 1 | yes | incremental | all | A slug is a permanent URL. `quiz-sample-1` passes every other check and tells nobody what the page contains. |
 | `bank.distinct` | 1 | no | incremental | 60% | No two questions in the same format may overlap more than 60% on title and summary — a volume target with no distinctness check rewards padding. |
 | `bank.unique_slugs` | 1 | yes | incremental | all | Question slugs must be unique and equal to their filename. |
@@ -276,7 +277,7 @@ Parity targets the site does not have yet. Declared and measured so the gap stay
 | `bank.curated_lists` | 2 | no | cumulative | `2` | Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first. |
 | `landing.hero` | 3 | no | cumulative | all | The first screen of the home page must be about practising frontend interviews — a headline that says so, a primary CTA that lands on the working question bank, and 'no sign-up required' because it is true — at 1440px and at 390px with no sideways scroll. Today the first screen sells a CLI. |
 | `landing.proof` | 2 | no | cumulative | all | The home page must state how much there is to practise — the question total and the count per format — and every number must equal the bank as rendered, so a claim cannot outlive the content it describes. |
-| `landing.surfaces` | 2 | no | incremental | all | The home page must link a student to every practice surface — the bank, plans, playbooks, company guides and the account page — each with a line saying what it is for. A surface the front door does not mention does not exist to a first visit. |
+| `landing.surfaces` | 2 | no | cumulative | all | The home page must link a student to every practice surface — the bank, plans, playbooks, company guides and the account page — each with a line saying what it is for. A surface the front door does not mention does not exist to a first visit. |
 | `landing.workspace_preview` | 3 | no | cumulative | all | The home page must carry a live workspace for one real question — editor enabled, Run executes that question's own tests — so a student can try the product before reading about it. A screenshot of an editor is a promise; a Run button is proof. |
 
 ### harness

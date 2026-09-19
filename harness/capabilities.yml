@@ -173,6 +173,15 @@ checks:
     required: false
     threshold: 0.60
     why: "At least {threshold:.0%} of the topics in docs/_data/topics/*.csv must be practised by a question."
+  - id: bank.rendered
+    scope: incremental
+    requires: [bank.registry]
+    owns: ["docs/practice/index.md", "docs/assets/js/practice-index.js", "docs/practice/*"]
+    group: question_bank
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every question row Jekyll writes must survive the browser's parse, and the page's own count must match. Two questions were in the HTML and gone from the DOM because a quote in a summary broke an attribute; the file count and the filter check both said fine."
   - id: bank.slug_quality
     scope: incremental
     owns: ["docs/practice/*"]
@@ -754,7 +763,7 @@ checks:
     threshold: 1.0
     why: "The home page must state how much there is to practise — the question total and the count per format — and every number must equal the bank as rendered, so a claim cannot outlive the content it describes."
   - id: landing.surfaces
-    scope: incremental
+    scope: cumulative
     requires: [plans.registry, content.company_guides]
     owns: ["docs/index.md", "docs/_includes/landing-*.html"]
     group: frontier

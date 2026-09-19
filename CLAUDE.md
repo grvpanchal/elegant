@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 78 capabilities benchmarked against
+site under `docs/` must be able to do — 79 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -347,6 +347,13 @@ COO**. A real improvement and a real founding, but not causally linked, and
 timeout as an infrastructure event, not a task: if it recurs, raise
 `timeout_s` on `verify:capabilities` or find what made the browser suite slow,
 rather than reading the founding as evidence the office earned it.
+
+That timeout has since been measured: the exact command that died runs in
+**53 seconds alone**, and both times it exceeded its limit a second Chromium
+suite or Jekyll build was running in parallel on this container. So the rule is
+**never run `check_harness.py` or the functional suite while a `bza` run is in
+progress** — the cell's verifiers are that same checker, and contention turns
+a one-minute verify into a timeout that becomes the cell's next task.
 
 Two numbers to distrust. The COO's default objective is **throughput 20**, a
 volume metric, which is exactly what a weak model games by opening twenty thin
