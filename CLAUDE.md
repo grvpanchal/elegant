@@ -157,16 +157,22 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds one item, `bank.curated_lists`: greatfrontend.com ships curated named
-lists (the "top N" shape) that are not the same thing as our time-boxed plans.
-The workspace parity items — `theming` and `shortcuts` — both left for
-`workspace`, required, on one-task `bza` runs. Each cell wrote a clean, correct
-change (a `prefers-color-scheme: dark` block; a shared `run()` that the Run
-button and Ctrl/Cmd+Enter both call, with a visible `<kbd>` hint), each
-verified by its own scenario. The shortcuts cell also dropped the Run button's
-`disabled` attribute — a real regression, since playground.js enables it on
-load — which was caught and restored before the commit. One-task runs make that
-kind of slip a one-file review, not a needle in a multi-task diff.
+**The group is currently empty** — every parity target found this session was
+built and left. The workspace items `theming` and `shortcuts` were built by
+one-task `bza` runs (a `prefers-color-scheme: dark` block; a shared `run()`
+that the Run button and Ctrl/Cmd+Enter both call, with a visible `<kbd>` hint),
+each verified by its own scenario; the shortcuts cell also dropped the Run
+button's `disabled` attribute — a real regression caught and restored before
+commit, which one-task runs make a one-file review rather than a needle in a
+multi-task diff. `bank.curated_lists` (now in `question_bank`, required) was
+finished by hand: `bza`'s discovery kept timing out because completed runs
+leaked orphaned Chromium processes that made the next `--sync --next` cold-start
+past 900s, so the cell was handed "timed out" as its instruction and could do
+nothing with it. `docs/_data/lists.yml` holds three curated lists (the "top N"
+shape, distinct from time-boxed plans), each an ordered set of real bank slugs
+rendered by `_layouts/list.html`; the check was also fixed — it read
+`Page.slug`, not `q["slug"]`, so it crashed the moment a real lists.yml existed.
+Leaked `headless_shell` processes are the thing to kill between `bza` runs.
 
 The **front door** left the frontier for the new `landing` group, all four
 `required`: `landing.hero` (a practice headline as the FIRST screen — the CLI

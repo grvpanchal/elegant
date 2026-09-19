@@ -1356,7 +1356,7 @@ def _bank_curated_lists(site: Site, threshold):
     if isinstance(lists, dict):
         lists = list(lists.values())
 
-    known = {q["slug"] for q in site.questions if q.get("slug")}
+    known = {q.slug for q in site.questions}
     deficits, good = [], 0
     for entry in lists:
         if not isinstance(entry, dict):

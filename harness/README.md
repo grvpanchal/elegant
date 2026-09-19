@@ -145,6 +145,7 @@ The five practice formats and the registry that makes them findable. This is the
 | `bank.slug_quality` | 1 | yes | incremental | all | A slug is a permanent URL. `quiz-sample-1` passes every other check and tells nobody what the page contains. |
 | `bank.distinct` | 1 | no | incremental | 60% | No two questions in the same format may overlap more than 60% on title and summary — a volume target with no distinctness check rewards padding. |
 | `bank.unique_slugs` | 1 | yes | incremental | all | Question slugs must be unique and equal to their filename. |
+| `bank.curated_lists` | 2 | yes | cumulative | `2` | Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first. |
 
 ### solutions
 
@@ -267,14 +268,6 @@ Accounts on a site with no server. greatfrontend.com has real ones; this is stat
 | `account.session_expiry` | 2 | yes | incremental | all | An ID token past its `exp` must be refused, and the page must say why — a sign-in button that silently does nothing is worse than no button. |
 | `account.no_client_secret` | 2 | yes | incremental | all | A static site is a public client: everything it ships is readable. A client secret, API key or private key committed under docs/ is published, not configured — PKCE exists so none is needed. |
 | `account.identity_sync` | 3 | yes | incremental | all | Progress recorded under a verified identity must be there on another device. Credentials that do not carry progress leave the learner exactly where a named local profile already left them. |
-
-### frontier
-
-Parity targets the site does not have yet. Declared and measured so the gap stays visible, `required: false` so they never block a contribution, and ordered after everything required so the cluster grows into them one at a time instead of all at once. A frontier check is a real measurement — when someone builds the feature it turns green without being rewritten.
-
-| check | weight | required | scope | threshold | fails when |
-|---|---|---|---|---|---|
-| `bank.curated_lists` | 2 | no | cumulative | `2` | Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first. |
 
 ### landing
 

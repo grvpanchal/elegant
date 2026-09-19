@@ -732,9 +732,9 @@ checks:
     scope: cumulative
     requires: [bank.formats]
     owns: ["docs/_data/lists.yml", "docs/lists/*"]
-    group: frontier
+    group: question_bank
     weight: 2
-    required: false
+    required: true
     threshold: 2
     why: "Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first."
 

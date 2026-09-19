@@ -1,0 +1,59 @@
+# Curated named lists — the 'top N' shape, NOT time-boxed plans (docs/plans/).
+# A list is a name, a reason, and an ordered set of question slugs from the bank.
+# Every slug is checked against docs/_data/questions.yml by bank.curated_lists,
+# so a list can never name a question that does not exist.
+- slug: core-fundamentals
+  title: Core fundamentals
+  order: 10
+  why: 'The questions to do before any others: the utilities, reducers and components that every harder
+    question builds on. If you only have a weekend, spend it here.'
+  questions:
+  - action-creators
+  - counter-reducer
+  - combine-reducers
+  - apply-middleware
+  - debounce-utility
+  - deep-clone
+  - event-emitter
+  - memoized-selector
+  - normalize-entities
+  - simple-store
+  - counter-component
+  - loading-button-atom
+  - form-field-molecule
+- slug: ui-components-first
+  title: UI components first
+  order: 20
+  why: 'Start on the UI layer: build interactive components and confront accessibility, state and rendering
+    where they are most visible. The track for a front-end role that leans on the interface.'
+  questions:
+  - accessible-combobox
+  - atom-boundaries
+  - counter-component
+  - data-table-sort
+  - debounce-utility
+  - event-delegation
+  - event-emitter
+  - form-field-molecule
+  - harness-a11y-gate
+  - harness-atom-guardrail
+  - infinite-scroll-list
+  - loading-button-atom
+- slug: state-management-path
+  title: State management path
+  order: 30
+  why: Work the state layer end to end — actions, reducers, selectors, middleware and normalisation —
+    in the order each idea depends on the last. The track for anyone whose interviews lean on data flow.
+  questions:
+  - action-creators
+  - apply-middleware
+  - combine-reducers
+  - counter-reducer
+  - deep-clone
+  - harness-skill-eval
+  - harness-state-shape
+  - memoized-selector
+  - middleware-order
+  - normalize-entities
+  - offline-first-list
+  - retry-with-backoff
