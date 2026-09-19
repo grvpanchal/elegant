@@ -29,5 +29,6 @@
       </footer>
     </main>
     <script type="text/javascript" src="{{ '/assets/js/main.js' | relative_url }}"></script>
+      {% unless page.identity_scripts == 'inline' %}{% include identity-scripts.html %}{% endunless %}
   </body>
 </html>

@@ -43,7 +43,7 @@ slug: ui-skills
    - What makes a component and why they matter
    - Presentational vs container patterns
    - Component lifecycle fundamentals
-   - **Codelab:** [Build Your First Component](../codelabs/component-basics.html)
+   - **Practice:** [Presentational vs container components](../practice/presentational-vs-container.html)
 
 2. **[Element](element.html)** (15 min)
    - DOM elements vs React elements
@@ -54,7 +54,7 @@ slug: ui-skills
    - Component interfaces and contracts
    - Prop types and validation
    - Default props and spreading
-   - **Codelab:** [Mastering Props](../codelabs/props-mastery.html)
+   - **Practice:** [Setting default values for props](../practice/props-defaults.html)
 
 **Checkpoint:** You should be able to create basic components that accept props and render UI elements.
 
@@ -72,14 +72,14 @@ slug: ui-skills
    - Single-responsibility components
    - Building reusable building blocks
    - Variant patterns and flexibility
-   - **Codelab:** [Atom Components - Practical Mastery](../codelabs/atom-practical-mastery.html) ⭐
+   - **Practice:** [Where does an atom stop?](../practice/atom-boundaries.html) and [Build a loading Button atom](../practice/loading-button-atom.html) ⭐
    - **Quiz:** Test your understanding (5 questions)
 
 6. **[Molecule](molecule.html)** (25 min)
    - Composing atoms into functional groups
    - When to create molecules vs organisms
    - State management in molecules
-   - **Codelab:** [Building Molecules](../codelabs/molecule-composition.html)
+   - **Practice:** [Build an accessible form field](../practice/form-field-molecule.html)
 
 7. **[Organism](organism.html)** (30 min)
    - Complex, self-contained UI sections
@@ -102,13 +102,13 @@ slug: ui-skills
    - Design system implementation
    - CSS-in-JS vs CSS Modules
    - Dark mode and theme switching
-   - **Codelab:** [Build a Theme System](../codelabs/theme-system.html)
+   - **Practice:** [Build a theme toggle with no flash](../practice/theme-toggle.html)
 
 10. **[RWD](rwd.html)** (30 min)
     - Mobile-first design principles
     - Breakpoint strategies
     - Responsive components
-    - **Codelab:** [Responsive Layout Patterns](../codelabs/responsive-layouts.html)
+    - **Practice:** [Ship a responsive image the browser can choose](../practice/responsive-image-set.html)
 
 11. **[Skeleton](skeleton.html)** (20 min)
     - Loading state patterns
@@ -120,7 +120,7 @@ slug: ui-skills
     - ARIA attributes
     - Keyboard navigation
     - Screen reader testing
-    - **Codelab:** [Accessible Components](../codelabs/accessibility-patterns.html)
+    - **Practice:** [Build an accessible combobox](../practice/accessible-combobox.html)
 
 **Checkpoint:** Your components are responsive, themed, and accessible to all users.
 
@@ -149,7 +149,7 @@ slug: ui-skills
     - Storybook documentation
     - Component stories
     - Interactive documentation
-    - **Codelab:** [Document Your Components](../codelabs/storybook-mastery.html)
+    - **Practice:** [Story questions](../practice/) — filter the bank by topic *story*
 
 **Checkpoint:** You understand advanced patterns and can document components effectively.
 

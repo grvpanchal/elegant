@@ -1,5 +1,7 @@
 ---
+title: CLI
 layout: default
+slug: cli
 ---
 
 ## Building Atomic Entities

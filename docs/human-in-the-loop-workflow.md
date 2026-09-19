@@ -1,3 +1,10 @@
+---
+title: Human-in-the-loop workflow
+layout: default
+slug: human-in-the-loop-workflow
+description: How human review is scheduled around the automated checks that guard the training site.
+---
+
 # Human-in-the-Loop Workflow for Elegant Frontend Training
 
 This document describes the workflow for human-in-the-loop (HITL) tasks in the Elegant Frontend Training company.

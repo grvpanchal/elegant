@@ -101,8 +101,8 @@
     },
     "ui/organism": {
       "doc": "ui/organism",
-      "last_sha": "fc3e983b86237e386921b123efce28a73e8bc265",
-      "last_reviewed_at": "2026-04-26T06:58:29Z",
+      "last_sha": "1623eb69645e8aafd2142c7c642dd6055f2b0436",
+      "last_reviewed_at": "2026-09-16T02:53:32Z",
       "score": 23,
       "axes": {
         "hook": 4,
@@ -112,15 +112,13 @@
         "quiz_quality": 4,
         "engagement_glue": 3
       },
-      "issues_fixed": [
-        "Expanded References from 1 bare URL to 5 named, topical links (Atomic Design ch.2, Molecule, Container, State, Component-Driven UIs)",
-        "Reworded the Practical Example lede (line 226) to acknowledge that fetching inside the organism is a teaching shortcut and to forward-link to Container \u2014 improves engagement glue and softens the contradiction with quiz Q2"
-      ],
+      "issues_fixed": [],
       "issues_reported": [
-        "Practical Example (lines ~228-317) and Advanced Example (lines ~356-503) are React-only and import imaginary './hooks/useProducts', './hooks/useComments', './molecules/*', './atoms/*' paths \u2014 they don't correspond to anything in templates/ and partly duplicate the Basic cross-framework TodoList. Consider replacing with an organism actually shipped in the chota-* templates (e.g., a header organism or a templates/-sourced second example) for parity with the Basic section.",
-        "Tension between teaching and example: Quiz Q2 (correct=D) and Q5 (correct=A) explicitly say organisms should NOT do data fetching, but the Practical ProductGrid example calls useProducts() inside the organism. Even with the new lede, a stronger fix would be to have the example accept `products`/`loading`/`onFiltersChange` as props and put useProducts() in a sibling ProductGridContainer.",
-        "Detailed Description (lines 19-29) is six uniform-length paragraphs with no list, callout, or code break; a short 'organism checklist' bullet list (recognizable region / composes molecules / owns UI state, not business state / responsive arrangement lives here) would help the 3-minute skim.",
-        "Common Mistake 3 closing example pair (DashboardPanel) is good but introduced after the SiteHeader example with no transition \u2014 a single sentence connecting 'render-prop slots' (SiteHeader) to 'children-as-content' (DashboardPanel) would improve cadence."
+        "Verified (not fixed by this pass): the two References/Practical-Example links that formerly pointed at the nonexistent ../ui/container.html (lines 226, 742) already point at ../server/container.html on this branch and both resolve in the built site \u2014 no action needed.",
+        "Practical Example (lines ~228-317) and Advanced Example (lines ~356-503) are React-only and import imaginary './hooks/useProducts', './hooks/useComments', './molecules/*', './atoms/*' paths \u2014 they don't correspond to anything in templates/ and partly duplicate the Basic cross-framework TodoList. Consider replacing with an organism actually shipped in the chota-* templates for parity with the Basic section.",
+        "Tension between teaching and example: Quiz Q2 (correct=D) and Q5 (correct=A) explicitly say organisms should NOT do data fetching, but the Practical ProductGrid example calls useProducts() inside the organism. A stronger fix would be to have the example accept `products`/`loading`/`onFiltersChange` as props and put useProducts() in a sibling ProductGridContainer.",
+        "Detailed Description (lines 19-29) is six uniform-length paragraphs with no list, callout, or code break; a short 'organism checklist' bullet list would help the 3-minute skim.",
+        "Common Mistake 3 closing example pair (DashboardPanel) is introduced after the SiteHeader example with no transition sentence \u2014 minor cadence nit."
       ]
     },
     "ui/component": {
@@ -1129,6 +1127,33 @@
         "Practical and Advanced examples are framework-agnostic / React-only and break the cross-framework tabbed pattern established in the Basic Example.",
         "Theming Patterns subsection is sourced primarily from external CSS-framework articles (Bootstrap, Tailwind, Water.css) and reads as encyclopedic survey text disconnected from the chota-* templates.",
         "No quiz question covers Shadow DOM piercing / scoped styling for the Web Components template, despite that being the most subtle insight in the Basic Example."
+      ]
+    },
+    "ui/skills": {
+      "doc": "ui/skills",
+      "last_sha": "f0b7199f0888c5f8f3bf0c51503bf17fdadb0651",
+      "last_reviewed_at": "2026-09-16T02:57:09Z",
+      "score": 15,
+      "axes": {
+        "hook": 2,
+        "cadence": 4,
+        "concreteness": 4,
+        "common_mistakes": 1,
+        "quiz_quality": 1,
+        "engagement_glue": 3
+      },
+      "issues_fixed": [
+        "Foundation > Component practice link (line 46) pointed at the bare ../practice/ index with a filter hint; repointed to the specific presentational-vs-container.html quiz (topics: component, props) that matches the step",
+        "Foundation > Props practice link (line 57) repointed from the practice index to props-defaults.html, a quiz whose sole topic is props",
+        "Atomic Design > Molecule practice link (line 82) repointed from the practice index to form-field-molecule.html, a ui-coding question that composes atoms into a molecule",
+        "Styling & UX > Theme practice link (line 105) repointed from the practice index to theme-toggle.html, the only bank question tagged theme",
+        "Styling & UX > RWD practice link (line 111) repointed from the practice index to responsive-image-set.html, a ui-coding question tagged rwd",
+        "Styling & UX > Accessibility practice link (line 123) repointed from the practice index to accessible-combobox.html, a ui-coding question whose primary topic is accessibility"
+      ],
+      "issues_reported": [
+        "Advanced Patterns > Story practice link (line 152) still points at the bare ../practice/ index \u2014 no bank question has story as its primary/sole topic (only harness-a11y-gate and harness-atom-guardrail carry story as a secondary tag, and both are 40+ min harness-format exercises, a poor fit for a first practice link on this concept); recommend authoring a dedicated easy/medium Story question before repointing this one",
+        "Progress Tracking checklist (lines ~308-338) and Tips for Success (line 345) still say \"codelab\" (\"Built first component codelab\", \"Completed Atom codelab\", \"Complete Codelabs\") even though the codelabs section referenced by this PR never shipped and all Practice links now point at docs/practice/; renaming these ~9 scattered mentions to \"practice question\"/\"exercise\" spans multiple sections and is better done as one deliberate pass rather than folded into this link fix",
+        "This page has no Common Mistakes or Quiz section of its own (it is a navigation/learning-path hub, not a concept doc) \u2014 scored low on those two axes for honesty, but that is a structural property of the page type, not a defect to patch in place; flagging in case the rubric should treat hub pages differently from concept docs"
       ]
     }
   }

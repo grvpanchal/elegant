@@ -1,0 +1,32 @@
+{%- comment -%}
+The front door's first screen: this is a training site for frontend interviews,
+not a CLI landing page. Owned by landing.hero. The CLI content lives below, in
+the page body — it moved down, it was not removed.
+{%- endcomment -%}
+<style>
+  .landing-hero { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; padding: 2.5rem 1rem 3rem; max-width: 80rem; margin: 0 auto; }
+  .landing-hero__copy { flex: 1 1 22rem; }
+  .landing-hero__art { flex: 1 1 18rem; text-align: center; }
+  .landing-hero__art img { max-width: 100%; height: auto; }
+  .landing-hero h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); line-height: 1.1; margin: 0 0 1rem; color: #fff; }
+  .landing-hero__lede { font-size: 1.1rem; line-height: 1.5; color: rgba(255,255,255,0.92); margin: 0 0 1.5rem; max-width: 34rem; }
+  .landing-hero__cta { display: inline-block; padding: 0.7rem 1.6rem; font-size: 1.05rem; font-weight: 600;
+    color: #157878; background: #fff; border-radius: 8px; text-decoration: none; }
+  .landing-hero__cta:hover { background: #f0f0f0; }
+  .landing-hero__note { margin: 0.75rem 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); }
+  @media (max-width: 600px) { .landing-hero { padding: 1.5rem 1rem 2rem; } .landing-hero__art { display: none; } }
+</style>
+<div class="landing-hero">
+  <div class="landing-hero__copy">
+    <h1>Practise frontend interviews</h1>
+    <p class="landing-hero__lede">
+      Real questions across UI, server and state — quizzes, coding challenges, system design and more —
+      in a browser workspace that runs your code against its own tests.
+    </p>
+    <a class="landing-hero__cta btn" href="{{ '/practice/' | relative_url }}">Start practising</a>
+    <p class="landing-hero__note">No sign-up required — start right away.</p>
+  </div>
+  <div class="landing-hero__art">
+    <img alt="The three layers of the Universal Frontend Architecture: UI, web server and state, drawn as a stack" src="{{ '/assets/img/ui-server-state.png' | relative_url }}" />
+  </div>
+</div>

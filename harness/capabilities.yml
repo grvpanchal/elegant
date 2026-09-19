@@ -1,0 +1,841 @@
+# Frontend AI Harness — capability guardrail
+#
+# The source of truth for "what the training site must be able to do".
+# Every capability below is MEASURED by harness/check_harness.py, never judged.
+# Reference for feature parity: https://www.greatfrontend.com/ (question formats,
+# practice workspace, study plans, solutions, playbooks, progress tracking).
+# The *content* is ours: the Universal Frontend Architecture split into
+# UI / Server / State, plus one axis GreatFrontend does not have — every unit of
+# practice is also an agent-runnable Agent Skill with its own eval.
+#
+# Each check has:
+#   id          stable identifier, used by the agent and by `--only`
+#   group       reporting bucket
+#   weight      contribution to the composite score
+#   threshold   the number the check compares against (semantics per check)
+#   why         one line the verifier prints so a failure is self-explaining
+#   scope       incremental: one contribution is responsible for it right now, so it
+#               belongs in an agent's per-task verifier.
+#               cumulative: a whole-site volume target (write 12 quiz questions),
+#               which no single contribution can satisfy. Use `--scope incremental`
+#               to check a change, and the full run to check the site.
+#   requires    capability ids that must pass before this one is worth working on.
+#               `--next` never hands out work that is blocked: a study plan needs
+#               a question bank to be built from, so `plans.*` waits for
+#               `bank.formats`. Weight decides priority among capabilities that
+#               are actually reachable.
+#   owns        the paths this capability is about. With `--changed`, a capability
+#               whose territory the contribution did not touch is SKIPPED rather
+#               than failed — otherwise an author who wrote one question is
+#               blamed for a defect in someone else's study plan. A capability
+#               with no `owns` (the health checks) is judged per page instead.
+#
+# Composite score = sum(weight * check_score) / sum(weight).
+# The site PASSES when every `required: true` check passes AND the composite
+# is >= pass_threshold.
+
+version: 1
+pass_threshold: 0.95
+site_root: docs
+skills_root: skills
+templates_root: templates
+
+# Not site pages: developer notes and raw code scratch files that Jekyll never
+# renders (they carry no front matter). Drafts under docs/blog/ are deliberately
+# unpublished — the nav entry is commented out — so they are out of scope too.
+exclude_globs:
+  - "docs/IMPLEMENTATION_SUMMARY.md"
+  - "docs/setup/**"
+  - "docs/blog/**"
+
+# Vocabulary the schema checks validate against.
+enums:
+  format: [quiz, coding, ui-coding, system-design, harness]
+  difficulty: [easy, medium, hard]
+  layer: [ui, server, state]
+  framework: [react, vue, angular, wc]
+
+# What a plan's name has to mean in minutes. A plan whose slug is listed here
+# must declare a budget inside the band; plans with other slugs are free.
+# This is the external anchor for `plans.horizon_fit` — without it a plan can
+# satisfy `plans.duration_fit` by shrinking its promise to match two steps.
+# Bands assume a learner gives the plan roughly an hour a day, five days a week.
+plan_horizons:
+  one-week:     {min: 240,  max: 900}     # 4-15 hours
+  one-month:    {min: 900,  max: 2700}    # 15-45 hours
+  three-months: {min: 2400, max: 7200}    # 40-120 hours
+
+# Claims this codebase already knows are false. A guardrail measures form, not
+# truth — a well-formed wrong answer passes every other check here — and this is
+# the narrow slice of truth that can still be mechanised. Only add an entry after
+# a real error gets through review, and say which one.
+#
+# `forbidden` is a regex; `unless` is a regex that, when also present on the
+# page, means the mention is deliberate (explaining the removal, not relying on it).
+house_rules:
+  - forbidden: "\\bdefaultProps\\b"
+    unless: "removed .{0,40}defaultProps|defaultProps .{0,40}(removed|ignored|deprecated)"
+    why: "React 19 removed defaultProps on function components; use default parameter values. (Found in a generated quiz that taught the old behaviour as current.)"
+  - forbidden: "\\bvi\\.require(Actual|Mock)\\b"
+    why: "Vitest removed vi.requireActual / vi.requireMock; use vi.mock(path, async (importOriginal) => ...)."
+  - forbidden: "--legacy-peer-deps"
+    why: "No template needs --legacy-peer-deps any more; plain npm install works."
+
+# Front matter contract for docs/practice/<slug>.md
+question_schema:
+  required: [title, layout, slug, format, difficulty, layer, topics, skill, minutes]
+  layout: question
+  minutes: {min: 5, max: 120}
+  topics: {min_items: 1}
+  # ui-coding questions must ship starter code for at least this many frameworks
+  min_frameworks: 2
+
+checks:
+  # ---------------------------------------------------------------- content
+  - id: content.concept_docs
+    owns: ["docs/ui/*", "docs/server/*", "docs/state/*"]
+    scope: cumulative
+    group: content
+    weight: 2
+    required: true
+    threshold: 45
+    why: "A reference layer is the prerequisite for practice: >= {threshold} concept docs under docs/{ui,server,state}."
+  - id: content.concept_quiz
+    owns: ["docs/ui/*", "docs/server/*", "docs/state/*"]
+    scope: cumulative
+    group: content
+    weight: 2
+    required: true
+    threshold: 0.90
+    why: "At least {threshold:.0%} of concept docs must carry an inline MCQ (recall before practice)."
+  - id: content.skill_registry_sync
+    owns: ["skills/*", "docs/_data/skills.yml"]
+    scope: incremental
+    group: content
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "docs/_data/skills.yml must list exactly the skills/<slug>/SKILL.md folders that exist."
+
+  # ---------------------------------------------------- question bank (GFE parity)
+  - id: bank.registry
+    owns: ["docs/practice/*", "docs/_data/questions.yml"]
+    scope: incremental
+    group: question_bank
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "docs/_data/questions.yml must exist and match docs/practice/*.md one-for-one."
+  - id: bank.schema
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: question_bank
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every question's front matter must satisfy question_schema (missing keys and bad enums are failures)."
+  - id: bank.formats
+    owns: ["docs/practice/*"]
+    scope: cumulative
+    group: question_bank
+    weight: 3
+    required: true
+    # minimum questions per format
+    threshold:
+      quiz: 12
+      coding: 12
+      ui-coding: 10
+      system-design: 6
+      harness: 6
+    why: "All five practice formats must be populated to the per-format minimum."
+  - id: bank.difficulty_mix
+    owns: ["docs/practice/*"]
+    scope: cumulative
+    group: question_bank
+    weight: 1
+    required: true
+    threshold: 1
+    why: "Every format needs at least {threshold} question at each difficulty (easy/medium/hard)."
+  - id: bank.layer_coverage
+    owns: ["docs/practice/*"]
+    scope: cumulative
+    group: question_bank
+    weight: 2
+    required: true
+    threshold: 8
+    why: "Each architecture layer (ui/server/state) needs >= {threshold} questions."
+  - id: bank.topic_coverage
+    owns: ["docs/practice/*"]
+    requires: [bank.formats]
+    scope: cumulative
+    group: question_bank
+    weight: 2
+    required: false
+    threshold: 0.60
+    why: "At least {threshold:.0%} of the topics in docs/_data/topics/*.csv must be practised by a question."
+  - id: bank.rendered
+    scope: incremental
+    requires: [bank.registry]
+    owns: ["docs/practice/index.md", "docs/assets/js/practice-index.js", "docs/practice/*"]
+    group: question_bank
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every question row Jekyll writes must survive the browser's parse, and the page's own count must match. Two questions were in the HTML and gone from the DOM because a quote in a summary broke an attribute; the file count and the filter check both said fine."
+  - id: bank.slug_quality
+    scope: incremental
+    owns: ["docs/practice/*"]
+    group: question_bank
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "A slug is a permanent URL. `quiz-sample-1` passes every other check and tells nobody what the page contains."
+  - id: content.company_guides
+    scope: cumulative
+    requires: [bank.formats]
+    owns: ["docs/guides/*"]
+    group: content
+    weight: 2
+    required: true
+    threshold: 4
+    why: "Company-specific preparation guides, each naming the loop a company runs and the questions in the bank that map to it."
+  - id: content.guides_honest
+    scope: incremental
+    requires: [content.company_guides]
+    owns: ["docs/guides/*"]
+    group: content
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A company guide asserts a named third party's hiring process. It must say on the page that the loop is the commonly reported shape, not sourced from or endorsed by the company, and subject to change — the caveat is the first thing edited out for looking untidy."
+  - id: content.house_rules
+    scope: incremental
+    owns: ["docs/practice/*", "docs/playbooks/*"]
+    group: content
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "No page may teach a claim this repo already knows is false — see house_rules."
+  - id: bank.distinct
+    scope: incremental
+    owns: ["docs/practice/*"]
+    group: question_bank
+    weight: 1
+    required: false
+    threshold: 0.60
+    why: "No two questions in the same format may overlap more than {threshold:.0%} on title and summary — a volume target with no distinctness check rewards padding."
+  - id: bank.unique_slugs
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: question_bank
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "Question slugs must be unique and equal to their filename."
+
+  # -------------------------------------------------------------- solutions
+  - id: solutions.present
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: solutions
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every coding / ui-coding / system-design question needs a '## Solution' section."
+  - id: solutions.approaches
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: solutions
+    weight: 2
+    required: true
+    threshold: 2
+    why: "Coding questions need >= {threshold} '### Approach' subsections — GreatFrontend's 'multiple approaches' promise."
+  - id: solutions.tradeoffs
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: solutions
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "Every solution needs a '## Trade-offs' or '## Complexity' section, not just working code."
+  - id: solutions.no_placeholders
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: solutions
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "No TODO / TBD / lorem ipsum / 'coming soon' in a published question."
+
+  # --------------------------------------------- executable practice workspace
+  - id: workspace.runner
+    owns: ["docs/assets/js/playground.js"]
+    scope: incremental
+    group: workspace
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "docs/assets/js/playground.js must exist and export a runner that executes a solution against its tests."
+  - id: workspace.include
+    owns: ["docs/_includes/code-playground.html"]
+    scope: incremental
+    group: workspace
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "docs/_includes/code-playground.html must exist so a question page can embed the workspace."
+  - id: workspace.wired
+    owns: ["docs/practice/*"]
+    requires: [workspace.runner, workspace.include]
+    scope: incremental
+    group: workspace
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Every coding question must embed the playground with a ```js starter and a ```js tests block."
+  - id: workspace.tests_pass
+    owns: ["docs/practice/*"]
+    requires: [workspace.wired]
+    scope: incremental
+    group: workspace
+    weight: 4
+    required: true
+    threshold: 1.0
+    why: "Executable: each coding question's reference solution must pass its own tests under Node. A question whose tests do not pass is not a question."
+
+  # ------------------------------------------------------- framework coverage
+  - id: frameworks.multi
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: frameworks
+    weight: 2
+    required: true
+    threshold: 2
+    why: "Every ui-coding question needs starter code for >= {threshold} frameworks (the six chota-* templates are the promise)."
+  - id: frameworks.known
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: frameworks
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "Framework ids on a question must exist in enums.framework and map to a templates/chota-* project."
+
+  # --------------------------------------------------- study plans / paths
+  - id: plans.registry
+    owns: ["docs/_data/plans.yml", "docs/plans/*"]
+    requires: [bank.formats]
+    scope: cumulative
+    group: plans
+    weight: 3
+    required: true
+    threshold: 4
+    why: "docs/_data/plans.yml needs >= {threshold} plans (1 week, 1 month, 3 months, and a curated shortlist)."
+  - id: plans.items_resolve
+    owns: ["docs/_data/plans.yml", "docs/plans/*", "docs/practice/*"]
+    requires: [bank.formats]
+    scope: incremental
+    group: plans
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every item in a plan must resolve to an existing question slug or concept doc path."
+  - id: plans.duration_fit
+    owns: ["docs/_data/plans.yml", "docs/plans/*", "docs/practice/*"]
+    requires: [bank.formats]
+    scope: incremental
+    group: plans
+    weight: 2
+    required: true
+    threshold: 0.25
+    why: "A plan's summed minutes must be within +/-{threshold:.0%} of its declared budget, or the schedule is a lie."
+  - id: plans.horizon_fit
+    owns: ["docs/_data/plans.yml", "docs/plans/*"]
+    requires: [bank.formats, bank.layer_coverage]
+    scope: incremental
+    group: plans
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A plan named for a horizon must declare a budget that horizon could plausibly mean — see plan_horizons."
+  - id: plans.pages
+    owns: ["docs/_data/plans.yml", "docs/plans/*"]
+    requires: [plans.registry]
+    scope: incremental
+    group: plans
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Every plan in the registry needs a page under docs/plans/ using layout: plan."
+
+  # ------------------------------------------------------------- playbooks
+  - id: playbooks.count
+    owns: ["docs/playbooks/*"]
+    requires: [bank.formats]
+    scope: cumulative
+    group: playbooks
+    weight: 2
+    required: true
+    threshold: 4
+    why: "docs/playbooks/ needs >= {threshold} guides (interview, system design, state, agent harness)."
+  - id: playbooks.depth
+    owns: ["docs/playbooks/*"]
+    requires: [playbooks.count]
+    scope: incremental
+    group: playbooks
+    weight: 1
+    required: true
+    threshold: 800
+    why: "A playbook under {threshold} words is a stub, not a guide."
+
+  # -------------------------------------------------------- progress tracking
+  - id: progress.tracker
+    owns: ["docs/assets/js/progress.js"]
+    scope: incremental
+    group: progress
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "docs/assets/js/progress.js must persist per-question completion in localStorage (static site, no backend)."
+  - id: progress.wired
+    owns: ["docs/practice/index.md", "docs/plans/*", "docs/_includes/progress-tracker.html", "docs/_layouts/*"]
+    requires: [plans.pages]
+    scope: incremental
+    group: progress
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "The practice index and every plan page must render the progress include."
+  - id: progress.certificate
+    owns: ["docs/plans/*"]
+    scope: incremental
+    group: progress
+    weight: 1
+    required: false
+    threshold: 1.0
+    why: "docs/plans/certificate.md closes the loop on a finished plan."
+
+  # ------------------------------------------------------------- discovery
+  - id: discovery.index
+    owns: ["docs/practice/index.md"]
+    scope: incremental
+    group: discovery
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "docs/practice/index.md must render the bank with filters for format, difficulty, layer and topic."
+  - id: discovery.nav
+    owns: ["docs/_includes/site-nav.html"]
+    scope: incremental
+    group: discovery
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "Site nav must link Practice, Plans and Playbooks — capabilities nobody can find do not exist."
+  - id: discovery.search
+    owns: ["docs/assets/js/practice-index.js"]
+    scope: incremental
+    group: discovery
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "docs/assets/js/practice-index.js must filter/search the question registry client-side."
+
+  # ----------------------------------------------------------- site health
+  - id: health.front_matter
+    scope: incremental
+    group: health
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Every page under docs/ needs title + layout front matter."
+  - id: health.internal_links
+    scope: incremental
+    group: health
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "No broken internal markdown links."
+  - id: health.alt_text
+    scope: incremental
+    group: health
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "Every image needs alt text."
+  - id: health.heading_order
+    scope: incremental
+    group: health
+    weight: 1
+    required: false
+    threshold: 1.0
+    why: "Heading levels must not skip (h2 -> h4), which breaks screen-reader outlines."
+  - id: health.liquid_syntax
+    scope: incremental
+    group: health
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "An unterminated Liquid tag fails the build of the entire site, not just its own page."
+  - id: health.build
+    scope: incremental
+    group: health
+    weight: 3
+    required: false
+    threshold: 1.0
+    why: "`bundle exec jekyll build` must succeed; skipped when the gems are not installed."
+
+  # --------------------------- functional: a browser, not a parser
+  # These are the capabilities that used to need a person to click around.
+  # Every one is an assertion about observable behaviour in a real Chromium
+  # against the built site (harness/functional/run.mjs), so the guardrail can
+  # confirm the site WORKS, not just that it is well formed — which is what
+  # removes the human from the healing loop entirely.
+  - id: functional.playground
+    scope: incremental
+    requires: [health.liquid_syntax, workspace.tests_pass]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html", "docs/practice/*", "docs/_layouts/question.html"]
+    group: functional
+    weight: 4
+    required: true
+    threshold: 1.0
+    why: "In a real browser: a coding question's starter must FAIL its tests, the reference solution must PASS, and passing must record progress."
+  - id: functional.quiz
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/main.js", "docs/_includes/quiz.html", "docs/practice/*", "docs/ui/*", "docs/server/*", "docs/state/*"]
+    group: functional
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "A quiz must grade a wrong answer as wrong, a right answer as right, and show its explanation. A quiz that does not grade is a bullet list."
+  - id: functional.filters
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/practice/index.md", "docs/assets/js/practice-index.js", "docs/practice/*"]
+    group: functional
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Filters must narrow the bank, compose with each other, clear, and show an empty state. A bank nobody can narrow is a list."
+  - id: functional.progress
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/progress.js", "docs/_includes/progress-tracker.html", "docs/practice/index.md"]
+    group: functional
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Completion must persist across a reload and move the counter. Progress that does not survive a reload is not progress."
+  - id: functional.plans
+    scope: incremental
+    requires: [health.liquid_syntax, plans.pages]
+    owns: ["docs/_data/plans.yml", "docs/plans/*", "docs/_layouts/plan.html"]
+    group: functional
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A plan page must render its steps from the registry and track progress. If the layout breaks, the page renders an empty promise."
+  - id: functional.console_clean
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/*", "docs/_layouts/*", "docs/_includes/*", "docs/practice/*", "docs/plans/*"]
+    group: functional
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "No uncaught exception and no broken local asset on any key page — either one silently disables a capability while every static check still passes."
+  - id: functional.keyboard
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html", "docs/_layouts/question.html"]
+    group: functional
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The workspace must be reachable and operable from the keyboard. A site that teaches accessibility cannot need a mouse."
+
+  # ------------------------------------------------- accounts (no server here)
+  # greatfrontend.com has real accounts. This site is static Jekyll on GitHub
+  # Pages: no session to hold, nowhere to hold it. So an account here is a named
+  # profile on this device, with progress namespaced to it and a portable
+  # export — a smaller promise, kept exactly. A real identity provider goes
+  # behind `registerProvider`, which the seam capability proves actually works.
+  - id: account.honest_copy
+    scope: incremental
+    owns: ["docs/account/*", "docs/assets/js/account.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The account page must keep saying a profile is not authentication, and account.js must keep the registerProvider seam."
+  - id: account.profiles
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/progress.js", "docs/account/*", "docs/_includes/account-widget.html"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Two profiles must keep separate progress, and the signed-in one must survive a reload. Sharing a laptop must not mean sharing a record."
+  - id: account.portable
+    scope: incremental
+    requires: [health.liquid_syntax, account.profiles]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/account-page.js", "docs/account/*"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "A profile and its progress must survive an export / wipe / import round trip — with no server to sync to, that IS the account following you."
+  - id: account.guest_progress
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/progress.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Accounts arrived after progress did. Signing in and out must not strand work done before a profile existed."
+  - id: account.provider_seam
+    scope: incremental
+    requires: [health.liquid_syntax]
+    owns: ["docs/assets/js/account.js"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A third-party provider must be swappable through registerProvider, with progress following its identity. An abstraction nobody has exercised is not a seam."
+
+  # ------------------------------------------------------------------ frontier
+  # Declared, measured, and NOT required: parity targets the site does not have
+  # yet. They drag the composite so the gap stays visible, never block a
+  # contribution, and `--next` hands them out after everything required — which
+  # is how the cluster grows into them one at a time instead of all at once.
+  - id: workspace.editor_affordances
+    scope: incremental
+    requires: [functional.playground]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html", "docs/_sass/components/practice.scss"]
+    group: workspace
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The workspace must have syntax highlighting, a resizable editor and a console pane, so a learner debugging with console.log does not have to open devtools."
+  - id: workspace.framework_runtime
+    scope: incremental
+    requires: [functional.playground]
+    owns: ["docs/assets/js/playground.js", "docs/assets/vendor/*", "docs/_layouts/question.html", "docs/practice/*"]
+    group: workspace
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them."
+
+  # ------------------------------------------------------------ frontier
+  # Real credentials. greatfrontend.com has accounts; this site has named local
+  # profiles, which is honest but is not the same product — nothing is verified
+  # and nothing follows a learner off this browser. A static site on GitHub
+  # Pages cannot check a password, but it does not have to: OAuth 2.0
+  # Authorization Code + PKCE exists for public clients that cannot keep a
+  # secret. The page redirects to a hosted issuer and verifies the ID token it
+  # gets back. `registerProvider` in docs/assets/js/account.js is already the
+  # seam for it.
+  #
+  # harness/functional/issuer.mjs is a real OIDC issuer in-process, so these are
+  # measured against the protocol rather than against a vendor being reachable.
+  - id: account.oauth_pkce
+    scope: incremental
+    requires: [account.provider_seam]
+    owns: ["docs/assets/js/account.js", "docs/assets/js/account-oidc.js", "docs/_includes/identity-scripts.html", "docs/account/*"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Signing in must be a real Authorization Code + PKCE flow against a configured issuer — response_type=code, an S256 challenge, state and nonce — not a typed name."
+  - id: account.widget_painted
+    scope: incremental
+    requires: [account.honest_copy]
+    owns: ["docs/_layouts/*", "docs/_includes/site-nav.html", "docs/_includes/account-widget.html", "docs/_includes/identity-scripts.html"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Every page that renders the account widget must load the script that paints it. The nav includes the widget on every layout; a layout that skips identity-scripts.html shows Sign in and Sign out side by side, and the home page did."
+  - id: account.verified_credentials
+    scope: incremental
+    requires: [account.provider_seam]
+    owns: ["docs/assets/js/account-supabase.js", "docs/assets/js/account-supabase-page.js", "docs/account/*"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Signing in must cost a credential the site did not invent — checked by the provider, never by this page — and a wrong password must be refused out loud. A name you type is not a credential."
+  - id: account.token_verified
+    scope: incremental
+    requires: [account.verified_credentials]
+    owns: ["docs/assets/js/account-supabase.js"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "The ID token's signature must be checked against the issuer's JWKS and its iss/aud matched. Decoding a JWT's payload is base64, not authentication, and a client that only decodes accepts an identity anyone can type."
+  - id: account.session_expiry
+    scope: incremental
+    requires: [account.verified_credentials]
+    owns: ["docs/assets/js/account-supabase.js", "docs/account/*"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "An ID token past its `exp` must be refused, and the page must say why — a sign-in button that silently does nothing is worse than no button."
+  - id: account.no_client_secret
+    scope: incremental
+    owns: ["docs/**"]
+    group: account
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "A static site is a public client: everything it ships is readable. A client secret, API key or private key committed under docs/ is published, not configured — PKCE exists so none is needed."
+  - id: account.identity_sync
+    scope: incremental
+    requires: [account.token_verified]
+    owns: ["docs/assets/js/account-supabase.js", "docs/assets/js/progress.js"]
+    group: account
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Progress recorded under a verified identity must be there on another device. Credentials that do not carry progress leave the learner exactly where a named local profile already left them."
+
+  # Parity gaps found by auditing greatfrontend.com's advertised features
+  # against ours. It calls its workspace "customizable: resize, syntax
+  # highlighting, theming, keyboard shortcuts" — the first two are built, these
+  # are the rest of that sentence — and ships curated named lists (GFE 75,
+  # Blind 75) that are not the same thing as our time-boxed study plans.
+  - id: workspace.theming
+    scope: cumulative
+    requires: [workspace.editor_affordances]
+    owns: ["docs/_sass/**", "docs/assets/css/**", "docs/_includes/code-playground.html"]
+    group: workspace
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The site must follow prefers-color-scheme in both directions, workspace included. A learner practising at night gets a white rectangle, and that is where they stop."
+  - id: workspace.shortcuts
+    scope: cumulative
+    requires: [workspace.editor_affordances]
+    owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html"]
+    group: workspace
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "Ctrl/Cmd+Enter must run the question's tests from the editor, and the page must say so. Every editor a candidate has used runs on that chord."
+  - id: bank.curated_lists
+    scope: cumulative
+    requires: [bank.formats]
+    owns: ["docs/_data/lists.yml", "docs/lists/*"]
+    group: question_bank
+    weight: 2
+    required: true
+    threshold: 2
+    why: "Curated named lists (the 'top N questions' shape) are how most people start, and are not the same thing as a time-boxed study plan: no schedule, just an ordered set worth doing first."
+
+  # The front door. Everything above measures what the site can DO; nothing
+  # measured what a student SEES FIRST, and the home page still sold the CLI
+  # while 47 questions, a workspace, plans, guides and real accounts sat behind
+  # four nav links. greatfrontend.com's home is a conversion page: one
+  # headline, one CTA, "no signup required", proof, previews. These make ours
+  # one too — and every number on it is read back from the bank, not typed.
+  - id: landing.hero
+    scope: cumulative
+    requires: [discovery.index]
+    owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html", "docs/_sass/**"]
+    group: landing
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "The first screen of the home page must be about practising frontend interviews — a headline that says so, a primary CTA that lands on the working question bank, and 'no sign-up required' because it is true — at 1440px and at 390px with no sideways scroll. Today the first screen sells a CLI."
+  - id: landing.proof
+    scope: cumulative
+    requires: [bank.registry, landing.hero]
+    owns: ["docs/index.md", "docs/_includes/landing-*.html"]
+    group: landing
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The home page must state how much there is to practise — the question total and the count per format — and every number must equal the bank as rendered, so a claim cannot outlive the content it describes."
+  - id: landing.surfaces
+    scope: cumulative
+    requires: [plans.registry, content.company_guides]
+    owns: ["docs/index.md", "docs/_includes/landing-*.html"]
+    group: landing
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "The home page must link a student to every practice surface — the bank, plans, playbooks, company guides and the account page — each with a line saying what it is for. A surface the front door does not mention does not exist to a first visit."
+  - id: landing.workspace_preview
+    scope: cumulative
+    requires: [functional.playground, landing.hero]
+    owns: ["docs/index.md", "docs/_layouts/home.html", "docs/_includes/landing-*.html"]
+    group: landing
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "The home page must carry a live workspace for one real question — editor enabled, Run executes that question's own tests — so a student can try the product before reading about it. A screenshot of an editor is a promise; a Run button is proof."
+
+  # ------------------------------------------- the AI-harness axis (ours, not GFE's)
+  - id: harness.skill_map
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: harness
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every question names a `skill:` that exists under skills/<slug>/SKILL.md — practice and agent capability are the same artefact."
+  - id: harness.eval_spec
+    owns: ["docs/practice/*"]
+    scope: incremental
+    group: harness
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "Every harness-format question must declare an `eval:` block with rubric items and a numeric threshold. Teaching people to build guardrails means shipping one per exercise."
+  - id: harness.skill_coverage
+    owns: ["docs/practice/*", "skills/*"]
+    requires: [bank.formats]
+    scope: cumulative
+    group: harness
+    weight: 2
+    required: false
+    threshold: 0.50
+    why: "At least {threshold:.0%} of the Agent Skills in skills/ should be exercised by a question."
+  - id: harness.scoping_probe
+    scope: cumulative
+    group: harness
+    weight: 0
+    required: false
+    fixture: true
+    threshold: 1.0
+    why: "A fixture, not a capability: it always fails, so `harness.scoping` has a target whose verdict is known in advance. It is skipped unless named with --only, so it never reaches the report, the composite or --next."
+  - id: harness.scoping
+    scope: incremental
+    owns: ["harness/check_harness.py", "harness/capabilities.yml"]
+    group: harness
+    weight: 3
+    required: true
+    threshold: 1.0
+    why: "The scoping flags must keep discriminating: out-of-scope work must not fail a contribution, and a capability the task was dispatched to fix must. A regression in either is silent and expensive."
+  - id: harness.agent_manifest
+    scope: incremental
+    owns: ["agents/*", "agents/skills/*", "harness/check_harness.py"]
+    group: harness
+    weight: 2
+    required: true
+    threshold: 1.0
+    why: "agents/organisation.yaml must hold the purpose, a COO, and a CTO whose genome names only skills that exist and keeps its verifiers on harness/check_harness.py with --changed. An organisation that drifts off the guardrail is one nobody is measuring."
+  - id: harness.docs
+    owns: ["harness/*"]
+    scope: incremental
+    group: harness
+    weight: 1
+    required: true
+    threshold: 1.0
+    why: "harness/README.md must document every capability, and any prose file stating a capability count must state the real one."
