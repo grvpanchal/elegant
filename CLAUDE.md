@@ -374,6 +374,18 @@ suite or Jekyll build was running in parallel on this container. So the rule is
 progress** — the cell's verifiers are that same checker, and contention turns
 a one-minute verify into a timeout that becomes the cell's next task.
 
+The leak that made contention compound is now fixed at the source, so a killed
+run no longer poisons the next one. `check_harness.py` starts the functional
+runner in its own process group (`start_new_session`) and, on its 900s timeout,
+SIGKILLs the whole group — a timed-out run's Chromium dies with `node` instead
+of being orphaned. `harness/functional/run.mjs` closes the browser on
+SIGTERM/SIGINT, and **sweeps at startup**: any run group reparented to init
+(PPID 1) — an orphaned `run.mjs` node and every `headless_shell` under it, left
+by a run the OS killed outright — is SIGKILLed by process group before this run
+launches its own. The sweep never touches its own group, so a concurrent suite
+is safe. The manual `pkill headless_shell` between runs is no longer needed;
+it stays a valid emergency stop.
+
 Two numbers to distrust. The COO's default objective is **throughput 20**, a
 volume metric, which is exactly what a weak model games by opening twenty thin
 steps; the plan guardrail (steps must be complete instructions the office can

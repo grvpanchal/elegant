@@ -26,6 +26,7 @@ import csv
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import tempfile
@@ -284,8 +285,8 @@ class Site:
             return self._functional
         with tempfile.TemporaryDirectory(prefix="harness-fn-") as tmp:
             out = Path(tmp) / "results.json"
-            proc = subprocess.run([node, str(runner), "--site", str(built), "--out", str(out)],
-                                  cwd=str(ROOT), capture_output=True, text=True, timeout=900)
+            proc = run_reaping([node, str(runner), "--site", str(built), "--out", str(out)],
+                               cwd=str(ROOT), timeout=900)
             if not out.is_file():
                 detail = (proc.stdout + "\n" + proc.stderr).strip()[:400]
                 self._functional = (None, f"skipped: the functional runner did not report ({detail})")
@@ -1214,6 +1215,34 @@ def _health_build(site: Site, threshold):
     if why.startswith("jekyll is not installed"):
         return 1.0, [], f"skipped: {why}"
     return 0.0, [why], "build failed"
+
+
+def run_reaping(cmd: list[str], *, cwd: str, timeout: int) -> subprocess.CompletedProcess:
+    """Run a subprocess whose children die with it.
+
+    `subprocess.run(timeout=...)` kills only the direct child. The functional
+    runner is `node`, which launches Chromium as a grandchild, so a timed-out
+    run left `headless_shell` orphaned — and enough of those poisoned the next
+    cold-started verify past its own ceiling, which is how a `bza` cell was
+    handed "timed out" as its task. Putting the child in its own process group
+    (start_new_session) and signalling the group on timeout takes the browser
+    down with the runner.
+    """
+    proc = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, start_new_session=True)
+    try:
+        out, err = proc.communicate(timeout=timeout)
+        return subprocess.CompletedProcess(cmd, proc.returncode, out, err)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)  # the group, not just node
+        except (ProcessLookupError, PermissionError):
+            proc.kill()
+        try:
+            proc.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            pass
+        raise
 
 
 # ---- functional capabilities: a browser, not a parser

@@ -13,6 +13,7 @@
  * check_harness.py can map each to its own capability.
  */
 import { createRequire } from "node:module";
+import { execSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { serve } from "./server.mjs";
 import { serveIssuer } from "./issuer.mjs";
@@ -1020,6 +1021,48 @@ const SCENARIOS = {
 };
 
 // -------------------------------------------------------------------- main
+/**
+ * Kill the browsers and runners this harness leaked in an earlier, killed run.
+ *
+ * A run that is SIGKILLed — its parent restarted, the checker killed from
+ * outside — cannot close its own browser. Because the checker starts the runner
+ * in its own process group (start_new_session), a killed checker leaves the
+ * whole group orphaned: a `node ... run.mjs` reparented to init (PPID 1) with
+ * `headless_shell` beneath it. Enough of those slow the next cold start until it
+ * times out and, under bza, becomes the cell's next "task".
+ *
+ * The sweep finds processes reparented to init (PPID 1) that are either a
+ * browser or one of our own orphaned runners, and SIGKILLs their whole process
+ * group so the runner and every browser under it die together. It never touches
+ * this process's own group, so a running suite is safe. Best-effort and
+ * Linux-shaped (the guardrail's own container); any failure is ignored.
+ */
+function sweepOrphanBrowsers() {
+  try {
+    const mine = String(process.pid);
+    let ownPgid = "";
+    try { ownPgid = execSync(`ps -o pgid= -p ${mine}`, { encoding: "utf8" }).trim(); } catch { /* ignore */ }
+    const rows = execSync("ps -eo pid=,ppid=,pgid=,comm=,args=", { encoding: "utf8" }).split("\n");
+    const groups = new Set();
+    for (const row of rows) {
+      const m = row.trim().match(/^(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s*(.*)$/);
+      if (!m) continue;
+      const [, pid, ppid, pgid, comm, args] = m;
+      if (ppid !== "1") continue;                 // only genuine orphans (reparented to init)
+      const isBrowser = /headless_shell|chrome|chromium/i.test(comm);
+      const isRunner = /\bnode\b/.test(comm) && /functional\/run\.mjs/.test(args);
+      if (!isBrowser && !isRunner) continue;
+      if (pgid === ownPgid || pid === mine) continue;   // never our own run
+      groups.add(pgid);
+    }
+    let killed = 0;
+    for (const pgid of groups) {
+      try { process.kill(-Number(pgid), "SIGKILL"); killed += 1; } catch { /* gone already */ }
+    }
+    if (killed) console.error(`swept ${killed} orphaned run group(s) from a prior run`);
+  } catch { /* ps unavailable or not Linux: skip */ }
+}
+
 async function main() {
   if (!SITE) {
     console.error("usage: run.mjs --site <built-dir> [--out results.json] [--only <id>]");
@@ -1033,9 +1076,22 @@ async function main() {
     return 3;
   }
 
+  sweepOrphanBrowsers();
   const wanted = ONLY.length ? ONLY : Object.keys(SCENARIOS);
   const server = await serve(SITE);
   const browser = await playwright.chromium.launch();
+  // Close the browser on a termination signal so a killed run does not orphan
+  // Chromium. (SIGKILL cannot be caught — the checker's process-group reap and
+  // the sweep above cover that path; this handles SIGTERM/SIGINT.)
+  let torndown = false;
+  const teardown = async () => {
+    if (torndown) return; torndown = true;
+    try { await browser.close(); } catch { /* already gone */ }
+    try { await server.close(); } catch { /* already gone */ }
+  };
+  for (const sig of ["SIGTERM", "SIGINT", "SIGHUP"]) {
+    process.on(sig, () => { teardown().finally(() => process.exit(130)); });
+  }
   const results = {};
 
   for (const id of wanted) {
@@ -1060,8 +1116,7 @@ async function main() {
     await context.close();
   }
 
-  await browser.close();
-  await server.close();
+  await teardown();
 
   const payload = { available: true, scenarios: results };
   if (OUT) writeFileSync(OUT, JSON.stringify(payload, null, 2));
