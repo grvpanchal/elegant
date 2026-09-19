@@ -157,11 +157,14 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds three items, from auditing greatfrontend.com's feature copy against
-ours: `workspace.theming`, `workspace.shortcuts` and `bank.curated_lists`. It
-calls its workspace "customizable: resize, syntax highlighting, theming,
-keyboard shortcuts" and ships curated named lists that are not the same thing
-as our time-boxed plans.
+It holds two items, from auditing greatfrontend.com's feature copy against
+ours: `workspace.shortcuts` and `bank.curated_lists`. It calls its workspace
+"customizable: resize, syntax highlighting, theming, keyboard shortcuts" and
+ships curated named lists that are not the same thing as our time-boxed plans.
+`workspace.theming` left this group for `workspace`, required, on a one-task
+`bza` run: the cell wrote a `prefers-color-scheme: dark` block for the
+workspace surfaces that passes the two-sided scenario (page and workspace both
+go dark; light mode still light).
 
 The **front door** left the frontier for the new `landing` group, all four
 `required`: `landing.hero` (a practice headline as the FIRST screen — the CLI

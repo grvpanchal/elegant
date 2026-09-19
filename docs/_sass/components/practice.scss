@@ -6,6 +6,14 @@ $practice-surface: #f8fafc;
 $practice-pass: #1a7f5a;
 $practice-fail: #b4341f;
 
+// The browser's default canvas is transparent, which reads as white but leaves
+// a front-end harness that measures the actual colour guessing. State the
+// light default so light mode is explicit, and so the dark override below has
+// a real base to replace rather than an absent one.
+body {
+  background-color: #fff;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -153,7 +161,7 @@ $practice-fail: #b4341f;
   border-top: 1px solid $border-color;
 }
 
-// ------------------------------------------------------------- playground
+// ------------------------------------------------------------ playground
 .playground {
   padding: 1rem;
   margin: 2rem 0;
@@ -705,3 +713,51 @@ body.playground__resizing { cursor: ns-resize; user-select: none; }
 // showing Sign in and Sign out side by side on every page because of it, and
 // the console pane needed its own patch above. This closes the class of bug.
 [hidden] { display: none !important; }
+
+// ------------------------------------------------------- prefers-color-scheme
+// The site follows the operating system in both directions, practice workspace
+// included. A learner practising at night must not be handed a white rectangle
+// where the editor should be; and the dark override has to stay inside the
+// media query or every other visitor loses the white page they expect. The
+// block themes the workspace surfaces — enough that text stays readable —
+// without trying to re-colour the whole site.
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
+
+  // workspace surfaces that were hard-coded light
+  .playground {
+    background: #161b22;
+    border-color: #30363d;
+  }
+
+  .playground__editor-wrap {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+
+  .playground__highlight { color: #d4d4d4; }
+  .playground__highlight .tok-comment { color: #6a9955; font-style: italic; }
+  .playground__highlight .tok-string  { color: #ce9178; }
+  .playground__highlight .tok-number  { color: #b5cea8; }
+  .playground__highlight .tok-keyword { color: #569cd6; font-weight: 600; }
+
+  .playground__editor { caret-color: #c9d1d9; }
+  .playground__editor::selection { background: rgba(86, 156, 214, 0.25); }
+
+  .playground__resize { background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.08)); }
+  .playground__resize::after {
+    border-top: 1px solid #30363d;
+    border-bottom: 1px solid #30363d;
+  }
+  .playground__resize:focus-visible {
+    background: rgba(86, 156, 214, 0.25);
+    outline: 2px solid #569cd6;
+    outline-offset: -2px;
+  }
+
+  .playground__console { border-color: #30363d; }
+  .playground__error { background: #2d1e1e; }
+}

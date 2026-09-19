@@ -714,9 +714,9 @@ checks:
     scope: cumulative
     requires: [workspace.editor_affordances]
     owns: ["docs/_sass/**", "docs/assets/css/**", "docs/_includes/code-playground.html"]
-    group: frontier
+    group: workspace
     weight: 2
-    required: false
+    required: true
     threshold: 1.0
     why: "The site must follow prefers-color-scheme in both directions, workspace included. A learner practising at night gets a white rectangle, and that is where they stop."
   - id: workspace.shortcuts
