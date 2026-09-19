@@ -723,9 +723,9 @@ checks:
     scope: cumulative
     requires: [workspace.editor_affordances]
     owns: ["docs/assets/js/playground.js", "docs/_includes/code-playground.html"]
-    group: frontier
+    group: workspace
     weight: 2
-    required: false
+    required: true
     threshold: 1.0
     why: "Ctrl/Cmd+Enter must run the question's tests from the editor, and the page must say so. Every editor a candidate has used runs on that chord."
   - id: bank.curated_lists

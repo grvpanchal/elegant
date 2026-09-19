@@ -13,12 +13,15 @@ captures console.log output from the learner's code so they do not need
 devtools to debug. Their styles live in docs/_sass/components/practice.scss
 with the rest of the workspace.
 
+Ctrl/Cmd+Enter in the editor runs the tests — the chord every editor a
+candidate has used runs on — so the mouse never has to be reached for.
+
 Requires docs/practice/workspace/<slug>/{starter,solution,tests}.js to exist.
 {%- endcomment -%}
 <section class="playground" data-playground data-slug="{{ include.slug | default: page.slug }}">
   <header class="playground__header">
     <h3 class="playground__title">Workspace</h3>
-    <p class="playground__hint">Edit the module below and run the question's tests. Your draft is kept in this browser.</p>
+    <p class="playground__hint">Edit the module below and run the question's tests. Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (or <kbd>Cmd</kbd>+<kbd>Enter</kbd> on a Mac) to run from the editor. Your draft is kept in this browser.</p>
   </header>
   <label class="playground__label" for="playground-{{ include.slug | default: page.slug }}">Your solution</label>
   <div class="playground__editor-wrap">
@@ -35,7 +38,8 @@ Requires docs/practice/workspace/<slug>/{starter,solution,tests}.js to exist.
          title="Drag, or use the arrow keys, to resize the editor"></div>
   </div>
   <div class="playground__actions">
-    <button type="button" class="playground__run" data-playground-run disabled>Run tests</button>
+    <button type="button" class="playground__run" data-playground-run
+            title="Run the tests (Ctrl/Cmd+Enter)" disabled>Run tests</button>
     <button type="button" class="playground__reset" data-playground-reset>Reset</button>
   </div>
   <div class="playground__console" data-playground-console hidden>

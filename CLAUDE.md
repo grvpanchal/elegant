@@ -157,14 +157,16 @@ which is the rule, not a tidy-up — a capability that gets built moves to the
 group it belongs in and becomes `required`, which is what stops the frontier
 being a place things go to be forgotten.
 
-It holds two items, from auditing greatfrontend.com's feature copy against
-ours: `workspace.shortcuts` and `bank.curated_lists`. It calls its workspace
-"customizable: resize, syntax highlighting, theming, keyboard shortcuts" and
-ships curated named lists that are not the same thing as our time-boxed plans.
-`workspace.theming` left this group for `workspace`, required, on a one-task
-`bza` run: the cell wrote a `prefers-color-scheme: dark` block for the
-workspace surfaces that passes the two-sided scenario (page and workspace both
-go dark; light mode still light).
+It holds one item, `bank.curated_lists`: greatfrontend.com ships curated named
+lists (the "top N" shape) that are not the same thing as our time-boxed plans.
+The workspace parity items — `theming` and `shortcuts` — both left for
+`workspace`, required, on one-task `bza` runs. Each cell wrote a clean, correct
+change (a `prefers-color-scheme: dark` block; a shared `run()` that the Run
+button and Ctrl/Cmd+Enter both call, with a visible `<kbd>` hint), each
+verified by its own scenario. The shortcuts cell also dropped the Run button's
+`disabled` attribute — a real regression, since playground.js enables it on
+load — which was caught and restored before the commit. One-task runs make that
+kind of slip a one-file review, not a needle in a multi-task diff.
 
 The **front door** left the frontier for the new `landing` group, all four
 `required`: `landing.hero` (a practice headline as the FIRST screen — the CLI

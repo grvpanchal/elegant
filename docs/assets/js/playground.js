@@ -16,6 +16,9 @@
  *   - a resize handle drags the editor taller/shorter (data-playground-resize);
  *   - a console pane captures console.log from the learner's code so they can
  *     debug without opening devtools (data-playground-console).
+ *
+ * Ctrl/Cmd+Enter in the editor runs the tests, the same chord every editor a
+ * candidate has used runs on — no reaching for the mouse in an interview.
  */
 (function () {
   "use strict";
@@ -237,6 +240,19 @@
 
     var pristine = "";
 
+    // The one path every trigger funnels through: the Run button, and the
+    // Ctrl/Cmd+Enter chord in the editor, both run the same tests.
+    function run() {
+      output.textContent = "Running…";
+      if (consolePane) consolePane.clear();
+      runTests(slug, editor.value, consolePane)
+        .then(function (results) {
+          render(output, results);
+          if (consolePane && consolePane.hasLines()) consolePane.show();
+        })
+        .catch(function (err) { fail(output, String(err && err.stack ? err.stack : err)); });
+    }
+
     wireResize(editor, resize);
 
     fetch(base(slug) + "starter.js")
@@ -262,16 +278,16 @@
     });
     editor.addEventListener("scroll", function () { syncHighlight(editor, painted); });
 
-    runBtn.addEventListener("click", function () {
-      output.textContent = "Running…";
-      if (consolePane) consolePane.clear();
-      runTests(slug, editor.value, consolePane)
-        .then(function (results) {
-          render(output, results);
-          if (consolePane && consolePane.hasLines()) consolePane.show();
-        })
-        .catch(function (err) { fail(output, String(err && err.stack ? err.stack : err)); });
+    // Ctrl/Cmd+Enter runs the tests from the editor — the chord every editor a
+    // candidate has used runs on, so the mouse never has to be reached for.
+    editor.addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        run();
+      }
     });
+
+    runBtn.addEventListener("click", run);
 
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
