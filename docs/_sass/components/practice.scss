@@ -705,6 +705,87 @@ body {
 }
 body.playground__resizing { cursor: ns-resize; user-select: none; }
 
+// ------------------------------------------------------------------ blog
+// The blog reuses .practice-filters (index filter) and .playbook-card (index
+// cards); these rules cover only the reading surface a post adds: byline, the
+// JS-built table of contents, the practice CTA and the "keep reading" block.
+.blog-lede {
+  max-width: 44rem;
+  color: $blockquote-text-color;
+}
+
+.blog-post { max-width: 46rem; }
+
+.blog-post__title { margin-bottom: 0.5rem; }
+
+.blog-post__cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+}
+
+.blog-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: $blockquote-text-color;
+
+  &__author { font-weight: 600; color: $body-text-color; }
+  &__category { text-transform: capitalize; }
+}
+
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0;
+  margin: 0.6rem 0 0;
+  list-style: none;
+}
+
+.blog-toc {
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__title {
+    margin: 0 0 0.4rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $blockquote-text-color;
+  }
+
+  &__list { margin: 0; padding-left: 1.1rem; }
+  &__item--h3 { margin-left: 0.75rem; font-size: 0.9rem; }
+}
+
+.blog-cta,
+.blog-related {
+  padding: 1rem 1.25rem;
+  margin: 2rem 0;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  &__title { margin: 0 0 0.25rem; font-size: 1.1rem; }
+  &__lede, &__community { color: $blockquote-text-color; font-size: 0.9rem; }
+  &__list { margin: 0.5rem 0; padding-left: 1.1rem; }
+  &__meta { color: $blockquote-text-color; font-size: 0.82rem; }
+}
+
+.blog-related__list { list-style: none; padding: 0; }
+.blog-related__card { padding: 0.5rem 0; border-top: 1px solid $border-color; }
+.blog-related__link { font-weight: 600; }
+.blog-related__summary { margin: 0.2rem 0 0; font-size: 0.88rem; color: $blockquote-text-color; }
+
 // ---------------------------------------------------------------- hidden
 // `hidden` must mean hidden. normalize.scss sets `[hidden] { display: none }`
 // at attribute specificity, and any later class rule with `display: flex` —
@@ -760,4 +841,14 @@ body.playground__resizing { cursor: ns-resize; user-select: none; }
 
   .playground__console { border-color: #30363d; }
   .playground__error { background: #2d1e1e; }
+
+  // blog reading surfaces that were hard-coded light
+  .blog-toc,
+  .blog-cta,
+  .blog-related {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  .blog-post__cover { border-color: #30363d; }
+  .blog-related__card { border-top-color: #30363d; }
 }

@@ -1,0 +1,10 @@
+{%- comment -%}
+Table of contents. The container ships empty; blog-post.js fills it from the
+<h2>/<h3> headings the article actually renders, so the TOC can never drift
+from the prose. Hidden until it has at least two entries (a one-heading post
+does not need one). Progressive enhancement: no JS, no wall of empty chrome.
+{%- endcomment -%}
+<nav class="blog-toc" data-blog-toc hidden aria-label="On this page">
+  <p class="blog-toc__title">On this page</p>
+  <ol class="blog-toc__list" data-blog-toc-list></ol>
+</nav>

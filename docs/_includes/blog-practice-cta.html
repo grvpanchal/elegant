@@ -1,0 +1,27 @@
+{%- comment -%}
+The engagement hook that makes a blog post part of the product rather than a
+dead end: every post names the bank questions that drill what it just taught.
+`related_practice` is a list of question slugs in front matter; each is resolved
+to its real title from docs/_data/questions.yml, so a renamed or deleted
+question cannot leave a dead label here.
+{%- endcomment -%}
+{%- if page.related_practice and page.related_practice != empty -%}
+<aside class="blog-cta" data-blog-practice-cta>
+  <h2 class="blog-cta__title">Now practise it</h2>
+  <p class="blog-cta__lede">Reading is half the loop. These questions grade you on what this post covered.</p>
+  <ul class="blog-cta__list">
+    {%- for slug in page.related_practice -%}
+    {%- assign q = site.data.questions | where: "slug", slug | first -%}
+    <li>
+      {%- if q -%}
+      <a href="{{ '/practice/' | append: slug | append: '.html' | relative_url }}">{{ q.title }}</a>
+      <span class="blog-cta__meta">{{ q.format }} · {{ q.difficulty }} · {{ q.minutes }} min</span>
+      {%- else -%}
+      <span>{{ slug }}</span>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ul>
+  <p><a class="btn" href="{{ '/practice/' | relative_url }}">Browse the full question bank</a></p>
+</aside>
+{%- endif -%}

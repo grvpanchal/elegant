@@ -29,6 +29,7 @@ GROUP_BLURB = {
     "frameworks": "The promise the six `chota-*` templates make: the same exercise in more than one framework.",
     "plans": "Study plans with declared time budgets, checked two ways — against the questions they contain, and against what their name claims.",
     "playbooks": "The long reads. Measured for depth so none of them decays into a stub.",
+    "blog": "The marketing and SEO surface at `docs/blog/`. The count is a growth target (a blog is a volume play, so `required: false` and it reads as N/100 until it fills); every post that exists is held to the GreatFrontend engagement bar — a byline and reading time, a table of contents, a \"keep reading\" block, and a CTA into the practice bank, all filterable on the index. Authored by the CMO office against the `not-ai-slop` Jev gate.",
     "progress": "Per-learner progress in `localStorage`. No account, no backend, no telemetry — and a certificate when a plan is finished.",
     "discovery": "Filtering, search and navigation. A capability nobody can find does not exist.",
     "health": "Front matter, links, alt text, heading order and the Jekyll build. The floor everything else stands on.",

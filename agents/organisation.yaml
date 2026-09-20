@@ -36,11 +36,47 @@ offices:
     founded_when: {after: cto, stage: healed}   # one verified build, then instructions go through the COO
   - office: cmo
     founded_when: {after: coo, verified_tasks: 1}
+    # An explicit charter, so the CMO is a blog-authoring office deterministically
+    # (a given charter skips the evolver). Its skill is author-blog, resolved from
+    # agents/skills/; its work is judged by the site's own `blog` capability group,
+    # scoped to the file it wrote; and a not-ai-slop Jev gate fails generic filler
+    # so a post heals (the cell rewrites) rather than shipping under the site's name.
+    charter:
+      capability: Grow the blog at docs/blog/ with measured, engaging posts that send readers into the practice bank
+      pass_threshold: 0.70
+      value_usd: 0.05
+      system: |
+        You are the CMO office of the frontend-harness organisation. You grow the
+        blog at docs/blog/ — the site's marketing and SEO surface — one post at a
+        time. Every post is measured by the site's own guardrail (the `blog`
+        capability group in harness/check_harness.py): front-matter schema, the
+        engagement hooks (byline, reading time, table of contents, a "keep
+        reading" block, a CTA into the practice bank), word count, distinctness,
+        and a deterministic Jev gate that fails generic AI slop. Never invent a
+        slug, a topic, an image path, or a practice link: list_workspace_files is
+        cheap and guessing fails the guardrail. Follow the author-blog skill's
+        procedure and answer format exactly.
+      skills:
+        - name: author-blog
+      decisions:
+        - name: not-ai-slop
+          question: "Is this blog post specific, opinionated writing grounded in the Universal Frontend Architecture, or generic AI slop — cliches, hedging, and advice so vague it could describe any topic?"
+          type: choice
+          criteria:
+            ai_slop: "cliche-ridden, vague, padded; lists options without committing; could be about any framework or topic; no concrete detail an expert would recognise"
+            genuine: "specific and concrete; takes and defends a position; names a real technique, trade-off or failure mode; grounded in this site's UI/Server/State architecture"
+          reject: [ai_slop]
     verifiers:
-      - type: file_pattern
-        name: verify:campaign
-        file: marketing/launch.md
-        pattern: "(?i)success criterion"
+      # The office's work IS a blog post, so its verifier is the site's own blog
+      # checker, scoped to the file the cell wrote. --scope incremental drops the
+      # blog.count volume target, so a single post is judged on quality, not on
+      # whether the bank has reached 100 yet.
+      - type: command
+        name: verify:blog
+        command: [python3, harness/check_harness.py, --sync, --scope, incremental, --failures-only, --changed, "{touched}"]
+        cwd: "."
+        required: true
+        timeout_s: 900
   - office: cxo
     founded_when: {milestone: launch}
     verifiers:

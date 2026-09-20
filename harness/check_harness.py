@@ -207,6 +207,10 @@ class Site:
         self.playbooks: list[Page] = [
             read_page(p) for p in md_files(self.docs / "playbooks") if p.stem != "index"
         ]
+        # Top-level blog posts only; docs/blog/drafts/ is raw material, excluded.
+        self.blog: list[Page] = [
+            read_page(p) for p in md_files(self.docs / "blog") if p.stem != "index"
+        ]
         self.exclude_globs = list(spec.get("exclude_globs", []))
         self.all_pages: list[Page] = [
             read_page(p) for p in sorted(self.docs.rglob("*.md"))
@@ -966,6 +970,150 @@ def _pb_depth(site: Site, threshold):
     return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} deep enough"
 
 
+# ---- blog
+# The blog is a marketing surface as much as a learning one, so it is measured
+# for the two things a marketing blog lives or dies by: volume (a growth target,
+# required:false so a seed does not hard-block the site) and reader engagement
+# (every post carries the GreatFrontend-parity hooks — byline, reading time, a
+# table of contents, a "keep reading" block and a CTA into the practice bank).
+# The count is deliberately a frontier-shaped growth target; the per-post checks
+# are incremental so a handful of good posts pass at 1.0 while the bank fills.
+@check("blog.count")
+def _blog_count(site: Site, threshold):
+    n = len(site.blog)
+    deficits = [] if n >= threshold else [f"docs/blog/ has {n} posts, need {threshold}"]
+    return min(1.0, n / threshold), deficits, f"{n} posts"
+
+
+@check("blog.registry")
+def _blog_registry(site: Site, threshold):
+    data = site._load_yaml_data("blog.yml")
+    if data is None:
+        return 0.0, ["docs/_data/blog.yml does not exist — generate it with scripts/sync-blog-registry.py"], "missing"
+    if isinstance(data, dict) and "__yaml_error__" in data:
+        return 0.0, [f"docs/_data/blog.yml does not parse: {data['__yaml_error__']}"], "bad yaml"
+    if not isinstance(data, list):
+        return 0.0, ["docs/_data/blog.yml must be a YAML list of post entries"], "bad shape"
+    listed = {e.get("slug") for e in data if isinstance(e, dict)}
+    actual = {p.slug for p in site.blog}
+    deficits = [f"blog.yml: missing '{s}'" for s in sorted(actual - listed)]
+    deficits += [f"blog.yml: stale entry '{s}' (no docs/blog/{s}.md)" for s in sorted(listed - actual)]
+    if deficits:
+        deficits.append("run: python3 scripts/sync-blog-registry.py")
+    return (1.0 if not deficits else 0.0), deficits[:MAX_DEFICITS], f"{len(listed)} listed / {len(actual)} on disk"
+
+
+@check("blog.schema")
+def _blog_schema(site: Site, threshold):
+    schema = site.spec.get("blog_schema", {})
+    required = schema.get("required", [])
+    rm = schema.get("reading_minutes", {})
+    categories = site.enums.get("blog_category", [])
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        problems = []
+        if "__yaml_error__" in p.meta:
+            problems.append(f"front matter does not parse: {p.meta['__yaml_error__']}")
+        for key in required:
+            if p.meta.get(key) in (None, "", []):
+                problems.append(f"missing `{key}`")
+        if p.meta.get("layout") not in (None, schema.get("layout", "post")):
+            problems.append(f"layout must be `{schema.get('layout', 'post')}`, got `{p.meta.get('layout')}`")
+        cat = p.meta.get("category")
+        if cat is not None and categories and cat not in categories:
+            problems.append(f"`category: {cat}` not one of {categories}")
+        mins = p.meta.get("reading_minutes")
+        if isinstance(mins, bool) or (mins is not None and not isinstance(mins, int)):
+            problems.append("`reading_minutes` must be an integer")
+        elif isinstance(mins, int) and rm and not (rm.get("min", 0) <= mins <= rm.get("max", 10 ** 6)):
+            problems.append(f"`reading_minutes: {mins}` outside {rm.get('min')}..{rm.get('max')}")
+        tags = p.meta.get("tags")
+        if tags is not None and (not isinstance(tags, list) or len(tags) < schema.get("tags", {}).get("min_items", 1)):
+            problems.append("`tags` must be a list with at least one entry")
+        rp = p.meta.get("related_practice")
+        if rp is not None and not isinstance(rp, list):
+            problems.append("`related_practice` must be a list of question slugs")
+        if problems:
+            deficits.append(f"{p.rel}: " + "; ".join(problems))
+        else:
+            ok += 1
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} valid"
+
+
+@check("blog.engagement")
+def _blog_engagement(site: Site, threshold):
+    qslugs = site.question_slugs()
+    includes = ("blog-byline.html", "blog-toc.html", "blog-related.html", "blog-practice-cta.html")
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        problems = []
+        rp = p.meta.get("related_practice") or []
+        if not isinstance(rp, list) or len(rp) < 1:
+            problems.append("needs >=1 related_practice question (the CTA back into the bank)")
+        else:
+            missing = [s for s in rp if s not in qslugs]
+            if missing:
+                problems.append(f"related_practice points at no such question: {', '.join(missing)}")
+        tags = p.meta.get("tags") or []
+        if not isinstance(tags, list) or len(tags) < 2:
+            problems.append("needs >=2 tags so the filterable index has something to narrow on")
+        if not p.meta.get("cover"):
+            problems.append("needs a `cover` image")
+        if not p.meta.get("reading_minutes"):
+            problems.append("needs `reading_minutes`")
+        for inc in includes:
+            if not site.renders(p.path, inc):
+                problems.append(f"its layout does not render {inc}")
+        if problems:
+            deficits.append(f"{p.rel}: " + "; ".join(problems))
+        else:
+            ok += 1
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} fully engaging"
+
+
+@check("blog.depth")
+def _blog_depth(site: Site, threshold):
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        wc = word_count(p.body)
+        if wc >= threshold:
+            ok += 1
+        else:
+            deficits.append(f"{p.rel}: {wc} words, need {threshold}")
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} deep enough"
+
+
+@check("blog.distinct")
+def _blog_distinct(site: Site, threshold):
+    # Distinctness is a whole-set property, so it is judged against every post,
+    # not just the --changed subset: a padded copy is only visible next to its twin.
+    titles: dict[str, list[str]] = {}
+    descs: dict[str, list[str]] = {}
+    for p in site.blog:
+        t = (p.meta.get("title") or "").strip().lower()
+        d = (p.meta.get("description") or "").strip().lower()
+        titles.setdefault(t, []).append(p.slug)
+        descs.setdefault(d, []).append(p.slug)
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        problems = []
+        t = (p.meta.get("title") or "").strip().lower()
+        d = (p.meta.get("description") or "").strip().lower()
+        if t and len(titles.get(t, [])) > 1:
+            problems.append("duplicate title shared with " + ", ".join(s for s in titles[t] if s != p.slug))
+        if d and len(descs.get(d, [])) > 1:
+            problems.append("duplicate description shared with " + ", ".join(s for s in descs[d] if s != p.slug))
+        if problems:
+            deficits.append(f"{p.rel}: " + "; ".join(problems))
+        else:
+            ok += 1
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} distinct"
+
+
 # ---- progress
 @check("progress.tracker")
 def _prog_tracker(site: Site, threshold):
@@ -1024,7 +1172,7 @@ def _disc_nav(site: Site, threshold):
     if not nav.is_file():
         return 0.0, ["docs/_includes/site-nav.html is missing"], "missing"
     src = nav.read_text(encoding="utf-8")
-    wanted = {"practice": "/practice", "plans": "/plans", "playbooks": "/playbooks"}
+    wanted = {"practice": "/practice", "plans": "/plans", "playbooks": "/playbooks", "blog": "/blog"}
     deficits = [f"site-nav.html: no link to {href}" for name, href in wanted.items() if href not in src]
     return ratio(len(wanted) - len(deficits), len(wanted)), deficits, f"{len(wanted) - len(deficits)}/{len(wanted)} nav links"
 
@@ -1285,6 +1433,7 @@ for _cid, _scenario in (
     ("landing.proof", "landing_proof"),
     ("landing.workspace_preview", "landing_workspace_preview"),
     ("bank.rendered", "bank_rendered"),
+    ("blog.index_filter", "blog_filter"),
 ):
     CHECKS[_cid] = _functional(_scenario)
 
@@ -1753,7 +1902,8 @@ def sync_generated(site_root: Path) -> list[str]:
     build artefact.
     """
     notes = []
-    for script in ("scripts/sync-questions-registry.py", "scripts/sync-skills-registry.py"):
+    for script in ("scripts/sync-questions-registry.py", "scripts/sync-skills-registry.py",
+                   "scripts/sync-blog-registry.py"):
         path = ROOT / script
         if not path.is_file():
             continue

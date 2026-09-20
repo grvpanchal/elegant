@@ -1,0 +1,121 @@
+# Auto-generated from the front matter of docs/blog/*.md.
+# Regenerate with: python3 scripts/sync-blog-registry.py
+# Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+- slug: ai-harness-for-ui-and-state
+  title: An AI harness for keeping UI and State apart
+  date: 2026-09-17
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - state
+  - architecture
+  - harness
+  description: The fastest way to lose the UI/State boundary is to let an AI write
+    across it a hundred times. The fix is a harness that fails the build the first
+    time a component reaches into the store.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - harness-state-shape
+  - harness-atom-guardrail
+  - harness-bundle-budget
+- slug: atoms-molecules-organisms
+  title: 'Atoms, molecules, organisms: the vocabulary of a component system'
+  date: 2026-09-20
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - atomic-design
+  - components
+  - vocabulary
+  description: Atomic design is not a folder-naming fad — it is a shared vocabulary
+    for arguing about where a component belongs before you write it.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - atom-boundaries
+  - loading-button-atom
+  - form-field-molecule
+  - tabs-molecule
+- slug: real-virtual-shadow-dom
+  title: 'Real DOM, Virtual DOM, Shadow DOM: three different things with one word'
+  date: 2026-09-16
+  author: The Elegant team
+  category: terminology
+  tags:
+  - dom
+  - browser
+  - web-components
+  - rendering
+  description: They share three letters and nothing else. One is what the browser
+    renders, one is a diffing trick, and one is an encapsulation boundary — confusing
+    them is how DOM questions get failed.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - event-delegation
+  - counter-component
+  - theme-toggle
+- slug: surviving-frontend-in-the-age-of-ai
+  title: Surviving as a frontend engineer in the age of AI
+  date: 2026-09-18
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - career
+  - architecture
+  - guardrails
+  description: An AI can write the component. It cannot decide where state lives,
+    why the organism should not fetch, or whether the diff is safe to ship. That judgement
+    is the job now.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-atom-guardrail
+  - harness-skill-eval
+  - harness-a11y-gate
+- slug: universal-frontend-architecture
+  title: 'The Universal Frontend Architecture: UI, Server, and State as three seams'
+  date: 2026-09-19
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - ssr
+  - state
+  - ui
+  - separation-of-concerns
+  description: One architecture that survives a framework swap because it separates
+    the three concerns every frontend has — rendering the UI, talking to the server,
+    and holding state — instead of tangling them.
+  cover: /assets/img/fe-segregation-all.png
+  reading_minutes: 5
+  related_practice:
+  - presentational-vs-container
+  - render-strategy-choice
+  - design-micro-frontends
+- slug: what-frontend-interviews-measure
+  title: What frontend interviews actually measure
+  date: 2026-09-15
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - career
+  - ui
+  - state
+  - system-design
+  description: Frontend interviews are not quizzing you on trivia. Each round probes
+    a specific axis — API recall, UI construction, state modelling, and trade-off
+    reasoning — and knowing which is which is half the preparation.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - debounce-utility
+  - design-search-experience
+  - normalize-entities

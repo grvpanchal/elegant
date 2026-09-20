@@ -214,6 +214,50 @@ const SCENARIOS = {
     return `${rows.length} rows; format, layer, compose, clear and empty-state all behave`;
   },
 
+  /** A blog nobody can narrow is a scroll. The index must filter and compose like the bank. */
+  async blog_filter(page, origin) {
+    await page.goto(`${origin}/blog/`, { waitUntil: "domcontentloaded" });
+    const cards = await page.$$eval("[data-post]", (r) => r.map((n) => ({
+      category: n.getAttribute("data-category"),
+      tag: n.getAttribute("data-tag"),
+    })));
+    ok(cards.length >= 4, `only ${cards.length} posts rendered on the blog index`);
+    const visible = () => page.$$eval("[data-post]", (r) => r.filter((n) => !n.hidden).length);
+    ok((await visible()) === cards.length, "some posts start hidden before any filter is applied");
+
+    // Pick a category that does not already cover every card, so filtering visibly narrows.
+    const categories = [...new Set(cards.map((c) => c.category))];
+    ok(categories.length >= 2, `the blog needs >=2 categories to test filtering; got ${categories.join(", ")}`);
+    const cat = categories.find((c) => cards.filter((x) => x.category === c).length < cards.length) || categories[0];
+    await page.selectOption('[data-filter="category"]', cat);
+    const catVisible = await page.$$eval("[data-post]",
+      (r) => r.filter((n) => !n.hidden).map((n) => n.getAttribute("data-category")));
+    ok(catVisible.length > 0, `filtering by category=${cat} hid every post`);
+    ok(catVisible.every((c) => c === cat), `category filter leaked others: ${[...new Set(catVisible)].join(", ")}`);
+    ok(catVisible.length < cards.length, "the category filter changed nothing");
+
+    // Compose with a tag carried by one of the still-visible posts.
+    const tagged = cards.find((c) => c.category === cat && c.tag);
+    const tag = tagged ? tagged.tag.split(/\s+/)[0] : "";
+    if (tag) {
+      await page.selectOption('[data-filter="tag"]', tag);
+      const both = await page.$$eval("[data-post]",
+        (r) => r.filter((n) => !n.hidden).map((n) => `${n.getAttribute("data-category")}|${n.getAttribute("data-tag")}`));
+      ok(both.length > 0, `composing category=${cat} + tag=${tag} hid every post`);
+      ok(both.every((s) => s.startsWith(`${cat}|`) && s.includes(tag)),
+        `two filters did not compose: got ${[...new Set(both)].join(", ")}`);
+    }
+
+    await page.click("[data-filter-clear]");
+    ok((await visible()) === cards.length, "clearing the filters did not restore every post");
+
+    await page.fill("[data-search]", "zzzznomatchzzzz");
+    ok((await visible()) === 0, "a search with no matches still showed posts");
+    ok(await page.locator("[data-post-empty]").isVisible(),
+      "the empty state was not shown when nothing matched");
+    return `${cards.length} posts; category, tag compose, clear and empty-state all behave`;
+  },
+
   /** Progress that does not survive a reload is not progress. */
   async progress(page, origin) {
     const rows = await bank(page, origin);

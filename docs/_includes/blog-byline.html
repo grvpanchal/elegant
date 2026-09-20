@@ -1,0 +1,26 @@
+{%- comment -%}
+The post's byline: who wrote it, when, how long it takes to read, and the
+category + tags that place it. Reading time is authored in front matter
+(reading_minutes) so it is a fact of the file, not a guess the browser makes.
+{%- endcomment -%}
+<div class="blog-byline" data-blog-byline>
+  <span class="blog-byline__author">{{ page.author }}</span>
+  {%- if page.date -%}
+  <span class="blog-byline__sep" aria-hidden="true">·</span>
+  <time class="blog-byline__date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
+  {%- endif -%}
+  {%- if page.reading_minutes -%}
+  <span class="blog-byline__sep" aria-hidden="true">·</span>
+  <span class="blog-byline__read" data-reading-minutes="{{ page.reading_minutes }}">{{ page.reading_minutes }} min read</span>
+  {%- endif -%}
+  {%- if page.category -%}
+  <a class="blog-byline__category tag" href="{{ '/blog/?category=' | append: page.category | relative_url }}">{{ page.category }}</a>
+  {%- endif -%}
+</div>
+{%- if page.tags and page.tags != empty -%}
+<ul class="blog-tags" data-blog-tags>
+  {%- for t in page.tags -%}
+  <li><a class="tag tag--topic" href="{{ '/blog/?tag=' | append: t | relative_url }}">{{ t }}</a></li>
+  {%- endfor -%}
+</ul>
+{%- endif -%}

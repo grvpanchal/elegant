@@ -50,7 +50,7 @@ system: |
 capability: Author and maintain measured training content for the Universal Frontend Architecture
 efficacy: 1.0
 
-skills: [author-question, author-plan, author-playbook, fix-site-health, fix-functional, build-capability]
+skills: [author-question, author-plan, author-playbook, author-blog, fix-site-health, fix-functional, build-capability]
 tools: [list_workspace_files, read_workspace_file, write_workspace_file]
 
 # Model roster, measured on OpenRouter before it was written — "cheap" and
