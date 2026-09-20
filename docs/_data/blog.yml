@@ -128,7 +128,7 @@
     it optimizes each task locally and erodes the structure globally. The durable
     job is owning the architecture the model keeps forgetting.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - harness-state-shape
   - presentational-vs-container
@@ -167,7 +167,7 @@
     across it a hundred times. The fix is a harness that fails the build the first
     time a component reaches into the store.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 5
+  reading_minutes: 6
   related_practice:
   - harness-state-shape
   - harness-atom-guardrail
@@ -498,7 +498,7 @@
     by something that never gets tired. In an age of AI-authored code, that difference
     decides.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - harness-link-checker
   - harness-bundle-budget
@@ -1287,7 +1287,7 @@
     why the organism should not fetch, or whether the diff is safe to ship. That judgement
     is the job now.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 5
+  reading_minutes: 6
   related_practice:
   - harness-atom-guardrail
   - harness-skill-eval
@@ -1489,7 +1489,7 @@
     run automatically. Build one and "is this done" stops being a meeting and becomes
     an exit code — which is the only way autonomous or AI-heavy work stays honest.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - harness-link-checker
   - harness-bundle-budget

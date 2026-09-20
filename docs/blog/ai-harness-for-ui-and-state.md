@@ -8,72 +8,87 @@ category: ai-and-frontend
 tags: [ai, guardrails, state, architecture, harness]
 description: The fastest way to lose the UI/State boundary is to let an AI write across it a hundred times. The fix is a harness that fails the build the first time a component reaches into the store.
 cover: /assets/img/ui-server-state.png
-reading_minutes: 5
+reading_minutes: 6
 related_practice: [harness-state-shape, harness-atom-guardrail, harness-bundle-budget]
 ---
 
-The UI seam renders. The state seam decides. Everyone agrees on the boundary
-until it is 5pm, the feature is due, and the quickest path is a component that
-imports the store, reads three slices, and dispatches inline. One shortcut is
-survivable. An AI taking that shortcut on every task it is handed is not — it
-erodes the boundary faster than any review can restore it. A harness is how you
-make the boundary a fact of the build instead of a matter of discipline.
+The clearest boundary in a frontend architecture is between **UI** — components
+that render props and emit events — and **State** — the store, the reducers, the
+selectors. A presentational atom should not know your store exists. This
+separation is easy to state and easy to erode, and AI makes the erosion faster:
+ask a model to "make the button show the cart count" a hundred times and some
+fraction of those completions will reach straight into the store from inside the
+component, because that is locally the shortest path. No single diff looks wrong.
+The hundredth one has quietly deleted the boundary. The fix is not more careful
+prompting; it is a **harness** that fails the build the first time a UI file
+imports from the state layer.
 
-## What "segregation" means concretely
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="hs-t hs-d" class="blog-figure__svg">
+  <title id="hs-t">A container connects UI to state; the guardrail forbids UI importing state directly</title>
+  <desc id="hs-d">UI atoms receive props and emit events. A container reads the store and passes props down. An arrow straight from a UI atom into the store is crossed out and labelled build fails.</desc>
+  <rect x="30" y="80" width="120" height="60" rx="8" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="90" y="106" text-anchor="middle" fill="#155799" font-size="11">UI atom</text><text x="90" y="124" text-anchor="middle" fill="#819198" font-size="9">props in, events out</text>
+  <rect x="250" y="80" width="120" height="60" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="310" y="106" text-anchor="middle" fill="#157878" font-size="11">container</text><text x="310" y="124" text-anchor="middle" fill="#819198" font-size="9">reads the store</text>
+  <rect x="470" y="80" width="120" height="60" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="530" y="114" text-anchor="middle" fill="#c2571a" font-size="11">store / state</text>
+  <path d="M250 110 L152 110" stroke="#819198" stroke-width="2" marker-end="url(#hs-a)"/><text x="200" y="100" text-anchor="middle" fill="#819198" font-size="9">props</text>
+  <path d="M370 110 L468 110" stroke="#819198" stroke-width="2" marker-end="url(#hs-a)"/>
+  <path d="M110 78 C 200 20, 440 20, 528 78" fill="none" stroke="#c2571a" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#hs-x)"/>
+  <text x="320" y="30" text-anchor="middle" fill="#c2571a" font-size="10" font-weight="700">UI → store: build fails ✗</text>
+  <defs><marker id="hs-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker><marker id="hs-x" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c2571a"/></marker></defs>
+</svg>
+<figcaption>The container is the only file allowed to touch both sides. A direct UI-to-store import is the exact thing the harness is built to reject.</figcaption>
+</figure>
 
-Segregating UI from State means a component never touches the store directly. It
-receives data as props and emits events; a container above it does the reading
-and dispatching. Selectors read derived state, actions describe intent, reducers
-apply it. The UI can be rendered in a test with plain props and no store at all,
-and the state logic can be tested with no DOM. That mutual independence is the
-asset. The moment a component imports the store, both halves of that asset are
-gone.
+## Make the boundary a check, not a convention
 
-## Why a human review cannot hold it alone
+A convention documented in a README is enforced only when a human notices it in
+review. A harness enforces it on every diff. The simplest version is a lint rule
+that forbids importing the state layer from anywhere under `ui/`:
 
-The violation is invisible in the way that matters: the code works. Tests pass,
-the screen renders, the PR looks fine. A reviewer has to *notice* the import, and
-noticing is exactly what erodes under deadline and volume. Multiply the volume by
-an AI that ships a dozen components an hour and "a reviewer will catch it"
-becomes "a reviewer will catch some of it, eventually, after it has spread."
+```js
+// eslint: no state imports from presentational UI
+{
+  files: ["src/ui/**/*.{js,jsx}"],
+  rules: {
+    "no-restricted-imports": ["error", {
+      patterns: ["**/state/*", "**/store", "react-redux"],
+    }],
+  },
+}
+```
 
-## The harness: three checks that make the boundary executable
+Now the hundredth completion that does `import { useSelector } from "react-redux"`
+inside an atom does not merge — the build is red, with a message pointing at the
+exact line. The AI can write across the boundary all it likes; it just cannot
+*land* the change.
 
-A harness turns the rule into a script that runs on every diff.
+## Assert the state shape, not just the imports
 
-### 1. No store imports below the container line
+Import rules catch the crude violation. A subtler one is the store's shape
+drifting — a reducer growing a field that should have been derived, a slice
+storing server data as if it were truth. So the harness also asserts the
+*structure* of state against a spec:
 
-A static check that scans `src/ui/**` for imports of the store, `useSelector`,
-`useDispatch`, or a `defineStore` handle. Found one? Fail the build with the file
-and line. The rule stops depending on anyone remembering it.
+```js
+// harness/state-shape.test.js — the store's contract, executable
+test("cart slice stores items but never a derived total", () => {
+  const keys = Object.keys(store.getState().cart);
+  expect(keys).toContain("items");
+  expect(keys).not.toContain("total");   // total is a selector, not a field
+});
+```
 
-### 2. The store's shape is asserted, not assumed
+A model that "helpfully" adds a `total` field to avoid recomputing it now trips a
+named test that explains why the field does not belong.
 
-A check that the store matches a declared shape — the slices that should exist,
-the fields on each, the types. An AI refactor that quietly renames a slice or
-nests it one level deeper breaks selectors across the app; the shape check turns
-that into a single named failure instead of a scavenger hunt.
+## The harness is how the boundary survives volume
 
-### 3. Selectors are the only read path
-
-A check that derived data comes from selectors, not from components indexing into
-raw state. This is what keeps memoisation possible and re-renders bounded — and
-it is precisely the kind of thing an AI drops when it inlines "just this once."
-
-## How it changes the way you work with a model
-
-With the harness in place, you can let the model move fast. Hand it a scoped task
-— "write the container that selects the visible todos and passes them to the
-list" — and if it reaches across the seam, the build tells it so in the same
-loop, before a human ever looks. The model's speed becomes safe because the
-boundary is no longer guarded by attention; it is guarded by a check that never
-gets tired and never ships on Friday.
-
-## The general lesson
-
-Segregating UI and State is only the first boundary worth encoding. Once you have
-one architectural rule expressed as a failing test, the pattern generalises:
-accessibility gates, bundle budgets, "no data fetch in an organism." Each is a
-piece of senior judgement lifted out of one person's head and into a script that
-scales to every AI-authored diff. That is what a harness is for — not to slow the
-model down, but to let it run without taking your architecture with it.
+The reason this matters more in an AI-heavy workflow is throughput. A team of
+humans erodes an architecture slowly enough that a periodic cleanup keeps up. A
+model generates changes faster than review can absorb, so erosion that used to
+take a year takes a sprint — unless the boundary is machine-checked. Encoding
+your architecture as executable rules turns "please keep UI and state separate"
+from a hope into an invariant that holds no matter how much code, or how fast, is
+written against it. The harness-state-shape and harness-atom-guardrail exercises
+build exactly these checks, which is the point where the separation stops being a
+principle you defend and becomes one the build defends for you.
