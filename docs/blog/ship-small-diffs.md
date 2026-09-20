@@ -8,56 +8,76 @@ category: career
 tags: [career, workflow, review, craft]
 description: 'A 40-line pull request gets a real review in minutes. A 2000-line one gets a rubber stamp, because nobody can hold it in their head. Small diffs are not a nicety — they are how bugs get caught and how you ship faster.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-bundle-budget, harness-link-checker]
 ---
 
-A forty-line pull request gets read carefully and reviewed in minutes. A
-two-thousand-line one gets a "LGTM" and a rubber stamp, because no human can hold
-that much change in their head at once and actually reason about it. Small diffs are
-not a matter of etiquette — they are how bugs get caught, how review stays honest, and
-counterintuitively how you ship *faster*. The size of your diffs is one of the
-highest-leverage habits you control.
+A 40-line pull request gets a genuine review in a few minutes — a reviewer can hold it
+all in their head, follow the logic, and catch the bug. A 2000-line pull request gets a
+rubber stamp, because no human can keep two thousand lines in working memory, so they
+skim, trust, and approve. The counterintuitive result is that the big PR — the one that
+represents more work and feels more productive — gets *less* scrutiny and ships *more*
+bugs. Small diffs are not politeness toward your reviewer; they are the mechanism by
+which review actually works, and they make you ship faster, not slower, because small
+things merge and unblock while big things sit.
 
-## Big diffs defeat review
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="sd2-t sd2-d" class="blog-figure__svg">
+  <title id="sd2-t">Review quality falls as diff size rises</title>
+  <desc id="sd2-d">A curve: small diffs get thorough review and few escaped bugs; as diff size grows, review degrades to a rubber stamp and escaped bugs climb.</desc>
+  <line x1="50" y1="150" x2="600" y2="150" stroke="#606c71" stroke-width="1.5"/><text x="320" y="172" text-anchor="middle" fill="#819198" font-size="9">diff size →</text>
+  <line x1="50" y1="20" x2="50" y2="150" stroke="#606c71" stroke-width="1.5"/><text x="28" y="90" fill="#819198" font-size="9" transform="rotate(-90 28 90)">review depth</text>
+  <path d="M60 40 Q 250 55, 590 140" fill="none" stroke="#157878" stroke-width="2.5"/>
+  <circle cx="110" cy="46" r="6" fill="#157878"/><text x="120" y="40" fill="#157878" font-size="9">40 lines: real review</text>
+  <circle cx="520" cy="128" r="6" fill="#c2571a"/><text x="510" y="122" text-anchor="end" fill="#c2571a" font-size="9">2000 lines: rubber stamp</text>
+</svg>
+<figcaption>Review depth collapses as diffs grow. The big PR feels productive and receives the least real scrutiny — which is where escaped bugs come from.</figcaption>
+</figure>
 
-Review has a capacity. Past a few hundred lines, a reviewer's ability to actually
-find problems drops sharply — the change is too large to trace, the interactions too
-many to reason about, so they skim and approve. That means a big PR is effectively
-*unreviewed*, which is worse than it sounds because everyone believes it was
-reviewed. Bugs sail through under the cover of a green approval that meant "I trust
-you" rather than "I checked this." Splitting the same change into small PRs restores
-the reviewer's ability to genuinely check each piece, so review does its job again.
+## Big diffs defeat the point of review
 
-## Small diffs de-risk everything downstream
+Review works by a human understanding a change well enough to spot what is wrong. That
+understanding has a size limit. Past it, the reviewer stops reasoning and starts
+trusting, so the mechanism that was supposed to catch bugs quietly turns off — exactly
+when there is the most code for bugs to hide in. A giant PR also blocks longer, invites
+merge conflicts, and is agony to revert cleanly when something does slip. None of these
+are the reviewer being lazy; they are the predictable result of exceeding what review
+can do.
 
-A small change is easier to test, easier to roll back, and easier to bisect when
-something breaks later. If a bug appears and the suspect commit is forty lines, you
-find the cause fast; if it is two thousand, the bisect lands you in a haystack. A
-small change that breaks production is a small, targeted revert; a large one is a
-painful choice between reverting a lot of unrelated good work or surgically fixing
-under pressure. Small diffs keep every downstream operation — test, review, deploy,
-rollback, debug — cheap, and those operations happen far more often than the writing
-did.
+## Separate the refactor from the feature
 
-## Ship faster by shipping smaller
+The most common reason diffs balloon is mixing kinds of change. A PR that both moves
+files around *and* adds a feature forces the reviewer to untangle which lines are
+behaviour and which are noise. Split them — refactor in one PR, feature in the next —
+and each becomes reviewable:
 
-The counterintuitive part is that small diffs make you *faster*, not slower. Big
-PRs sit in review for days because reviewing them is daunting, they accumulate merge
-conflicts while they wait, and they block on a single large approval. Small PRs get
-reviewed quickly (they are easy to say yes to), merge before they conflict, and keep
-your work flowing to production continuously instead of in scary batches. The feeling
-that a big PR is "more done" is an illusion — it is more *written*, but less
-*shipped*, because it is stuck in the pipeline that small diffs flow through.
+```text
+PR 1  refactor: extract UserCard into ui/atoms (no behaviour change)   ← easy to verify
+PR 2  feat: add "message" action to UserCard                           ← small, focused
+# reviewing these separately is minutes each; reviewing them merged is an hour of confusion
+```
 
-## How to keep them small
+"No behaviour change" is a promise a reviewer can *check* on a pure refactor PR, and
+can't on a mixed one.
 
-The skill is decomposing work into independently-shippable pieces. Separate a
-refactor from a feature (do the refactor in its own PR, then the feature on top of
-clean code). Land a change behind a feature flag so incomplete work can merge without
-releasing. Split by layer or by sub-feature so each PR does one coherent thing you can
-describe in a sentence. And lean on automated guardrails so the small PRs are safe to
-merge fast — a bundle budget, a link check, a test suite catching what a rushed review
-might miss. The bundle-budget and link-checker exercises build exactly the kind of
-automated check that lets a team merge small diffs quickly and confidently, which is
-the whole point.
+## Make small diffs easy to keep small
+
+The habit is to slice work along seams that ship independently: land a data-layer
+change, then the component that uses it, then the polish — each behind a flag if needed
+so incomplete work is safe to merge. Keeping diffs small also plays well with automated
+guardrails, which review the *mechanical* dimensions a human skims past on a big PR —
+so the human review can focus on the logic in a small one:
+
+```bash
+# the checks that stay reliable no matter the diff size, freeing humans for the logic
+$ node harness/check.js
+  pass  bundle-budget   entry chunk 240kb < 250kb
+  pass  links           all internal links resolve
+```
+
+The whole discipline is one idea: keep each change small enough that a human can
+actually reason about it, and split unlike changes apart. You will feel like you are
+shipping smaller units; you will actually be shipping *more*, with fewer escaped bugs,
+because small things get real review and merge fast. The harness-bundle-budget and
+harness-link-checker exercises build the automated half that makes this sustainable —
+the checks that hold on every diff so human attention can go where only it works.

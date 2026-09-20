@@ -8,58 +8,76 @@ category: ai-and-frontend
 tags: [ai, accessibility, quality, guardrails]
 description: 'A model will happily generate a div that looks like a button, because it renders and looks right. Accessibility lives in the parts that do not show — roles, names, keyboard behaviour — which is precisely what optimizing for "looks right" skips.'
 cover: /assets/img/ai-sdlc-flow.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-a11y-gate, accessible-combobox, form-field-molecule]
 ---
 
-Accessibility is the part of frontend work that does not show up in a screenshot,
-and a model optimizing to produce something that looks right is therefore
-structurally likely to skip it. It will give you a `div` with an `onClick` that
-looks like a button, an icon with no label, a custom dropdown you cannot operate
-with a keyboard — all of which render perfectly and are all broken for a
-screen-reader or keyboard user. Understanding *why* AI drops accessibility tells
-you where to catch it.
+Ask a model for a "clickable card" or a "dropdown" and it will give you markup that
+renders and looks right — and, very often, a `<div>` with an `onClick`, no keyboard
+support, no role, no accessible name. This is not the model being careless; it is the
+model doing exactly what its training rewards, which is producing output that *looks*
+correct. Accessibility lives in the half that does not show in a screenshot — roles,
+names, keyboard operation, focus — so it is precisely what an "looks right" optimiser
+drops. AI is a force multiplier for markup and, left unchecked, a force multiplier for
+inaccessible markup.
 
-## The model optimizes for the visible
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="aa-t aa-d" class="blog-figure__svg">
+  <title id="aa-t">A model optimises for the visible layer and drops the accessibility layer</title>
+  <desc id="aa-d">Two stacked layers of a component. The visible layer (looks right) is what the model produces; the accessibility layer (roles, names, keyboard) is dropped unless required.</desc>
+  <rect x="120" y="30" width="400" height="46" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="320" y="58" text-anchor="middle" fill="#157878" font-size="10" font-weight="700">visible layer — the model nails this</text>
+  <rect x="120" y="90" width="400" height="60" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5" stroke-dasharray="5 4"/><text x="320" y="114" text-anchor="middle" fill="#c2571a" font-size="10" font-weight="700">accessibility layer — dropped unless required</text><text x="320" y="134" text-anchor="middle" fill="#819198" font-size="9">role · accessible name · keyboard · focus</text>
+</svg>
+<figcaption>The model reliably ships the top layer because it shows. The bottom layer is invisible to "looks right," so it is exactly what goes missing.</figcaption>
+</figure>
 
-When you ask for a button, the model produces something that looks and clicks like
-a button. Whether it is a native `<button>` (focusable, keyboard-operable,
-announced as a button) or a styled `<div>` (none of those) makes no visible
-difference, so the model treats them as interchangeable — and often picks the div
-because it saw more of them in training. The accessible name, the role, the
-keyboard handlers, the focus management: these are invisible in the demo, so they
-are exactly the details that get omitted when the objective is "make it look
-right." It is not that the model is bad at accessibility; it is that accessibility
-is orthogonal to the thing it was optimizing.
+## The characteristic failure: a div that looks like a button
 
-## Ask for the invisible explicitly
+The most common AI accessibility failure is the fake interactive element. It renders,
+it styles, it clicks with a mouse — and it is invisible to a screen reader and dead to
+the keyboard:
 
-You get much better output by naming the invisible requirements in the prompt:
-"use a native button," "the icon button needs an `aria-label`," "the combobox must
-be operable with the arrow keys and announce its selected option," "manage focus
-when the dialog opens and restore it on close." When you make the accessibility
-part of the contract, the model includes it, because now it is part of "looks
-right" as you have defined it. Leave it unsaid and it reverts to the visible-only
-default.
+```jsx
+// what a model reaches for — renders and "works" with a mouse, broken for everyone else
+<div className="button" onClick={submit}>Save</div>
+// no role, not focusable, no Enter/Space, announces nothing
+```
 
-## But do not trust the prompt to be enough
+The fix is the native element, which the model *can* produce when the prompt or the
+check demands it:
 
-Even with a good prompt, the model is inconsistent about accessibility across a
-session and across generations — it will get it right in one component and drop it
-in the next. So prompting is necessary but not sufficient; you need a check that
-does not depend on remembering to ask. A guardrail that renders each interactive
-component and asserts against the accessibility tree — every control has a role
-and a name, every image has alt text or is explicitly decorative, focus is managed
-— catches what the model omits regardless of how you prompted. This is the same
-argument as everywhere else: encode the rule so it holds automatically.
+```jsx
+<button onClick={submit}>Save</button>   // role, focus, keyboard, announcement — all free
+```
 
-## Accessibility is a machine-checkable floor
+## Make accessibility a requirement it cannot skip
 
-The encouraging part is that a large share of accessibility *is* mechanical and
-therefore automatable: missing accessible names, missing alt text, poor contrast,
-non-semantic interactive elements, unmanaged focus. None of these needs human
-judgement to detect — they need a check. That check becomes a floor under every
-diff, human or AI, so the baseline never regresses even as generation speeds up.
-The a11y-gate exercise builds exactly that floor, and the combobox and form-field
-exercises are the components where getting the invisible parts right is the whole
-challenge.
+Because the model optimises for what is asked and checked, the leverage is to *ask*
+and *check* for accessibility explicitly. Put it in the prompt as a hard constraint,
+and — more durably — put it behind a gate that fails the build, so a dropped role or a
+missing label does not merge no matter how fast the code was generated:
+
+```js
+// a11y gate: the check the model's "looks right" optimiser can't talk its way past
+import { axe } from "vitest-axe";
+test("Card has no a11y violations", async () => {
+  const { container } = render(<Card onClick={fn} />);
+  expect(await axe(container)).toHaveNoViolations();   // fails on the div-button
+});
+```
+
+The gate catches the mechanical faults; a keyboard-and-focus review catches the rest.
+
+## The volume makes the gate non-optional
+
+The reason this matters more with AI is throughput. A team writing markup by hand
+erodes accessibility slowly enough that periodic audits keep up. A model generating
+components faster than review can read them turns "we'll fix a11y later" into a
+backlog that grows at generation speed — and accessibility retrofitted is far more
+expensive than accessibility built in. So the move is the same as everywhere else in
+an AI workflow: make the invisible requirement *visible to a machine*. Demand roles,
+names, and keyboard support in the prompt, and enforce them with an accessibility gate
+that runs on every diff. That combination lets you keep the model's speed on markup
+without shipping the inaccessible markup it produces by default. The harness-a11y-gate
+exercise builds exactly that gate, and accessible-combobox is the widget where the
+dropped half is the whole difficulty.

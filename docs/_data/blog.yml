@@ -91,7 +91,7 @@
     — roles, names, keyboard behaviour — which is precisely what optimizing for "looks
     right" skips.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-a11y-gate
   - accessible-combobox
@@ -110,7 +110,7 @@
     debt at ten times human speed, if you let it. The productivity is real; so is
     the pile it can leave behind without a standard to hold it to.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-atom-guardrail
   - harness-state-shape
@@ -1195,7 +1195,7 @@
     gets a rubber stamp, because nobody can hold it in their head. Small diffs are
     not a nicety — they are how bugs get caught and how you ship faster.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-bundle-budget
   - harness-link-checker
@@ -1416,7 +1416,7 @@
     up later in bundle size, security surface, maintenance, and the day it breaks.
     Weigh it before you borrow, not after.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-bundle-budget
   - debounce-utility
@@ -1435,7 +1435,7 @@
     Do it too early, before you know how they will actually diverge, and you build
     the wrong abstraction — which costs more than the duplication ever would.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - presentational-vs-container
   - combine-reducers
