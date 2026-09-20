@@ -8,53 +8,81 @@ category: architecture
 tags: [server, csr, rendering, spa]
 description: 'The single-page app that renders everything in the browser gets blamed for slow first paints and bad SEO. Both are real, both are fixable, and for the right app CSR is simpler and cheaper than the alternatives.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 6
 related_practice: [render-strategy-choice, infinite-scroll-list]
 ---
 
-Client-side rendering is the model people learned first and now apologize for: the
-server sends a near-empty HTML shell and a JavaScript bundle, and the browser
-builds the entire UI. It has real downsides that SSR and SSG were invented to
-fix. But it also has real advantages, and treating it as always-wrong leads teams
-to add server-rendering complexity they did not need.
+Client-side rendering — the single-page app that ships a mostly-empty HTML shell
+and builds the whole UI in the browser — has become the thing everyone apologises
+for. It gets blamed for slow first paints and bad SEO, and both criticisms are
+fair. But they are *fixable* trade-offs, not a verdict, and for a large class of
+apps CSR is genuinely the simplest and cheapest choice. Understanding CSR well
+means being honest about both halves: what it costs on the first load, and what it
+buys you afterwards.
 
-## How it works and what it costs on first load
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="csr-t csr-d" class="blog-figure__svg">
+  <title id="csr-t">CSR pays a slow first load then serves fast in-app navigations</title>
+  <desc id="csr-d">A timeline: the first load is a long bar (download bundle, then render). Subsequent navigations are short bars because no full page reload happens.</desc>
+  <text x="30" y="40" fill="#c2571a" font-size="11" font-weight="700">first load</text>
+  <rect x="140" y="28" width="130" height="24" rx="4" fill="#f3f6fa" stroke="#819198"/><text x="205" y="45" text-anchor="middle" fill="#819198" font-size="9">download bundle</text>
+  <rect x="270" y="28" width="90" height="24" rx="4" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="315" y="45" text-anchor="middle" fill="#c2571a" font-size="9">render</text>
+  <text x="30" y="100" fill="#157878" font-size="11" font-weight="700">nav 1</text>
+  <rect x="140" y="88" width="55" height="24" rx="4" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="167" y="105" text-anchor="middle" fill="#157878" font-size="9">render</text>
+  <text x="30" y="150" fill="#157878" font-size="11" font-weight="700">nav 2</text>
+  <rect x="140" y="138" width="55" height="24" rx="4" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="167" y="155" text-anchor="middle" fill="#157878" font-size="9">render</text>
+  <text x="240" y="105" fill="#819198" font-size="9">no reload — data fetch only</text>
+  <text x="240" y="155" fill="#819198" font-size="9">instant client-side transition</text>
+</svg>
+<figcaption>CSR front-loads the cost: one slow start to download and boot the app, then fast in-app navigations with no full reloads.</figcaption>
+</figure>
 
-A CSR app's first response is an empty `<div id="root">` plus script tags. The
-browser must download the bundle, parse and execute it, fetch the page's data,
-and only then render — so the user stares at a blank page or spinner during that
-sequence. On a slow phone with a big bundle, that first-paint delay is the whole
-complaint. It also means a crawler that does not execute JavaScript sees an empty
-page, which is the SEO problem. Neither of these is imaginary; they are the cost
-of doing all the work in the browser.
+## The shell is empty on purpose
 
-## What it buys in return
+A CSR app's initial HTML is deliberately minimal — a root node and a script tag.
+Everything the user sees is created by JavaScript after the bundle loads and boots:
 
-After that first load, a CSR app is fast and simple in ways the alternatives are
-not. Navigation between routes is instant — no server round-trip for HTML, just a
-data fetch and a re-render. The hosting is trivial: static files on a CDN, no
-server executing render code, no scaling story, no server-only code paths to
-guard. The mental model is simpler too — your code runs in one environment, the
-browser, so there is no "does this run on the server?" question and no hydration
-mismatch class of bug. For an app you enter once and use for a long session, that
-simplicity is worth a lot.
+```html
+<!doctype html>
+<div id="root"></div>            <!-- nothing here yet -->
+<script src="/app.js"></script>  <!-- this builds the entire UI in the browser -->
+```
 
-## Where CSR is the right call
+That is the source of the two complaints: before `app.js` downloads and runs,
+there is nothing to paint (slow first contentful paint) and nothing for a crawler
+that does not execute JavaScript to read (SEO gap). Both are consequences of the
+same design choice — rendering in the client.
 
-The clearest case is an app behind a login where SEO is irrelevant and the first
-paint is a one-time cost the user pays once per session: an internal dashboard, an
-admin tool, a design editor, a webmail client. Nobody is crawling it, users are
-often on decent connections, and they stay for a long time, so the initial load
-amortizes to nothing. Adding SSR there buys you a faster first paint you do not
-need in exchange for a server you now have to run — a bad trade.
+## After boot, navigation is the payoff
 
-## Fixing the downsides without abandoning it
+Once the app is running, CSR shines. Navigating between routes does not reload the
+page or re-download HTML; the router swaps components and fetches only the data the
+new view needs, so transitions feel instant:
 
-You do not have to jump to SSR to soften CSR's costs. Code-splitting shrinks the
-first bundle so the initial parse is smaller. A meaningful loading skeleton makes
-the wait feel shorter and reserves layout. Prefetching the data for likely-next
-routes hides navigation latency. And for the SEO case specifically, pre-rendering
-just the public, crawlable pages while keeping the app CSR covers the requirement
-without server-rendering the whole thing. The render-strategy exercise weighs
-exactly these trade-offs; treat CSR as one honest option on that spectrum, not a
-mistake to migrate away from by default.
+```jsx
+// no full page reload — the router renders the next view in place
+<Link to="/dashboard">Dashboard</Link>;   // swaps components, fetches just the data
+
+function Dashboard() {
+  const { data } = useQuery(["stats"], fetchStats);  // only the new data crosses the wire
+  return <Stats data={data} />;
+}
+```
+
+For an app where the user logs in once and then works for twenty minutes — a
+dashboard, an editor, an internal tool — that snappy in-app feel is the whole
+experience, and the one-time slow boot barely registers.
+
+## Fix the trade-offs, or choose another strategy
+
+The two costs have known mitigations. The slow first paint shrinks with code
+splitting (ship only the first screen's JS), a meaningful loading skeleton (so the
+shell is not blank), and prefetching the next route. The SEO gap closes with
+prerendering for crawlers or moving the public, indexable pages to SSR/SSG while
+the authenticated app stays CSR. The honest decision rule: choose CSR when the app
+is **behind a login, highly interactive, and SEO-irrelevant**, and reach for SSR
+or SSG when the **first view matters to a stranger or a crawler**. CSR is not the
+villain — it is the right tool when the first paint is not the thing you are
+optimising for. The render-strategy-choice exercise makes you weigh exactly these
+factors per page, and the infinite-scroll exercise is a taste of where CSR's
+in-app responsiveness genuinely wins.

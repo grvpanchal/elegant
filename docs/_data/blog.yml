@@ -333,7 +333,7 @@
     for slow first paints and bad SEO. Both are real, both are fixable, and for the
     right app CSR is simpler and cheaper than the alternatives.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - render-strategy-choice
   - infinite-scroll-list
@@ -645,7 +645,7 @@
     the client JavaScript attaches to the existing markup. It is also where a whole
     class of subtle SSR bugs and performance costs live.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - render-strategy-choice
   - counter-component
@@ -1231,7 +1231,7 @@
     so the server just hands out files. It is the fastest and cheapest option for
     content that does not change per user — until the content changes often.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - render-strategy-choice
   - cache-headers-basics
@@ -1249,7 +1249,7 @@
     of an empty div waiting for JavaScript. That changes what the user sees first,
     what a crawler indexes, and what your server has to do.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - render-strategy-choice
   - design-localized-app
@@ -1344,7 +1344,7 @@
     your app's frame — nav, layout, chrome — instantly from cache, so the user sees
     structure while the content loads. It is the backbone of a fast, installable app.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - offline-first-list
   - cache-headers-basics

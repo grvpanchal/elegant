@@ -8,58 +8,77 @@ category: architecture
 tags: [server, ssr, hydration, performance]
 description: 'Hydration is the moment server-rendered HTML becomes interactive, when the client JavaScript attaches to the existing markup. It is also where a whole class of subtle SSR bugs and performance costs live.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 6
 related_practice: [render-strategy-choice, counter-component]
 ---
 
-Server-side rendering gives the user HTML immediately, but that HTML is inert —
-buttons do not respond, state does not update — until the JavaScript loads and
-takes over. That takeover is **hydration**: the client framework walks the
-server-rendered DOM, reconciles it with the component tree, and attaches event
-handlers so the static markup becomes a live application. Understanding
-hydration explains both why SSR feels the way it does and why its trickiest bugs
-happen.
+Server-side rendering gives the user HTML they can see immediately, but that HTML
+is inert — the buttons do nothing, because the event handlers live in JavaScript
+that has not run yet. **Hydration** is the handoff that fixes that: the client
+bundle downloads, re-runs your components, walks the server-rendered DOM, and
+attaches the event listeners and state to the markup that is already there. It is
+the bridge between "looks ready" and "is ready," and it is also where a specific,
+frustrating class of SSR bugs and costs live — because the client's render has to
+*agree* with the server's, exactly.
 
-## Attaching, not re-rendering
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="hy-t hy-d" class="blog-figure__svg">
+  <title id="hy-t">Server HTML is visible but inert until client JS hydrates it into a live app</title>
+  <desc id="hy-d">Server-rendered HTML is shown as visible but with dead buttons. The client bundle arrives and attaches handlers and state, turning the same DOM interactive. A gap between visible and interactive is marked.</desc>
+  <rect x="30" y="70" width="150" height="60" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="105" y="95" text-anchor="middle" fill="#c2571a" font-size="11">server HTML</text><text x="105" y="114" text-anchor="middle" fill="#819198" font-size="9">visible, inert</text>
+  <path d="M180 100 L270 100" stroke="#157878" stroke-width="2.5" marker-end="url(#hy-a)"/><text x="225" y="88" text-anchor="middle" fill="#157878" font-size="10" font-weight="700">hydrate</text><text x="225" y="120" text-anchor="middle" fill="#819198" font-size="9">attach handlers</text>
+  <rect x="270" y="70" width="150" height="60" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="345" y="95" text-anchor="middle" fill="#157878" font-size="11">live app</text><text x="345" y="114" text-anchor="middle" fill="#819198" font-size="9">interactive</text>
+  <rect x="450" y="60" width="160" height="80" rx="8" fill="none" stroke="#c2571a" stroke-width="1.5" stroke-dasharray="4 3"/><text x="530" y="90" text-anchor="middle" fill="#c2571a" font-size="10" font-weight="700">the gap</text><text x="530" y="110" text-anchor="middle" fill="#819198" font-size="9">looks ready,</text><text x="530" y="124" text-anchor="middle" fill="#819198" font-size="9">clicks are dropped</text>
+  <defs><marker id="hy-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#157878"/></marker></defs>
+</svg>
+<figcaption>Hydration adopts the existing DOM rather than rebuilding it. Between paint and hydration the page looks live but is not — the gap where clicks vanish.</figcaption>
+</figure>
 
-The key idea is that hydration reuses the existing DOM rather than throwing it
-away and rebuilding. The server already produced the correct markup; the client's
-job is to adopt it — match each element to the component that produced it and
-wire up interactivity — not to render from scratch. That reuse is what makes SSR
-worthwhile: if the client just rebuilt everything, the server HTML would flash and
-be discarded. Done right, the user never sees the handoff; the page they were
-already looking at simply becomes responsive.
+## Hydrate adopts the DOM; it does not rebuild it
 
-## The mismatch bug
+The API difference is the whole idea. A pure client app *creates* the DOM; an SSR
+app *hydrates* the DOM the server already sent. Use the wrong one and React throws
+away the server HTML and re-renders from scratch, discarding the SSR benefit:
 
-The reuse only works if the client's first render produces the *same* tree the
-server did. When they disagree — a mismatch — the framework warns and may throw
-away the server markup and re-render, costing you the SSR benefit and sometimes
-flashing content. Mismatches come from rendering something that differs between
-server and client: `Date.now()` or `Math.random()` at render time, reading
-`window` or `localStorage` during the initial render, or locale/timezone
-differences. The fix is to make the first client render deterministic and equal
-to the server's, deferring anything browser-specific to an effect that runs after
-hydration.
+```jsx
+// SSR client entry: attach to existing markup — do NOT recreate it
+import { hydrateRoot } from "react-dom/client";
+hydrateRoot(document.getElementById("root"), <App />);   // adopts server DOM
 
-## The performance cost nobody mentions at first
+// this would discard the server HTML and rebuild — wrong for SSR
+// createRoot(root).render(<App />);
+```
 
-Hydration is not free, and on large pages it can dominate. The browser has shown
-the user content quickly (good), but the page is not actually usable until
-hydration finishes attaching handlers — and hydration has to process the whole
-tree, which on a heavy page can block the main thread and leave the user tapping
-dead buttons on visible content. This is the "uncanny valley" of SSR: it *looks*
-ready before it *is* ready. The gap between first paint and interactivity is a
-real metric (it shows up as INP/TBT), and a big hydration cost widens it.
+## The mismatch bug: server and client must agree
 
-## How the ecosystem is shrinking it
+Hydration assumes the client's first render produces the *same* markup the server
+produced. If it does not — because you rendered the current time, a random value,
+or something that reads `window` — React sees a mismatch, warns, and may discard
+the server tree. The fix is to make the first client render deterministic and
+defer the browser-only value to *after* hydration:
 
-Because hydration is the bottleneck, modern approaches attack it directly.
-Partial or selective hydration hydrates only the interactive islands and leaves
-static content as plain HTML forever. Progressive hydration prioritizes
-in-viewport or interacted-with components first. Server components push the idea
-further by never shipping some components' JavaScript at all. The through-line is
-that the less you hydrate, the smaller the gap between visible and usable. When
-you choose SSR in the render-strategy exercise, remember you are also choosing to
-pay for hydration — and that keeping interactive surface small is how you keep
-that bill down.
+```jsx
+function Clock() {
+  const [now, setNow] = useState(null);          // same on server and first client render
+  useEffect(() => { setNow(new Date()); }, []);  // browser-only value AFTER hydration
+  return <span>{now ? now.toLocaleTimeString() : "—"}</span>;  // no mismatch
+}
+```
+
+The rule of thumb: anything that differs between server and browser (time, random,
+`localStorage`, viewport size) belongs in an effect, not in the render path.
+
+## Hydration is not free, hence the newer strategies
+
+Even when it works, hydration costs: the client re-runs the whole component tree
+to attach handlers, so a large page pays a CPU bill right when the user wants to
+interact — the visible-but-not-interactive gap. That cost is exactly what the
+newer rendering strategies attack: **partial / progressive hydration** hydrates
+only the interactive islands and leaves static content alone; **streaming SSR**
+sends and hydrates the page in chunks so the top is live while the bottom is still
+arriving; server components push work off the client entirely. All of them are
+answers to the same question — how do we keep SSR's fast first paint without
+paying to hydrate everything at once. Understanding plain hydration first is what
+makes those optimisations legible rather than magic. The render-strategy-choice
+exercise is where the trade between first paint and time-to-interactive becomes a
+concrete decision.
