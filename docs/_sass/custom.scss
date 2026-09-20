@@ -1,3 +1,10 @@
+// The site is light-only by decision: no dark palette, and form controls
+// (the hamburger button, the boilerplate select) must not pick up the OS
+// dark scheme either. Declared here and as a <meta name="color-scheme">.
+:root {
+  color-scheme: light;
+}
+
 .site-nav {
   position: relative;
   z-index: 100;
