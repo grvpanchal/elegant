@@ -242,7 +242,7 @@
     it. Lifting everything to a global store by default is how a simple app grows
     a state-management problem it never needed.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - counter-component
   - query-string-state
@@ -809,7 +809,7 @@
     error, and loaded — and the ones that are not the happy path are where real apps
     feel broken. Design all four, not just the screenshot.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - toast-notifications
   - offline-first-list
@@ -828,7 +828,7 @@
     confirms it, then rolls back if the server disagrees. It makes an app feel instant
     — and it is only safe if you plan the rollback.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - offline-first-list
   - retry-with-backoff
@@ -1158,7 +1158,7 @@
     animals with different rules. Cramming server data into your Redux store as if
     you owned it is the source of most stale-data bugs.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - offline-first-list
   - normalize-entities
@@ -1678,7 +1678,7 @@
     more often than in a store. If a user would want to bookmark, share, or reload
     into a view, that view's state should live in the address bar.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - query-string-state
   - design-search-experience
