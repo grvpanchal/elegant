@@ -59,6 +59,24 @@
   - loading-button-atom
   - form-field-molecule
   - tabs-molecule
+- slug: code-splitting-ships-less-javascript
+  title: 'Code splitting: ship the JavaScript this page needs, not all of it'
+  date: 2026-08-11
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - bundling
+  - web-vitals
+  description: One big bundle makes the user download your entire app to see the login
+    page. Code splitting breaks it into pieces loaded on demand, so the first screen
+    ships only what it needs and the rest arrives when it is used.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - harness-bundle-budget
+  - render-strategy-choice
 - slug: colocate-state-until-you-cant
   title: Colocate state until you can't
   date: 2026-08-25
@@ -114,6 +132,42 @@
   related_practice:
   - form-field-molecule
   - query-string-state
+- slug: cors-is-the-browsers-rule-not-the-servers
+  title: CORS is the browser's rule, not the server's
+  date: 2026-08-14
+  author: The Elegant team
+  category: terminology
+  tags:
+  - server
+  - cors
+  - security
+  - http
+  description: 'The single fact that makes CORS make sense: it is enforced by the
+    browser, not the server. The request often reaches the server and runs — the browser
+    just refuses to let your JavaScript read the response.'
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
+- slug: csr-and-its-tradeoffs
+  title: Client-side rendering is not the villain, it is a trade-off
+  date: 2026-08-19
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - csr
+  - rendering
+  - spa
+  description: The single-page app that renders everything in the browser gets blamed
+    for slow first paints and bad SEO. Both are real, both are fixable, and for the
+    right app CSR is simpler and cheaper than the alternatives.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - infinite-scroll-list
 - slug: css-specificity-decides-who-wins
   title: CSS specificity decides who wins, and it is not about order
   date: 2026-09-13
@@ -223,6 +277,42 @@
   - accessible-combobox
   - tabs-molecule
   - form-field-molecule
+- slug: http-cache-headers-are-a-contract
+  title: HTTP cache headers are a contract you are signing with every browser
+  date: 2026-08-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - caching
+  - performance
+  - http
+  description: Cache-Control, ETag and the rest are not obscure server trivia — they
+    are how you tell every browser and CDN how long to trust a response. Get them
+    wrong and you either serve stale files or throw away free speed.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - cache-headers-basics
+  - proxy-and-cors
+- slug: hydration-is-the-handoff
+  title: Hydration is the handoff from server HTML to a live app
+  date: 2026-08-18
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssr
+  - hydration
+  - performance
+  description: Hydration is the moment server-rendered HTML becomes interactive, when
+    the client JavaScript attaches to the existing markup. It is also where a whole
+    class of subtle SSR bugs and performance costs live.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - counter-component
 - slug: immutability-is-how-you-detect-change-cheaply
   title: Immutability is how you detect change cheaply
   date: 2026-09-03
@@ -297,6 +387,24 @@
   related_practice:
   - offline-first-list
   - retry-with-backoff
+- slug: proxy-or-fix-cors
+  title: Proxy it or fix CORS? Two answers to the same cross-origin wall
+  date: 2026-08-15
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - cors
+  - proxy
+  - http
+  description: When your frontend cannot call an API because of a cross-origin error,
+    you have two real fixes — proxy the request through your own origin, or set CORS
+    headers on the API. Which one is right depends on who owns the API.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
 - slug: pure-functions-and-why-reducers-are-pure
   title: Pure functions, and why a reducer has to be one
   date: 2026-09-04
@@ -352,6 +460,24 @@
   related_practice:
   - infinite-scroll-list
   - skeleton-list
+- slug: responsive-images-let-the-browser-choose
+  title: 'Responsive images: describe the options, let the browser choose'
+  date: 2026-08-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - images
+  - web-vitals
+  description: Shipping one large image to every device wastes data on phones and
+    looks soft on retina screens. srcset and sizes let you describe the options and
+    hand the choice to the browser, which knows the device better than you do.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - responsive-image-set
+  - cache-headers-basics
 - slug: selectors-derive-they-dont-store
   title: Selectors derive; they don't store
   date: 2026-08-31
@@ -409,6 +535,61 @@
   - offline-first-list
   - normalize-entities
   - retry-with-backoff
+- slug: sessions-vs-tokens
+  title: 'Sessions vs tokens: where does the user''s identity actually live?'
+  date: 2026-08-13
+  author: The Elegant team
+  category: terminology
+  tags:
+  - server
+  - authentication
+  - security
+  - sessions
+  description: A session keeps the source of truth on the server and hands the browser
+    a key. A token hands the browser a signed claim and keeps nothing. That one difference
+    drives revocation, scaling, and where you must store the thing.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - session-and-tokens
+  - proxy-and-cors
+- slug: ssg-builds-pages-ahead-of-time
+  title: 'Static site generation: render once, serve a million times'
+  date: 2026-08-20
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssg
+  - performance
+  - caching
+  description: Static generation renders your pages at build time, not per request,
+    so the server just hands out files. It is the fastest and cheapest option for
+    content that does not change per user — until the content changes often.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - cache-headers-basics
+- slug: ssr-renders-on-the-server
+  title: 'Server-side rendering: HTML first, JavaScript second'
+  date: 2026-08-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssr
+  - rendering
+  - performance
+  description: Server-side rendering sends real HTML on the first response instead
+    of an empty div waiting for JavaScript. That changes what the user sees first,
+    what a crawler indexes, and what your server has to do.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - design-localized-app
+  - cache-headers-basics
 - slug: surviving-frontend-in-the-age-of-ai
   title: Surviving as a frontend engineer in the age of AI
   date: 2026-09-18
@@ -446,6 +627,43 @@
   related_practice:
   - accessible-combobox
   - form-field-molecule
+- slug: the-app-shell-loads-instantly
+  title: 'The app shell: load the frame instantly, fill it after'
+  date: 2026-08-17
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - pwa
+  - caching
+  description: The app shell is the minimal HTML, CSS and JavaScript that renders
+    your app's frame — nav, layout, chrome — instantly from cache, so the user sees
+    structure while the content loads. It is the backbone of a fast, installable app.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - offline-first-list
+  - cache-headers-basics
+  - skeleton-list
+- slug: the-critical-rendering-path
+  title: The critical rendering path is the story of your first paint
+  date: 2026-08-12
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - rendering
+  - web-vitals
+  description: Between the HTML arriving and the first pixel painting, the browser
+    runs a fixed sequence — and CSS and synchronous JavaScript can block it. Knowing
+    the path is how you make a page paint sooner.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - responsive-image-set
 - slug: the-request-success-fail-triple
   title: The request/success/fail triple is the shape of every fetch
   date: 2026-08-28
