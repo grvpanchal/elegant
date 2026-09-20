@@ -297,7 +297,7 @@
     thing — does your component's state own the input's value, or does the DOM? Pick
     per field, not per app.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - form-field-molecule
   - query-string-state
@@ -443,7 +443,7 @@
     the whole app down to a blank screen. A boundary catches the crash, shows a fallback
     for that subtree, and keeps the rest of the app alive.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - toast-notifications
   - retry-with-backoff
@@ -699,7 +699,7 @@
     Use a stable id and reordering and editing just work; use the array index and
     you get lost input, wrong animations, and state attached to the wrong row.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - data-table-sort
   - infinite-scroll-list
@@ -864,7 +864,7 @@
     keeping it in the component tree. It is how modals and dropdowns escape the overflow
     and stacking traps of their parents without losing their props and state.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - accessible-combobox
   - tabs-molecule
@@ -1268,7 +1268,7 @@
     at once. A state machine names the legal states and the transitions between them,
     so the impossible combinations simply cannot occur.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - tabs-molecule
   - toast-notifications

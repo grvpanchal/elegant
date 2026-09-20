@@ -8,60 +8,93 @@ category: terminology
 tags: [ui, forms, state, components]
 description: The whole controlled-versus-uncontrolled question comes down to one thing — does your component's state own the input's value, or does the DOM? Pick per field, not per app.
 cover: /assets/img/ui-system-diagram.png
-reading_minutes: 3
+reading_minutes: 5
 related_practice: [form-field-molecule, query-string-state]
 ---
 
-Form inputs confuse people because there are two valid ways to run them, and
-mixing them causes the classic warnings and lost keystrokes. The question is
-simple: **who is the source of truth for the value?** If your component's state
-is, the input is *controlled*. If the DOM is, it is *uncontrolled*. Everything
-else follows.
+The controlled-versus-uncontrolled debate sounds like a framework quirk and is
+really one clean question: **who owns the input's value?** In a controlled input,
+your component's state owns it — the value comes from state, and every keystroke
+goes through a handler that updates state, which re-renders the input. In an
+uncontrolled input, the DOM owns it — the browser tracks the value internally and
+you read it only when you need it. Neither is "correct"; they are two ownership
+models, and the right choice is per field, driven by whether you need to *react* to
+the value as it changes.
+
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="cu-t cu-d" class="blog-figure__svg">
+  <title id="cu-t">Controlled inputs loop value through state; uncontrolled inputs keep it in the DOM</title>
+  <desc id="cu-d">Controlled: state to value to input, keystroke to onChange back to state, a closed loop. Uncontrolled: the DOM holds the value and a ref reads it only on submit.</desc>
+  <text x="160" y="26" text-anchor="middle" fill="#155799" font-size="11" font-weight="700">controlled</text>
+  <rect x="60" y="45" width="90" height="34" rx="6" fill="#e8eefb" stroke="#155799" stroke-width="2"/><text x="105" y="67" text-anchor="middle" fill="#155799" font-size="10">state</text>
+  <rect x="220" y="45" width="90" height="34" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="265" y="67" text-anchor="middle" fill="#155799" font-size="10">input</text>
+  <path d="M150 55 L218 55" stroke="#157878" stroke-width="2" marker-end="url(#cu-a)"/><text x="184" y="47" fill="#157878" font-size="8">value</text>
+  <path d="M218 72 L150 72" stroke="#fe854c" stroke-width="2" marker-end="url(#cu-a)"/><text x="184" y="90" fill="#c2571a" font-size="8">onChange</text>
+  <line x1="340" y1="20" x2="340" y2="180" stroke="#dce6f0"/>
+  <text x="480" y="26" text-anchor="middle" fill="#c2571a" font-size="11" font-weight="700">uncontrolled</text>
+  <rect x="420" y="60" width="120" height="34" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="480" y="82" text-anchor="middle" fill="#c2571a" font-size="10">DOM owns value</text>
+  <path d="M480 94 L480 130" stroke="#819198" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#cu-a)"/><text x="520" y="115" fill="#819198" font-size="8">ref.value</text>
+  <rect x="425" y="132" width="110" height="26" rx="5" fill="#f3f6fa" stroke="#155799"/><text x="480" y="150" text-anchor="middle" fill="#155799" font-size="9">read on submit</text>
+  <defs><marker id="cu-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>Controlled runs every keystroke through state and back — a closed loop. Uncontrolled leaves the value in the DOM and reads it once, on demand.</figcaption>
+</figure>
 
 ## Controlled: state owns the value
 
-A controlled input sets its `value` from state and updates that state on every
-change: `value={query}` plus `onChange`. The DOM never holds a value your state
-does not know about. This is what you want when you need to react to input as it
-happens — live validation, a search box that filters as you type, a field whose
-value is mirrored somewhere else, or a form you want to reset programmatically.
-The cost is a render per keystroke, which is almost always fine, and the benefit
-is that the value is always in one place you control.
+A controlled input has its `value` bound to state and an `onChange` that updates it.
+The state is now the single source of truth, which means you can *react* to every
+change — validate live, format as-you-type, enable a button, mirror the value
+elsewhere:
+
+```jsx
+function Search() {
+  const [q, setQ] = useState("");
+  return (
+    <input
+      value={q}                                  // value comes FROM state
+      onChange={(e) => setQ(e.target.value)}     // every keystroke updates state
+    />
+  );
+  // now `q` is available to filter, validate, or debounce on each change
+}
+```
+
+The cost is a render per keystroke and the discipline of keeping the loop closed —
+forget the `onChange` and the input appears frozen, because state never updates.
 
 ## Uncontrolled: the DOM owns the value
 
-An uncontrolled input keeps its own value in the DOM and you read it only when
-you need it — on submit, via a ref or `FormData`. No per-keystroke state, no
-re-render on every character. This suits large forms where you only care about
-the final values, file inputs (which cannot be controlled), and integrating with
-non-framework code. The cost is that the value lives outside your state until you
-go and fetch it, so live behaviour is harder.
+An uncontrolled input lets the browser hold the value; you grab it with a ref only
+when you need it, typically on submit. There is no per-keystroke render and no
+state to manage:
 
-## Performance is the usual reason to reach for uncontrolled
+```jsx
+function SignupForm() {
+  const email = useRef(null);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    sendSignup(email.current.value);   // read the DOM value once, on submit
+  };
+  return <form onSubmit={onSubmit}><input ref={email} defaultValue="" /></form>;
+}
+```
 
-On a small form, controlled inputs are the right default — the per-keystroke
-render is invisible and the always-in-state value is convenient. The calculus
-changes on a large or deeply nested form, where every keystroke re-rendering a
-big subtree becomes noticeable, especially on lower-end devices. That is the
-honest case for uncontrolled inputs (or a form library that keeps values in a ref
-and only subscribes the fields that need to react): you trade live convenience
-for far fewer renders. The middle path many teams settle on is to keep most
-fields uncontrolled and read them with `FormData` on submit, promoting only the
-handful that need live validation or cross-field behaviour to controlled. Decide
-this per field, measured against whether you need to react mid-entry — not as a
-blanket rule for the whole app, and not by defaulting everything to controlled
-because it is what the tutorial showed.
+Note `defaultValue`, not `value`: you seed the initial value but do not bind it, so
+the DOM stays in charge.
 
-## Don't mix them on one field
+## Choose per field by "do I need to react?"
 
-The bug that generates framework warnings is switching a single field between the
-two — starting `value` as `undefined` (uncontrolled) and later setting it to a
-string (controlled), or setting `value` without an `onChange`. Pick one mode per
-field and keep it. A controlled field always has both `value` and a change
-handler; an uncontrolled one has neither (use `defaultValue` for its initial
-state).
-
-The decision is per field, driven by whether you need to *react* to the value
-mid-entry. Need live behaviour → controlled. Only need it at submit → uncontrolled
-is lighter. The accessible form field exercise builds a controlled field with its
-label and error wired correctly, which is the common case.
+The decision rule is simple and it is per *field*, not per app. Use **controlled**
+when you need to respond to the value as it changes — live validation, formatting,
+a dependent field, a character counter, disabling submit until valid. Use
+**uncontrolled** when you only need the value at the end and want to avoid the
+render churn — a large form of plain fields, a file input (which is always
+uncontrolled), integrating a non-React widget. Many real forms mix the two: an
+email field that validates live is controlled, while the twelve plain text fields
+beside it are uncontrolled for performance. The trap to avoid is switching an input
+between the two across renders (a `value` that is sometimes `undefined`), which
+makes React warn and behave erratically — pick an owner per field and keep it. The
+form-field-molecule exercise builds a field that supports both modes cleanly, which
+is the clearest way to internalise that "controlled or not" is an ownership choice,
+not a rule.
