@@ -75,7 +75,7 @@ models:
     max_tokens: 12000
     temperature: 0.3
     timeout_s: 240
-    price_per_mtok: [0.060, 0.120]
+    price_per_mtok: [0.040, 0.080]   # live OpenRouter price
   - role: judge
     provider: openrouter
     id: openai/gpt-oss-20b
@@ -95,6 +95,12 @@ models:
     max_tokens: 1500
     timeout_s: 90
     price_per_mtok: [0.019, 0.030]
+  - role: decider              # TypeSafe Jev: routing AND the guardrail's deterministic gates
+    provider: openrouter       # every chartered office (CMO/CXO/CFO/CIO) is built with a not-ai-slop
+    id: typesafe/jev-1.13      # gate; without a decider role those gates cannot fire. Answers at
+    api_key_env: OPENROUTER_API_KEY   # /api/alpha/decisions; output billed at $0.
+    timeout_s: 60
+    price_per_mtok: [0.042, 0.0]
   - role: evolver                       # charters the offices from the purpose, repairs skills
     provider: openrouter
     id: deepseek/deepseek-v4-flash-0731
@@ -103,7 +109,7 @@ models:
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 8000
     timeout_s: 240
-    price_per_mtok: [0.060, 0.120]
+    price_per_mtok: [0.040, 0.080]   # live OpenRouter price
 
 guardrail:                              # base guardrail of every chartered office (the CTO has its own)
   min_chars: 20
