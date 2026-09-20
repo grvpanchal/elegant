@@ -1524,10 +1524,11 @@
   - patterns
   - redux
   description: Every asynchronous call has three outcomes worth modelling — it started,
-    it worked, it failed — and a single boolean isLoading cannot represent them. The
-    triple is why your spinners and errors behave.
+    it worked, it failed — and a single isLoading boolean cannot represent them. Model
+    the triple as a state machine and your spinners, errors, and race conditions all
+    fall into place.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 6
   related_practice:
   - action-creators
   - retry-with-backoff
