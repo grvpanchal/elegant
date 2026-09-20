@@ -96,7 +96,7 @@ models:
     max_tokens: 12000
     temperature: 0.3
     timeout_s: 240
-    price_per_mtok: [0.060, 0.120]
+    price_per_mtok: [0.040, 0.080]   # live OpenRouter price (was 0.060/0.120)
   - role: judge
     provider: openrouter
     id: openai/gpt-oss-20b
@@ -116,6 +116,12 @@ models:
     max_tokens: 1500
     timeout_s: 90
     price_per_mtok: [0.019, 0.030]
+  - role: decider              # TypeSafe Jev: routing as a constrained typed choice
+    provider: openrouter       # answers at /api/alpha/decisions, not chat — cannot pick an
+    id: typesafe/jev-1.13      # off-list skill, returns a calibrated confidence, output billed at $0.
+    api_key_env: OPENROUTER_API_KEY   # select_workflow uses it for the choice and falls back to
+    timeout_s: 60                     # the router (which still writes the orchestration plan) on any error.
+    price_per_mtok: [0.042, 0.0]
   - role: evolver
     provider: openrouter
     id: deepseek/deepseek-v4-flash-0731
@@ -124,7 +130,7 @@ models:
     api_key_env: OPENROUTER_API_KEY
     max_tokens: 8000
     timeout_s: 240
-    price_per_mtok: [0.060, 0.120]
+    price_per_mtok: [0.040, 0.080]   # live OpenRouter price (was 0.060/0.120)
 
 hooks:
   - event: on_divide
