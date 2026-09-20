@@ -72,7 +72,7 @@
     set of instructions the model loads for a class of task instead of you retyping
     it.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-skill-eval
   - harness-atom-guardrail
@@ -517,7 +517,7 @@
     that stays dark until you flip it on. That separation — deploy is not release
     — is what makes trunk-based development and safe rollouts possible.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - render-strategy-choice
 - slug: flexbox-or-grid-pick-by-axis
@@ -682,7 +682,7 @@
     else a locale changes — dates, numbers, currency, plurals, text direction, and
     layouts that must survive words twice as long.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - design-localized-app
 - slug: keys-in-lists-are-identity
@@ -919,7 +919,7 @@
     on top. It sounds old-fashioned until a script fails to load, a network flakes,
     or a crawler visits — and the baseline is what saves you.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - form-field-molecule
   - responsive-image-set
@@ -937,7 +937,7 @@
     fast on repeat visits. Almost all of that comes from one piece: a service worker
     sitting between your page and the network.'
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - offline-first-list
   - cache-headers-basics
@@ -1140,7 +1140,7 @@
     Some crawlers run that JavaScript, many do not or do it late. If organic traffic
     matters, you have to get real content into the HTML the crawler first sees.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - render-strategy-choice
   - cache-headers-basics
@@ -1565,7 +1565,7 @@
     it is doing too much. The single-responsibility test is the cheapest way to know
     when to split — and where.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - atom-boundaries
   - presentational-vs-container
@@ -1696,7 +1696,7 @@
     work in their handlers is a reliable way to jank the page. Throttle them, or move
     the work to the platform APIs built for exactly this.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - infinite-scroll-list
   - debounce-utility
