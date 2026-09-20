@@ -571,7 +571,7 @@
     test in a third feels tidy and ages badly. Structure that mirrors your architecture
     — atoms, molecules, containers, state — tells a new reader how the app is built.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - atom-boundaries
   - presentational-vs-container
@@ -736,7 +736,7 @@
     it when teams are stepping on each other, and a costly mistake when they are not.
     The boundary should follow the org chart, not the tech.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - design-micro-frontends
 - slug: middleware-is-the-stores-pipeline
@@ -1029,7 +1029,7 @@
     renders, one is a diffing trick, and one is an encapsulation boundary — confusing
     them is how DOM questions get failed.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - event-delegation
   - counter-component
@@ -1734,7 +1734,7 @@
     the three concerns every frontend has — rendering the UI, talking to the server,
     and holding state — instead of tangling them.
   cover: /assets/img/fe-segregation-all.png
-  reading_minutes: 5
+  reading_minutes: 6
   related_practice:
   - presentational-vs-container
   - render-strategy-choice
@@ -1753,7 +1753,7 @@
     components the browser understands natively. They will not replace your framework,
     but they are the right tool for cross-framework, long-lived UI.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - theme-toggle
   - loading-button-atom
