@@ -1,0 +1,27 @@
+{%- comment -%}
+Progress bar over a list of question slugs.
+
+Usage:
+  {% include progress-tracker.html slugs="a b c" title="1 week plan" %}
+  {% include progress-tracker.html all=true %}          # the whole bank
+
+Backed by docs/assets/js/progress.js (localStorage). Renders a static 0%
+without JavaScript rather than disappearing, so the page never looks broken.
+{%- endcomment -%}
+{%- if include.all -%}
+  {%- assign _slugs = site.data.questions | map: "slug" | join: " " -%}
+{%- else -%}
+  {%- assign _slugs = include.slugs -%}
+{%- endif -%}
+<div class="progress-tracker" data-progress-of="{{ _slugs }}">
+  <div class="progress-tracker__head">
+    <span class="progress-tracker__title">{{ include.title | default: "Your progress" }}</span>
+    <span class="progress-tracker__label" data-progress-label>0 of 0 done (0%)</span>
+  </div>
+  <div class="progress-tracker__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="progress-tracker__bar" data-progress-bar style="width:0%"></div>
+  </div>
+  {%- if include.reset -%}
+  <button type="button" class="progress-tracker__reset" data-progress-reset>Clear progress</button>
+  {%- endif -%}
+</div>

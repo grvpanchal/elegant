@@ -1,0 +1,24 @@
+{%- comment -%}
+Facet strip for a practice question: format, difficulty, layer, time budget and
+the Agent Skill that covers the same ground. Reads page front matter only, so
+it stays in step with docs/_data/questions.yml (both come from the same source).
+{%- endcomment -%}
+<ul class="question-meta">
+  <li class="question-meta__item question-meta__item--format" data-facet="format">{{ page.format }}</li>
+  <li class="question-meta__item question-meta__item--{{ page.difficulty }}" data-facet="difficulty">{{ page.difficulty }}</li>
+  <li class="question-meta__item" data-facet="layer">{{ page.layer }}</li>
+  <li class="question-meta__item" data-facet="minutes">{{ page.minutes }} min</li>
+  {%- if page.frameworks -%}
+  <li class="question-meta__item" data-facet="frameworks">{{ page.frameworks | join: " · " }}</li>
+  {%- endif -%}
+  {%- if page.skill -%}
+  <li class="question-meta__item question-meta__item--skill">
+    <a href="{{ '/skills/' | append: page.skill | append: '/SKILL.md' | relative_url }}">{{ page.skill }}</a>
+  </li>
+  {%- endif -%}
+  <li class="question-meta__item question-meta__item--done">
+    <label>
+      <input type="checkbox" data-progress-toggle="{{ page.slug }}"> mark done
+    </label>
+  </li>
+</ul>

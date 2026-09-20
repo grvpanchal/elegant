@@ -1,0 +1,29 @@
+{%- comment -%}
+How much there is to practise, counted from the bank at build time so the
+numbers cannot outlive the content. Owned by landing.proof. Every figure is a
+Liquid filter over site.data.questions — never a typed constant.
+{%- endcomment -%}
+{%- assign qs = site.data.questions -%}
+{%- assign n_total = qs | size -%}
+{%- assign n_coding = qs | where: "format", "coding" | size -%}
+{%- assign n_quiz = qs | where: "format", "quiz" | size -%}
+{%- assign n_uicoding = qs | where: "format", "ui-coding" | size -%}
+{%- assign n_sysdesign = qs | where: "format", "system-design" | size -%}
+{%- assign n_harness = qs | where: "format", "harness" | size -%}
+<style>
+  .landing-proof { max-width: 80rem; margin: 0 auto; padding: 2rem 1rem 0.5rem; text-align: center; }
+  .landing-proof__total { font-size: 1.5rem; font-weight: 700; margin: 0 0 1rem; }
+  .landing-proof__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; list-style: none; margin: 0; padding: 0; }
+  .landing-proof__grid li { flex: 0 0 auto; padding: 0.4rem 0.9rem; background: #f4f6f8; border-radius: 999px; font-size: 0.95rem; }
+  .landing-proof__grid strong { color: #157878; }
+</style>
+<section class="landing-proof">
+  <p class="landing-proof__total">{{ n_total }} questions to practise on</p>
+  <ul class="landing-proof__grid">
+    <li><strong>{{ n_coding }}</strong> coding</li>
+    <li><strong>{{ n_quiz }}</strong> quiz</li>
+    <li><strong>{{ n_uicoding }}</strong> UI coding</li>
+    <li><strong>{{ n_sysdesign }}</strong> system design</li>
+    <li><strong>{{ n_harness }}</strong> harness</li>
+  </ul>
+</section>

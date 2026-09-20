@@ -1,0 +1,629 @@
+# Auto-generated from the front matter of docs/practice/*.md.
+# Regenerate with: python3 scripts/sync-questions-registry.py
+# Do not hand-edit: harness/check_harness.py (bank.registry) fails on drift.
+- slug: accessible-combobox
+  title: Build an accessible combobox
+  format: ui-coding
+  difficulty: hard
+  layer: ui
+  topics:
+  - accessibility
+  - events
+  - component
+  - molecule
+  skill: ui-accessibility
+  minutes: 45
+  frameworks:
+  - react
+  - vue
+  summary: A typeahead that works with a keyboard and a screen reader, not just a
+    mouse.
+- slug: action-creators
+  title: Implement Redux-style action creators
+  format: coding
+  difficulty: easy
+  layer: state
+  topics:
+  - actions
+  skill: state-actions
+  minutes: 15
+  summary: Create action creators that return plain action objects for a Redux store.
+- slug: apply-middleware
+  title: Apply Middleware to a Store's Dispatch
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - middleware
+  - store
+  skill: state-middleware
+  minutes: 20
+  summary: Implement a function that applies middleware to a store's dispatch, enabling
+    composable store enhancers.
+- slug: atom-boundaries
+  title: Where does an atom stop?
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - atom
+  - atomic-design
+  - component
+  skill: ui-atom
+  minutes: 8
+  summary: Four rapid checks on the boundary between an atom, a molecule and a container.
+- slug: cache-headers-basics
+  title: Design the caching layer for a static app
+  format: system-design
+  difficulty: easy
+  layer: server
+  topics:
+  - protocol
+  - api
+  - index-file
+  - app-shell
+  skill: server-protocol
+  minutes: 20
+  summary: Decide the cache policy for each artefact a single-page app ships, and
+    say what breaks when you get one wrong.
+- slug: combine-reducers
+  title: Combine Reducers
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - reducer
+  - store
+  skill: state-reducer
+  minutes: 20
+  summary: Implement a function that combines multiple reducer functions into a single
+    reducer.
+- slug: counter-component
+  title: Build a Counter component
+  format: coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - component
+  - props
+  - events
+  skill: ui-component
+  minutes: 25
+  summary: The first question that renders a real component in the browser — props,
+    state, clamping and a disabled button, tested against a live DOM.
+- slug: counter-reducer
+  title: Implement a Redux-style reducer with immutability
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - reducer
+  - store
+  skill: state-reducer
+  minutes: 20
+  summary: Build a reducer that handles state updates immutably for a simple counter.
+- slug: data-table-sort
+  title: Make a data table sortable
+  format: ui-coding
+  difficulty: hard
+  layer: ui
+  topics:
+  - organism
+  - events
+  - accessibility
+  - rwd
+  skill: ui-organism
+  minutes: 45
+  frameworks:
+  - react
+  - vue
+  summary: Column sorting that is stable, announced, keyboard-operable and does not
+    re-sort 5,000 rows on every render.
+- slug: debounce-utility
+  title: Create a debounce utility
+  format: coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - events
+  skill: ui-atom
+  minutes: 15
+  summary: Create a debounce function that delays invocation until after a wait period.
+- slug: deep-clone
+  title: Deep clone a value
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - operations
+  - state
+  skill: state-operations
+  minutes: 30
+  summary: Copy nested data without sharing references — including the cycle that
+    makes the naive version hang forever.
+- slug: design-embeddable-widget
+  title: Design an embeddable widget
+  format: system-design
+  difficulty: hard
+  layer: server
+  topics:
+  - widget
+  - mfe
+  - app-shell
+  - protocol
+  - session
+  skill: server-widget
+  minutes: 45
+  summary: A review widget third parties paste into their own pages — isolation, versioning,
+    auth and a sub-50KB budget.
+- slug: design-localized-app
+  title: Design a localized application
+  format: system-design
+  difficulty: easy
+  layer: server
+  topics:
+  - localization
+  - seo
+  - router
+  - ssr
+  skill: server-localization
+  minutes: 25
+  summary: Locale detection, URL shape, bundle splitting and the formatting bugs that
+    only appear in someone else's language.
+- slug: design-micro-frontends
+  title: Split a monolith into micro-frontends
+  format: system-design
+  difficulty: hard
+  layer: server
+  topics:
+  - mfe
+  - app-shell
+  - protocol
+  - container
+  - router
+  skill: server-mfe
+  minutes: 50
+  summary: Four teams, one URL, and the shared state, routing and version skew that
+    decide whether this helps or hurts.
+- slug: design-search-experience
+  title: Design a search-as-you-type experience
+  format: system-design
+  difficulty: medium
+  layer: server
+  topics:
+  - api
+  - ajax
+  - router
+  - seo
+  skill: server-api
+  minutes: 35
+  summary: Debounce, cancellation, out-of-order responses, caching and the URL — the
+    five things that decide whether search feels instant or broken.
+- slug: event-delegation
+  title: How to delegate events in the DOM
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - events
+  - dom
+  skill: ui-events
+  minutes: 7
+  summary: Use event delegation to handle events efficiently on dynamic lists.
+- slug: event-emitter
+  title: Build an event emitter
+  format: coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - events
+  - dom
+  skill: ui-events
+  minutes: 25
+  summary: Subscribe, emit, unsubscribe — and survive a handler that removes itself
+    while the event is being dispatched.
+- slug: form-field-molecule
+  title: Build an accessible form field
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - molecule
+  - props
+  - accessibility
+  skill: ui-molecule
+  minutes: 30
+  frameworks:
+  - react
+  - angular
+  summary: Label, control, hint and error wired together by id so a screen reader
+    reads the whole field, not just the box.
+- slug: harness-a11y-gate
+  title: Gate a pull request on accessibility
+  format: harness
+  difficulty: hard
+  layer: ui
+  topics:
+  - accessibility
+  - story
+  - component
+  skill: ui-accessibility
+  minutes: 50
+  summary: Turn an accessibility audit into a check that runs on every change — and
+    confront the baseline problem that makes most of them useless.
+- slug: harness-atom-guardrail
+  title: Write a guardrail for the ui-atom skill
+  format: harness
+  difficulty: medium
+  layer: ui
+  topics:
+  - atom
+  - component
+  - story
+  - accessibility
+  skill: ui-atom
+  minutes: 40
+  summary: Turn "this is a good atom" into a script an agent cannot argue with, then
+    run an agent against it.
+- slug: harness-bundle-budget
+  title: Guardrail a performance budget
+  format: harness
+  difficulty: medium
+  layer: server
+  topics:
+  - protocol
+  - app-shell
+  - images
+  skill: server-app-shell
+  minutes: 35
+  summary: A size budget that fails a change, attributes the growth to a dependency,
+    and survives the week someone genuinely needs to exceed it.
+- slug: harness-link-checker
+  title: Guardrail a docs site's links
+  format: harness
+  difficulty: easy
+  layer: server
+  topics:
+  - links
+  - seo
+  - page
+  skill: server-links
+  minutes: 25
+  summary: The smallest useful guardrail — write a link checker, point an agent at
+    a site with broken links, and measure how many rounds it takes to go green.
+- slug: harness-skill-eval
+  title: Write an eval set for an Agent Skill
+  format: harness
+  difficulty: hard
+  layer: state
+  topics:
+  - state
+  - store
+  - reducer
+  - operations
+  skill: state-operations
+  minutes: 55
+  summary: Score a skill instead of arguing about it — build the cases, the grader
+    and the threshold, then use the results to change the skill.
+- slug: harness-state-shape
+  title: Guardrail a store's shape
+  format: harness
+  difficulty: hard
+  layer: state
+  topics:
+  - store
+  - selectors
+  - reducer
+  - state
+  skill: state-store
+  minutes: 50
+  summary: Encode "this store is well shaped" as a script, then discover which of
+    your rules an agent can satisfy without doing what you meant.
+- slug: infinite-scroll-list
+  title: Build an infinite-scroll list
+  format: ui-coding
+  difficulty: hard
+  layer: ui
+  topics:
+  - organism
+  - skeleton
+  - events
+  skill: ui-organism
+  minutes: 45
+  frameworks:
+  - react
+  - vue
+  summary: A sentinel, an IntersectionObserver, and all the ways an infinite list
+    traps the people using it.
+- slug: loading-button-atom
+  title: Build a loading Button atom
+  format: ui-coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - atom
+  - props
+  - events
+  - component
+  skill: ui-atom
+  minutes: 30
+  frameworks:
+  - react
+  - vue
+  summary: One prop-driven Button atom that swaps to a spinner while loading, implemented
+    the same way in two frameworks.
+- slug: memoized-selector
+  title: Memoize a derived selector
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - selectors
+  - state
+  - store
+  skill: state-selectors
+  minutes: 25
+  summary: Build a createSelector-style memoizer that recomputes only when its inputs
+    change by reference.
+- slug: middleware-order
+  title: What order does middleware run in?
+  format: quiz
+  difficulty: medium
+  layer: state
+  topics:
+  - middleware
+  - store
+  - actions
+  skill: state-middleware
+  minutes: 10
+  summary: Four questions on the middleware chain — the part of a Redux store that
+    is a pipeline, not a switch.
+- slug: normalize-entities
+  title: Normalise a nested API response
+  format: coding
+  difficulty: hard
+  layer: state
+  topics:
+  - store
+  - crud
+  - state
+  skill: state-store
+  minutes: 35
+  summary: Flatten a deeply nested payload into entity tables keyed by id, so one
+    update touches one place.
+- slug: offline-first-list
+  title: Design an offline-first task list
+  format: system-design
+  difficulty: medium
+  layer: state
+  topics:
+  - crud
+  - ajax
+  - operations
+  - store
+  skill: state-crud
+  minutes: 35
+  summary: Writes that happen without a network, a sync that resolves conflicts, and
+    a UI that never lies about what is saved.
+- slug: presentational-vs-container
+  title: Presentational vs container components
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - component
+  - props
+  skill: ui-props
+  minutes: 5
+  summary: The split between a component that renders and a component that fetches,
+    and what React 19 changed about defaults.
+- slug: props-defaults
+  title: Setting Default Values for Props
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - props
+  skill: ui-props
+  minutes: 7
+  summary: Quick checks on how to provide default values for component props in React
+    and Vue.
+- slug: proxy-and-cors
+  title: Proxy it or fix CORS?
+  format: quiz
+  difficulty: medium
+  layer: server
+  topics:
+  - proxy
+  - api
+  - protocol
+  - authentication
+  skill: server-proxy
+  minutes: 10
+  summary: When a dev proxy is the right tool, when it hides a problem you will meet
+    in production, and what CORS actually protects.
+- slug: query-string-state
+  title: Round-trip filter state through the URL
+  format: coding
+  difficulty: medium
+  layer: server
+  topics:
+  - router
+  - links
+  - page
+  skill: server-router
+  minutes: 25
+  summary: Serialise a filter object to a query string and parse it back, so a filtered
+    view is shareable and the back button works.
+- slug: quiz-event-propagation
+  title: Event Propagation Phases
+  format: quiz
+  difficulty: medium
+  layer: ui
+  topics:
+  - events
+  - dom
+  - component
+  skill: ui-events
+  minutes: 8
+  summary: Identify the correct order of event propagation phases and related behavior.
+- slug: render-strategy-choice
+  title: Pick a rendering strategy
+  format: quiz
+  difficulty: medium
+  layer: server
+  topics:
+  - ssr
+  - ssg
+  - app-shell
+  - seo
+  skill: server-ssr
+  minutes: 10
+  summary: Four product briefs, four rendering decisions, and the cost each one hides.
+- slug: responsive-image-set
+  title: Ship a responsive image the browser can choose
+  format: ui-coding
+  difficulty: medium
+  layer: server
+  topics:
+  - images
+  - rwd
+  - seo
+  skill: server-images
+  minutes: 30
+  frameworks:
+  - react
+  - vue
+  summary: Build an Image component that emits srcset, sizes and an aspect-ratio box,
+    so the browser downloads the right file and nothing shifts.
+- slug: retry-with-backoff
+  title: Retry a request with backoff
+  format: coding
+  difficulty: hard
+  layer: state
+  topics:
+  - ajax
+  - operations
+  - middleware
+  skill: state-ajax
+  minutes: 35
+  summary: Retry only what is worth retrying, back off exponentially, add jitter,
+    and stop when the caller walks away.
+- slug: selector-memoization
+  title: Selector Memoization Basics
+  format: quiz
+  difficulty: medium
+  layer: state
+  topics:
+  - selectors
+  skill: state-selectors
+  minutes: 10
+  summary: Quick checks on when and why to use memoized selectors in Redux.
+- slug: session-and-tokens
+  title: Where does the session actually live?
+  format: quiz
+  difficulty: hard
+  layer: server
+  topics:
+  - session
+  - authentication
+  - protocol
+  - app-shell
+  skill: server-session
+  minutes: 12
+  summary: Four questions where the plausible answer is the insecure one.
+- slug: simple-store
+  title: Create a Redux-like store
+  format: coding
+  difficulty: medium
+  layer: state
+  topics:
+  - store
+  - reducer
+  skill: state-store
+  minutes: 20
+  summary: Implement a minimal store with getState, dispatch, and subscribe.
+- slug: skeleton-list
+  title: Replace a spinner with a skeleton
+  format: ui-coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - skeleton
+  - rwd
+  - organism
+  skill: ui-skeleton
+  minutes: 25
+  frameworks:
+  - react
+  - angular
+  summary: Build a loading placeholder that reserves the exact space the real rows
+    will take, so nothing shifts when data arrives.
+- slug: tabs-molecule
+  title: Build a tabs molecule the arrow keys drive
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - molecule
+  - events
+  - accessibility
+  skill: ui-molecule
+  minutes: 35
+  frameworks:
+  - vue
+  - angular
+  summary: Roving tabindex, arrow-key navigation and one tab stop — the pattern that
+    separates a tab list from a row of buttons.
+- slug: theme-toggle
+  title: Build a theme toggle with no flash
+  format: ui-coding
+  difficulty: easy
+  layer: ui
+  topics:
+  - theme
+  - attributes
+  - dom
+  skill: ui-theme
+  minutes: 25
+  frameworks:
+  - react
+  - wc
+  summary: Respect the system theme, remember an override, and never show the wrong
+    colours before hydration.
+- slug: toast-notifications
+  title: Build a toast notification stack
+  format: ui-coding
+  difficulty: medium
+  layer: ui
+  topics:
+  - organism
+  - events
+  - accessibility
+  skill: ui-organism
+  minutes: 40
+  frameworks:
+  - react
+  - vue
+  summary: Stacked, auto-dismissing toasts that a screen reader announces and a keyboard
+    can reach — without stealing focus.
+- slug: ui-events-basics
+  title: Handling DOM Events
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - events
+  skill: ui-events
+  minutes: 8
+  summary: Quick checks on attaching and handling DOM events in React and Vue.
+- slug: ui-props-basics
+  title: Validating Prop Usage
+  format: quiz
+  difficulty: easy
+  layer: ui
+  topics:
+  - props
+  skill: ui-props
+  minutes: 7
+  summary: Quick checks on how to correctly declare and pass props in React and Vue.

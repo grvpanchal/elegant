@@ -1,0 +1,30 @@
+---
+layout: default
+---
+{%- comment -%}
+A curated list page: renders one entry of docs/_data/lists.yml as an ordered
+set of links into the bank. The page's front matter names the list slug; the
+questions come from the data, resolved to their titles at build time so a
+renamed question cannot leave a dead label here. Distinct from a study plan
+(layout: plan) — no schedule, just the order worth doing them in.
+{%- endcomment -%}
+{%- assign list = site.data.lists | where: "slug", page.list | first -%}
+<article class="curated-list">
+  <h1>{{ list.title }}</h1>
+  <p class="curated-list__why">{{ list.why }}</p>
+  <p class="curated-list__count">{{ list.questions | size }} questions, in order.</p>
+  <ol class="curated-list__items">
+    {%- for slug in list.questions -%}
+      {%- assign q = site.data.questions | where: "slug", slug | first -%}
+      <li>
+        {%- if q -%}
+        <a href="{{ '/practice/' | append: slug | append: '.html' | relative_url }}">{{ q.title }}</a>
+        <span class="curated-list__meta">{{ q.format }} · {{ q.difficulty }} · {{ q.layer }}</span>
+        {%- else -%}
+        <span>{{ slug }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ol>
+  <p><a class="btn" href="{{ '/practice/' | relative_url }}">Browse the full bank</a></p>
+</article>

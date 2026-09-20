@@ -1,0 +1,23 @@
+{%- comment -%}
+Every room the front door opens onto, each with a line on what it is for. A
+surface the home page never links does not exist to a first visit. Owned by
+landing.surfaces.
+{%- endcomment -%}
+<style>
+  .landing-surfaces { max-width: 80rem; margin: 0 auto; padding: 2rem 1rem; }
+  .landing-surfaces__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .landing-surfaces__grid a { display: block; padding: 1.1rem 1.25rem; border: 1px solid #e2e8f0; border-radius: 8px; text-decoration: none; color: inherit; }
+  .landing-surfaces__grid a:hover { border-color: #157878; }
+  .landing-surfaces__grid h3 { margin: 0 0 0.35rem; color: #157878; }
+  .landing-surfaces__grid p { margin: 0; font-size: 0.92rem; color: #555; }
+</style>
+<section class="landing-surfaces">
+  <div class="landing-surfaces__grid">
+    <a href="{{ '/practice/' | relative_url }}"><h3>Question bank</h3><p>Filter by format, layer and topic, and track what you have finished.</p></a>
+    <a href="{{ '/plans/' | relative_url }}"><h3>Study plans</h3><p>Time-boxed schedules — one week, one month, three months — built from the bank.</p></a>
+    <a href="{{ '/lists/' | relative_url }}"><h3>Curated lists</h3><p>Ordered "do these first" sets — no schedule, just the order worth doing them in.</p></a>
+    <a href="{{ '/playbooks/' | relative_url }}"><h3>Playbooks</h3><p>Long reads on how to approach each kind of interview round.</p></a>
+    <a href="{{ '/guides/' | relative_url }}"><h3>Company guides</h3><p>The loop each company runs, and the questions that map to each round.</p></a>
+    <a href="{{ '/account/' | relative_url }}"><h3>Your account</h3><p>Keep progress on this device, or sign in to carry it to another browser.</p></a>
+  </div>
+</section>

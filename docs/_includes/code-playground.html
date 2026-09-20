@@ -1,0 +1,50 @@
+{%- comment -%}
+In-browser practice workspace for a `format: coding` question.
+
+Loads /practice/workspace/<page.slug>/starter.js into the editor and runs the
+question's own tests.js against whatever the learner typed. The same tests.js
+runs under Node in harness/check_harness.py (`workspace.tests_pass`), so the
+browser and CI agree on what "solved" means.
+
+The editor is a textarea with a syntax-highlighted overlay behind it
+(`data-playground-highlight`), a drag handle to resize it
+(`data-playground-resize`) and a console pane (`data-playground-console`) that
+captures console.log output from the learner's code so they do not need
+devtools to debug. Their styles live in docs/_sass/components/practice.scss
+with the rest of the workspace.
+
+Ctrl/Cmd+Enter in the editor runs the tests — the chord every editor a
+candidate has used runs on — so the mouse never has to be reached for.
+
+Requires docs/practice/workspace/<slug>/{starter,solution,tests}.js to exist.
+{%- endcomment -%}
+<section class="playground" data-playground data-slug="{{ include.slug | default: page.slug }}">
+  <header class="playground__header">
+    <h3 class="playground__title">Workspace</h3>
+    <p class="playground__hint">Edit the module below and run the question's tests. Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (or <kbd>Cmd</kbd>+<kbd>Enter</kbd> on a Mac) to run from the editor. Your draft is kept in this browser.</p>
+  </header>
+  <label class="playground__label" for="playground-{{ include.slug | default: page.slug }}">Your solution</label>
+  <div class="playground__editor-wrap">
+    <pre class="playground__highlight" data-playground-highlight aria-hidden="true"></pre>
+    <textarea id="playground-{{ include.slug | default: page.slug }}"
+              class="playground__editor"
+              data-playground-editor
+              spellcheck="false"
+              rows="16"
+              disabled>Loading starter code…</textarea>
+    <div class="playground__resize" data-playground-resize
+         role="separator" aria-orientation="horizontal" tabindex="0"
+         aria-label="Resize the editor — drag, or use the up and down arrow keys"
+         title="Drag, or use the arrow keys, to resize the editor"></div>
+  </div>
+  <div class="playground__actions">
+    <button type="button" class="playground__run" data-playground-run
+            title="Run the tests (Ctrl/Cmd+Enter)" disabled>Run tests</button>
+    <button type="button" class="playground__reset" data-playground-reset>Reset</button>
+  </div>
+  <div class="playground__console" data-playground-console hidden>
+    <div class="playground__console-head">Console</div>
+    <div class="playground__console-body" data-playground-console-body></div>
+  </div>
+  <div class="playground__output" data-playground-output role="status" aria-live="polite"></div>
+</section>

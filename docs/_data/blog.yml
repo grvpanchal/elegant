@@ -1,0 +1,1853 @@
+# Auto-generated from the front matter of docs/blog/*.md.
+# Regenerate with: python3 scripts/sync-blog-registry.py
+# Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+- slug: accessibility-is-not-a-checklist
+  title: Accessibility is not a checklist you run at the end
+  date: 2026-06-20
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - quality
+  - process
+  description: Automated checkers catch maybe half of accessibility issues, and only
+    the mechanical half. The rest — does the keyboard flow make sense, does the screen
+    reader tell a coherent story — needs building in, not auditing on.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - harness-a11y-gate
+  - accessible-combobox
+  - form-field-molecule
+- slug: accessible-forms-labels-and-errors
+  title: Accessible forms come down to labels, grouping, and error wiring
+  date: 2026-07-02
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - forms
+  - aria
+  description: Most form accessibility is not exotic ARIA — it is labels tied to inputs,
+    related fields grouped, and errors wired so a screen reader announces them. Get
+    those three right and the form works for everyone.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - form-field-molecule
+  - accessible-combobox
+- slug: actions-are-messages-not-setters
+  title: Actions are messages, not setters
+  date: 2026-09-02
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - actions
+  - architecture
+  description: The most common Redux mistake is treating actions like setters — SET_USER,
+    SET_LOADING, SET_ERROR. An action should describe something that happened, not
+    command the store how to change.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - action-creators
+  - counter-reducer
+  - combine-reducers
+- slug: agent-skills-are-reusable-knowledge
+  title: Agent skills are how you stop re-explaining yourself to the model
+  date: 2026-08-03
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - skills
+  - workflow
+  - reuse
+  description: If you find yourself pasting the same architecture rules and conventions
+    into every prompt, you have discovered the need for a skill — a packaged, reusable
+    set of instructions the model loads for a class of task instead of you retyping
+    it.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
+- slug: ai-and-accessibility
+  title: AI writes markup fast, and accessibility is exactly what it drops
+  date: 2026-08-05
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - accessibility
+  - quality
+  - guardrails
+  description: A model will happily generate a div that looks like a button, because
+    it renders and looks right. Accessibility lives in the parts that do not show
+    — roles, names, keyboard behaviour — which is precisely what optimizing for "looks
+    right" skips.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-a11y-gate
+  - accessible-combobox
+  - form-field-molecule
+- slug: ai-and-technical-debt
+  title: AI does not remove technical debt — it lets you create it faster
+  date: 2026-07-29
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - technical-debt
+  - quality
+  - guardrails
+  description: A model that generates code at ten times human speed also generates
+    debt at ten times human speed, if you let it. The productivity is real; so is
+    the pile it can leave behind without a standard to hold it to.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-atom-guardrail
+  - harness-state-shape
+- slug: ai-cannot-hold-your-architecture
+  title: AI cannot hold your architecture, so you have to
+  date: 2026-07-31
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - architecture
+  - state
+  - quality
+  description: A model has no memory of your system and no stake in its shape, so
+    it optimizes each task locally and erodes the structure globally. The durable
+    job is owning the architecture the model keeps forgetting.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 6
+  related_practice:
+  - harness-state-shape
+  - presentational-vs-container
+  - normalize-entities
+- slug: ai-generated-tests-need-a-human-oracle
+  title: AI-generated tests need a human oracle
+  date: 2026-07-30
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - testing
+  - quality
+  - evals
+  description: A model is great at writing test scaffolding and terrible at deciding
+    what "correct" is. Ask it to test existing code and it will assert that the current
+    behaviour — bugs and all — is right. The oracle has to be you.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-skill-eval
+  - debounce-utility
+  - deep-clone
+- slug: ai-harness-for-ui-and-state
+  title: An AI harness for keeping UI and State apart
+  date: 2026-09-17
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - state
+  - architecture
+  - harness
+  description: The fastest way to lose the UI/State boundary is to let an AI write
+    across it a hundred times. The fix is a harness that fails the build the first
+    time a component reaches into the store.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 6
+  related_practice:
+  - harness-state-shape
+  - harness-atom-guardrail
+  - harness-bundle-budget
+- slug: ai-in-the-frontend-sdlc
+  title: Where AI actually fits in the frontend development lifecycle
+  date: 2026-08-09
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - workflow
+  - guardrails
+  - sdlc
+  description: AI is not one thing you bolt onto the end of development. It shows
+    up at every stage — scaffolding, implementing, reviewing, testing — and it is
+    strong at some and dangerous at others. Knowing which is the whole skill.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
+  - harness-a11y-gate
+- slug: atoms-molecules-organisms
+  title: 'Atoms, molecules, organisms: the vocabulary of a component system'
+  date: 2026-09-20
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - atomic-design
+  - components
+  - vocabulary
+  description: Atomic design is not a folder-naming fad — it is a shared vocabulary
+    for arguing about where a component belongs before you write it.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 5
+  related_practice:
+  - atom-boundaries
+  - loading-button-atom
+  - form-field-molecule
+  - tabs-molecule
+- slug: code-splitting-ships-less-javascript
+  title: 'Code splitting: ship the JavaScript this page needs, not all of it'
+  date: 2026-08-11
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - bundling
+  - web-vitals
+  description: One big bundle makes the user download your entire app to see the login
+    page. Code splitting breaks it into pieces loaded on demand, so the first screen
+    ships only what it needs and the rest arrives when it is used.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - harness-bundle-budget
+  - render-strategy-choice
+- slug: colocate-state-until-you-cant
+  title: Colocate state until you can't
+  date: 2026-08-25
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - architecture
+  - react
+  - components
+  description: The right home for a piece of state is the smallest scope that needs
+    it. Lifting everything to a global store by default is how a simple app grows
+    a state-management problem it never needed.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - counter-component
+  - query-string-state
+- slug: combine-reducers-splits-the-store
+  title: combineReducers splits the store without splitting the truth
+  date: 2026-08-23
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - reducers
+  - architecture
+  description: One state tree can still have many owners. combineReducers gives each
+    slice its own reducer while keeping a single store — the trick is that each reducer
+    sees only its slice, and that constraint is a feature.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - combine-reducers
+  - normalize-entities
+  - counter-reducer
+- slug: composition-over-configuration
+  title: Composition beats configuration when a component grows props
+  date: 2026-07-04
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - components
+  - api-design
+  - composition
+  description: When a component sprouts a dozen boolean props to cover every variation,
+    the fix is usually not another prop — it is letting the caller compose the pieces.
+    Configuration scales to a point; composition scales past it.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 6
+  related_practice:
+  - tabs-molecule
+  - form-field-molecule
+- slug: controlled-vs-uncontrolled-inputs
+  title: 'Controlled vs uncontrolled inputs: who owns the value?'
+  date: 2026-09-06
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - forms
+  - state
+  - components
+  description: The whole controlled-versus-uncontrolled question comes down to one
+    thing — does your component's state own the input's value, or does the DOM? Pick
+    per field, not per app.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - form-field-molecule
+  - query-string-state
+- slug: cors-is-the-browsers-rule-not-the-servers
+  title: CORS is the browser's rule, not the server's
+  date: 2026-08-14
+  author: The Elegant team
+  category: terminology
+  tags:
+  - server
+  - cors
+  - security
+  - http
+  description: 'The single fact that makes CORS make sense: it is enforced by the
+    browser, not the server. The request often reaches the server and runs — the browser
+    just refuses to let your JavaScript read the response.'
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
+- slug: csr-and-its-tradeoffs
+  title: Client-side rendering is not the villain, it is a trade-off
+  date: 2026-08-19
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - csr
+  - rendering
+  - spa
+  description: The single-page app that renders everything in the browser gets blamed
+    for slow first paints and bad SEO. Both are real, both are fixable, and for the
+    right app CSR is simpler and cheaper than the alternatives.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - render-strategy-choice
+  - infinite-scroll-list
+- slug: css-specificity-decides-who-wins
+  title: CSS specificity decides who wins, and it is not about order
+  date: 2026-09-13
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - specificity
+  - cascade
+  description: When two rules target the same element, the more specific selector
+    wins — regardless of which came last. Understanding the tiebreak is the difference
+    between fixing a style and piling !important on it.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: custom-properties-are-runtime-css-variables
+  title: Custom properties are runtime variables, and that changes theming
+  date: 2026-09-11
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - theming
+  - custom-properties
+  description: A Sass variable is gone by the time the browser runs. A CSS custom
+    property is live — it cascades, inherits, and can be changed at runtime, which
+    is why theming and dark mode are built on it.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: debounce-and-throttle-are-different-tools
+  title: Debounce and throttle are different tools for different problems
+  date: 2026-09-05
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - events
+  - javascript
+  description: Both limit how often a function runs, but they answer different questions.
+    Debounce waits for quiet; throttle enforces a steady rate. Using the wrong one
+    makes a search box feel broken.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - debounce-utility
+  - design-search-experience
+- slug: debugging-is-a-skill-you-can-practice
+  title: Debugging is a skill you can practice, not a talent you're born with
+  date: 2026-06-17
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - debugging
+  - process
+  - craft
+  description: Fast debuggers are not smarter — they follow a method. Reproduce, isolate,
+    form a hypothesis, test it, repeat. Guessing and changing things at random feels
+    like debugging and mostly wastes time.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - event-emitter
+  - deep-clone
+  - debounce-utility
+- slug: design-tokens-are-the-api-of-a-design-system
+  title: Design tokens are the API of a design system
+  date: 2026-07-25
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - design-system
+  - theming
+  - tokens
+  description: A design token is a named value — a color, a space, a radius — used
+    everywhere instead of a raw number. Treating tokens as the design system's public
+    API is what makes theming, dark mode, and rebrands a config change instead of
+    a find-and-replace.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 5
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: error-boundaries-catch-render-crashes
+  title: Error boundaries stop one broken component from blanking the page
+  date: 2026-07-07
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - error-handling
+  - resilience
+  description: Without an error boundary, one component throwing during render takes
+    the whole app down to a blank screen. A boundary catches the crash, shows a fallback
+    for that subtree, and keeps the rest of the app alive.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - toast-notifications
+  - retry-with-backoff
+- slug: evals-are-tests-for-judgement
+  title: Evals are tests for the things unit tests can't check
+  date: 2026-08-04
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - evals
+  - quality
+  - testing
+  description: A unit test checks that a function returns the right value. An eval
+    checks that a piece of prose, a design, or an AI output meets a standard you can
+    describe but not compute. As AI writes more, evals become as important as tests.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
+- slug: event-bubbling-and-capturing
+  title: 'Event bubbling and capturing: the two trips every click takes'
+  date: 2026-09-09
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - events
+  - dom
+  - delegation
+  description: Every DOM event travels down to the target and back up again. Knowing
+    which phase your listener runs in is what makes event delegation, and stopping
+    propagation, predictable instead of magic.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - event-delegation
+  - quiz-event-propagation
+- slug: executable-guardrails-beat-review
+  title: An executable guardrail beats a review comment every time
+  date: 2026-08-06
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - quality
+  - ci
+  description: A rule that lives in a senior engineer's head gets enforced when they
+    happen to review. A rule that lives in a check gets enforced on every diff, forever,
+    by something that never gets tired. In an age of AI-authored code, that difference
+    decides.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 6
+  related_practice:
+  - harness-link-checker
+  - harness-bundle-budget
+  - harness-atom-guardrail
+- slug: feature-flags-decouple-deploy-from-release
+  title: Feature flags decouple deploying code from releasing a feature
+  date: 2026-06-26
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - deployment
+  - feature-flags
+  - workflow
+  description: A feature flag lets you merge and deploy unfinished or unreleased code
+    that stays dark until you flip it on. That separation — deploy is not release
+    — is what makes trunk-based development and safe rollouts possible.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - render-strategy-choice
+- slug: flexbox-or-grid-pick-by-axis
+  title: Flexbox or Grid? Pick by how many axes you are laying out
+  date: 2026-09-12
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - layout
+  - flexbox
+  - grid
+  description: The endless flexbox-versus-grid debate has a boring answer — one axis,
+    use flexbox; two axes, use grid. Everything else is a corollary of that one distinction.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - data-table-sort
+  - responsive-image-set
+- slug: focus-management-is-the-keyboard-users-cursor
+  title: Focus management is the keyboard user's cursor
+  date: 2026-09-08
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - focus
+  - keyboard
+  description: For a keyboard or screen-reader user, focus is the cursor. A dialog
+    that opens without moving focus, or a menu that traps it, is as broken as a mouse
+    that stops moving.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+  - form-field-molecule
+- slug: folder-structure-follows-architecture
+  title: Folder structure should follow architecture, not file type
+  date: 2026-07-27
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - organization
+  - atomic-design
+  - maintainability
+  description: Grouping every component in one folder, every style in another, every
+    test in a third feels tidy and ages badly. Structure that mirrors your architecture
+    — atoms, molecules, containers, state — tells a new reader how the app is built.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 5
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
+- slug: from-junior-to-senior-frontend
+  title: 'From junior to senior frontend: the shift is from code to consequences'
+  date: 2026-07-17
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - seniority
+  - architecture
+  - growth
+  description: The jump to senior is not writing fancier code. It is caring about
+    the consequences of code — how it ages, how it fails, how the next person changes
+    it — and making decisions with the whole system in mind.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - harness-atom-guardrail
+  - presentational-vs-container
+  - harness-state-shape
+- slug: how-to-prepare-for-a-frontend-interview
+  title: How to prepare for a frontend interview without boiling the ocean
+  date: 2026-07-22
+  author: The Elegant team
+  category: career
+  tags:
+  - interview
+  - career
+  - preparation
+  - practice
+  description: 'Most candidates prepare by grinding random problems and hoping. The
+    loop is legible: prepare per round — utilities, UI components, system design,
+    behavioural — and drill the specific muscle each one tests.'
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - debounce-utility
+  - design-search-experience
+- slug: http-cache-headers-are-a-contract
+  title: HTTP cache headers are a contract you are signing with every browser
+  date: 2026-08-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - caching
+  - performance
+  - http
+  description: Cache-Control, ETag and the rest are not obscure server trivia — they
+    are how you tell every browser and CDN how long to trust a response. Get them
+    wrong and you either serve stale files or throw away free speed.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - cache-headers-basics
+  - proxy-and-cors
+- slug: hydration-is-the-handoff
+  title: Hydration is the handoff from server HTML to a live app
+  date: 2026-08-18
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssr
+  - hydration
+  - performance
+  description: Hydration is the moment server-rendered HTML becomes interactive, when
+    the client JavaScript attaches to the existing markup. It is also where a whole
+    class of subtle SSR bugs and performance costs live.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - render-strategy-choice
+  - counter-component
+- slug: immutability-is-how-you-detect-change-cheaply
+  title: Immutability is how you detect change cheaply
+  date: 2026-09-03
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - immutability
+  - performance
+  - react
+  description: Immutable updates are not about purity for its own sake. They let the
+    framework decide 'did this change?' with a reference check instead of a deep scan
+    — which is what keeps re-renders bounded.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - counter-reducer
+  - memoized-selector
+  - normalize-entities
+- slug: internationalization-is-more-than-translation
+  title: Internationalization is more than swapping the words
+  date: 2026-07-14
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - i18n
+  - localization
+  - ux
+  description: Translating strings is the easy, visible part. The hard part is everything
+    else a locale changes — dates, numbers, currency, plurals, text direction, and
+    layouts that must survive words twice as long.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - design-localized-app
+- slug: keys-in-lists-are-identity
+  title: Keys in lists are identity, and using the index breaks it
+  date: 2026-07-08
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - lists
+  - reconciliation
+  description: A list key tells the framework which item is which across renders.
+    Use a stable id and reordering and editing just work; use the array index and
+    you get lost input, wrong animations, and state attached to the wrong row.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - data-table-sort
+  - infinite-scroll-list
+- slug: memoization-is-caching-with-a-key
+  title: Memoization is just caching with a key you have to get right
+  date: 2026-06-30
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - memoization
+  - react
+  description: Memoization caches a result against its inputs and returns the cache
+    when the inputs repeat. Simple — except the whole thing depends on comparing inputs
+    correctly, which is where most memoization quietly does nothing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - memoized-selector
+  - selector-memoization
+  - debounce-utility
+- slug: micro-frontends-split-by-team
+  title: Micro-frontends solve an org problem, not a tech one
+  date: 2026-07-13
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - micro-frontends
+  - architecture
+  - scaling
+  description: Splitting a frontend into independently deployable pieces is worth
+    it when teams are stepping on each other, and a costly mistake when they are not.
+    The boundary should follow the org chart, not the tech.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - design-micro-frontends
+- slug: middleware-is-the-stores-pipeline
+  title: Middleware is the store's pipeline, not a grab bag
+  date: 2026-08-30
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - middleware
+  - async
+  description: Middleware sits between dispatch and the reducer, and each one can
+    inspect, delay, transform, or swallow an action. Understanding it as an ordered
+    pipeline is what makes async and logging predictable.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - apply-middleware
+  - middleware-order
+- slug: narrate-your-thinking-in-the-coding-round
+  title: In the coding round, your narration is most of the score
+  date: 2026-07-18
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - communication
+  - coding
+  - career
+  description: The interviewer cannot read your mind, and they are scoring your thinking,
+    not just your code. Silence while you type — even to a correct answer — leaves
+    most of the available signal unspoken. Talk.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - debounce-utility
+  - event-emitter
+  - deep-clone
+- slug: normalize-your-api-responses
+  title: 'Normalize your API responses: the refactor that pays for itself'
+  date: 2026-09-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - state
+  - store
+  - api
+  - refactor
+  description: A nested API payload is a tax you pay on every read and every update.
+    Flattening it into entity tables keyed by id is the one refactor that makes the
+    rest of your state code simpler.
+  cover: /assets/img/diagrams/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - normalize-entities
+  - deep-clone
+  - memoized-selector
+- slug: optimistic-ui-and-loading-states
+  title: Design your loading and empty states before your happy path
+  date: 2026-07-05
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - ux
+  - states
+  - loading
+  description: Every data-driven component has at least four states — loading, empty,
+    error, and loaded — and the ones that are not the happy path are where real apps
+    feel broken. Design all four, not just the screenshot.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - toast-notifications
+  - offline-first-list
+  - skeleton-list
+- slug: optimistic-updates-and-rollback
+  title: 'Optimistic updates: show it now, reconcile later'
+  date: 2026-08-26
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - ux
+  - async
+  - patterns
+  description: An optimistic update applies the change to the UI before the server
+    confirms it, then rolls back if the server disagrees. It makes an app feel instant
+    — and it is only safe if you plan the rollback.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - offline-first-list
+  - retry-with-backoff
+- slug: optimize-the-largest-contentful-paint
+  title: 'Largest Contentful Paint: make the biggest thing appear fast'
+  date: 2026-06-24
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - performance
+  - web-vitals
+  - images
+  description: LCP measures when the largest visible element — usually a hero image
+    or headline — finishes rendering. It is the Core Web Vital users feel most, and
+    fixing it is mostly about the critical path and one image.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - responsive-image-set
+  - render-strategy-choice
+- slug: portals-render-outside-the-tree
+  title: Portals render outside the tree so overlays escape their parents
+  date: 2026-07-06
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - portals
+  - overlays
+  description: A portal renders a component's output somewhere else in the DOM while
+    keeping it in the component tree. It is how modals and dropdowns escape the overflow
+    and stacking traps of their parents without losing their props and state.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+- slug: prefetching-hides-latency
+  title: Prefetching hides latency by doing the work before it's asked for
+  date: 2026-07-11
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - prefetching
+  - ux
+  description: The fastest request is the one that already finished. Prefetching loads
+    the code or data for what the user is likely to do next, during idle time, so
+    the next click feels instant instead of waiting on the network.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - infinite-scroll-list
+  - render-strategy-choice
+- slug: presentational-and-container-components
+  title: 'Presentational and container components: the split that keeps testing sane'
+  date: 2026-07-28
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - architecture
+  - components
+  - testing
+  description: Split components by whether they render or whether they fetch and decide.
+    The presentational half takes props and stays dumb; the container half talks to
+    the outside. That one boundary is what makes both halves testable and reusable.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 6
+  related_practice:
+  - presentational-vs-container
+  - loading-button-atom
+  - form-field-molecule
+- slug: progressive-enhancement-still-matters
+  title: Progressive enhancement still matters, even in a JavaScript world
+  date: 2026-06-29
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - accessibility
+  - resilience
+  - html
+  description: Build on a foundation that works without JavaScript, then layer richness
+    on top. It sounds old-fashioned until a script fails to load, a network flakes,
+    or a crawler visits — and the baseline is what saves you.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - form-field-molecule
+  - responsive-image-set
+- slug: progressive-web-apps-and-service-workers
+  title: 'Progressive web apps: the service worker is the whole trick'
+  date: 2026-07-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - pwa
+  - offline
+  - caching
+  description: 'A PWA is a website that behaves like an installed app — offline, installable,
+    fast on repeat visits. Almost all of that comes from one piece: a service worker
+    sitting between your page and the network.'
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - offline-first-list
+  - cache-headers-basics
+- slug: prompt-to-component-workflow
+  title: 'Prompt to component: the quality is bounded by the boundary you hand over'
+  date: 2026-08-08
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - components
+  - workflow
+  - architecture
+  description: Asking a model for a component produces good code or a mess depending
+    almost entirely on how sharply you scoped the request. The skill is not prompting
+    tricks — it is drawing the box before you ask.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-atom-guardrail
+  - loading-button-atom
+  - form-field-molecule
+- slug: proxy-or-fix-cors
+  title: Proxy it or fix CORS? Two answers to the same cross-origin wall
+  date: 2026-08-15
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - cors
+  - proxy
+  - http
+  description: When your frontend cannot call an API because of a cross-origin error,
+    you have two real fixes — proxy the request through your own origin, or set CORS
+    headers on the API. Which one is right depends on who owns the API.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
+- slug: pure-functions-and-why-reducers-are-pure
+  title: Pure functions, and why a reducer has to be one
+  date: 2026-09-04
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - reducers
+  - functional
+  description: A reducer that reads the clock, mutates its input, or fires a request
+    is not a reducer — it is a bug. The purity rule is what makes state predictable,
+    testable, and time-travellable.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - counter-reducer
+  - combine-reducers
+  - memoized-selector
+- slug: reading-a-frontend-job-description
+  title: Reading a frontend job description for what it actually says
+  date: 2026-06-14
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - job-search
+  - interview
+  - hiring
+  description: A job description is a wish list, a signal about the team, and a hint
+    about the interview — if you read it critically. The required years and the twenty
+    listed technologies rarely mean what they literally say.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - design-search-experience
+  - design-micro-frontends
+- slug: real-virtual-shadow-dom
+  title: 'Real DOM, Virtual DOM, Shadow DOM: three different things with one word'
+  date: 2026-09-16
+  author: The Elegant team
+  category: terminology
+  tags:
+  - dom
+  - browser
+  - web-components
+  - rendering
+  description: They share three letters and nothing else. One is what the browser
+    renders, one is a diffing trick, and one is an encapsulation boundary — confusing
+    them is how DOM questions get failed.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - event-delegation
+  - counter-component
+  - theme-toggle
+- slug: reflow-and-repaint-are-not-the-same
+  title: Reflow and repaint are not the same, and the difference is your frame budget
+  date: 2026-09-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - rendering
+  - layout
+  description: Changing a color repaints. Changing a size reflows. Reflow is the expensive
+    one, and doing it inside a loop is how a smooth list turns into a janky one.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - infinite-scroll-list
+  - skeleton-list
+- slug: responsive-images-let-the-browser-choose
+  title: 'Responsive images: describe the options, let the browser choose'
+  date: 2026-08-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - images
+  - web-vitals
+  description: Shipping one large image to every device wastes data on phones and
+    looks soft on retina screens. srcset and sizes let you describe the options and
+    hand the choice to the browser, which knows the device better than you do.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - responsive-image-set
+  - cache-headers-basics
+- slug: reviewing-ai-diffs-adversarially
+  title: 'Review an AI diff adversarially: assume it works and looks for the catch'
+  date: 2026-08-07
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - review
+  - quality
+  - architecture
+  description: The question for an AI diff is never "does it run" — it usually does.
+    It is "what would make this wrong that the tests do not cover?" Reviewing AI code
+    well means reading it looking for the plausible-but-broken.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-a11y-gate
+  - harness-state-shape
+  - presentational-vs-container
+- slug: selectors-derive-they-dont-store
+  title: Selectors derive; they don't store
+  date: 2026-08-31
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - selectors
+  - memoization
+  - performance
+  description: A selector is a function from state to a derived value. Used well,
+    it is the seam that lets you reshape state without touching components — and memoized,
+    it keeps derived data cheap.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - memoized-selector
+  - selector-memoization
+  - normalize-entities
+- slug: semantic-html-is-the-cheapest-accessibility
+  title: Semantic HTML is the cheapest accessibility you will ever ship
+  date: 2026-09-14
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - html
+  - semantics
+  description: Before you reach for a single ARIA attribute, use the element that
+    already means what you want. A button is a button; a div pretending to be one
+    is a bug waiting to happen.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - form-field-molecule
+  - accessible-combobox
+  - loading-button-atom
+- slug: seo-for-single-page-apps
+  title: 'SEO for single-page apps: help the crawler see what the user sees'
+  date: 2026-07-15
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - seo
+  - rendering
+  - ssr
+  description: A client-rendered app ships an empty div and fills it with JavaScript.
+    Some crawlers run that JavaScript, many do not or do it late. If organic traffic
+    matters, you have to get real content into the HTML the crawler first sees.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - render-strategy-choice
+  - cache-headers-basics
+- slug: server-state-is-not-client-state
+  title: Server state is not client state, and treating them the same hurts
+  date: 2026-08-27
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - architecture
+  - caching
+  - async
+  description: The data you fetch from a server and the state your UI owns are different
+    animals with different rules. Cramming server data into your Redux store as if
+    you owned it is the source of most stale-data bugs.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - offline-first-list
+  - normalize-entities
+  - retry-with-backoff
+- slug: sessions-vs-tokens
+  title: 'Sessions vs tokens: where does the user''s identity actually live?'
+  date: 2026-08-13
+  author: The Elegant team
+  category: terminology
+  tags:
+  - server
+  - authentication
+  - security
+  - sessions
+  description: A session keeps the source of truth on the server and hands the browser
+    a key. A token hands the browser a signed claim and keeps nothing. That one difference
+    drives revocation, scaling, and where you must store the thing.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - session-and-tokens
+  - proxy-and-cors
+- slug: ship-small-diffs
+  title: 'Ship small diffs: the pull request nobody can review is nobody''s friend'
+  date: 2026-06-15
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - workflow
+  - review
+  - craft
+  description: A 40-line pull request gets a real review in minutes. A 2000-line one
+    gets a rubber stamp, because nobody can hold it in their head. Small diffs are
+    not a nicety — they are how bugs get caught and how you ship faster.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - harness-bundle-budget
+  - harness-link-checker
+- slug: skeleton-screens-vs-spinners
+  title: Skeleton screens beat spinners, and it is not close
+  date: 2026-07-23
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - ux
+  - performance
+  - loading
+  description: A spinner says "wait, something is happening somewhere." A skeleton
+    says "here is the shape of what is coming, in this exact spot." The second feels
+    faster and shifts less, and the reasons are worth knowing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - skeleton-list
+  - infinite-scroll-list
+- slug: ssg-builds-pages-ahead-of-time
+  title: 'Static site generation: render once, serve a million times'
+  date: 2026-08-20
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssg
+  - performance
+  - caching
+  description: Static generation renders your pages at build time, not per request,
+    so the server just hands out files. It is the fastest and cheapest option for
+    content that does not change per user — until the content changes often.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - render-strategy-choice
+  - cache-headers-basics
+- slug: ssr-renders-on-the-server
+  title: 'Server-side rendering: HTML first, JavaScript second'
+  date: 2026-08-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - ssr
+  - rendering
+  - performance
+  description: Server-side rendering sends real HTML on the first response instead
+    of an empty div waiting for JavaScript. That changes what the user sees first,
+    what a crawler indexes, and what your server has to do.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - render-strategy-choice
+  - design-localized-app
+  - cache-headers-basics
+- slug: state-machines-for-ui
+  title: State machines turn impossible UI states into unreachable ones
+  date: 2026-06-22
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - state
+  - patterns
+  - reliability
+  description: A pile of booleans can represent nonsense — loading and error true
+    at once. A state machine names the legal states and the transitions between them,
+    so the impossible combinations simply cannot occur.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - tabs-molecule
+  - toast-notifications
+  - offline-first-list
+- slug: surviving-frontend-in-the-age-of-ai
+  title: Surviving as a frontend engineer in the age of AI
+  date: 2026-09-18
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - career
+  - architecture
+  - guardrails
+  description: An AI can write the component. It cannot decide where state lives,
+    why the organism should not fetch, or whether the diff is safe to ship. That judgement
+    is the job now.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 6
+  related_practice:
+  - harness-atom-guardrail
+  - harness-skill-eval
+  - harness-a11y-gate
+- slug: test-behaviour-not-implementation
+  title: Test behaviour, not implementation, or your tests become the bug
+  date: 2026-06-19
+  author: The Elegant team
+  category: terminology
+  tags:
+  - testing
+  - quality
+  - refactoring
+  - frontend
+  description: A test that asserts on internal state breaks every time you refactor,
+    even when nothing user-facing changed. A test that asserts on behaviour survives
+    refactors and fails only when something real breaks. The distinction decides whether
+    your suite helps or hurts.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - deep-clone
+  - counter-reducer
+  - accessible-combobox
+- slug: the-accessibility-tree-is-what-screen-readers-read
+  title: The accessibility tree is what screen readers actually read
+  date: 2026-09-07
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - aria
+  - semantics
+  description: Screen readers do not read your DOM. They read a parallel structure
+    the browser builds from it — the accessibility tree — and knowing that explains
+    why a styled div announces nothing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - form-field-molecule
+- slug: the-app-shell-loads-instantly
+  title: 'The app shell: load the frame instantly, fill it after'
+  date: 2026-08-17
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - pwa
+  - caching
+  description: The app shell is the minimal HTML, CSS and JavaScript that renders
+    your app's frame — nav, layout, chrome — instantly from cache, so the user sees
+    structure while the content loads. It is the backbone of a fast, installable app.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - offline-first-list
+  - cache-headers-basics
+  - skeleton-list
+- slug: the-bff-pattern
+  title: 'The backend-for-frontend: an API shaped for the screen, not the database'
+  date: 2026-07-12
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - bff
+  - api
+  - architecture
+  description: A backend-for-frontend is a thin server layer that exists to serve
+    one frontend — aggregating calls, reshaping data, and holding secrets — so the
+    client gets exactly what the screen needs in one request.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
+- slug: the-box-model
+  title: 'The box model, and why box-sizing: border-box exists'
+  date: 2026-07-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - layout
+  - box-model
+  description: Every element is a box of content, padding, border, and margin. The
+    one setting that changes how width is measured — box-sizing — is why your 50%
+    columns overflow, and why every reset sets it to border-box.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - responsive-image-set
+- slug: the-container-line
+  title: 'The container line: draw it, and defend it with a check'
+  date: 2026-07-26
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - state
+  - ui
+  - guardrails
+  description: Somewhere in your tree is a line above which components may touch the
+    store and below which they may not. Naming that line — and enforcing it with a
+    check — is what keeps your UI layer portable and testable.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 6
+  related_practice:
+  - presentational-vs-container
+  - harness-state-shape
+- slug: the-cost-of-a-dependency
+  title: Every dependency is a loan, and the interest is paid in bytes and risk
+  date: 2026-06-25
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - performance
+  - dependencies
+  - bundling
+  description: Adding a package feels free — one install command. The real cost shows
+    up later in bundle size, security surface, maintenance, and the day it breaks.
+    Weigh it before you borrow, not after.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - harness-bundle-budget
+  - debounce-utility
+  - deep-clone
+- slug: the-cost-of-premature-abstraction
+  title: 'The cost of premature abstraction: wrong is more expensive than repeated'
+  date: 2026-06-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - abstraction
+  - maintainability
+  - craft
+  description: Pulling two similar bits of code into a shared abstraction feels responsible.
+    Do it too early, before you know how they will actually diverge, and you build
+    the wrong abstraction — which costs more than the duplication ever would.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 5
+  related_practice:
+  - presentational-vs-container
+  - combine-reducers
+- slug: the-critical-rendering-path
+  title: The critical rendering path is the story of your first paint
+  date: 2026-08-12
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - rendering
+  - web-vitals
+  description: Between the HTML arriving and the first pixel painting, the browser
+    runs a fixed sequence — and CSS and synchronous JavaScript can block it. Knowing
+    the path is how you make a page paint sooner.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - render-strategy-choice
+  - responsive-image-set
+- slug: the-event-loop-and-why-ui-freezes
+  title: The event loop, and why a busy function freezes the whole UI
+  date: 2026-07-01
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - javascript
+  - performance
+  - event-loop
+  description: JavaScript runs on one thread, so a function that runs too long blocks
+    everything — clicks, scrolls, rendering, all frozen until it returns. Understanding
+    the event loop is understanding why, and how to keep the thread free.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - debounce-utility
+  - retry-with-backoff
+- slug: the-harness-pattern
+  title: 'The harness pattern: make ''is it done'' a number, not an opinion'
+  date: 2026-08-01
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - harness
+  - quality
+  description: A harness is the set of checks that decide whether work is good enough,
+    run automatically. Build one and "is this done" stops being a meeting and becomes
+    an exit code — which is the only way autonomous or AI-heavy work stays honest.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 6
+  related_practice:
+  - harness-link-checker
+  - harness-bundle-budget
+  - harness-skill-eval
+- slug: the-portfolio-that-gets-interviews
+  title: The portfolio that gets interviews shows depth, not a wall of clones
+  date: 2026-06-18
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - portfolio
+  - interview
+  - projects
+  description: A dozen tutorial to-do apps say less than one project built to a real
+    standard — tested, accessible, deployed, and explained. Depth on a few things
+    beats breadth across many, because depth is what a reviewer cannot fake-detect.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - design-search-experience
+  - accessible-combobox
+  - data-table-sort
+- slug: the-request-success-fail-triple
+  title: The request/success/fail triple is the shape of every fetch
+  date: 2026-08-28
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - async
+  - patterns
+  - redux
+  description: Every asynchronous call has three outcomes worth modelling — it started,
+    it worked, it failed — and a single isLoading boolean cannot represent them. Model
+    the triple as a state machine and your spinners, errors, and race conditions all
+    fall into place.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 6
+  related_practice:
+  - action-creators
+  - retry-with-backoff
+  - normalize-entities
+- slug: the-request-waterfall
+  title: 'The request waterfall: when your fetches wait in line for no reason'
+  date: 2026-06-23
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - async
+  - data
+  description: A waterfall is a chain of requests that each wait for the previous
+    one when they did not have to. It is the quiet cause of slow pages — data that
+    could have loaded in parallel loading in sequence instead.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - retry-with-backoff
+  - normalize-entities
+- slug: the-single-responsibility-of-a-component
+  title: A component should do one job, and you should be able to name it
+  date: 2026-06-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - components
+  - architecture
+  - maintainability
+  description: If you cannot describe a component in one sentence without saying "and",
+    it is doing too much. The single-responsibility test is the cheapest way to know
+    when to split — and where.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 5
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
+- slug: the-store-is-one-source-of-truth
+  title: The store is one source of truth, or it is not a source of truth
+  date: 2026-09-01
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - store
+  - architecture
+  description: A single source of truth is not a slogan — it is a constraint. The
+    moment the same fact lives in two places, you own the job of keeping them in sync,
+    and you will lose.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - simple-store
+  - combine-reducers
+  - counter-reducer
+- slug: the-system-design-round-is-about-tradeoffs
+  title: The frontend system design round is about trade-offs, not diagrams
+  date: 2026-07-20
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - system-design
+  - architecture
+  - career
+  description: There is no right answer in a frontend system design round, and that
+    is the point. The interviewer is testing whether you can name a trade-off, take
+    a side, and defend it — not whether you can draw the "correct" boxes.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - design-search-experience
+  - design-micro-frontends
+  - design-localized-app
+- slug: the-take-home-is-a-different-game
+  title: The take-home is a different game from the live round
+  date: 2026-07-21
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - take-home
+  - quality
+  - career
+  description: A live coding round rewards thinking out loud under time pressure.
+    A take-home rewards the opposite — polish, structure, tests, and the judgement
+    to know when to stop. Treating one like the other is how strong candidates underperform.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - data-table-sort
+  - form-field-molecule
+  - accessible-combobox
+- slug: the-testing-pyramid-for-frontend
+  title: The testing pyramid, adjusted for the frontend
+  date: 2026-07-24
+  author: The Elegant team
+  category: architecture
+  tags:
+  - testing
+  - quality
+  - architecture
+  - frontend
+  description: The classic pyramid — many unit tests, some integration, few end-to-end
+    — needs a frontend twist. The most valuable tests here are the ones that render
+    a component and interact with it the way a user does. Test behaviour, not implementation.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - deep-clone
+  - accessible-combobox
+  - debounce-utility
+- slug: the-ui-coding-round
+  title: The UI coding round rewards the parts that don't show in a screenshot
+  date: 2026-07-19
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - ui
+  - accessibility
+  - components
+  description: Anyone can make a component look right in an interview. What separates
+    a pass is the invisible half — keyboard operation, focus, correct roles, coherent
+    state — done while the clock runs, not bolted on at the end.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+  - data-table-sort
+- slug: the-url-is-state-too
+  title: The URL is state too — and often the right place for it
+  date: 2026-08-22
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - routing
+  - url
+  - ux
+  description: Filters, tabs, search queries and pagination all belong in the URL
+    more often than in a store. If a user would want to bookmark, share, or reload
+    into a view, that view's state should live in the address bar.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - query-string-state
+  - design-search-experience
+- slug: throttling-scroll-and-resize
+  title: Scroll and resize fire constantly — throttle them or pay for it
+  date: 2026-06-28
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - events
+  - throttle
+  description: Scroll and resize can fire dozens of times a second, and doing real
+    work in their handlers is a reliable way to jank the page. Throttle them, or move
+    the work to the platform APIs built for exactly this.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - infinite-scroll-list
+  - debounce-utility
+- slug: thunks-and-sagas-handle-the-async
+  title: Thunks and sagas both handle async — they just disagree on how
+  date: 2026-08-29
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - async
+  - sagas
+  description: A thunk is a function you dispatch; a saga is a long-running process
+    that watches for actions. Pick by how complex your async is — most apps need thunks,
+    some genuinely need sagas.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - apply-middleware
+  - retry-with-backoff
+  - action-creators
+- slug: universal-frontend-architecture
+  title: 'The Universal Frontend Architecture: UI, Server, and State as three seams'
+  date: 2026-09-19
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - ssr
+  - state
+  - ui
+  - separation-of-concerns
+  description: One architecture that survives a framework swap because it separates
+    the three concerns every frontend has — rendering the UI, talking to the server,
+    and holding state — instead of tangling them.
+  cover: /assets/img/fe-segregation-all.png
+  reading_minutes: 6
+  related_practice:
+  - presentational-vs-container
+  - render-strategy-choice
+  - design-micro-frontends
+- slug: web-components-and-the-platform
+  title: Web components are the platform's answer to reusable UI
+  date: 2026-06-27
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - web-components
+  - platform
+  - shadow-dom
+  description: Custom elements, shadow DOM, and templates let you build framework-agnostic
+    components the browser understands natively. They will not replace your framework,
+    but they are the right tool for cross-framework, long-lived UI.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: what-frontend-interviews-measure
+  title: What frontend interviews actually measure
+  date: 2026-09-15
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - career
+  - ui
+  - state
+  - system-design
+  description: Frontend interviews are not quizzing you on trivia. Each round probes
+    a specific axis — API recall, UI construction, state modelling, and trade-off
+    reasoning — and knowing which is which is half the preparation.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 5
+  related_practice:
+  - accessible-combobox
+  - debounce-utility
+  - design-search-experience
+  - normalize-entities
+- slug: when-not-to-use-ai-on-the-frontend
+  title: When not to use AI on the frontend
+  date: 2026-08-02
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - judgement
+  - architecture
+  - workflow
+  description: Using AI well includes knowing when not to. There are tasks where a
+    model is slower, riskier, or actively misleading, and reaching for it there is
+    not sophistication — it is a mistake that costs you more than typing would have.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 5
+  related_practice:
+  - harness-state-shape
+  - presentational-vs-container
+- slug: when-you-dont-need-redux
+  title: When you don't need Redux
+  date: 2026-08-24
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - architecture
+  - react
+  description: Redux is a tool for a specific problem — a lot of client state, changed
+    from many places, that many parts of the app must read. If that is not your problem,
+    Redux is overhead you will resent.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - simple-store
+  - counter-component
+- slug: why-organisms-should-not-fetch
+  title: Why an organism should not fetch its own data
+  date: 2026-07-03
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - atomic-design
+  - architecture
+  - data
+  description: The moment a reusable organism fetches its own data, it stops being
+    reusable and becomes a feature bolted to one endpoint. Keeping the fetch above
+    it, in a container, is what keeps the UI layer portable and testable.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 6
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
+  - normalize-entities
+- slug: z-index-and-stacking-contexts
+  title: 'z-index: 9999 doesn''t work, and stacking contexts are why'
+  date: 2026-07-09
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - z-index
+  - layout
+  description: When your modal with z-index 9999 still hides behind the header, the
+    problem is not a bigger number — it is that z-index only competes within a stacking
+    context, and something created a new one you did not notice.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - tabs-molecule
+  - accessible-combobox

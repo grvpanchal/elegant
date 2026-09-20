@@ -1,0 +1,40 @@
+{%- comment -%}
+"Keep reading" — the other engagement lever GreatFrontend leans on. Surfaces up
+to three more posts in the same category (excluding this one), newest first,
+from the generated registry docs/_data/blog.yml. Falls back to the newest posts
+overall when the category is thin, so the block is never empty on a real bank.
+{%- endcomment -%}
+{%- assign pool = site.data.blog | where: "category", page.category | sort: "date" | reverse -%}
+{%- assign related = "" | split: "" -%}
+{%- for post in pool -%}
+  {%- unless post.slug == page.slug -%}
+    {%- assign related = related | push: post -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- if related.size < 3 -%}
+  {%- assign newest = site.data.blog | sort: "date" | reverse -%}
+  {%- for post in newest -%}
+    {%- unless post.slug == page.slug or related contains post -%}
+      {%- if related.size < 3 -%}{%- assign related = related | push: post -%}{%- endif -%}
+    {%- endunless -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- if related.size > 0 -%}
+<aside class="blog-related" data-blog-related>
+  <h2 class="blog-related__title">Keep reading</h2>
+  <ul class="blog-related__list">
+    {%- for post in related limit: 3 -%}
+    <li class="blog-related__card">
+      <a class="blog-related__link" href="{{ '/blog/' | append: post.slug | append: '.html' | relative_url }}">{{ post.title }}</a>
+      <span class="blog-related__meta">{{ post.category }} · {{ post.reading_minutes }} min</span>
+      <p class="blog-related__summary">{{ post.description }}</p>
+    </li>
+    {%- endfor -%}
+  </ul>
+  <p class="blog-related__community">
+    Prefer to talk it through? The architecture these posts describe is the same one the
+    <a href="{{ '/practice/' | relative_url }}">practice bank</a> and the
+    <a href="{{ '/skills' | relative_url }}">downloadable skills</a> implement.
+  </p>
+</aside>
+{%- endif -%}
