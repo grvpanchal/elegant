@@ -405,7 +405,7 @@
     form a hypothesis, test it, repeat. Guessing and changing things at random feels
     like debugging and mostly wastes time.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - event-emitter
   - deep-clone
@@ -589,7 +589,7 @@
     the consequences of code — how it ages, how it fails, how the next person changes
     it — and making decisions with the whole system in mind.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-atom-guardrail
   - presentational-vs-container
@@ -1011,7 +1011,7 @@
     about the interview — if you read it critically. The required years and the twenty
     listed technologies rarely mean what they literally say.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - design-search-experience
   - design-micro-frontends
@@ -1508,7 +1508,7 @@
     standard — tested, accessible, deployed, and explained. Depth on a few things
     beats breadth across many, because depth is what a reviewer cannot fake-detect.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - design-search-experience
   - accessible-combobox
@@ -1621,7 +1621,7 @@
     A take-home rewards the opposite — polish, structure, tests, and the judgement
     to know when to stop. Treating one like the other is how strong candidates underperform.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - data-table-sort
   - form-field-molecule

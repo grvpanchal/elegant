@@ -8,57 +8,80 @@ category: career
 tags: [career, portfolio, interview, projects]
 description: 'A dozen tutorial to-do apps say less than one project built to a real standard — tested, accessible, deployed, and explained. Depth on a few things beats breadth across many, because depth is what a reviewer cannot fake-detect.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [design-search-experience, accessible-combobox, data-table-sort]
 ---
 
-A frontend portfolio is meant to answer one question for the person reviewing it:
-would this person build something I would want to ship? A wall of tutorial clones —
-five to-do apps, three weather widgets — answers "can follow a tutorial," which is
-not the question. One project built to a real, professional standard answers it far
-better, because depth is the thing a reviewer can detect and a beginner cannot fake.
-Fewer projects, done to a higher bar, is the stronger portfolio.
+A portfolio of a dozen tutorial to-do apps says almost nothing, because a reviewer
+has seen a thousand of them and knows they were followed, not built. One project
+taken to a *real* standard — tested, accessible, deployed, and explained — says far
+more, because that standard is exactly what cannot be faked by following along. The
+hiring signal is **depth, not breadth**: not "how many things did you touch" but "how
+well did you finish one." A reviewer scanning portfolios is looking for evidence that
+you would meet the team's bar, and that evidence lives in the parts of a project that
+tutorials skip.
 
-## Depth beats breadth
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="pf2-t pf2-d" class="blog-figure__svg">
+  <title id="pf2-t">Many shallow clones signal little; one deep project signals the hiring bar</title>
+  <desc id="pf2-d">Left: many small identical project tiles, all shallow. Right: one larger project annotated with tested, accessible, deployed, and explained.</desc>
+  <text x="150" y="24" text-anchor="middle" fill="#c2571a" font-size="11" font-weight="700">breadth</text>
+  <g fill="#fff4ec" stroke="#fe854c" stroke-width="1.5"><rect x="40" y="45" width="55" height="35" rx="4"/><rect x="105" y="45" width="55" height="35" rx="4"/><rect x="170" y="45" width="55" height="35" rx="4"/><rect x="40" y="90" width="55" height="35" rx="4"/><rect x="105" y="90" width="55" height="35" rx="4"/><rect x="170" y="90" width="55" height="35" rx="4"/></g>
+  <text x="132" y="150" text-anchor="middle" fill="#819198" font-size="9">six clones, all shallow</text>
+  <line x1="320" y1="18" x2="320" y2="175" stroke="#dce6f0"/>
+  <text x="480" y="24" text-anchor="middle" fill="#157878" font-size="11" font-weight="700">depth</text>
+  <rect x="390" y="45" width="180" height="80" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="480" y="72" text-anchor="middle" fill="#157878" font-size="10">one real project</text>
+  <g fill="#157878" font-size="8" text-anchor="middle"><text x="480" y="92">✓ tested  ✓ accessible</text><text x="480" y="106">✓ deployed  ✓ explained</text></g>
+  <text x="480" y="150" text-anchor="middle" fill="#819198" font-size="9">shows the bar you build to</text>
+</svg>
+<figcaption>Six clones read as "followed a tutorial six times." One project finished to a real standard reads as "builds to a bar" — which is the thing being hired.</figcaption>
+</figure>
 
-Ten shallow projects demonstrate that you can start things; they do not demonstrate
-that you can finish them well, which is the actual job. One or two projects taken all
-the way — real features, edge cases handled, tested, accessible, deployed, and
-documented — demonstrate the standard you hold, and standard is what separates a
-hireable frontend engineer from someone who has done tutorials. A reviewer skimming
-portfolios can tell depth from breadth in seconds, and depth is what makes them stop
-and read. Prune the clones; polish the two things you are proud of.
+## The four things that signal depth
 
-## Show the parts tutorials skip
+A project reads as senior when it carries the parts tutorials omit. **Tests** show
+you protect behaviour; **accessibility** shows you build for everyone; a **live
+deployment** shows you can ship; and a **README that explains the decisions** shows
+you can reason. A reviewer checks for these fast:
 
-The way a project signals depth is by handling exactly what tutorials omit. Loading,
-empty, and error states, not just the happy path. Accessibility — keyboard operation,
-correct roles, managed focus — done properly. Responsive layout that works on a
-phone. A few meaningful tests. A thoughtful README explaining the decisions and
-trade-offs. These are the marks of someone who builds for real, and their presence in
-a portfolio project is disproportionately convincing because most portfolios lack
-them. The project does not need to be novel; it needs to be *finished to a
-professional standard*, which almost no beginner portfolio is.
+```text
+Repo has a tests/ dir with real assertions        → protects behaviour
+Tab through the deployed app — keyboard works      → builds accessibly
+There's a live URL, not just a repo                → can actually ship
+README explains WHY, not just "npm install"        → can reason about trade-offs
+```
 
-## Explain your decisions
+Any one of these is more signal than a sixth clone; all four on one project is a
+strong yes.
 
-A portfolio project is also a communication artifact. A README that says "I chose to
-render this on the server because the page needs SEO; I normalized the data because
-the same entities appear in three views; I skipped X because it was out of scope"
-shows the reasoning a reviewer actually cares about — that you make deliberate
-engineering decisions, not just arrangements that happen to work. The code shows what
-you did; the writing shows why, and the why is what distinguishes an engineer from a
-copier. Deploy it too, on a real URL, because a project a reviewer can click into and
-try beats a screenshot every time.
+## The README is where the reasoning lives
 
-## Solve a problem you actually have
+Code shows *what* you did; the README is your only channel for *why*, and "why" is
+what a reviewer wants from a senior candidate. Write it as an engineer explaining
+decisions to a colleague, not as install instructions:
 
-The most compelling portfolio project is one that solves a real problem you or
-someone you know actually has, because it comes with genuine requirements, real edge
-cases, and a story about trade-offs you can tell in the interview. A tool you built
-because you needed it reads completely differently from a clone built to fill a
-portfolio — it has the texture of real work. Build one thing you care about, to the
-standard you would want at a job, and explain it well. The search-experience,
-combobox, and data-table exercises are exactly the kind of substantial, edge-case-rich
-components that make a portfolio piece look like real engineering rather than a
-tutorial.
+```markdown
+## Decisions
+- SSR for the first page (SEO matters for a public catalogue), CSR after hydration.
+- Server data in a query cache, not Redux — it needs caching/refetch, not ownership.
+- Trade-off: chose optimistic updates for the cart; rollback tested in cart.test.js.
+
+## Known limits
+- No pagination yet; the list is capped at 100. Next step: cursor-based paging.
+```
+
+Those few lines demonstrate trade-off reasoning, honesty about limits, and knowledge
+of the very concepts an interview probes — before anyone opens the code.
+
+## Depth over breadth, and one flagship
+
+The winning shape is a small portfolio with one *flagship* project built end to end,
+plus perhaps one or two smaller focused pieces (a genuinely accessible combobox, a
+data table with real sorting) that each demonstrate one skill deeply. Cut the
+tutorial clones — they dilute the signal rather than adding to it. And make the
+flagship something you can *talk about* in the interview, because "walk me through a
+project" is where a deep one pays off and a shallow one collapses. Depth is legible
+and unfakeable; breadth is neither. The design-search-experience, accessible-combobox,
+and data-table-sort exercises are exactly the kind of finished-to-a-standard pieces a
+portfolio is stronger for, each one small enough to polish fully and rich enough to
+discuss.

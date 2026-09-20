@@ -8,57 +8,75 @@ category: career
 tags: [career, seniority, architecture, growth]
 description: 'The jump to senior is not writing fancier code. It is caring about the consequences of code — how it ages, how it fails, how the next person changes it — and making decisions with the whole system in mind.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-atom-guardrail, presentational-vs-container, harness-state-shape]
 ---
 
-People assume the path from junior to senior frontend is about writing more
-sophisticated code — cleverer abstractions, deeper framework knowledge, fancier
-techniques. It is not. The shift is from caring about whether the code *works* to
-caring about its *consequences*: how it ages, how it fails, how the next person
-changes it, and how it fits the system as a whole. Senior is a change in what you
-optimize for, not a change in syntax.
+The jump from junior to senior is not about writing cleverer code. Plenty of juniors
+write clever code; some of it is the problem. The shift is a change in what you
+optimise for: from "does this work?" to "what are the *consequences* of this?" — how
+it ages, how it fails, how the next person will change it, what it does to the system
+around it. A junior makes the current task work. A senior makes the current task work
+*and* leaves the codebase better able to absorb the next ten tasks. The code is often
+simpler, not fancier, because simplicity is a consequence-level decision.
 
-## Juniors optimize the task; seniors optimize the system
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="js-t js-d" class="blog-figure__svg">
+  <title id="js-t">Junior optimises the task; senior optimises the task plus its consequences</title>
+  <desc id="js-d">A junior's scope is the current ticket. A senior's scope widens to include how the change ages, fails, and is maintained by the next person.</desc>
+  <circle cx="150" cy="95" r="45" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="150" y="92" text-anchor="middle" fill="#157878" font-size="10" font-weight="700">junior</text><text x="150" y="108" text-anchor="middle" fill="#819198" font-size="9">"does it work?"</text>
+  <circle cx="440" cy="95" r="80" fill="none" stroke="#fe854c" stroke-width="2.5" stroke-dasharray="5 4"/><circle cx="440" cy="95" r="40" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="440" y="92" text-anchor="middle" fill="#c2571a" font-size="10" font-weight="700">senior</text><text x="440" y="108" text-anchor="middle" fill="#819198" font-size="9">"and then what?"</text>
+  <g fill="#c2571a" font-size="8" text-anchor="middle"><text x="440" y="28">ages well?</text><text x="360" y="150">fails how?</text><text x="525" y="150">next dev?</text></g>
+  <path d="M215 95 L320 95" stroke="#819198" stroke-width="2" marker-end="url(#js-a)"/><text x="267" y="87" text-anchor="middle" fill="#819198" font-size="9">widen scope</text>
+  <defs><marker id="js-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>Seniority is a wider blast radius of concern: the same task, but decided with how it ages, fails, and gets maintained held in view.</figcaption>
+</figure>
 
-A junior developer, given a task, makes it work. A senior developer, given the same
-task, makes it work *and* asks how it affects everything around it: does this
-duplicate logic that exists elsewhere, does it belong in this layer, will it make
-the next change harder, how does it fail. This is the same blind spot AI has — the
-model optimizes the local task and erodes the global structure — and part of
-becoming senior is developing exactly the global awareness the model lacks. The
-senior move is often to write *less* code by reusing an abstraction, or to push back
-on a task because the right fix is elsewhere.
+## Junior thinks about now; senior thinks about next
 
-## Seniors design for failure and change
+The clearest tell is how each handles a shortcut. A junior reaches into the store
+from a component because it works and the ticket closes. A senior sees the
+consequence — a component now welded to global state, un-reusable, un-testable — and
+pays a small cost now to avoid a large one later:
 
-A junior builds the happy path; a senior builds for the day it breaks and the day
-someone else edits it. That means handling the error and empty states, considering
-the concurrent case, and leaving code that reads clearly for the next person — who
-is often themselves in six months. It also means thinking about how a piece of code
-will *change*: putting the thing that varies behind a boundary, so the future edit
-is one file and not twenty. Designing for change is most of what "good architecture"
-means in practice, and it is invisible to someone still focused on making today's
-feature run.
+```jsx
+// junior: works, closes the ticket, quietly couples UI to the store
+function Price() { const p = useSelector(s => s.cart.total); return <b>${p}</b>; }
 
-## Seniors make judgement executable
+// senior: same feature, but the consequence (reuse, testability) is protected
+function Price({ amount }) { return <b>${amount}</b>; }   // a container supplies `amount`
+```
 
-The highest-leverage senior habit is turning judgement into something that scales
-past their own attention. A junior who knows "organisms shouldn't fetch" enforces it
-when they happen to review. A senior encodes it as a check that fails the build,
-so the rule holds on every diff, including the ones they never see and the ones an
-AI writes. Converting hard-won instincts into guardrails is how a senior's judgement
-outlasts and out-scales their personal bandwidth — it is the difference between
-being a good reviewer and building a system that does not need you to review
-everything.
+Neither is harder to write. The difference is that the second was chosen with "what
+happens to this in six months" in mind.
 
-## Seniority is measured in others, not in yourself
+## Make decisions the next person can live with
 
-The final shift is outward: a senior is judged less by what they personally produce
-and more by how much better everyone around them produces. That is mentoring, yes,
-but mostly it is building the paths of least resistance — the guardrails, the
-conventions, the reusable abstractions, the clear structure — that make the whole
-team's easy path also the right one. When the codebase makes the correct thing the
-convenient thing, everyone writes better code, including the newest hire and the
-AI. The atom-guardrail, presentational-vs-container, and state-shape exercises are
-exactly where you practice turning a senior instinct into an executable standard.
+Consequence-thinking shows up most in the boring choices: naming, boundaries, and
+what you *don't* build. A senior resists premature abstraction (a "flexible" system
+for a case that has appeared once), keeps boundaries crisp so changes stay local, and
+writes the test that pins the behaviour so the next person can refactor without fear:
+
+```js
+// the senior move: a test that lets the NEXT person change the code safely
+test("cart total ignores removed items", () => {
+  expect(cartTotal([{ price: 10 }, { price: 5, removed: true }])).toBe(10);
+});
+// now anyone can rewrite cartTotal and know instantly if they broke it
+```
+
+## Encode your judgement so it outlasts you
+
+The final step of seniority is scaling your judgement beyond your own keyboard. A
+mid-level engineer makes good decisions; a senior makes the good decision the
+*default* for the team — by turning a repeated review comment into a lint rule,
+writing the guardrail that keeps the architecture intact, and documenting the "why"
+so the reasoning survives. That is the same move that matters in an AI-heavy
+workflow: your value is not the code you type but the constraints and checks you
+leave behind, because those hold long after and at a scale review cannot. The path
+is learnable — start asking "and then what?" of every change, protect the boundaries,
+pin behaviour with tests, and encode the recurring judgement. The
+presentational-vs-container and harness-atom-guardrail exercises are small reps in
+exactly this: the first is a consequence-level refactor, the second is turning
+judgement into an executable default.

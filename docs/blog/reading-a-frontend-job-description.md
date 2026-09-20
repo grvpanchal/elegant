@@ -8,56 +8,77 @@ category: career
 tags: [career, job-search, interview, hiring]
 description: 'A job description is a wish list, a signal about the team, and a hint about the interview — if you read it critically. The required years and the twenty listed technologies rarely mean what they literally say.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [design-search-experience, design-micro-frontends]
 ---
 
-A frontend job description is not a specification you must match exactly to apply — it
-is a wish list written by a committee, a signal about how the team works, and a hint
-about what the interview will test. Reading it literally ("I don't have all twenty
-technologies, so I won't apply") both costs you opportunities and misses the more
-useful information the posting actually contains. Learning to read one critically is a
-real job-search skill.
+A job description reads like a specification, but it is really three documents in a
+trench coat: a *wish list* (rarely all required), a *signal* about the team's shape
+and maturity, and a *hint* about what the interview will test. Taken literally — "5+
+years, must know React, Vue, Angular, GraphQL, Kubernetes, and three CSS frameworks"
+— it filters out great candidates who would sail through the interview and demoralises
+everyone else. Read critically, the same posting tells you whether to apply, what the
+team is actually like, and what to prepare. Learning to read it that way is a
+job-search skill in itself.
+
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="jd-t jd-d" class="blog-figure__svg">
+  <title id="jd-t">A job description decoded into wish list, team signal, and interview hint</title>
+  <desc id="jd-d">The literal text on the left maps to three readings: which requirements are truly required, what the team's stack and maturity are, and what the interview will likely test.</desc>
+  <rect x="30" y="60" width="150" height="60" rx="8" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="105" y="85" text-anchor="middle" fill="#155799" font-size="10">the posting</text><text x="105" y="102" text-anchor="middle" fill="#819198" font-size="9">literal text</text>
+  <g stroke="#819198" stroke-width="2" marker-end="url(#jd-a)"><path d="M180 80 L250 55"/><path d="M180 90 L250 90"/><path d="M180 100 L250 125"/></g>
+  <g font-size="9" text-anchor="middle">
+    <rect x="250" y="38" width="180" height="30" rx="5" fill="#e8f0f8" stroke="#157878"/><text x="340" y="57" fill="#157878">wish list — what's truly required</text>
+    <rect x="250" y="75" width="180" height="30" rx="5" fill="#fff4ec" stroke="#fe854c"/><text x="340" y="94" fill="#c2571a">team signal — stack + maturity</text>
+    <rect x="250" y="112" width="180" height="30" rx="5" fill="#e8f0f8" stroke="#157878"/><text x="340" y="131" fill="#157878">interview hint — what they'll test</text>
+  </g>
+  <defs><marker id="jd-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>One posting, three readings. The literal list is the least useful; the signal about the team and the hint about the interview are what you act on.</figcaption>
+</figure>
 
 ## The requirements are a wish list, not a gate
 
-The "required" list is almost always the team's ideal candidate, not the minimum bar,
-and it is common to hire someone who matches sixty or seventy percent of it. The
-"5+ years of React" usually means "we need someone who can be productive quickly, not
-a beginner," and a strong two-year engineer often clears that intent. The twenty
-listed technologies are frequently everything anyone on the team has ever touched,
-not a checklist you must satisfy. Treating the list as a hard gate filters *you* out
-before the team gets to; apply if you match the core and can speak credibly to the
-rest, and let them decide.
+The "years of experience" and the technology laundry list are aspirational. Teams
+list the stack they use and the stack they *wish* they used, and hiring managers
+routinely interview candidates who miss half the bullets. The practical rule: if you
+meet the *core* (the language and framework the role clearly centres on) and can
+speak to the rest, apply. Mentally sort the list:
 
-## Separate the core from the noise
+```text
+Must-have (the role is about this):   React, TypeScript, "build accessible UIs"
+Nice-to-have (listed, not gating):    GraphQL, Storybook, testing library
+Wish list / boilerplate (ignore):     "Kubernetes", "5+ years", every buzzword
+```
 
-The skill is distinguishing what the role actually needs from the noise. A frontend
-role that lists React, testing, and accessibility three times and mentions "a backend
-language" once is a frontend role — do not be scared off by the backend line. A role
-that emphasizes "design systems" and "component libraries" is telling you the work and
-the interview will center on reusable UI. One that stresses "performance" and "scale"
-is signaling the system-design round will probe exactly that. The repeated, emphasized
-themes are the real job; the long tail of listed tools is mostly noise.
+Filtering yourself out over a nice-to-have is the most common self-inflicted job-
+search wound.
 
-## It tells you how to prepare
+## The stack list is a signal about the team
 
-Read as a preparation guide, the description is gold. The technologies and themes it
-emphasizes are what the interview will most likely test, so a posting heavy on "UI
-implementation" and "accessibility" tells you to sharpen your component-building and
-keyboard/focus skills, while one heavy on "architecture" and "scale" points you at
-system-design practice. You can tailor your preparation to the specific role instead
-of preparing generically, which is a meaningful edge. The description is the interview's
-table of contents if you read it that way.
+Read the technologies as evidence about the team, not just requirements. A long
+list of unrelated tools can mean a small team wearing many hats (broad, scrappy); a
+tight, coherent stack suggests a mature, focused codebase; buzzword bingo
+("blockchain, AI, web3, microservices") can signal a team chasing trends. The *verbs*
+matter too — "build and own features end to end" implies autonomy and breadth;
+"implement designs pixel-perfectly" implies a design-led, execution-focused role.
+Neither is bad, but they are different jobs, and the description is telling you which.
 
-## It also reveals the team
+## The description is a study guide
 
-Finally, a job description leaks culture. Language about "ownership," "fast-paced," and
-"wearing many hats" describes a small, scrappy team where you will touch everything.
-Language about "collaboration," "design partnership," and "mentorship" describes a more
-structured environment. Vague, buzzword-dense postings with no specifics about the
-actual work can be a yellow flag about clarity of thinking on the team. You are
-evaluating them as much as they are evaluating you, and the posting is your first data
-point — read it for fit, not just qualifications. The search-experience and
-micro-frontends design exercises are the kind of work a "scale" and "architecture"
-posting is hinting its interview will cover.
+Finally, the posting hints at the interview. Heavy emphasis on accessibility means
+expect an a11y-aware component round; "performance at scale" means expect questions
+about rendering, bundle size, and Core Web Vitals; "design systems" means expect
+component-API and theming discussion. Prepare against the emphasis:
+
+```text
+JD says "accessibility is core"      → drill the accessible-combobox, know the a11y tree
+JD says "large-scale performance"    → know code-splitting, LCP, memoization
+JD says "own the design system"      → know tokens, composition, component APIs
+```
+
+Read this way, a job description stops being a wall you might not clear and becomes
+three useful signals: whether to apply (meet the core, ignore the wish list), what
+you are walking into (the team's shape), and how to prepare (the interview's likely
+emphasis). The design-search-experience and design-micro-frontends exercises are
+good rehearsals for the "scale" and "systems" emphases those postings hint at.
