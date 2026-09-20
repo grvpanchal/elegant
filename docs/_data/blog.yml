@@ -40,6 +40,25 @@
   - loading-button-atom
   - form-field-molecule
   - tabs-molecule
+- slug: normalize-your-api-responses
+  title: 'Normalize your API responses: the refactor that pays for itself'
+  date: 2026-09-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - state
+  - store
+  - api
+  - refactor
+  description: A nested API payload is a tax you pay on every read and every update.
+    Flattening it into entity tables keyed by id is the one refactor that makes the
+    rest of your state code simpler.
+  cover: /assets/img/diagrams/state-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - normalize-entities
+  - deep-clone
+  - memoized-selector
 - slug: real-virtual-shadow-dom
   title: 'Real DOM, Virtual DOM, Shadow DOM: three different things with one word'
   date: 2026-09-16
