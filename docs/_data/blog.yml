@@ -204,7 +204,7 @@
   description: Atomic design is not a folder-naming fad — it is a shared vocabulary
     for arguing about where a component belongs before you write it.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - atom-boundaries
   - loading-button-atom
@@ -279,7 +279,7 @@
     the fix is usually not another prop — it is letting the caller compose the pieces.
     Configuration scales to a point; composition scales past it.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - tabs-molecule
   - form-field-molecule
@@ -900,7 +900,7 @@
     The presentational half takes props and stays dumb; the container half talks to
     the outside. That one boundary is what makes both halves testable and reusable.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - presentational-vs-container
   - loading-button-atom
@@ -1398,7 +1398,7 @@
     store and below which they may not. Naming that line — and enforcing it with a
     check — is what keeps your UI layer portable and testable.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - presentational-vs-container
   - harness-state-shape
@@ -1828,7 +1828,7 @@
     reusable and becomes a feature bolted to one endpoint. Keeping the fetch above
     it, in a container, is what keeps the UI layer portable and testable.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 6
   related_practice:
   - atom-boundaries
   - presentational-vs-container

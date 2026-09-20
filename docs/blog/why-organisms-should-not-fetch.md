@@ -8,55 +8,90 @@ category: architecture
 tags: [ui, atomic-design, architecture, data]
 description: 'The moment a reusable organism fetches its own data, it stops being reusable and becomes a feature bolted to one endpoint. Keeping the fetch above it, in a container, is what keeps the UI layer portable and testable.'
 cover: /assets/img/atomic-design.png
-reading_minutes: 4
+reading_minutes: 6
 related_practice: [atom-boundaries, presentational-vs-container, normalize-entities]
 ---
 
-An organism — a product card, a comment thread, a header with navigation — is meant
-to be a reusable section of UI. The single fastest way to destroy that reusability
-is to let it fetch its own data. The moment `ProductGrid` calls `useProducts()`
-inside itself, it stops being a grid you can drop anywhere and becomes a feature
-welded to one endpoint, one data shape, and one loading strategy. Keeping the fetch
-out is what keeps the organism reusable.
+An organism — a product grid, a comment thread, a sign-up form — feels big enough
+to "own" its data, and the tempting move is to let it fetch on mount. Resist it.
+The moment a reusable organism fetches its own data, it stops being reusable: it
+is now welded to one endpoint, one data shape, one loading policy, and one set of
+assumptions about *when* to load. Keep the fetch **above** the organism, in a
+container, and the organism stays a portable, prop-driven piece you can drop
+anywhere, render in Storybook, and test without a network. This is the single
+discipline that most determines whether your UI layer is a library or a pile of
+one-off features.
 
-## Fetching couples the organism to one source
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 210" role="img" aria-labelledby="of-t of-d" class="blog-figure__svg">
+  <title id="of-t">An organism that fetches is bound to one endpoint; one that takes props is reusable</title>
+  <desc id="of-d">Left: an organism with a fetch inside it, chained to a single endpoint, not reusable. Right: a container fetches and passes items as a prop to the same organism, which now renders in many contexts.</desc>
+  <text x="150" y="26" text-anchor="middle" fill="#c2571a" font-size="11" font-weight="700">fetches itself</text>
+  <rect x="70" y="45" width="160" height="55" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="150" y="68" text-anchor="middle" fill="#c2571a" font-size="10">organism + fetch</text><text x="150" y="86" text-anchor="middle" fill="#819198" font-size="9">welded to /api/products</text>
+  <path d="M150 100 L150 135" stroke="#c2571a" stroke-width="2" marker-end="url(#of-a)"/>
+  <rect x="95" y="137" width="110" height="26" rx="5" fill="#f3f6fa" stroke="#819198"/><text x="150" y="155" text-anchor="middle" fill="#819198" font-size="9">one endpoint only</text>
+  <line x1="320" y1="26" x2="320" y2="195" stroke="#dce6f0"/>
+  <text x="480" y="26" text-anchor="middle" fill="#157878" font-size="11" font-weight="700">takes props</text>
+  <rect x="400" y="40" width="160" height="34" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="480" y="62" text-anchor="middle" fill="#157878" font-size="10">container fetches</text>
+  <path d="M480 74 L480 100" stroke="#819198" stroke-width="2" marker-end="url(#of-a)"/><text x="520" y="92" fill="#819198" font-size="9">items={...}</text>
+  <rect x="400" y="102" width="160" height="34" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="480" y="124" text-anchor="middle" fill="#c2571a" font-size="10">organism (pure)</text>
+  <g stroke="#819198" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#of-a)"><path d="M400 119 L355 105"/><path d="M400 130 L355 150"/></g>
+  <text x="360" y="170" text-anchor="middle" fill="#819198" font-size="9">reused in app, marketing, Storybook</text>
+  <defs><marker id="of-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>The fetch is what pins an organism to a single context. Move it up to a container and the same organism serves many.</figcaption>
+</figure>
 
-A `ProductGrid` that receives `products` as a prop can render products from
-anywhere — a search result, a category page, a "related items" widget, a Storybook
-fixture, a test. A `ProductGrid` that fetches `/api/products` inside itself can only
-ever show *those* products, loaded *that* way. You have taken a reusable shape and
-nailed it to one data source. The next screen that needs a grid of products but from
-a different endpoint cannot reuse it, so someone copies it, and now you have two
-grids to maintain that will drift apart.
+## The welded version cannot be reused
 
-## It also destroys testability
+Here is the organism that fetches. It works — once — for exactly the endpoint and
+shape it was written against, and it drags a loading state and an error state into
+a component whose job was to render a grid:
 
-A presentational organism is tested by passing props and asserting output — no
-network, no mocks, fast and deterministic. An organism that fetches can only be
-tested by standing up a mock server or intercepting requests, which is slower,
-flakier, and tests the fetch plumbing instead of the rendering you actually care
-about. Every organism that fetches is a component you can no longer test simply, and
-a Storybook story you can no longer write without faking a network. The fetch drags
-the whole testing story down with it.
+```jsx
+// BOUND: this ProductGrid can only ever show /api/products
+function ProductGrid() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch("/api/products").then((r) => r.json()).then(setProducts);
+  }, []);
+  return <div className="grid">{products.map((p) => <Card key={p.id} {...p} />)}</div>;
+}
+```
 
-## Put the fetch in a container above it
+Now try to use it for search results, or a category page, or a "related items"
+strip. You cannot — you would have to change the fetch, and there is only one.
 
-The fix is the container line: a container component above the organism does the
-fetching (or reads the store), then renders the organism with the data as props and
-passes callbacks for its events. The organism stays pure — data in, events out — and
-the container owns the coupling to the data source. Now the same organism serves
-every screen, each with its own container supplying different data, and you test the
-organism with props and the container's logic separately. One fetch site per screen,
-not one per reusable component.
+## The prop-driven version serves everyone
 
-## The rule generalizes down the tree
+Hoist the fetch into a container and make the organism take `products` as a prop.
+The organism no longer knows or cares where the data came from:
 
-This is not special to organisms — it is the general rule that *rendering* and
-*fetching* are different responsibilities that belong in different components. Atoms
-and molecules certainly do not fetch; organisms do not either; only containers (and
-route-level components) reach out to data. When you feel the urge to fetch inside a
-presentational component "just to make this screen work," that is the signal to
-introduce a container instead. The atom-boundaries exercise drills where a component's
-responsibility stops, and presentational-vs-container is the boundary this whole rule
-rests on; normalize-entities is the kind of data a container should shape before
-handing it down.
+```jsx
+// PORTABLE: renders whatever list it is handed
+function ProductGrid({ products }) {
+  return <div className="grid">{products.map((p) => <Card key={p.id} {...p} />)}</div>;
+}
+
+// containers supply different data to the SAME organism
+const AllProducts = () => <ProductGrid products={useProducts()} />;
+const SearchResults = ({ q }) => <ProductGrid products={useSearch(q)} />;
+const RelatedItems = ({ id }) => <ProductGrid products={useRelated(id)} />;
+```
+
+One organism, three features. And in Storybook you render `<ProductGrid
+products={fixture} />` with no network at all.
+
+## The rule, and where it bends
+
+The rule is crisp: **data enters at the container line, above the organism, never
+inside it.** Fetching, `useSelector`, dispatching — all of it belongs at or above
+that line, so everything below stays pure and portable. The one honest nuance is
+that "container" is a role, not necessarily a separate file: a page component that
+already has the data can compose the organism directly. What must not happen is
+the organism reaching out to the world on its own, because that is the exact moment
+it stops being a reusable piece and becomes a feature. This is also the boundary an
+AI erodes fastest, since fetching-in-place is locally the shortest answer — which
+is why it is worth a check, not just a convention. The presentational-vs-container
+and atom-boundaries exercises are built around performing this hoist and defending
+the line.
