@@ -224,7 +224,7 @@
     page. Code splitting breaks it into pieces loaded on demand, so the first screen
     ships only what it needs and the rest arrives when it is used.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-bundle-budget
   - render-strategy-choice
@@ -717,7 +717,7 @@
     when the inputs repeat. Simple — except the whole thing depends on comparing inputs
     correctly, which is where most memoization quietly does nothing.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - memoized-selector
   - selector-memoization
@@ -846,7 +846,7 @@
     or headline — finishes rendering. It is the Core Web Vital users feel most, and
     fixing it is mostly about the critical path and one image.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - responsive-image-set
   - render-strategy-choice
@@ -1047,7 +1047,7 @@
   description: Changing a color repaints. Changing a size reflows. Reflow is the expensive
     one, and doing it inside a loop is how a smooth list turns into a janky one.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - infinite-scroll-list
   - skeleton-list
@@ -1453,7 +1453,7 @@
     runs a fixed sequence — and CSS and synchronous JavaScript can block it. Knowing
     the path is how you make a page paint sooner.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - render-strategy-choice
   - responsive-image-set

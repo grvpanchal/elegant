@@ -8,53 +8,92 @@ category: architecture
 tags: [server, performance, bundling, web-vitals]
 description: 'One big bundle makes the user download your entire app to see the login page. Code splitting breaks it into pieces loaded on demand, so the first screen ships only what it needs and the rest arrives when it is used.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-bundle-budget, render-strategy-choice]
 ---
 
-The default output of a bundler is one big JavaScript file, and the default
-consequence is that a user visiting your login page downloads the code for your
-entire app — the dashboard, the settings, the admin panel — before they can type
-their password. Code splitting fixes that by breaking the bundle into pieces that
-load on demand, so the first screen ships only the code it actually needs.
+A single bundle has one fatal property: to see the login page, the user
+downloads the admin dashboard, the charting library, the rich-text editor, and
+every route they will never visit. The browser must parse and compile all of it
+before the app is interactive, so the cost is not only bytes on the wire — it is
+main-thread time. **Code splitting** breaks that one file into pieces the app
+loads on demand: the first screen ships only its own code, and the rest arrives
+when the user actually navigates to it.
 
-## Split by route first
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="cs-t cs-d" class="blog-figure__svg">
+  <title id="cs-t">One monolithic bundle versus a small entry chunk plus lazy chunks</title>
+  <desc id="cs-d">On the left a single large bundle the browser must download before interactive. On the right a small entry chunk loads first, and route chunks for dashboard, editor and settings load on demand.</desc>
+  <text x="150" y="30" text-anchor="middle" fill="#c2571a" font-size="12" font-weight="700">one bundle</text>
+  <rect x="70" y="45" width="160" height="130" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/>
+  <text x="150" y="105" text-anchor="middle" fill="#c2571a" font-size="12">app.js</text>
+  <text x="150" y="125" text-anchor="middle" fill="#819198" font-size="10">everything, up front</text>
+  <line x1="320" y1="35" x2="320" y2="195" stroke="#dce6f0"/>
+  <text x="480" y="30" text-anchor="middle" fill="#157878" font-size="12" font-weight="700">split bundles</text>
+  <rect x="380" y="45" width="90" height="44" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="425" y="72" text-anchor="middle" fill="#157878" font-size="11">entry</text>
+  <g fill="#f3f6fa" stroke="#155799" stroke-width="2" font-size="10" text-anchor="middle">
+    <rect x="380" y="105" width="80" height="34" rx="5"/><text x="420" y="126" fill="#155799">dashboard</text>
+    <rect x="470" y="105" width="70" height="34" rx="5"/><text x="505" y="126" fill="#155799">editor</text>
+    <rect x="425" y="150" width="80" height="34" rx="5"/><text x="465" y="171" fill="#155799">settings</text>
+  </g>
+  <g stroke="#819198" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#cs-a)">
+    <path d="M425 89 L420 103"/><path d="M440 89 L505 103"/><path d="M440 89 L465 148"/>
+  </g>
+  <text x="465" y="205" text-anchor="middle" fill="#819198" font-size="10">route chunks load on demand</text>
+  <defs><marker id="cs-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>The entry chunk boots the app; each route's code is a separate chunk fetched the moment it is needed, not before.</figcaption>
+</figure>
 
-The highest-value split is by route. The login page does not need the dashboard's
-code, and the dashboard does not need the rarely-visited billing screen's. Lazy-
-loading each route as a separate chunk means the initial download is just the
-shell plus the first route, and each subsequent route's code arrives when the user
-navigates to it. On a large app this can cut the initial bundle by an order of
-magnitude, which shows up directly as faster time-to-interactive. Route-level
-splitting is where you should start, because it maps cleanly to what a user is
-likely to need next.
+## The dynamic import is the split point
 
-## Split heavy, rarely-used pieces too
+Bundlers split at one syntactic marker: the dynamic `import()`. Where a static
+`import` pulls code into the current chunk, `import()` returns a promise and tells
+the bundler "put this in its own file and fetch it at runtime." In a framework
+this is wrapped in a lazy-loading helper so a whole route becomes a chunk:
 
-Beyond routes, split anything large that most users do not immediately need: a
-rich text editor, a charting library, a date-picker, a PDF viewer, a map. If a
-feature pulls in a heavy dependency and only some users open it, load that
-dependency when they do, not on first paint. A dynamic import inside the event
-handler that opens the feature is enough — the chunk downloads the first time the
-feature is used and is cached after. This keeps the "everyone pays" bundle small
-and pushes the "only some people pay" code behind the interaction that needs it.
+```jsx
+import { lazy, Suspense } from "react";
 
-## The cost: waterfalls and spinners
+// Dashboard and its deps become a SEPARATE chunk, fetched on first render
+const Dashboard = lazy(() => import("./routes/Dashboard.jsx"));
 
-Splitting is not free. Each split point is a network request that happens *when*
-the code is needed, which can introduce a loading pause mid-interaction — click a
-route, wait for its chunk. Over-split and you trade one big download for a
-waterfall of small ones, each with latency. The mitigations are prefetching
-(fetch the likely-next chunk during idle time, so it is ready before the click)
-and sensible granularity (split at routes and heavy features, not at every
-component). A loading state for the chunk keeps the pause from feeling broken.
+function App() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Dashboard />           {/* the chunk downloads when this mounts */}
+    </Suspense>
+  );
+}
+```
 
-## Keeping it honest with a budget
+The `Suspense` fallback is not optional polish — it is what the user sees during
+the network round-trip for the chunk, so a lazy boundary without a good fallback
+just trades a slow start for a blank flash.
 
-Code splitting is the technique; a bundle budget is what stops the initial chunk
-from creeping back up as the app grows. Set a size ceiling for the entry bundle
-and fail the build when a change blows past it — that turns "the bundle got huge
-again" from a slow drift nobody noticed into a specific, blocking signal on the
-pull request that caused it. The bundle-budget exercise is exactly that guardrail,
-and the render-strategy exercise is where splitting interacts with how much
-JavaScript you needed to ship in the first place.
+## Prefetch so the split is invisible
+
+Splitting adds a delay at the moment of navigation: the chunk has to arrive
+before the route can render. You hide that delay by fetching the chunk *before*
+the click, during idle time or on hover — the code is ready by the time the user
+commits:
+
+```js
+// warm the dashboard chunk when the link is hovered, before the click
+link.addEventListener("mouseenter", () => {
+  import("./routes/Dashboard.jsx");   // browser caches it; navigation is instant
+}, { once: true });
+```
+
+## Split by route first, then by weight
+
+Not every `import()` earns its round-trip. The wins come from two places: split
+by **route**, because a user on the login page genuinely does not need the
+dashboard; and split out **heavy, rarely-used** dependencies — a charting library,
+a markdown editor, a date picker — that would otherwise inflate the entry chunk
+for everyone. Over-splitting has its own cost: dozens of tiny chunks mean dozens
+of requests and worse compression, so there is a floor below which a chunk is not
+worth its own file. The discipline is to set a bundle budget and let it fail the
+build when the entry chunk crosses it, which is exactly what the bundle-budget
+exercise makes you do — a number that turns "ship less JavaScript" from a wish
+into a check.

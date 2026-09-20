@@ -8,54 +8,85 @@ category: architecture
 tags: [server, performance, rendering, web-vitals]
 description: 'Between the HTML arriving and the first pixel painting, the browser runs a fixed sequence — and CSS and synchronous JavaScript can block it. Knowing the path is how you make a page paint sooner.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [render-strategy-choice, responsive-image-set]
 ---
 
-There is a fixed sequence between "the HTML arrived" and "the user sees
-something," and everything you can do to make a page feel fast is really about
-shortening or unblocking that sequence. It is called the critical rendering path,
-and the two things that most often block it — CSS and synchronous JavaScript — are
-under your control.
+Between the moment the HTML arrives and the moment the first pixel appears, the
+browser runs a fixed sequence of steps: parse the HTML into a DOM, parse the CSS
+into a CSSOM, combine them into a render tree, lay it out, and paint. That
+sequence is the **critical rendering path**, and the reason it is worth knowing
+is that two things you control — CSS and synchronous JavaScript — can *stall* it.
+A page paints sooner not by doing the steps faster but by removing what blocks
+them, and to remove a blocker you have to know where it sits on the path.
 
-## The sequence
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="crp-t crp-d" class="blog-figure__svg">
+  <title id="crp-t">The critical rendering path from HTML to first paint</title>
+  <desc id="crp-d">HTML becomes the DOM and CSS becomes the CSSOM; they combine into the render tree, which is laid out and painted. CSS blocks render and a synchronous script blocks parsing. A dot travels the path to the paint.</desc>
+  <g font-size="11" text-anchor="middle">
+    <rect x="20" y="40" width="90" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="65" y="64" fill="#155799">DOM</text>
+    <rect x="20" y="110" width="90" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="65" y="134" fill="#155799">CSSOM</text>
+    <rect x="200" y="75" width="110" height="40" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="255" y="99" fill="#157878">render tree</text>
+    <rect x="380" y="75" width="90" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="425" y="99" fill="#155799">layout</text>
+    <rect x="530" y="75" width="90" height="40" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="575" y="99" fill="#c2571a" font-weight="700">paint</text>
+  </g>
+  <g stroke="#819198" stroke-width="2" fill="none" marker-end="url(#crp-a)">
+    <path d="M110 60 L195 82"/><path d="M110 130 L195 108"/><path d="M310 95 L375 95"/><path d="M470 95 L525 95"/>
+  </g>
+  <text x="65" y="180" text-anchor="middle" fill="#c2571a" font-size="11">CSS blocks render</text>
+  <text x="255" y="150" text-anchor="middle" fill="#819198" font-size="10">a sync &lt;script&gt; blocks DOM parsing</text>
+  <defs><marker id="crp-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+  <circle r="6" fill="#fe854c"><animateMotion dur="3.5s" repeatCount="indefinite" path="M65 60 L255 95 L425 95 L575 95"/></circle>
+</svg>
+<figcaption>The render tree needs both the DOM and the CSSOM, so CSS blocks the first paint; a synchronous script blocks the DOM it might rewrite.</figcaption>
+</figure>
 
-The browser parses HTML into the DOM. In parallel it parses CSS into the CSSOM.
-It combines them into the render tree (only visible nodes), computes layout
-(geometry), and finally paints. The first paint cannot happen until the render
-tree exists, and the render tree needs both the DOM and the CSSOM. So anything
-that delays the DOM or the CSSOM delays the first pixel — which is why *where* you
-put your CSS and scripts changes how fast the page appears, independent of how
-fast your server is.
+## CSS is render-blocking by design
 
-## CSS is render-blocking by default
+The render tree needs the CSSOM, and the CSSOM is not ready until the browser
+has downloaded and parsed **every** stylesheet it has seen. So a single large
+`<link>` in the `<head>` holds the first paint hostage — the browser will not
+show a half-styled page. The fix is to ship the styles the first screen needs
+inline and defer the rest, or to mark a non-critical stylesheet as not blocking:
 
-The browser will not paint until it has the CSS, because painting with incomplete
-styles would flash unstyled content. So a big stylesheet, or one loaded late,
-holds up the first paint for the whole page. The fix is to get the *critical* CSS
-— the styles needed for above-the-fold content — to the browser as early and as
-small as possible, inlining it in the document head when you can, and loading the
-rest asynchronously. A megabyte of CSS in one blocking file is a first-paint
-tax you pay on every visit.
+```html
+<!-- critical styles inline: no round-trip before first paint -->
+<style>/* just what the above-the-fold layout needs */</style>
 
-## JavaScript can block the parser
+<!-- the rest loads without blocking render, then applies -->
+<link rel="stylesheet" href="/full.css" media="print" onload="this.media='all'">
+```
 
-A plain `<script>` tag blocks HTML parsing while it downloads and executes,
-because the script might modify the DOM as the parser is building it. Put a
-blocking script in the head and you have stalled the DOM, and therefore the render
-tree, and therefore the paint. The fix is `defer` (download in parallel, run
-after the DOM is ready, in order) or `async` (download in parallel, run whenever
-it arrives) for scripts that do not need to run mid-parse. Modern module scripts
-defer by default. The rule: no synchronous script should sit between the user and
-the first paint unless it genuinely must.
+## A synchronous script blocks parsing
 
-## Making it paint sooner
+When the parser hits a plain `<script src>`, it *stops* — it must fetch and run
+that script before continuing, because the script might call
+`document.write` and change the DOM it is building. Put that script in the
+`<head>` and you have paused DOM construction before the body even exists. The
+two attributes that fix this tell the browser the script does not need to block:
 
-The playbook falls out of the path: inline critical CSS and defer the rest; add
-`defer`/`async` to scripts so they stop blocking the parser; preload the fonts and
-hero image the first screen needs so they are not discovered late; and keep the
-above-the-fold content light. Each of these removes something from the blocking
-sequence, and the payoff shows up directly in Largest Contentful Paint. The
-render-strategy exercise decides how the HTML gets built in the first place, and
-the responsive-image exercise handles the single asset that most often dominates
-LCP — the hero image.
+```html
+<!-- defer: fetch in parallel, run in order AFTER the DOM is parsed -->
+<script src="/app.js" defer></script>
+
+<!-- async: fetch in parallel, run as soon as it lands (order not guaranteed) -->
+<script src="/analytics.js" async></script>
+```
+
+Use `defer` for your application code (it needs the DOM and it needs to run in
+order); use `async` for independent scripts like analytics that touch nothing
+else. The one thing you almost never want is a bare, synchronous script in the
+`<head>`.
+
+## The path is the mental model for every "why is it slow?"
+
+Most first-paint problems reduce to one of these two blockers plus a third: a
+render-tree element that has to *wait* for a resource, like a web font or the LCP
+image. Once you see the page as this pipeline, the tactics fall out — inline
+critical CSS, defer scripts, preload the hero image, subset the font — because
+each one removes a specific stall from a specific step. The render-strategy
+exercise makes you choose where a page should render given its path, which is the
+same reasoning applied one level up. Optimising a first paint is not folklore; it
+is reading this diagram and asking, at each arrow, "what is the browser waiting
+for here, and can I stop making it wait?"
