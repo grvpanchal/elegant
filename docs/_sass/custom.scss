@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   max-width: 64rem;
   width: 100%;
   border-bottom: 1px solid rgba($color: #000, $alpha: 0.5);
@@ -42,6 +43,51 @@
                   margin 0.35s ease;
     }
   }
+
+  // The hamburger. Hidden on wide screens, where the menu is a row.
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    margin-right: 0.5rem;
+    padding: 0 10px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #000;
+
+    &__bar {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    &[aria-expanded="true"] {
+      .nav-toggle__bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-toggle__bar:nth-child(2) { opacity: 0; }
+      .nav-toggle__bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+  }
+
+  .site-menu {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   .navlist {
     max-width: 100%;
     display: flex;
@@ -86,6 +132,9 @@
         display: block;
       }
     }
+    .nav-toggle {
+      color: $header-heading-color;
+    }
     .navlist > li > a {
       color: darken($header-heading-color, 5%);
       &:hover {
@@ -93,49 +142,59 @@
       }
     }
   }
-}
-.page-header {
-  .flex {
-    padding-top: 5em;
-    display: flex;
-    margin: 0 auto;
-    width: 830px;
-    padding-bottom: 2rem;
 
-    @include medium {
-      // flex-direction: column;
-      width: 100%;
-      padding: 3rem 1rem;
-      .title,
-      #container {
-        font-size: 1.75rem;
-      }
+  // Phone and small tablet: the brand and the hamburger share the bar; the
+  // menu drops below it as a full-width column and is closed until the button
+  // opens it. The cutoff is wider than the theme's small breakpoint because
+  // eight links wrap into a second row anywhere under about 48em.
+  @media screen and (max-width: 48em) {
+    .brand-name {
+      min-height: 56px;
     }
-
-    @include small {
+    .nav-toggle {
+      display: flex;
+    }
+    .site-menu {
+      display: none;
+      flex: 0 0 100%;
       flex-direction: column;
-      width: 100%;
-      padding: 2rem 1rem;
-      .title,
-      #container {
-        font-size: 1.5rem;
+      align-items: stretch;
+      padding: 0.25rem 0 0.75rem;
+      border-top: 1px solid rgba($color: #000, $alpha: 0.15);
+    }
+    &.is-open .site-menu {
+      display: flex;
+    }
+    .navlist {
+      flex-direction: column;
+      > li {
+        margin-right: 0;
+        > a {
+          display: block;
+          padding: 0.75rem 1rem;
+        }
       }
     }
+    .account-widget {
+      margin: 0.5rem 1rem 0;
+      justify-content: flex-start;
+    }
+    &.dark .site-menu {
+      border-top-color: rgba($color: $header-heading-color, $alpha: 0.3);
+    }
   }
-  .title {
-    color: white;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 2.5rem;
-  }
+}
+// The typewriter line under the hero headline. main.js types each phrase
+// into #container and toggles .type-clear to wipe it.
+.landing-hero__type {
   #container {
     color: white;
     overflow: hidden;
-    white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 40px;
-    border-right: 0.15em solid white;
+    white-space: nowrap;
     display: inline-block;
+    vertical-align: bottom;
+    max-width: 100%;
+    border-right: 0.15em solid white;
     animation: blink-caret 0.75s step-end infinite;
   }
 
@@ -158,6 +217,17 @@
 .code-tabs {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100%;
+  // A flex item's min-width is its content's width unless told otherwise, so
+  // a long code line used to push the tab panel — and the whole page — wider
+  // than a phone. The pre scrolls sideways instead.
+  > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  pre {
+    overflow-x: auto;
+  }
   p {
     flex: 0 1 auto;
     padding: 0.5rem 1rem;

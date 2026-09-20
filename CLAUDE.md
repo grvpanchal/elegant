@@ -59,7 +59,7 @@ To run a single test file, use the template's native test runner directly:
 ## The capability guardrail (`harness/`)
 
 `harness/capabilities.yml` is the executable definition of what the training
-site under `docs/` must be able to do — 88 capabilities benchmarked against
+site under `docs/` must be able to do — 87 capabilities benchmarked against
 greatfrontend.com (question formats, an in-browser workspace with tests, worked
 solutions, study plans, playbooks, progress tracking) plus one that is ours:
 every unit of practice is also an Agent Skill, and `harness`-format exercises
@@ -161,7 +161,9 @@ being a place things go to be forgotten.
 built and left. The workspace items `theming` and `shortcuts` were built by
 one-task `bza` runs (a `prefers-color-scheme: dark` block; a shared `run()`
 that the Run button and Ctrl/Cmd+Enter both call, with a visible `<kbd>` hint),
-each verified by its own scenario; the shortcuts cell also dropped the Run
+each verified by its own scenario — `theming` has since been retired at the
+owner's request (the site is light-only: no dark block, no capability, no
+scenario), which is the other direction a capability can leave a group; the shortcuts cell also dropped the Run
 button's `disabled` attribute — a real regression caught and restored before
 commit, which one-task runs make a one-file review rather than a needle in a
 multi-task diff. `bank.curated_lists` (now in `question_bank`, required) was

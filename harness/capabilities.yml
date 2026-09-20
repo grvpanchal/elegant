@@ -809,18 +809,12 @@ checks:
 
   # Parity gaps found by auditing greatfrontend.com's advertised features
   # against ours. It calls its workspace "customizable: resize, syntax
-  # highlighting, theming, keyboard shortcuts" — the first two are built, these
-  # are the rest of that sentence — and ships curated named lists (GFE 75,
-  # Blind 75) that are not the same thing as our time-boxed study plans.
-  - id: workspace.theming
-    scope: cumulative
-    requires: [workspace.editor_affordances]
-    owns: ["docs/_sass/**", "docs/assets/css/**", "docs/_includes/code-playground.html"]
-    group: workspace
-    weight: 2
-    required: true
-    threshold: 1.0
-    why: "The site must follow prefers-color-scheme in both directions, workspace included. A learner practising at night gets a white rectangle, and that is where they stop."
+  # highlighting, theming, keyboard shortcuts" — resize and highlighting are
+  # built, shortcuts is the rest of that sentence — and ships curated named
+  # lists (GFE 75, Blind 75) that are not the same thing as our time-boxed
+  # study plans. Theming (a prefers-color-scheme dark block) was built here and
+  # then retired by the site owner: the site is light-only by decision, so it
+  # is no longer a capability the guardrail asks for.
   - id: workspace.shortcuts
     scope: cumulative
     requires: [workspace.editor_affordances]
