@@ -1,7 +1,7 @@
 ---
 title: "What frontend interviews actually measure"
-layout: post
 slug: what-frontend-interviews-measure
+layout: post
 date: 2026-09-15
 author: The Elegant team
 category: interview
@@ -12,64 +12,75 @@ reading_minutes: 5
 related_practice: [accessible-combobox, debounce-utility, design-search-experience, normalize-entities]
 ---
 
-Candidates who struggle with frontend interviews often prepare for the wrong
-thing — grinding algorithm puzzles for a loop that never asks one, or memorising
-API surface for a round that cares about structure. The loop is legible once you
-see that each round measures a distinct axis. Prepare per axis and the whole
-thing stops feeling like a lottery.
+A frontend interview can feel like a random quiz, but it is not. Each round is
+designed to probe a specific axis of competence, and the questions are just vehicles
+for measuring it. Knowing which axis a round is testing is half the battle, because
+it tells you what the interviewer is actually listening for — and lets you supply
+that signal on purpose instead of hoping your code speaks for itself. The four axes
+recur across companies: can you recall and wield the platform's APIs, can you build
+a correct interactive component, can you model state cleanly, and can you reason
+about trade-offs at the system level.
 
-## The coding round: can you build correct behaviour from scratch?
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="wm-t wm-d" class="blog-figure__svg">
+  <title id="wm-t">The four axes an interview measures and the signal each one wants</title>
+  <desc id="wm-d">Four axes — API recall, UI construction, state modelling, trade-off reasoning — each paired with what the interviewer is listening for.</desc>
+  <g font-size="9" text-anchor="middle">
+    <rect x="20" y="50" width="145" height="90" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="92" y="44" fill="#157878" font-weight="700">API recall</text><text x="92" y="82" fill="#155799">closures, events,</text><text x="92" y="96" fill="#155799">promises</text><text x="92" y="116" fill="#819198">"do you know the platform"</text>
+    <rect x="180" y="50" width="145" height="90" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="252" y="44" fill="#c2571a" font-weight="700">UI construction</text><text x="252" y="82" fill="#155799">build a widget,</text><text x="252" y="96" fill="#155799">keyboard + a11y</text><text x="252" y="116" fill="#819198">"can you ship correct UI"</text>
+    <rect x="340" y="50" width="145" height="90" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="412" y="44" fill="#157878" font-weight="700">state modelling</text><text x="412" y="82" fill="#155799">shape, transitions,</text><text x="412" y="96" fill="#155799">no impossible states</text><text x="412" y="116" fill="#819198">"can you tame complexity"</text>
+    <rect x="500" y="50" width="120" height="90" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="560" y="44" fill="#157878" font-weight="700">trade-offs</text><text x="560" y="82" fill="#155799">CSR vs SSR,</text><text x="560" y="96" fill="#155799">cache vs fresh</text><text x="560" y="116" fill="#819198">"can you decide"</text>
+  </g>
+</svg>
+<figcaption>Each round targets one axis and listens for one kind of signal. Name the axis and you know what to make loud.</figcaption>
+</figure>
 
-This is the utility round — a debounce, an event emitter, a deep clone, a
-reducer. It looks like trivia, but the interviewer is watching for something
-specific: do you handle the edge that the naive version misses? A debounce that
-ignores the trailing call, an emitter that leaks listeners, a clone that chokes
-on cycles. The signal is not "did it work on the happy path" but "did you see the
-case that breaks it." Say the edge cases out loud before you code; that narration
-is most of the score.
+## Axis one and two: recall and construction
 
-## The UI coding round: can you build an accessible, stateful component?
+The **API recall** round hands you a small implementable problem and watches whether
+you know the language and platform well enough to build without a reference — and
+whether you find the edge cases:
 
-Here you build something real in the browser — a combobox, a sortable table, an
-infinite list. Two things separate a pass from a fail. First, **accessibility as
-you go**, not bolted on: the right roles, keyboard operation, focus management. A
-combobox you can only drive with a mouse is not finished. Second, **state kept
-where it belongs** — local UI state in the component, shared state lifted, no
-tangle. Interviewers notice when a component's state model is coherent because
-they have seen so many that are not.
+```js
+// they're measuring: do you reach for the right primitive, and do you see the edges?
+function once(fn) {
+  let called = false, result;
+  return (...args) => {
+    if (!called) { called = true; result = fn(...args); }  // the edge: memoise the result
+    return result;                                          // subsequent calls return it
+  };
+}
+```
 
-## The system design round: can you reason about trade-offs?
+The **UI construction** round measures whether you can build a *correct* interactive
+component — and "correct" secretly includes keyboard operation, focus, and ARIA, not
+just the pixels. Supply that signal by building the invisible half out loud.
 
-No code here — the round is about judgement. Design a search-as-you-type, a
-localized app, a set of micro-frontends. There is no single right answer, and
-saying "it depends" is fine *only* if you then say what it depends on. Name the
-axis — latency versus freshness, bundle size versus flexibility, server render
-versus client — pick a side, and justify it. The failure mode is listing options
-without ever committing; the pass is a defended decision.
+## Axis three: state modelling
 
-### A note on data shape
+The **state modelling** axis is where senior signal concentrates. The interviewer
+watches how you shape state — whether you avoid impossible combinations, derive
+instead of duplicate, and keep the shape minimal. Reaching for a status enum over a
+pile of booleans is exactly the signal they want:
 
-System design rounds frequently hinge on how you model data. Normalising a nested
-API response so the UI can index entities by id, rather than walking a tree on
-every render, is the kind of move that signals you have built something real. It
-comes up disguised as a dozen different prompts.
+```js
+// weak signal: four booleans, most combinations invalid
+// strong signal: one status the impossible states can't be expressed in
+const state = { status: "idle", data: null, error: null };  // idle|loading|success|error
+```
 
-## The behavioural round: can you work with people?
+Modelling state well under time pressure is hard to fake, which is why this axis
+carries so much weight.
 
-Underrated by engineers, weighted heavily by companies. This round asks whether
-you can describe a real conflict, a real failure, and what you did about it,
-without either blaming everyone or taking blame for physics. Prepare two or three
-concrete stories with specifics — a number, a decision, an outcome — because the
-vague version reads as invented.
+## Axis four: trade-off reasoning, and using the map
 
-## How to prepare, per axis
-
-Map your practice to the axes rather than to a pile of random questions. Drill a
-few utilities until edge-case narration is automatic. Build two or three
-accessible components end to end, keyboard included. Talk through a couple of
-system designs out loud, forcing yourself to commit to a side each time. Write
-your behavioural stories down.
-
-The interviewers are not trying to trick you. Each round is a different question
-about whether you can do the job. Answer the question the round is actually
-asking, and the loop becomes a set of solvable problems instead of an ordeal.
+The **trade-off** axis (usually the system-design round) has no right answer by
+design; it measures whether you can name a tension, pick a side, and defend it —
+CSR versus SSR, cache versus freshness, normalise versus embed. The practical payoff
+of knowing the four axes is that you stop treating every round the same. In the
+recall round, narrate edge cases; in the construction round, make accessibility
+audible; in the modelling round, justify your state shape; in the design round, talk
+trade-offs, not boxes. You are being scored on a specific axis each time, so supply
+that axis's signal deliberately. The normalize-entities and accessible-combobox
+exercises drill the modelling and construction axes respectively, and
+design-search-experience is a rehearsal for the trade-off round.

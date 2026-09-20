@@ -608,7 +608,7 @@
     loop is legible: prepare per round — utilities, UI components, system design,
     behavioural — and drill the specific muscle each one tests.'
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - accessible-combobox
   - debounce-utility
@@ -771,7 +771,7 @@
     not just your code. Silence while you type — even to a correct answer — leaves
     most of the available signal unspoken. Talk.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - debounce-utility
   - event-emitter
@@ -1602,7 +1602,7 @@
     is the point. The interviewer is testing whether you can name a trade-off, take
     a side, and defend it — not whether you can draw the "correct" boxes.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - design-search-experience
   - design-micro-frontends
@@ -1659,7 +1659,7 @@
     a pass is the invisible half — keyboard operation, focus, correct roles, coherent
     state — done while the clock runs, not bolted on at the end.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - accessible-combobox
   - tabs-molecule

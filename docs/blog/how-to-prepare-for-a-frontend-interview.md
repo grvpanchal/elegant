@@ -8,55 +8,80 @@ category: career
 tags: [interview, career, preparation, practice]
 description: 'Most candidates prepare by grinding random problems and hoping. The loop is legible: prepare per round — utilities, UI components, system design, behavioural — and drill the specific muscle each one tests.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [accessible-combobox, debounce-utility, design-search-experience]
 ---
 
-The wrong way to prepare for a frontend interview is to grind a random pile of
-problems and hope the overlap is enough. The loop is more legible than that: it is
-a small number of distinct rounds, each testing a specific muscle, and you prepare
-far more efficiently by training per round than by grinding indiscriminately.
+Most people prepare for a frontend interview by grinding random problems and hoping
+the overlap is enough. It rarely is, because a frontend loop is not one skill — it
+is a small set of distinct rounds, each testing a different muscle. Prepare against
+the *structure* of the loop rather than a pile of problems, and the work becomes
+finite and legible: figure out which rounds you will face, and drill the specific
+thing each one measures. That turns "study everything" into a short, targeted list,
+which is the difference between preparation that fits in two weeks and preparation
+that never feels done.
 
-## Map the rounds first
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="pi-t pi-d" class="blog-figure__svg">
+  <title id="pi-t">The four rounds of a frontend loop and the muscle each drills</title>
+  <desc id="pi-d">Four boxes — JS utilities, UI component, system design, behavioural — each labelled with the skill it tests and how to practise it.</desc>
+  <g font-size="9" text-anchor="middle">
+    <rect x="20" y="55" width="140" height="80" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="90" y="48" fill="#157878" font-weight="700">JS utility</text><text x="90" y="85" fill="#155799">debounce, curry</text><text x="90" y="102" fill="#819198">recall + edge cases</text>
+    <rect x="175" y="55" width="140" height="80" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="245" y="48" fill="#c2571a" font-weight="700">UI component</text><text x="245" y="85" fill="#155799">combobox, tabs</text><text x="245" y="102" fill="#819198">build + a11y</text>
+    <rect x="330" y="55" width="140" height="80" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="400" y="48" fill="#157878" font-weight="700">system design</text><text x="400" y="85" fill="#155799">a feed, a search</text><text x="400" y="102" fill="#819198">trade-offs</text>
+    <rect x="485" y="55" width="135" height="80" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="552" y="48" fill="#157878" font-weight="700">behavioural</text><text x="552" y="85" fill="#155799">conflict, impact</text><text x="552" y="102" fill="#819198">stories (STAR)</text>
+  </g>
+  <text x="320" y="165" text-anchor="middle" fill="#819198" font-size="9">prepare per round — each drills a different muscle</text>
+</svg>
+<figcaption>Four rounds, four muscles. Preparing against this structure — not a random problem pile — is what makes the work finite.</figcaption>
+</figure>
 
-Before practicing anything, find out the actual loop for the companies you are
-targeting — most publish or reliably leak it. A typical frontend loop has a
-JavaScript/utility coding round, a UI component-building round, a system design
-round, and a behavioural round; some add a DSA round or a take-home. Each tests
-something different, so "practice for the interview" is really four different
-preparations. Knowing the shape stops you from over-indexing on algorithms for a
-loop that mostly builds UI, which is the most common misallocation.
+## Map your loop, then drill per round
 
-## Drill utilities until narration is automatic
+Before grinding, find out the loop's shape — recruiters will usually tell you. Then
+assign practice per round rather than in general. For the **utility round**, drill
+the classic implementable primitives until they are muscle memory, edge cases
+included:
 
-For the coding round, build a stock of the classic utilities from scratch — a
-debounce, a throttle, an event emitter, a deep clone, a promise pool, a simple
-store. The goal is not memorization; it is that the edge cases become automatic.
-When you can write a debounce and, without thinking, say "I'll handle the trailing
-call and add cancellation," you have the round's real signal — because the
-interviewer is scoring whether you *see* the edges, not whether the happy path
-compiles. Practice saying the edges out loud as you code; that narration is most of
-the score.
+```js
+// the kind of thing the utility round wants — write it, then handle the edges
+function debounce(fn, wait) {
+  let t;
+  const debounced = (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
+  debounced.cancel = () => clearTimeout(t);   // the edge case that scores: cancellation
+  return debounced;
+}
+```
 
-## Build a few components end to end
+For the **component round**, practise building an accessible widget end to end —
+not just the visible part but the keyboard and focus behaviour, because that is
+where these rounds are won.
 
-For the UI round, build two or three components fully accessible and stateful — a
-combobox, a set of tabs, a sortable table, a modal. Fully means keyboard-operable,
-correct roles and names, managed focus — not just visually done. This is where most
-candidates are weakest, because tutorials stop at "it looks right," and it is where
-you can most differentiate by getting the invisible parts (the accessibility tree,
-the focus management) correct. Build them until the accessibility is muscle memory,
-not an afterthought you bolt on when reminded.
+## Practise output under a clock, not just input
 
-## Rehearse design and behaviour out loud
+The biggest preparation mistake is passive input — reading solutions and nodding —
+when the interview tests *output* under time pressure. Simulate it: set a timer,
+build the thing from an empty file, and only then compare to a reference. A rough
+schedule that respects the round structure:
 
-The system design and behavioural rounds are not coding, so practicing them by
-writing code is a mistake — you practice them by *talking*. For design, take a
-prompt (a search-as-you-type, a localized app, a set of micro-frontends), and
-narrate a solution that names the trade-offs and commits to a side, out loud,
-timed. For behavioural, write down two or three concrete stories — a conflict, a
-failure, a hard decision — with specifics, and rehearse telling them. Both rounds
-reward fluency you can only build by speaking, not by reading. Space this practice
-over weeks, drill the rounds you are weakest at, and the interview stops being a
-lottery and becomes a set of solvable problems. The combobox, debounce, and
-search-experience exercises are exactly the per-round practice this describes.
+```text
+Week 1  utilities: debounce/throttle, curry, deepClone, EventEmitter, promise pool
+Week 2  components: combobox, tabs, modal, data table — build each timed, a11y included
+Week 3  system design: 3 features (feed, search, chat) — practise the trade-off talk
+Ongoing behavioural: 6 STAR stories written out, one per common theme
+```
+
+The point is coverage of *rounds*, not volume of *problems*.
+
+## Don't neglect the two rounds people skip
+
+Two rounds get under-prepared because they feel un-drillable, and both are
+learnable. **System design** has no right answer, so candidates freeze — but the
+score is your reasoning, so practise *narrating trade-offs* (CSR vs SSR here, and
+why) rather than memorising an architecture. **Behavioural** gets waved away as
+"just talking," but a rambling answer to "tell me about a conflict" sinks strong
+engineers; write six concrete stories in STAR form ahead of time. Prepare against
+the four rounds, drill output under a clock, and cover the two everyone skips, and
+you have a plan that ends — rather than an ocean you keep bailing. The
+debounce-utility and accessible-combobox exercises are the highest-yield reps for
+the first two rounds, and design-search-experience is a full system-design rehearsal.

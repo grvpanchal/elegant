@@ -1,62 +1,95 @@
 ---
 title: "In the coding round, your narration is most of the score"
-layout: post
 slug: narrate-your-thinking-in-the-coding-round
+layout: post
 date: 2026-07-18
 author: The Elegant team
 category: interview
 tags: [interview, communication, coding, career]
 description: 'The interviewer cannot read your mind, and they are scoring your thinking, not just your code. Silence while you type — even to a correct answer — leaves most of the available signal unspoken. Talk.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [debounce-utility, event-emitter, deep-clone]
 ---
 
-The most common way strong engineers underperform in a live coding round is
-silence. They read the problem, think hard, type a good solution, and say almost
-nothing — and they score lower than someone with a worse solution who talked
-through it. The reason is simple and worth internalizing: the interviewer is scoring
-your *thinking*, and thinking they cannot hear does not count. Your narration is not
-color commentary; it is the bulk of the signal.
+Here is the thing candidates get wrong about the coding round: the interviewer is
+scoring your *thinking*, and they can only see the part you say out loud. Type in
+silence to a perfectly correct answer and you have shown them the destination but
+none of the journey — how you decomposed the problem, which trade-offs you weighed,
+how you caught your own bug. Most of the available signal is in that journey, and
+silence throws it away. Narrating your thinking is not a soft skill bolted onto the
+round; on a scorecard that asks "problem-solving," "communication," and "handles
+ambiguity," it *is* the round. Talk.
 
-## State your understanding before you code
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 190" role="img" aria-labelledby="nc-t nc-d" class="blog-figure__svg">
+  <title id="nc-t">Silent coding shows only the answer; narration exposes the whole scored process</title>
+  <desc id="nc-d">Left: a silent path from problem to answer, only the endpoints visible. Right: a narrated path showing clarify, approach, trade-off, test — all visible to the scorer.</desc>
+  <text x="150" y="24" text-anchor="middle" fill="#c2571a" font-size="11" font-weight="700">silent</text>
+  <circle cx="70" cy="90" r="10" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="70" y="118" text-anchor="middle" fill="#819198" font-size="8">problem</text>
+  <circle cx="240" cy="90" r="10" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="240" y="118" text-anchor="middle" fill="#819198" font-size="8">answer</text>
+  <path d="M80 90 L228 90" stroke="#dce6f0" stroke-width="2" stroke-dasharray="4 4"/><text x="150" y="82" text-anchor="middle" fill="#819198" font-size="8">(nothing visible)</text>
+  <line x1="330" y1="18" x2="330" y2="175" stroke="#dce6f0"/>
+  <text x="480" y="24" text-anchor="middle" fill="#157878" font-size="11" font-weight="700">narrated</text>
+  <g font-size="8" text-anchor="middle" fill="#157878">
+    <circle cx="380" cy="90" r="9" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="380" y="115">problem</text>
+    <circle cx="440" cy="70" r="8" fill="#e8f0f8" stroke="#157878"/><text x="440" y="55">clarify</text>
+    <circle cx="500" cy="90" r="8" fill="#e8f0f8" stroke="#157878"/><text x="500" y="115">approach</text>
+    <circle cx="555" cy="70" r="8" fill="#e8f0f8" stroke="#157878"/><text x="555" y="55">trade-off</text>
+    <circle cx="600" cy="90" r="9" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="600" y="115">test</text>
+  </g>
+  <path d="M389 90 L432 74 L492 88 L547 74 L591 88" fill="none" stroke="#157878" stroke-width="2"/>
+</svg>
+<figcaption>Silent coding hands the scorer two dots. Narration draws the whole path — clarify, approach, trade-off, test — which is the part the rubric actually grades.</figcaption>
+</figure>
 
-Begin by restating the problem and your assumptions: "So I need a debounce that
-delays until calls stop, fires the trailing call with the latest arguments, and can
-be cancelled — I'll assume trailing-only unless you want leading too." This does
-three things: it confirms you understood the task, it surfaces the edge cases up
-front (which is the signal), and it gives the interviewer a chance to correct you
-before you spend twenty minutes solving the wrong problem. Diving straight into code
-skips all of that and risks building the wrong thing in confident silence.
+## Narrate the four beats
 
-## Say the edge cases out loud as you meet them
+You do not need a monologue — you need to voice four beats. **Clarify** the problem
+before coding; **state your approach** before typing; **flag trade-offs** as you make
+them; and **test out loud** at the end. Even a terse version of each turns invisible
+thinking into scored signal:
 
-As you code, narrate the decisions and especially the edges: "I'll clear the
-previous timer here so rapid calls reset the delay," "I need to capture the latest
-arguments, not the first ones," "let me guard against calling this after it's been
-cancelled." Naming the edge cases is precisely what distinguishes a senior answer
-from a junior one — the code might look similar, but the candidate who *said* "this
-version leaks listeners, let me fix that" demonstrably saw the problem, where a
-silent identical fix might have been luck. Talk through the edges even when you
-handle them correctly, because the seeing is the score.
+```js
+// "First, edge cases: what if wait is 0? what if it's called after cancel?"  ← clarify
+// "I'll close over a timer id and reset it each call — that's debounce."       ← approach
+function debounce(fn, wait) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);                              // "each call cancels the pending one" ← narrate
+    t = setTimeout(() => fn(...args), wait);
+  };
+}
+// "Let me trace: called 3x fast → only the last fires after `wait`. Correct."  ← test out loud
+```
 
-## Narrate your recovery when you get stuck
+The comments above are what you *say*, not what you type — but voicing them is what
+fills the scorecard.
 
-Getting stuck is not the failure; going silent when stuck is. When you hit a wall,
-say what you are considering: "this approach is getting complicated, let me think
-about whether there's a cleaner one," or "I'm not sure of the exact API here, but
-the shape is a function returning a function." Interviewers weight problem-solving
-process heavily, and a visible, structured recovery from a stumble is a strong
-positive signal — it is literally what the job is. A candidate who narrates their
-way out of a dead end often outscores one who never hit it.
+## Ambiguity is a prompt to talk, not a trap
 
-## Read the room and leave hooks
+When a problem is under-specified — and interviewers under-specify on purpose — the
+worst move is to silently pick an interpretation and code. The scored behaviour is
+to surface the ambiguity and decide with the interviewer:
 
-Narration is also a two-way channel: pausing to say "does that approach sound
-reasonable to you?" invites a hint you would otherwise not get, because interviewers
-often will not interrupt a silent candidate even when they are heading the wrong
-way. Leave hooks for them to guide you. The balance is to talk continuously but not
-frantically — enough that your reasoning is always audible, not so much that you
-cannot code. Practice this on real problems out loud, because it is a separate skill
-from solving them. The debounce, event-emitter, and deep-clone exercises are ideal
-to rehearse narrating, since each has edges worth saying aloud as you handle them.
+```text
+You: "Should the search be case-sensitive? And do I debounce the input or search on submit?"
+Interviewer: "Case-insensitive, and debounce it."
+You: "Got it — I'll debounce at 300ms and lowercase both sides before comparing."
+```
+
+You just demonstrated requirements-gathering, a trade-off decision, and
+communication — three rubric lines — before writing a line of logic.
+
+## Talk yourself through the stuck moment, too
+
+The narration matters most exactly when it feels hardest: when you are stuck.
+Silent flailing looks like panic; narrated debugging looks like competence. "This
+is returning undefined — let me check whether the closure is capturing the right
+variable" shows a process the interviewer can *follow and reward*, and it often
+prompts a small hint you would never have gotten in silence. The habit to build is
+constant, low-key commentary — approach, trade-off, self-correction — so that by the
+end the interviewer has seen not just that you can code, but *how you think*, which
+is the thing they were sent to measure. Practise it by solving the debounce-utility,
+event-emitter, and deep-clone exercises *out loud*, alone, until narrating is
+automatic under pressure.
