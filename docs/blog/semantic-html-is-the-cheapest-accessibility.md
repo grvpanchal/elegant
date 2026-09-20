@@ -8,60 +8,87 @@ category: terminology
 tags: [ui, accessibility, html, semantics]
 description: Before you reach for a single ARIA attribute, use the element that already means what you want. A button is a button; a div pretending to be one is a bug waiting to happen.
 cover: /assets/img/ui-system-diagram.png
-reading_minutes: 3
+reading_minutes: 5
 related_practice: [form-field-molecule, accessible-combobox, loading-button-atom]
 ---
 
-The fastest accessibility win on any frontend is also the one teams skip most
-often: use the right element. A `<button>`, a `<nav>`, a `<label>`, a `<main>` —
-each carries a role, keyboard behaviour, and screen-reader semantics that you
-would otherwise have to rebuild by hand, badly. Semantic HTML is not a nicety.
-It is the foundation the rest of accessibility stands on.
+The cheapest accessibility you will ever ship is choosing the right HTML element.
+Before a single ARIA attribute, before any JavaScript, the browser gives native
+elements a pile of behaviour for free: a `<button>` is focusable, fires on Enter
+and Space, announces itself as a button to a screen reader, and participates in
+forms. A `<div>` styled to look like a button has *none* of that, and getting it
+back means reimplementing the browser by hand — and getting every detail right.
+The first rule of ARIA is literally "don't use ARIA if a native element already
+does the job." Semantic HTML is that native element.
 
-## What the element gives you for free
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="sh-t sh-d" class="blog-figure__svg">
+  <title id="sh-t">A native button ships behaviour for free; a div button must reimplement all of it</title>
+  <desc id="sh-d">On the left a button element with focusable, keyboard, role and form-participation ticks. On the right a div with role button requiring tabindex, keydown handlers and aria all added by hand.</desc>
+  <text x="150" y="26" text-anchor="middle" fill="#157878" font-size="12" font-weight="700">&lt;button&gt;</text>
+  <g fill="#157878" font-size="10"><text x="60" y="60">✓ focusable</text><text x="60" y="82">✓ Enter / Space</text><text x="60" y="104">✓ announced as button</text><text x="60" y="126">✓ submits forms</text></g>
+  <text x="200" y="150" text-anchor="middle" fill="#157878" font-size="9">free from the browser</text>
+  <line x1="320" y1="20" x2="320" y2="180" stroke="#dce6f0"/>
+  <text x="480" y="26" text-anchor="middle" fill="#c2571a" font-size="12" font-weight="700">&lt;div role="button"&gt;</text>
+  <g fill="#c2571a" font-size="10"><text x="380" y="60">＋ tabindex="0"</text><text x="380" y="82">＋ onKeyDown Enter/Space</text><text x="380" y="104">＋ role="button"</text><text x="380" y="126">＋ can't submit a form</text></g>
+  <text x="490" y="150" text-anchor="middle" fill="#c2571a" font-size="9">all by hand, easy to get wrong</text>
+</svg>
+<figcaption>Every tick on the left is behaviour the browser gives a real button. On the right you re-add each one manually — and still cannot fully match it.</figcaption>
+</figure>
 
-A native `<button>` is focusable, fires on Enter and Space, exposes the role
-"button" to assistive tech, and sits in the tab order automatically. A `<div>`
-with an `onClick` gives you none of that. To make the div equivalent you would
-add `role="button"`, `tabindex="0"`, and keydown handlers for Enter and Space —
-and you would still miss edge cases the browser handles for you. Every attribute
-you add to fake a native element is a line that can rot; the native element
-never rots.
+## The div button re-implements the browser, badly
 
-The same holds up the tree. A `<form>` gives you submit-on-Enter and native
-validation hooks. A `<label>` tied to an input by `for`/`id` makes the whole
-label a click target and announces the field's name. Landmark elements —
-`<header>`, `<nav>`, `<main>`, `<footer>` — let a screen-reader user jump
-straight to the content instead of tabbing through everything.
+Here is what a clickable `<div>` actually costs once you make it accessible. Every
+line is behaviour a real button already had:
 
-## When you actually need ARIA
+```jsx
+// a div pretending to be a button — and still not quite one
+<div
+  role="button"                              // tell AT it's a button
+  tabIndex={0}                               // make it focusable
+  onClick={handleClick}
+  onKeyDown={(e) => {                         // re-implement Enter AND Space
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); }
+  }}
+>Save</div>
+```
 
-ARIA exists for the gaps native HTML cannot fill: a custom combobox, a tab
-panel, a live region announcing an async result. But the first rule of ARIA is
-"don't use ARIA" — if a native element does the job, reach for it first. ARIA
-adds semantics; it does not add behaviour. `role="button"` tells a screen reader
-"this is a button," but you still have to wire the keyboard yourself. That is
-the trap: ARIA looks like it makes a div into a button, and it only makes it
-*sound* like one.
+Compared to the thing it is imitating:
 
-## It compounds across the whole app
+```jsx
+<button onClick={handleClick}>Save</button>   // all of the above, for free
+```
 
-The reason this is the *cheapest* accessibility is that it pays off everywhere at
-once, for free, forever. A native control keeps working when the browser ships a
-new assistive feature, when a user brings their own stylesheet, when the page is
-read by a voice assistant you have never tested against. You did not write code
-for any of that; the platform did, and semantic markup opts you into it. Fake
-controls opt you out — every div-button is a promise to keep reimplementing
-platform behaviour by hand as the platform evolves. Multiply that by a component
-library used on a hundred screens and the maintenance cost of getting the element
-wrong is enormous, while the cost of getting it right is zero. That asymmetry is
-why this belongs at the top of any accessibility checklist, above ARIA, above
-audits, above automated scanners.
+The `<button>` is fewer characters, cannot forget the Space key, and stays correct
+when the platform changes its conventions.
 
-## The rule worth keeping
+## Structure is semantic too
 
-Reach for the semantic element first, ARIA second, and a `div` with handlers
-only when nothing else fits — and when it doesn't, you have signed up to
-reimplement a browser feature. Most "accessibility work" on a mature codebase is
-really just replacing divs that should have been buttons. Get the elements right
-at authoring time and the accessibility audit gets a lot shorter.
+Semantics is not only interactive elements. Using `<nav>`, `<main>`, `<header>`,
+`<h1>`–`<h6>` in order, `<ul>` for lists, and `<table>` for tabular data gives
+screen-reader users a *map* — they can jump between landmarks and headings instead
+of reading linearly. A page built from `<div>`s is one undifferentiated wall to
+assistive tech:
+
+```html
+<header>…</header>
+<nav aria-label="Primary">…</nav>
+<main>
+  <h1>Page title</h1>
+  <section><h2>Section</h2> …</section>   <!-- headings a reader can jump between -->
+</main>
+```
+
+## ARIA is the patch, not the plan
+
+None of this means ARIA is bad — it is essential for the widgets HTML has no
+element for (a combobox, a tab set, a tree). But ARIA *adds* semantics on top of
+HTML; it does not add *behaviour*. `role="button"` tells a screen reader "this is a
+button" and does nothing to make Enter work — you still write that yourself. So the
+order is: reach for the semantic element first, and use ARIA only to fill the gaps
+it genuinely cannot cover, on custom widgets, with the keyboard behaviour
+hand-built to match. Every native element you use is behaviour you did not have to
+write, test, and maintain. The loading-button-atom and accessible-combobox
+exercises sit on opposite ends of this: the button should just *be* a `<button>`,
+while the combobox is the real case where ARIA and hand-built keyboard support are
+unavoidable.

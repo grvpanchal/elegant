@@ -15,7 +15,7 @@
     the mechanical half. The rest — does the keyboard flow make sense, does the screen
     reader tell a coherent story — needs building in, not auditing on.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-a11y-gate
   - accessible-combobox
@@ -34,7 +34,7 @@
     related fields grouped, and errors wired so a screen reader announces them. Get
     those three right and the form works for everyone.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - form-field-molecule
   - accessible-combobox
@@ -552,7 +552,7 @@
     that opens without moving focus, or a menu that traps it, is as broken as a mouse
     that stops moving.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - accessible-combobox
   - tabs-molecule
@@ -1121,7 +1121,7 @@
     already means what you want. A button is a button; a div pretending to be one
     is a bug waiting to happen.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - form-field-molecule
   - accessible-combobox
@@ -1326,7 +1326,7 @@
     the browser builds from it — the accessibility tree — and knowing that explains
     why a styled div announces nothing.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - accessible-combobox
   - form-field-molecule
