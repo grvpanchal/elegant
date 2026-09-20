@@ -351,7 +351,7 @@
     wins — regardless of which came last. Understanding the tiebreak is the difference
     between fixing a style and piling !important on it.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - theme-toggle
   - loading-button-atom
@@ -387,7 +387,7 @@
     Debounce waits for quiet; throttle enforces a steady rate. Using the wrong one
     makes a search box feel broken.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - debounce-utility
   - design-search-experience
@@ -534,7 +534,7 @@
   description: The endless flexbox-versus-grid debate has a boring answer — one axis,
     use flexbox; two axes, use grid. Everything else is a corollary of that one distinction.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - data-table-sort
   - responsive-image-set
@@ -1381,7 +1381,7 @@
     one setting that changes how width is measured — box-sizing — is why your 50%
     columns overflow, and why every reset sets it to border-box.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - responsive-image-set
 - slug: the-container-line
@@ -1471,7 +1471,7 @@
     everything — clicks, scrolls, rendering, all frozen until it returns. Understanding
     the event loop is understanding why, and how to keep the thread free.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - debounce-utility
   - retry-with-backoff
