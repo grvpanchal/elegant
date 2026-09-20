@@ -8,56 +8,87 @@ category: architecture
 tags: [server, bff, api, architecture]
 description: 'A backend-for-frontend is a thin server layer that exists to serve one frontend — aggregating calls, reshaping data, and holding secrets — so the client gets exactly what the screen needs in one request.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [proxy-and-cors, session-and-tokens]
 ---
 
-A backend-for-frontend (BFF) is a thin server layer whose only job is to serve one
-frontend well. Instead of the browser calling five microservices and stitching the
-results together, it calls one BFF endpoint that does the aggregating and returns
-exactly what the screen needs. It sits between your UI and your backend services,
-and it exists because a general-purpose API and a specific screen's needs rarely
-match.
+A backend-for-frontend (BFF) is a thin server layer that exists to serve **one**
+frontend. Its job is not to be a general-purpose API — it is to give this specific
+client exactly the shape it needs, in as few round-trips as possible. It aggregates
+several downstream calls into one, reshapes data from database-shaped to
+screen-shaped, and holds the secrets the browser must not. The problem it solves is
+the mismatch between how backend services organise data (by domain, normalised, for
+reuse) and how a screen needs it (denormalised, joined, for one view). Without a
+BFF the client papers over that gap with a waterfall of calls and a pile of
+reshaping code; with one, the server does it where it is cheap.
 
-## The mismatch it fixes
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="bf-t bf-d" class="blog-figure__svg">
+  <title id="bf-t">A BFF aggregates several services into one screen-shaped response</title>
+  <desc id="bf-d">The client makes one request to the BFF, which fans out to user, orders and inventory services in parallel and returns a single combined, reshaped payload.</desc>
+  <rect x="30" y="80" width="90" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="75" y="104" text-anchor="middle" fill="#155799" font-size="10">client</text>
+  <path d="M120 100 L190 100" stroke="#819198" stroke-width="2" marker-end="url(#bf-a)"/><text x="155" y="92" fill="#819198" font-size="8">1 request</text>
+  <rect x="190" y="78" width="110" height="44" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="245" y="104" text-anchor="middle" fill="#c2571a" font-size="10">BFF</text>
+  <g stroke="#819198" stroke-width="2" marker-end="url(#bf-a)"><path d="M300 90 L400 55"/><path d="M300 100 L400 100"/><path d="M300 110 L400 145"/></g>
+  <g fill="#e8f0f8" stroke="#157878" stroke-width="2" font-size="9" text-anchor="middle">
+    <rect x="400" y="40" width="120" height="30" rx="5"/><text x="460" y="59" fill="#157878">user service</text>
+    <rect x="400" y="85" width="120" height="30" rx="5"/><text x="460" y="104" fill="#157878">orders service</text>
+    <rect x="400" y="130" width="120" height="30" rx="5"/><text x="460" y="149" fill="#157878">inventory service</text>
+  </g>
+  <text x="245" y="150" text-anchor="middle" fill="#819198" font-size="8">fan out in parallel, combine, reshape</text>
+  <defs><marker id="bf-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>One client request; the BFF fans out to the services the screen needs, in parallel, and returns a single response already shaped for that screen.</figcaption>
+</figure>
 
-Backend services are usually designed around domains — a user service, an orders
-service, a catalog service — not around screens. But a screen often needs a bit of
-each: the profile page wants the user, their recent orders, and their loyalty
-status, which live in three services. Without a BFF, the browser makes three
-round-trips, over mobile latency, and assembles the result — slow and chatty. The
-BFF makes those calls server-to-server (fast, on the same network) and returns one
-tailored payload, so the client makes one request and gets a shape that matches the
-screen. It turns a chatty client into a single call.
+## Aggregate the waterfall into one call
 
-## It is the natural home for secrets and cross-origin work
+The most visible win is collapsing a client-side request waterfall. A dashboard
+that needs the user, their recent orders, and stock levels would otherwise make
+three sequential round-trips from the browser (each often waiting on the last). The
+BFF makes them in parallel, server-side, close to the services, and returns one
+payload:
 
-Because the BFF is a server you control, it is where things that must not live in
-the browser belong: API keys for third-party services, server-only credentials, the
-logic to exchange and refresh auth tokens. It is also the clean answer to CORS —
-the browser calls your BFF same-origin, and the BFF calls the third-party APIs
-server-to-server where CORS does not apply. So the proxy pattern and the BFF are
-close cousins; a BFF is a proxy that also aggregates, reshapes, and holds secrets,
-rather than just forwarding.
+```js
+// BFF endpoint: one client call fans out to three services in parallel
+app.get("/api/dashboard", async (req, res) => {
+  const [user, orders, stock] = await Promise.all([
+    userService.get(req.userId),
+    orderService.recent(req.userId),
+    inventoryService.levels(),
+  ]);
+  res.json({ user, orders, stock });   // one response, already joined for the screen
+});
+```
 
-## One BFF per frontend, not one shared API
+The client makes one request over its slow last-mile connection instead of three,
+and the fan-out happens on fast internal links.
 
-The "for frontend" is load-bearing: the pattern is one BFF per client type, because
-a web app and a mobile app need different shapes (mobile wants smaller payloads,
-fewer round-trips, different fields). A single "shared" BFF that tries to serve both
-drifts back into a general-purpose API with all the mismatch you were trying to
-escape. Each BFF is owned by the team that owns its frontend, so it evolves with the
-screens it serves rather than being a contested shared resource. That ownership is
-part of the point — the frontend team can reshape their BFF without filing a ticket
-against a platform team.
+## Reshape data for the view, and hold the secrets
 
-## Keep it thin — it is glue, not a place for business logic
+The BFF also translates. Backend services return everything, normalised; the screen
+wants a trimmed, joined, view-specific shape. Doing that in the BFF keeps the client
+free of reshaping logic and keeps API keys off the browser:
 
-The discipline that keeps a BFF healthy is resisting the urge to put real business
-logic in it. It should aggregate, reshape, and adapt — not own domain rules, which
-belong in the backend services where they can be shared and tested properly. A BFF
-that accumulates business logic becomes a second backend, with duplication and
-drift between it and the services. Keep it a thin, screen-shaped adapter, and it
-stays cheap to change as the UI changes. The proxy-and-CORS exercise is the BFF's
-simplest form (make a cross-origin call same-origin), and the sessions-and-tokens
-exercise is the auth work a BFF is the right place to handle.
+```js
+// reshape database-shaped data into screen-shaped data, using a server-only key
+const raw = await payments.charges(userId, { key: process.env.STRIPE_KEY });  // secret stays here
+res.json(raw.data.map((c) => ({ id: c.id, amount: c.amount / 100, when: c.created })));
+```
+
+The browser receives exactly the fields the component renders — no over-fetching,
+no client-side money-math, no exposed credential.
+
+## One BFF per frontend, and know when not to
+
+The defining discipline is in the name: a BFF serves *one* frontend. The web app's
+BFF and the mobile app's BFF are allowed to diverge, because their screens have
+different needs — a shared "do everything" API drifts back into the generic
+mismatch the BFF was meant to fix. The trade-off is a real extra service to build,
+deploy, and operate, so a BFF earns its keep when you have multiple downstream
+services to aggregate, secrets to keep off the client, or a genuine shape mismatch
+— and is overkill for a single well-designed API that already returns
+screen-friendly data. Where it fits, it moves the aggregation and reshaping to the
+side of the network where they are cheap. The proxy-and-cors exercise is the
+smallest version of this idea — a server layer that stands between your client and
+an upstream — which is the seed a BFF grows from.

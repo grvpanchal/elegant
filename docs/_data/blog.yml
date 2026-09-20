@@ -315,7 +315,7 @@
     browser, not the server. The request often reaches the server and runs — the browser
     just refuses to let your JavaScript read the response.'
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - proxy-and-cors
   - session-and-tokens
@@ -627,7 +627,7 @@
     are how you tell every browser and CDN how long to trust a response. Get them
     wrong and you either serve stale files or throw away free speed.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - cache-headers-basics
   - proxy-and-cors
@@ -974,7 +974,7 @@
     you have two real fixes — proxy the request through your own origin, or set CORS
     headers on the API. Which one is right depends on who owns the API.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - proxy-and-cors
   - session-and-tokens
@@ -1177,7 +1177,7 @@
     a key. A token hands the browser a signed claim and keeps nothing. That one difference
     drives revocation, scaling, and where you must store the thing.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - session-and-tokens
   - proxy-and-cors
@@ -1363,7 +1363,7 @@
     one frontend — aggregating calls, reshaping data, and holding secrets — so the
     client gets exactly what the screen needs in one request.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - proxy-and-cors
   - session-and-tokens
