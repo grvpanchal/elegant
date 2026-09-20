@@ -355,6 +355,24 @@
   related_practice:
   - theme-toggle
   - loading-button-atom
+- slug: error-boundaries-catch-render-crashes
+  title: Error boundaries stop one broken component from blanking the page
+  date: 2026-07-07
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - error-handling
+  - resilience
+  description: Without an error boundary, one component throwing during render takes
+    the whole app down to a blank screen. A boundary catches the crash, shows a fallback
+    for that subtree, and keeps the rest of the app alive.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - toast-notifications
+  - retry-with-backoff
 - slug: evals-are-tests-for-judgement
   title: Evals are tests for the things unit tests can't check
   date: 2026-08-04
@@ -559,6 +577,58 @@
   - counter-reducer
   - memoized-selector
   - normalize-entities
+- slug: internationalization-is-more-than-translation
+  title: Internationalization is more than swapping the words
+  date: 2026-07-14
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - i18n
+  - localization
+  - ux
+  description: Translating strings is the easy, visible part. The hard part is everything
+    else a locale changes — dates, numbers, currency, plurals, text direction, and
+    layouts that must survive words twice as long.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - design-localized-app
+- slug: keys-in-lists-are-identity
+  title: Keys in lists are identity, and using the index breaks it
+  date: 2026-07-08
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - lists
+  - reconciliation
+  description: A list key tells the framework which item is which across renders.
+    Use a stable id and reordering and editing just work; use the array index and
+    you get lost input, wrong animations, and state attached to the wrong row.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - data-table-sort
+  - infinite-scroll-list
+- slug: micro-frontends-split-by-team
+  title: Micro-frontends solve an org problem, not a tech one
+  date: 2026-07-13
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - micro-frontends
+  - architecture
+  - scaling
+  description: Splitting a frontend into independently deployable pieces is worth
+    it when teams are stepping on each other, and a costly mistake when they are not.
+    The boundary should follow the org chart, not the tech.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - design-micro-frontends
 - slug: middleware-is-the-stores-pipeline
   title: Middleware is the store's pipeline, not a grab bag
   date: 2026-08-30
@@ -615,6 +685,25 @@
   - normalize-entities
   - deep-clone
   - memoized-selector
+- slug: optimistic-ui-and-loading-states
+  title: Design your loading and empty states before your happy path
+  date: 2026-07-05
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - ux
+  - states
+  - loading
+  description: Every data-driven component has at least four states — loading, empty,
+    error, and loaded — and the ones that are not the happy path are where real apps
+    feel broken. Design all four, not just the screenshot.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - toast-notifications
+  - offline-first-list
+  - skeleton-list
 - slug: optimistic-updates-and-rollback
   title: 'Optimistic updates: show it now, reconcile later'
   date: 2026-08-26
@@ -633,6 +722,42 @@
   related_practice:
   - offline-first-list
   - retry-with-backoff
+- slug: portals-render-outside-the-tree
+  title: Portals render outside the tree so overlays escape their parents
+  date: 2026-07-06
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - react
+  - portals
+  - overlays
+  description: A portal renders a component's output somewhere else in the DOM while
+    keeping it in the component tree. It is how modals and dropdowns escape the overflow
+    and stacking traps of their parents without losing their props and state.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+- slug: prefetching-hides-latency
+  title: Prefetching hides latency by doing the work before it's asked for
+  date: 2026-07-11
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - prefetching
+  - ux
+  description: The fastest request is the one that already finished. Prefetching loads
+    the code or data for what the user is likely to do next, during idle time, so
+    the next click feels instant instead of waiting on the network.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - infinite-scroll-list
+  - render-strategy-choice
 - slug: presentational-and-container-components
   title: 'Presentational and container components: the split that keeps testing sane'
   date: 2026-07-28
@@ -652,6 +777,24 @@
   - presentational-vs-container
   - loading-button-atom
   - form-field-molecule
+- slug: progressive-web-apps-and-service-workers
+  title: 'Progressive web apps: the service worker is the whole trick'
+  date: 2026-07-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - pwa
+  - offline
+  - caching
+  description: 'A PWA is a website that behaves like an installed app — offline, installable,
+    fast on repeat visits. Almost all of that comes from one piece: a service worker
+    sitting between your page and the network.'
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - offline-first-list
+  - cache-headers-basics
 - slug: prompt-to-component-workflow
   title: 'Prompt to component: the quality is bounded by the boundary you hand over'
   date: 2026-08-08
@@ -819,6 +962,24 @@
   - form-field-molecule
   - accessible-combobox
   - loading-button-atom
+- slug: seo-for-single-page-apps
+  title: 'SEO for single-page apps: help the crawler see what the user sees'
+  date: 2026-07-15
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - seo
+  - rendering
+  - ssr
+  description: A client-rendered app ships an empty div and fills it with JavaScript.
+    Some crawlers run that JavaScript, many do not or do it late. If organic traffic
+    matters, you have to get real content into the HTML the crawler first sees.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
+  - cache-headers-basics
 - slug: server-state-is-not-client-state
   title: Server state is not client state, and treating them the same hurts
   date: 2026-08-27
@@ -967,6 +1128,41 @@
   - offline-first-list
   - cache-headers-basics
   - skeleton-list
+- slug: the-bff-pattern
+  title: 'The backend-for-frontend: an API shaped for the screen, not the database'
+  date: 2026-07-12
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - bff
+  - api
+  - architecture
+  description: A backend-for-frontend is a thin server layer that exists to serve
+    one frontend — aggregating calls, reshaping data, and holding secrets — so the
+    client gets exactly what the screen needs in one request.
+  cover: /assets/img/diagrams/server-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - proxy-and-cors
+  - session-and-tokens
+- slug: the-box-model
+  title: 'The box model, and why box-sizing: border-box exists'
+  date: 2026-07-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - layout
+  - box-model
+  description: Every element is a box of content, padding, border, and margin. The
+    one setting that changes how width is measured — box-sizing — is why your 50%
+    columns overflow, and why every reset sets it to border-box.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - responsive-image-set
 - slug: the-container-line
   title: 'The container line: draw it, and defend it with a check'
   date: 2026-07-26
@@ -1250,3 +1446,21 @@
   related_practice:
   - simple-store
   - counter-component
+- slug: z-index-and-stacking-contexts
+  title: 'z-index: 9999 doesn''t work, and stacking contexts are why'
+  date: 2026-07-09
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - z-index
+  - layout
+  description: When your modal with z-index 9999 still hides behind the header, the
+    problem is not a bigger number — it is that z-index only competes within a stacking
+    context, and something created a new one you did not notice.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - tabs-molecule
+  - accessible-combobox
