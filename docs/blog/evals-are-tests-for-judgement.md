@@ -1,65 +1,89 @@
 ---
 title: "Evals are tests for the things unit tests can't check"
-layout: post
 slug: evals-are-tests-for-judgement
+layout: post
 date: 2026-08-04
 author: The Elegant team
 category: ai-and-frontend
 tags: [ai, evals, quality, testing]
 description: 'A unit test checks that a function returns the right value. An eval checks that a piece of prose, a design, or an AI output meets a standard you can describe but not compute. As AI writes more, evals become as important as tests.'
 cover: /assets/img/ai-sdlc-flow.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-skill-eval, harness-atom-guardrail]
 ---
 
-A unit test answers a computable question: given this input, does the function
-return this output? Plenty of things you care about are not computable that way —
-is this explanation clear, is this component the right abstraction, is this AI
-output actually good or just fluent? An **eval** is a test for those: a set of
-cases plus a way to judge each one against a standard you can describe even when
-you cannot express it as an equality assertion. In an age where AI produces prose,
-designs, and code, evals matter as much as tests.
+A unit test checks a computable fact: given this input, does the function return this
+exact value? Enormous amounts of software quality are *not* computable that way. Is
+this explanation clear? Is this component accessible in spirit, not just in attributes?
+Did the AI's answer actually solve the problem, or just look like it did? An **eval** is
+a test for those — a repeatable check against a standard you can *describe* but not
+reduce to `===`. As AI writes more of our prose, designs, and code, evals become as
+important as unit tests, because the questions worth asking about AI output are almost
+all of the un-computable kind.
 
-## When a boolean assertion isn't enough
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="ev-t ev-d" class="blog-figure__svg">
+  <title id="ev-t">Unit tests check computable equality; evals check describable standards</title>
+  <desc id="ev-d">Left: a unit test comparing output to an exact expected value. Right: an eval judging an output against a rubric or a stronger judge, producing a graded verdict.</desc>
+  <text x="150" y="24" text-anchor="middle" fill="#155799" font-size="11" font-weight="700">unit test</text>
+  <rect x="50" y="45" width="200" height="30" rx="5" fill="#e8eefb" stroke="#155799" stroke-width="2"/><text x="150" y="64" text-anchor="middle" fill="#155799" font-size="9">output === expected ?</text>
+  <text x="150" y="100" text-anchor="middle" fill="#819198" font-size="9">computable, exact, pass/fail</text>
+  <line x1="330" y1="18" x2="330" y2="160" stroke="#dce6f0"/>
+  <text x="480" y="24" text-anchor="middle" fill="#157878" font-size="11" font-weight="700">eval</text>
+  <rect x="380" y="45" width="200" height="30" rx="5" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="480" y="64" text-anchor="middle" fill="#157878" font-size="9">output vs rubric / judge</text>
+  <text x="480" y="100" text-anchor="middle" fill="#819198" font-size="9">describable standard, graded verdict</text>
+  <rect x="410" y="115" width="140" height="26" rx="5" fill="#fff4ec" stroke="#fe854c"/><text x="480" y="133" text-anchor="middle" fill="#c2571a" font-size="8">runs on every change, like a test</text>
+</svg>
+<figcaption>A unit test asks "does it equal?"; an eval asks "does it meet the standard?" Both run repeatably on every change — the eval just judges instead of comparing.</figcaption>
+</figure>
 
-"Is this blog post generic AI slop or genuinely specific?" has no `expect(x).toBe`
-form. Neither does "does this solution explain its trade-offs" or "is this
-component accessible in practice." These are real quality bars, and pretending
-they do not exist because they are not a unit test is how slop and subtle wrongness
-ship. An eval makes the bar explicit: a rubric, a set of example cases with known
-verdicts, and a judge — human, or a model constrained to a rubric, or a
-deterministic scorer — that grades against it. The point is to make a fuzzy
-standard measurable and repeatable, not to pretend it is boolean.
+## When the answer isn't computable, write a rubric
 
-## The cases are the specification
+The core move is to make the un-computable *checkable* by writing down the standard as
+a rubric — the criteria a human would use — and then applying it repeatably. For an
+AI-authored explanation, "is this genuine or slop?" becomes a set of concrete tests:
 
-The most valuable part of an eval is the case set, because it pins down what you
-actually mean by "good." A good eval includes positive cases (this should pass),
-negative cases (this should fail), and edge cases that probe the boundary. Writing
-those cases forces you to say precisely what the standard is — which is exactly
-the work people skip when they wave at "quality." A slop-detection eval needs
-genuine posts *and* plausible slop, so it proves it can tell them apart rather than
-just rejecting everything. "Refuses everything" is not discernment, and only a
-negative-and-positive case set catches that.
+```js
+// eval: encode the standard you can describe, then check it on every draft
+function evalExplanation(text) {
+  return {
+    hasConcreteExample: /```/.test(text),                 // shows, not just tells
+    takesAPosition: !/it depends|there are many ways/i.test(text),  // commits
+    rightLength: wordCount(text) >= 400,
+    passed() { return this.hasConcreteExample && this.takesAPosition && this.rightLength; },
+  };
+}
+```
 
-## Judges, and their limits
+Some criteria are mechanical like these; others need a *judge* — a stronger model or a
+human — scoring against the rubric. Either way, the standard is written down and
+applied the same way every time, which is what makes it a test and not a vibe.
 
-The judge can be a human (accurate, slow, inconsistent across time), a rubric-
-constrained model (fast, cheap, must be validated against human judgement), or a
-deterministic scorer (repeatable, only works for the mechanizable parts). Each has
-a place, and the honest caveat is that a model judge's calibration is not
-correctness — a confident verdict can still be wrong, so a model-judged eval is
-one signal, never the only one. The discipline is to know which kind of judge your
-standard needs and to validate it, rather than trusting a number because it came
-out of a model.
+## The eval must be able to fail the thing it checks
 
-## Evals turn "quality" into a metric you can track
+An eval is only meaningful if it can say *no*. A slop-detector that passes everything
+is not a check; it is decoration. So a good eval is validated in both directions:
+give it a known-bad output and confirm it fails, give it a known-good one and confirm
+it passes:
 
-The payoff is that a fuzzy goal becomes a number you can watch over time. You can
-see the eval score move when you change a prompt, catch a regression when a
-refactor makes outputs worse, and hold a floor the way a test suite holds
-behaviour. That is what lets an AI-heavy workflow stay honest: the code has unit
-tests, and the judgement-shaped outputs have evals, and both run in the loop. The
-skill-eval exercise has you write an eval set with a threshold — the exact
-artifact this describes — and the atom-guardrail exercise is its computable cousin
-for the parts that *are* boolean.
+```js
+evalExplanation("It depends. There are many approaches.").passed();  // false — good, it rejects slop
+evalExplanation(realPostWithCodeAndPosition).passed();               // true  — good, it accepts quality
+```
+
+An eval you never watched *reject* something is an eval you cannot trust to reject the
+next thing.
+
+## Evals are the harness for the un-computable
+
+The reason this matters now is throughput and subject matter: AI produces a flood of
+outputs whose quality is exactly the describable-but-not-computable kind — is the prose
+good, is the design clear, did the answer really work. Human review does not scale to
+that flood, and unit tests cannot express the question. Evals fill the gap: a
+repeatable, describable standard that runs on every output like a test suite runs on
+every commit, folded into the composite alongside the mechanical checks (one signal,
+not the only one, since a judge can be wrong). This is precisely how a content
+guardrail keeps AI-written material honest — the slop verdict fails the draft, so the
+next one improves because the writing did, not because the check was loosened. The
+harness-skill-eval exercise builds exactly this: the eval that says what "correct"
+means for an output no `===` can grade.

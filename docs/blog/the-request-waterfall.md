@@ -8,56 +8,81 @@ category: architecture
 tags: [server, performance, async, data]
 description: 'A waterfall is a chain of requests that each wait for the previous one when they did not have to. It is the quiet cause of slow pages — data that could have loaded in parallel loading in sequence instead.'
 cover: /assets/img/ui-server-state.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [retry-with-backoff, normalize-entities]
 ---
 
-Open the network panel on a slow page and you often see the real problem: a staircase
-of requests, each starting only after the previous one finished, when many of them
-had no reason to wait. That staircase is a request waterfall, and it is one of the
-most common and most fixable causes of a slow-feeling app — latency multiplied by
-serialization, paid on every load.
+A request waterfall is a chain of network calls where each one waits for the previous
+to finish — even though it did not have to. It is one of the quietest causes of a slow
+page, because each request looks reasonable on its own; the cost is in the *sequence*.
+Three 200ms requests that genuinely depend on each other take 600ms and that is
+unavoidable. Three that *don't* depend on each other but were written to await one
+another also take 600ms — and that is pure waste, because they could have taken 200ms
+in parallel. Spotting which of your sequences are real dependencies and which are
+accidental is where a lot of page-speed lives.
 
-## Sequential when it could be parallel
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="rw-t rw-d" class="blog-figure__svg">
+  <title id="rw-t">Sequential requests stack their durations; parallel requests overlap</title>
+  <desc id="rw-d">Top: three requests one after another, total time is the sum. Bottom: the same three fired in parallel, total time is the longest single one.</desc>
+  <text x="30" y="40" fill="#c2571a" font-size="10" font-weight="700">waterfall</text>
+  <rect x="120" y="28" width="120" height="22" rx="4" fill="#fff4ec" stroke="#fe854c"/><text x="180" y="44" text-anchor="middle" fill="#c2571a" font-size="8">user 200ms</text>
+  <rect x="240" y="28" width="120" height="22" rx="4" fill="#fff4ec" stroke="#fe854c"/><text x="300" y="44" text-anchor="middle" fill="#c2571a" font-size="8">orders 200ms</text>
+  <rect x="360" y="28" width="120" height="22" rx="4" fill="#fff4ec" stroke="#fe854c"/><text x="420" y="44" text-anchor="middle" fill="#c2571a" font-size="8">stock 200ms</text>
+  <text x="500" y="44" fill="#c2571a" font-size="9">= 600ms</text>
+  <text x="30" y="100" fill="#157878" font-size="10" font-weight="700">parallel</text>
+  <rect x="120" y="88" width="120" height="22" rx="4" fill="#e8f0f8" stroke="#157878"/><text x="180" y="104" text-anchor="middle" fill="#157878" font-size="8">user 200ms</text>
+  <rect x="120" y="114" width="120" height="22" rx="4" fill="#e8f0f8" stroke="#157878"/><text x="180" y="130" text-anchor="middle" fill="#157878" font-size="8">orders 200ms</text>
+  <rect x="120" y="140" width="120" height="22" rx="4" fill="#e8f0f8" stroke="#157878"/><text x="180" y="156" text-anchor="middle" fill="#157878" font-size="8">stock 200ms</text>
+  <text x="260" y="130" fill="#157878" font-size="9">= 200ms</text>
+</svg>
+<figcaption>Independent requests in sequence sum their times; the same requests in parallel take only as long as the slowest. The waterfall is the wasted difference.</figcaption>
+</figure>
 
-The classic waterfall comes from awaiting requests one at a time that do not depend on
-each other: fetch the user, then (after it returns) fetch their settings, then fetch
-their notifications. If none of those needs the previous one's result, you have turned
-three round-trips that could have happened at once into three that happen in sequence —
-tripling the latency for no reason. The fix is to fire the independent requests
-together (`Promise.all`) and wait for all of them, collapsing three sequential
-round-trips into one parallel wait. The tell is `await` immediately followed by another
-independent `await`.
+## The accidental waterfall
 
-## The component-tree waterfall
+The classic version comes from `await`-ing in a row out of habit. These three fetches
+have no dependency on each other, yet each waits for the last — turning 200ms of work
+into 600ms:
 
-A subtler waterfall hides in the component tree: a parent fetches and renders, then a
-child mounts and fetches, then a grandchild mounts and fetches — each level's request
-cannot start until the level above rendered, so the data loads in a cascade matching
-the tree depth. This is why "each component fetches its own data" feels slow even when
-each fetch is fast: they are serialized by the render order. Hoisting the fetches up
-(a container that fetches everything the subtree needs, or a route-level loader that
-fetches in parallel before rendering) breaks the cascade. It is another reason the
-container line matters — concentrated fetching can be parallelized; scattered
-fetching waterfalls.
+```js
+// ACCIDENTAL WATERFALL — independent data, loaded in sequence for no reason
+const user = await fetchUser(id);        // 200ms
+const orders = await fetchOrders(id);    // waits, then 200ms
+const stock = await fetchStock();        // waits, then 200ms  → 600ms total
+```
 
-## Genuine dependencies still have to wait
+Nothing about `orders` or `stock` needs `user`, so making them wait is pure latency
+you gave away.
 
-Some sequences are real: you need the user's id before you can fetch their orders, so
-that request genuinely depends on the first. Those cannot be parallelized away — but
-you can often still shorten them by fetching the dependent data on the server (where
-the round-trips are between machines in a datacenter, not over mobile), or by
-restructuring the API so one request returns what the screen needs (a BFF endpoint
-that aggregates). The goal is not "never sequence" but "never sequence what did not
-have to be sequential."
+## Fire the independent ones together
 
-## Prefetch to hide the waterfalls you cannot remove
+When requests do not depend on each other, start them all and await the group with
+`Promise.all`. Now they overlap, and the total is the *slowest* one, not the sum:
 
-For the waterfalls that remain, prefetching hides them: start the likely-next
-request during idle time so its latency overlaps with something else. And on the
-data-shape side, normalizing responses so related entities are fetched together and
-cached avoids re-fetching in a second wave. The through-line: look at your network
-panel as a staircase, and for every step ask "did this have to wait?" — the answer is
-often no. The retry-with-backoff exercise is about handling requests that fail, and
-normalize-entities is about shaping the data so you fetch it once and in the right
-groupings rather than in a cascade.
+```js
+// PARALLEL — fire all three at once, wait for the group → ~200ms total
+const [user, orders, stock] = await Promise.all([
+  fetchUser(id),
+  fetchOrders(id),
+  fetchStock(),
+]);
+```
+
+Same data, a third of the time. The only change was recognising there was no real
+dependency.
+
+## Tell real dependencies from accidental ones
+
+Some waterfalls are genuine and cannot be flattened: if request B needs an id from
+request A's response, B must wait. The skill is distinguishing those from the
+accidental kind — and even genuine chains can often be shortened. If the client keeps
+discovering "oh, now I need *this* too," each round-trip is a waterfall step; a
+**backend-for-frontend** can collapse the whole chain into one call that fans out
+server-side. Component-level waterfalls hide here too: a parent fetches, renders a
+child, and only *then* does the child fetch — so lift the child's fetch up to start it
+in parallel with the parent's. The habit is to look at your network panel and ask, at
+each request, "did this truly need to wait for the one before it?" Every "no" is
+latency you can delete with `Promise.all` or a reshaped endpoint. The retry-with-backoff
+and normalize-entities exercises live in this data-fetching layer, where flattening
+waterfalls is often the biggest single speed win a page has left.

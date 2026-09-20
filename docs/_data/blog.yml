@@ -461,7 +461,7 @@
     checks that a piece of prose, a design, or an AI output meets a standard you can
     describe but not compute. As AI writes more, evals become as important as tests.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-skill-eval
   - harness-atom-guardrail
@@ -882,7 +882,7 @@
     the code or data for what the user is likely to do next, during idle time, so
     the next click feels instant instead of waiting on the network.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - infinite-scroll-list
   - render-strategy-choice
@@ -1307,7 +1307,7 @@
     refactors and fails only when something real breaks. The distinction decides whether
     your suite helps or hurts.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - deep-clone
   - counter-reducer
@@ -1547,7 +1547,7 @@
     one when they did not have to. It is the quiet cause of slow pages — data that
     could have loaded in parallel loading in sequence instead.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - retry-with-backoff
   - normalize-entities
@@ -1640,7 +1640,7 @@
     — needs a frontend twist. The most valuable tests here are the ones that render
     a component and interact with it the way a user does. Test behaviour, not implementation.
   cover: /assets/img/ui-server-state.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - deep-clone
   - accessible-combobox
