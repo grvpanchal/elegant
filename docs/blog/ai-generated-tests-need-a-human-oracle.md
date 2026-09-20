@@ -1,64 +1,85 @@
 ---
 title: "AI-generated tests need a human oracle"
-layout: post
 slug: ai-generated-tests-need-a-human-oracle
 date: 2026-07-30
+layout: post
 author: The Elegant team
 category: ai-and-frontend
 tags: [ai, testing, quality, evals]
 description: 'A model is great at writing test scaffolding and terrible at deciding what "correct" is. Ask it to test existing code and it will assert that the current behaviour — bugs and all — is right. The oracle has to be you.'
 cover: /assets/img/ai-sdlc-flow.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-skill-eval, debounce-utility, deep-clone]
 ---
 
-"Have the AI write the tests" sounds like a clean win, and it is half a win. A
-model is genuinely good at the mechanical part of testing — the boilerplate, the
-setup, the obvious cases, the arrange-act-assert structure. It is unreliable at the
-part that actually matters: being the *oracle*, the thing that decides what the
-correct answer is. Point it at existing code and it will confidently assert that
-the code's current behaviour, bugs included, is correct.
+Ask a model to "write tests for this function" and it will happily produce a dozen —
+well-structured, nicely named, and quietly worthless, because it derived the expected
+values *from the code you gave it*. If the code has a bug, the test asserts the bug is
+correct. This is the oracle problem: a test needs a source of truth for what the
+output *should* be, and that source cannot be the implementation under test. The model
+is genuinely good at the *scaffolding* of testing — arranging, mocking, structuring —
+and genuinely unable to supply the *oracle*. That part is yours, and confusing "the
+model wrote tests" with "the behaviour is verified" is how a bug ships with a green
+suite guarding it.
 
-## Tests encode a decision about correctness
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="ao-t ao-d" class="blog-figure__svg">
+  <title id="ao-t">Deriving expectations from the code enshrines its bugs; the oracle must be external</title>
+  <desc id="ao-d">Left: the model reads the code and writes a test asserting the code's current (buggy) output — a circular check. Right: a human supplies the intended output from the spec, catching the bug.</desc>
+  <text x="150" y="24" text-anchor="middle" fill="#c2571a" font-size="11" font-weight="700">model as oracle (circular)</text>
+  <rect x="60" y="42" width="80" height="34" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="100" y="63" text-anchor="middle" fill="#c2571a" font-size="9">code</text>
+  <rect x="180" y="42" width="80" height="34" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="220" y="63" text-anchor="middle" fill="#c2571a" font-size="9">test</text>
+  <path d="M140 55 L178 55" stroke="#c2571a" stroke-width="2" marker-end="url(#ao-a)"/><path d="M180 68 L142 68" stroke="#c2571a" stroke-width="2" marker-end="url(#ao-a)"/>
+  <text x="150" y="100" text-anchor="middle" fill="#c2571a" font-size="9">asserts the bug is correct</text>
+  <line x1="330" y1="18" x2="330" y2="165" stroke="#dce6f0"/>
+  <text x="480" y="24" text-anchor="middle" fill="#157878" font-size="11" font-weight="700">human oracle</text>
+  <rect x="380" y="42" width="90" height="34" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="425" y="63" text-anchor="middle" fill="#157878" font-size="9">spec (intent)</text>
+  <path d="M470 59 L520 59" stroke="#157878" stroke-width="2" marker-end="url(#ao-a)"/>
+  <rect x="520" y="42" width="90" height="34" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="565" y="63" text-anchor="middle" fill="#155799" font-size="9">test</text>
+  <text x="490" y="100" text-anchor="middle" fill="#157878" font-size="9">catches the bug</text>
+  <defs><marker id="ao-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>If the expected value comes from the code, the test can only confirm the code equals itself. The oracle — what the output should be — has to come from the spec, i.e. you.</figcaption>
+</figure>
 
-Every assertion is a claim: "the right answer here is X." That claim has to come
-from somewhere that knows what right *means* — a spec, a requirement, a human's
-understanding of the domain. When a model writes tests by reading the
-implementation, it derives the expected values *from the implementation*, so the
-test says "the code does what the code does." That tautology passes forever and
-catches nothing, including the bug that was already there when the test was
-written. The test looks like coverage and is actually a snapshot of current
-behaviour with no opinion about whether that behaviour is right.
+## The circular test enshrines the bug
 
-## Where AI genuinely helps with tests
+Here is the failure in miniature. The discount function has an off-by-one, and the
+AI-written test "verifies" it — by reading the buggy output and asserting it:
 
-The productive division of labour: let the model generate the *structure* and the
-*cases*, and you supply the *oracle*. It is good at enumerating cases you might
-forget — empty input, boundary values, the cyclic object, the concurrent call —
-which is real value, because thinking of cases is half of testing. Then you decide
-what each case should return, based on the spec, not the code. For a debounce, the
-model can propose "test the trailing call, test cancellation, test rapid
-retriggers"; you decide that the trailing call must fire with the *last*
-arguments, because that is the requirement, not because that is what the code
-happened to do.
+```js
+function applyDiscount(price, pct) { return price - price * pct; }  // pct is 0.1 for 10%… or is it?
+// AI test, expectations derived FROM the code:
+expect(applyDiscount(100, 10)).toBe(-900);   // asserts the bug (10 read as 1000%) as "correct"
+```
 
-## Write the test before or against the intended behaviour
+Green suite, shipped bug. The test proved only that the code equals itself.
 
-The reliable pattern is to make the oracle independent of the implementation.
-Write (or have the model write) the test against the *specification* — ideally
-before or alongside the code, so the expected values come from what it should do,
-not what it does. When testing existing code, review every asserted value against
-your understanding rather than accepting the model's derived expectations. A test
-suite is only as trustworthy as the source of its expected answers, and if that
-source is the code under test, the suite is decorative.
+## The oracle comes from intent, not implementation
 
-## This is why evals exist for judgement
+A useful test encodes what the output *should* be according to the spec — a value
+you, the human, decide independently of the code. Write the expectation first, from
+intent, and the same test now *catches* the bug:
 
-The same principle scales up to non-boolean quality: when "correct" is a matter of
-judgement rather than an equality, you need an eval with a rubric and cases whose
-verdicts *you* set, not the model. A slop check written and judged entirely by a
-model proves nothing; one with human-set positive and negative cases proves
-discernment. Keep the oracle human — or at least human-validated — whether you are
-writing unit tests or evals. The skill-eval exercise is exactly this discipline for
-prose, and the debounce and deep-clone exercises are where AI-proposed cases with
-human-set expectations catch the edges that matter.
+```js
+// oracle from the spec: "10% off 100 is 90"
+expect(applyDiscount(100, 0.1)).toBe(90);   // FAILS on the buggy code — exactly right
+```
+
+The discipline is to state the expected value before looking at what the function
+returns, so the test measures the code against your intent rather than against itself.
+
+## Let the model scaffold, you supply the truth
+
+This does not mean writing AI out of testing — it means splitting the work along the
+line of what it is good at. Let the model generate the *structure*: the `describe`
+blocks, the mocks, the arrange/act boilerplate, the list of cases worth covering
+(empty, null, large, concurrent — it is good at brainstorming these). Then *you* fill
+in every expected value from the spec, and reject any assertion whose expectation
+was obviously lifted from the implementation. A good tell: an assertion with an oddly
+specific magic number nobody would choose on purpose (`toBe(-900)`) is usually the
+model reading the code. The oracle problem is not an AI quirk to work around; it is a
+property of what a test *is*, and the model simply cannot be the oracle for the code
+it is testing. The harness-skill-eval exercise is exactly about writing the oracle —
+the eval that says what "correct" means — which is the part that stays human even as
+everything around it is generated.

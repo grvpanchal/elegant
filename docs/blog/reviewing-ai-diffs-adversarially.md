@@ -1,62 +1,83 @@
 ---
 title: "Review an AI diff adversarially: assume it works and looks for the catch"
-layout: post
 slug: reviewing-ai-diffs-adversarially
 date: 2026-08-07
+layout: post
 author: The Elegant team
 category: ai-and-frontend
 tags: [ai, review, quality, architecture]
 description: 'The question for an AI diff is never "does it run" — it usually does. It is "what would make this wrong that the tests do not cover?" Reviewing AI code well means reading it looking for the plausible-but-broken.'
 cover: /assets/img/ai-sdlc-flow.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [harness-a11y-gate, harness-state-shape, presentational-vs-container]
 ---
 
-Reviewing human code, you assume good intent and look for mistakes. Reviewing AI
-code, you should assume it *works on the happy path* — it usually does — and hunt
-for the plausible-but-wrong: the missing edge case, the leaked concern, the subtle
-violation the tests do not cover. The model optimizes for producing working code,
-not correct code, and the gap between those two is exactly what your review has to
-find.
+Reviewing human code and reviewing AI code are different activities, because they
+fail differently. A junior's mistake usually *looks* like a mistake — a typo, an
+obvious gap. A model's mistake looks *correct*: it runs, it reads fluently, it passes
+the happy-path test, and it is wrong in a way you have to go looking for. So the
+question to bring to an AI diff is never "does it work?" (it usually does) but "what
+would make this wrong that isn't obvious and the tests don't cover?" You review it
+**adversarially** — assuming it works, and hunting for the plausible-but-broken —
+because plausibility is exactly what the model is optimised to produce.
 
-## "Does it run" is the wrong question
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 180" role="img" aria-labelledby="rv-t rv-d" class="blog-figure__svg">
+  <title id="rv-t">AI failures hide behind plausibility; adversarial review targets the hidden half</title>
+  <desc id="rv-d">A diff shown as an iceberg: above water, runs and reads well and passes happy-path. Below water, invented APIs, crossed boundaries, weakened tests, missing edge cases — the review target.</desc>
+  <rect x="120" y="28" width="400" height="46" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="320" y="56" text-anchor="middle" fill="#157878" font-size="10" font-weight="700">runs · reads well · passes happy path</text>
+  <line x1="40" y1="86" x2="600" y2="86" stroke="#155799" stroke-width="2" stroke-dasharray="6 4"/>
+  <rect x="120" y="98" width="400" height="60" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/>
+  <g fill="#c2571a" font-size="9" text-anchor="middle"><text x="200" y="125">invented API</text><text x="320" y="125">crossed boundary</text><text x="450" y="125">weakened test</text><text x="320" y="145">missing edge case · silent error swallow</text></g>
+</svg>
+<figcaption>The visible half always looks fine — that's what a model produces. Adversarial review spends its attention below the waterline, on the failures that hide behind plausibility.</figcaption>
+</figure>
 
-AI is very good at producing code that runs and passes the obvious tests. So
-"does it run" tells you almost nothing — of course it runs. The useful question is
-adversarial: what input, what state, what interaction would make this wrong? A
-debounce that ignores the trailing call runs fine until you need the last value. A
-deep clone that chokes on a cycle runs fine until the data has one. A component
-that works with a mouse runs fine until someone uses a keyboard. The model will
-not surface these; you have to go looking, precisely because the code *looks*
-finished.
+## Hunt the model's characteristic failures
 
-## Watch for leaked concerns
+AI diffs fail in recognisable ways, so review is partly a checklist of its habits.
+**Invented APIs**: a method or prop that sounds right but does not exist. **Crossed
+boundaries**: a fetch that wandered into a presentational component. **Weakened
+tests**: an assertion loosened so the code passes. **Swallowed errors**: a `catch`
+that hides a failure. Read *for* these:
 
-The most common architectural violation in AI diffs is a concern in the wrong
-place. A presentational component that quietly fetches. A store read inside a
-component that should have received a prop. Business logic in a reducer's
-neighbour that should have been in the reducer. These do not fail tests — the code
-works — so they slip through unless you are specifically checking the *shape* of
-the change against your architecture. Read the diff asking "is each thing in the
-layer it belongs to?" not just "does each thing do what it says?"
+```js
+// characteristic AI failure — a catch that makes the code "work" by hiding the bug
+try {
+  const data = await fetchUser(id);
+  setUser(data);
+} catch (e) {
+  // ⚠ swallowed: the UI shows an empty state on failure and no one knows why
+}
+```
 
-## Distrust confident-looking correctness
+A human rarely writes this on purpose; a model writes it to make the function "not
+throw," which reads as done and is a silent failure.
 
-A human who is unsure hedges, adds a comment, leaves a TODO. A model is fluent
-whether it is right or wrong, so its confidence carries no signal. The comment
-that says "handles all edge cases" is not evidence it handles all edge cases; the
-variable named `sanitizedInput` is not evidence the input was sanitized. Verify
-the claims the code makes about itself rather than trusting the tone. This is the
-single hardest habit to build, because fluent wrong code is genuinely convincing —
-which is why you offload the verifiable parts to checks instead of eyeballs.
+## Check the edges the happy path skips
 
-## Offload what a machine can check
+The happy-path test the model wrote passes; the edges it did not think of are where
+the bug lives. For every AI diff, mentally run the empties, the nulls, the
+concurrent, and the large: what does this do with zero items, a null response, two
+calls racing, a 10,000-row list?
 
-You cannot hold every rule in your head across a flood of AI diffs, and you
-should not try. The parts that are mechanical — accessibility attributes, store
-imports in the UI layer, store shape, bundle size, link resolution — belong in
-guardrails that run on every diff and never get tired at 5pm. That frees your
-adversarial reading for the parts a machine cannot judge: is this the right
-abstraction, does this edge case matter, is this the design we want. The a11y-gate
-and state-shape exercises build exactly the mechanical checks, so your review can
-spend itself where human judgement is actually required.
+```js
+// the model handled the list; did it handle the empty and the error?
+{items.map((i) => <Row key={i.id} {...i} />)}
+// what renders when items is [] ? when the fetch failed and items is undefined?
+// adversarial review asks these before merge, not the on-call engineer at 2am
+```
+
+## The scalable version: encode the review
+
+Doing this by hand on every diff does not scale to the volume a model produces —
+which is the whole reason the failures slip through. So the durable move is to
+convert your recurring adversarial checks into guardrails: a lint rule that forbids a
+fetch in the UI layer, a shape test that catches a boundary crossing, an
+accessibility gate that catches the missing keyboard handler. The check runs on every
+diff, tired-proof and at machine speed, catching the *mechanical* half so your
+human review can spend its attention on the half a check cannot judge — is this the
+right abstraction, does this design age well. Adversarial reading plus encoded checks
+is how you review AI code at the rate AI writes it. The harness-a11y-gate,
+harness-state-shape, and presentational-vs-container exercises each turn one class of
+"plausible-but-broken" into a check that catches it automatically.

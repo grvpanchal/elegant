@@ -147,7 +147,7 @@
     what "correct" is. Ask it to test existing code and it will assert that the current
     behaviour — bugs and all — is right. The oracle has to be you.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-skill-eval
   - debounce-utility
@@ -186,7 +186,7 @@
     up at every stage — scaffolding, implementing, reviewing, testing — and it is
     strong at some and dangerous at others. Knowing which is the whole skill.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-skill-eval
   - harness-atom-guardrail
@@ -955,7 +955,7 @@
     almost entirely on how sharply you scoped the request. The skill is not prompting
     tricks — it is drawing the box before you ask.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-atom-guardrail
   - loading-button-atom
@@ -1083,7 +1083,7 @@
     It is "what would make this wrong that the tests do not cover?" Reviewing AI code
     well means reading it looking for the plausible-but-broken.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-a11y-gate
   - harness-state-shape
@@ -1792,7 +1792,7 @@
     model is slower, riskier, or actively misleading, and reaching for it there is
     not sophistication — it is a mistake that costs you more than typing would have.
   cover: /assets/img/ai-sdlc-flow.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - harness-state-shape
   - presentational-vs-container
