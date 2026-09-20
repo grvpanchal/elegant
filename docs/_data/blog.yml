@@ -52,7 +52,7 @@
     SET_LOADING, SET_ERROR. An action should describe something that happened, not
     command the store how to change.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - action-creators
   - counter-reducer
@@ -663,7 +663,7 @@
     framework decide 'did this change?' with a reference check instead of a deep scan
     — which is what keeps re-renders bounded.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - counter-reducer
   - memoized-selector
@@ -992,7 +992,7 @@
     is not a reducer — it is a bug. The purity rule is what makes state predictable,
     testable, and time-travellable.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - counter-reducer
   - combine-reducers
@@ -1102,7 +1102,7 @@
     it is the seam that lets you reshape state without touching components — and memoized,
     it keeps derived data cheap.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - memoized-selector
   - selector-memoization
@@ -1583,7 +1583,7 @@
     moment the same fact lives in two places, you own the job of keeping them in sync,
     and you will lose.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - simple-store
   - combine-reducers

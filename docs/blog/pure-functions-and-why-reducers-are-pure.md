@@ -8,62 +8,87 @@ category: terminology
 tags: [state, redux, reducers, functional]
 description: A reducer that reads the clock, mutates its input, or fires a request is not a reducer — it is a bug. The purity rule is what makes state predictable, testable, and time-travellable.
 cover: /assets/img/state-system-diagram.png
-reading_minutes: 3
+reading_minutes: 5
 related_practice: [counter-reducer, combine-reducers, memoized-selector]
 ---
 
 A pure function has two properties: given the same inputs it always returns the
-same output, and it causes no side effects — no mutation of its arguments, no
-network calls, no reading of the clock or random numbers. Reducers are required
-to be pure, and that requirement is not academic dogma. It is what makes the
-whole state model work.
+same output, and it causes no side effects — it doesn't read the clock, generate
+a random number, mutate its arguments, call an API, or log to a server. A reducer
+is required to be pure, and this is not dogma. Every valuable thing Redux gives
+you — predictable state, trivial tests, time-travel debugging, safe re-renders —
+is a *consequence* of that one rule. Break purity and you don't just bend a
+guideline; you turn off the features you adopted Redux for.
 
-## What purity buys the store
-
-Because a reducer is `(state, action) => newState` with no side effects, the
-store can call it whenever it likes and trust the result. You can replay a list
-of actions and get the same state every time — that is what time-travel debugging
-and hydration from a log depend on. You can test a reducer with plain inputs and
-assert on the output, no mocks, no setup, no network. And because it returns a
-*new* state instead of mutating the old one, the store can compare references to
-know cheaply whether anything changed.
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 210" role="img" aria-labelledby="pf-t pf-d" class="blog-figure__svg">
+  <title id="pf-t">A pure reducer maps state and action to a new state with no outside reads or writes</title>
+  <desc id="pf-d">State and action go into the reducer, a new state comes out. Side effects — clock, random, fetch, mutation — are shown crossed out because a pure reducer touches none of them.</desc>
+  <rect x="30" y="70" width="90" height="34" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="75" y="92" text-anchor="middle" fill="#155799" font-size="11">state</text>
+  <rect x="30" y="115" width="90" height="34" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="75" y="137" text-anchor="middle" fill="#155799" font-size="11">action</text>
+  <path d="M120 87 L200 105" stroke="#819198" stroke-width="2" marker-end="url(#pf-a)"/><path d="M120 132 L200 112" stroke="#819198" stroke-width="2" marker-end="url(#pf-a)"/>
+  <rect x="200" y="82" width="150" height="52" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="275" y="113" text-anchor="middle" fill="#157878" font-size="12" font-weight="700">reducer (pure)</text>
+  <path d="M350 108 L430 108" stroke="#819198" stroke-width="2" marker-end="url(#pf-a)"/>
+  <rect x="430" y="82" width="130" height="52" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="495" y="113" text-anchor="middle" fill="#c2571a" font-size="11">new state</text>
+  <g font-size="10" fill="#c2571a"><text x="275" y="165" text-anchor="middle">✗ clock  ✗ random  ✗ fetch  ✗ mutate input</text></g>
+  <defs><marker id="pf-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>State + action in, new state out — and nothing else in or out. The crossed items are exactly what makes a reducer stop being a reducer.</figcaption>
+</figure>
 
 ## The three ways reducers go impure
 
-The violations are always the same three. **Mutation**: `state.items.push(x)` and
-returning `state` — now the old and new state are the same object, change
-detection fails, and components do not re-render. Return a new array instead.
-**Side effects**: firing an API call or dispatching from inside the reducer —
-that belongs in middleware (a thunk or saga), never in the reducer. **Nondeterminism**:
-`createdAt: Date.now()` or `id: Math.random()` inside the reducer makes replay
-impossible; compute those in the action creator and pass them in.
+Almost every impure reducer commits one of three sins. It **reads a nondeterministic
+source**, so the same action gives different results; it **mutates its input**,
+so React's reference check can't see the change; or it **performs a side effect**,
+so replaying actions fires it again. Here is all three, and the fix:
 
-## Purity is what makes the ecosystem work
+```js
+// IMPURE — reads the clock, mutates state, and fires a request
+function todos(state, action) {
+  if (action.type === "ADD") {
+    state.items.push({ text: action.text, at: Date.now() });  // mutate + clock
+    fetch("/api/todos", { method: "POST" });                  // side effect
+    return state;
+  }
+  return state;
+}
+```
 
-The payoff extends past your own tests. Because reducers are pure, dev tools can
-record every action and let you scrub backward and forward through state — time
-travel is only possible when replaying the same actions yields the same states.
-Server-side rendering can run the reducers on the server, serialize the resulting
-state, and hydrate it on the client, trusting that the same actions would rebuild
-it. Undo/redo becomes a matter of keeping a stack of states, not writing bespoke
-reversal logic. Optimistic updates can be applied and cleanly rolled back.
-None of these features were written for your app specifically; they all fall out
-of the single constraint that the reducer is a pure function of state and action.
-Break purity — read the clock, mutate the input, fire a request — and you do not
-just fail a test, you quietly opt out of the entire tooling ecosystem built on
-that guarantee.
+```js
+// PURE — deterministic inputs, a new array, no effects
+function todos(state, action) {
+  if (action.type === "ADD") {
+    return { ...state, items: [...state.items, action.item] }; // caller made `item`
+  }
+  return state;
+}
+```
 
-## Keeping it honest
+Notice the timestamp and the request didn't vanish — they *moved*. The `at` field
+is computed in the action creator (where reading the clock is fine), and the
+`fetch` moves to a thunk or saga. The reducer's only job is the transition. This
+is the key mental shift: purity does not forbid side effects, it *relocates* them
+to the edges — action creators, middleware, effects — and keeps the core state
+logic a clean function you can reason about in isolation. When a reducer feels
+like it "needs" to do something impure, that is the signal a step belongs one
+layer out, not that the rule is inconvenient.
 
-The discipline is to treat the incoming state as read-only and build the next
-state from it. Spread operators, `map`, `filter`, and `concat` return new
-structures; `push`, `splice`, and direct assignment mutate. Toolkits that wrap an
-immutable-update library let you *write* mutating-looking code that produces a new
-state under the hood — convenient, but the mental model is still "return a new
-state, never change the old one."
+## Purity is what makes the tests trivial
 
-If a reducer is hard to test, it is usually because it stopped being pure —
-something crept in that reads the world or changes its input. Move that
-something out, and the reducer becomes a plain function you can reason about. The
-counter-reducer exercise enforces immutability directly, and combine-reducers
-shows how pure slices compose.
+Because a pure reducer is just input-to-output, a test needs no store, no mocks,
+no framework — you call it and assert on the return value:
+
+```js
+const next = todos({ items: [] }, { type: "ADD", item: { text: "x" } });
+expect(next.items).toEqual([{ text: "x" }]);   // no setup, no teardown, no clock
+```
+
+That same property is what lets Redux DevTools replay your action log and land on
+exactly the state you had — time travel only works because re-running the reducers
+is guaranteed to reproduce the same states. And immutability, the "return a new
+object" half of purity, is what lets React and `reselect` detect a change with a
+`===` reference check instead of a deep comparison. So the purity rule is load-
+bearing: it is the single constraint that predictability, testability, and cheap
+change-detection all rest on. The counter-reducer exercise is the cleanest place
+to feel it — a reducer with nothing in it but a pure transition.

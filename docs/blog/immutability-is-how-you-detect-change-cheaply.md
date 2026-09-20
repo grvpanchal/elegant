@@ -1,69 +1,91 @@
 ---
 title: "Immutability is how you detect change cheaply"
-layout: post
 slug: immutability-is-how-you-detect-change-cheaply
+layout: post
 date: 2026-09-03
 author: The Elegant team
 category: terminology
 tags: [state, immutability, performance, react]
 description: Immutable updates are not about purity for its own sake. They let the framework decide 'did this change?' with a reference check instead of a deep scan — which is what keeps re-renders bounded.
 cover: /assets/img/state-system-diagram.png
-reading_minutes: 3
+reading_minutes: 5
 related_practice: [counter-reducer, memoized-selector, normalize-entities]
 ---
 
-Beginners hear "always return new state, never mutate" as a ritual. It is
-actually a performance contract. When state is immutable, "did this change?"
-becomes `oldRef !== newRef` — a single reference comparison. When state is
-mutated in place, the reference is the same even though the contents changed, so
-the only honest way to detect a change is to walk the whole structure. Immutable
-updates trade a little allocation for very cheap change detection, and modern UI
-frameworks are built on that trade.
+Immutability in a frontend store is not functional-programming aesthetics. It is
+a performance mechanism. When you never mutate state in place — you replace the
+parts that changed with new objects — the framework can answer the most frequent
+question it asks, *"did this change?"*, with a single `===` reference comparison
+instead of a deep, recursive scan of the data. That one substitution, cheap
+identity check for expensive structural check, is what keeps re-renders and
+selector recomputes bounded as your state grows.
 
-## The reference-equality shortcut
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="im-t im-d" class="blog-figure__svg">
+  <title id="im-t">A mutated object keeps its reference; an immutable update creates a new one</title>
+  <desc id="im-d">On the left the same object reference before and after a mutation, so an equality check sees no change. On the right a new object reference after an immutable update, so the check detects the change instantly.</desc>
+  <text x="150" y="28" text-anchor="middle" fill="#c2571a" font-size="12" font-weight="700">mutate in place</text>
+  <rect x="70" y="50" width="70" height="40" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="105" y="75" text-anchor="middle" fill="#c2571a" font-size="11">ref A</text>
+  <path d="M140 70 L210 70" stroke="#819198" stroke-width="2" marker-end="url(#im-a)"/><text x="175" y="60" text-anchor="middle" fill="#819198" font-size="10">edit</text>
+  <rect x="210" y="50" width="70" height="40" rx="6" fill="#fff4ec" stroke="#fe854c" stroke-width="2"/><text x="245" y="75" text-anchor="middle" fill="#c2571a" font-size="11">ref A</text>
+  <text x="175" y="120" text-anchor="middle" fill="#c2571a" font-size="10">A === A → "no change" (WRONG)</text>
+  <line x1="320" y1="30" x2="320" y2="200" stroke="#dce6f0"/>
+  <text x="470" y="28" text-anchor="middle" fill="#157878" font-size="12" font-weight="700">immutable update</text>
+  <rect x="390" y="50" width="70" height="40" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="425" y="75" text-anchor="middle" fill="#157878" font-size="11">ref A</text>
+  <path d="M460 70 L530 70" stroke="#819198" stroke-width="2" marker-end="url(#im-a)"/><text x="495" y="60" text-anchor="middle" fill="#819198" font-size="10">copy+edit</text>
+  <rect x="530" y="50" width="70" height="40" rx="6" fill="#e8f0f8" stroke="#157878" stroke-width="2"/><text x="565" y="75" text-anchor="middle" fill="#157878" font-size="11">ref B</text>
+  <text x="470" y="120" text-anchor="middle" fill="#157878" font-size="10">A !== B → "changed" (instant, correct)</text>
+  <defs><marker id="im-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>Mutation keeps the reference, so a fast identity check misses the change. Replacing the object changes the reference, so the check catches it.</figcaption>
+</figure>
 
-React's `memo`, `useMemo`, `useCallback`, and a store's `connect`/`useSelector`
-all decide whether to re-render or recompute by comparing references. If you
-mutate an array and return the same reference, they conclude "nothing changed"
-and skip the update — the classic "my state changed but the UI didn't" bug.
-Return a new array and the reference differs, so they update. The whole
-optimization layer depends on you never mutating.
+## Mutation is invisible to a reference check
 
-## Structural sharing keeps it cheap
+React's `memo`, `useMemo`, `useSelector`, and `reselect` all compare by reference.
+So a `push` into an existing array is the classic bug: the data changed, but the
+array is the *same object*, so `prev === next` is true and nothing updates:
 
-The worry is "won't copying everything be slow?" No — because you only copy the
-path that changed. Updating one item in a list means a new array and a new object
-for that item; every other item keeps its old reference. This is *structural
-sharing*: the new state shares most of its structure with the old one, so a deep
-tree costs a shallow copy. That is also why selectors can memoize effectively —
-the branches that did not change compare equal, so derived values are not
-recomputed.
+```js
+// BROKEN — same array reference, so React sees no change and won't re-render
+state.items.push(newItem);
+return state;
 
-## The selector connection
+// CORRECT — a new array; the reference differs, so the change is detected
+return { ...state, items: [...state.items, newItem] };
+```
 
-Immutability and memoized selectors are two halves of the same performance story.
-A memoized selector caches its computed result and only recomputes when its
-inputs change — and it decides "changed" by reference equality, the exact
-shortcut immutability enables. So a selector that derives a sorted, filtered list
-recomputes only when the underlying slice gets a new reference, which happens
-only when that slice actually changed, because you updated it immutably. Mutate
-the slice in place and the selector sees the same reference, skips the recompute,
-and serves a stale result — the same class of bug as a skipped re-render, one
-layer down. This is why the two techniques are always taught together: immutable
-updates make change detectable by reference, and selectors cash in that
-detectability to avoid recomputing derived data. Neither works without the other
-holding up its end.
+The spread copies only the top level, which is exactly enough: you create a new
+`items` array and a new state object, while unchanged siblings keep their old
+references and their consumers correctly skip re-rendering.
 
-## Writing it without footguns
+## Copy only the path that changed
 
-Spread to copy, then change the copy: `{ ...state, count: state.count + 1 }`,
-`[...list, item]`, `list.map(x => x.id === id ? { ...x, done: true } : x)`. Avoid
-`push`, `splice`, `sort` (which mutates!), and direct property assignment on
-state. For deeply nested state, the spread ceremony gets ugly — which is a signal
-to either normalize the shape flatter or use an immutable-update helper that lets
-you write mutating-looking code that produces new references underneath.
+Immutable updates do *not* mean deep-cloning the whole tree — that would be slow
+and would change every reference, defeating the point. You copy only along the
+path from the root to the thing you changed; everything off that path is shared:
 
-The rule to internalize: a new reference means "changed," a same reference means
-"identical," and the framework believes you. Break the rule and you either lose
-updates or lose the performance the whole model was designed to give you. The
-memoized-selector and normalize-entities exercises are where this pays off.
+```js
+// update one nested field: new objects only on the root → user → prefs path
+return {
+  ...state,
+  user: { ...state.user, prefs: { ...state.user.prefs, theme: "dark" } },
+};
+```
+
+Now `state.user.prefs` is a new reference (its consumers update) but
+`state.posts` is the *same* reference (its consumers correctly do nothing). This
+"structural sharing" is why immutable state is fast, not slow.
+
+## Let a tool enforce it, then reap the checks
+
+Writing nested spreads by hand is error-prone, which is why Redux Toolkit bundles
+Immer: you write code that *looks* mutative and Immer produces the immutable copy
+with correct structural sharing underneath. That is a convenience over the manual
+spread, not a different model — the output is still new references on the changed
+path. Once your updates are honestly immutable, everything downstream gets cheaper
+and more correct at once: `memo` prevents wasted renders, `reselect` returns
+stable references, and time-travel debugging can hold past states without them
+being mutated out from under it. The normalize-entities exercise pairs naturally
+with this — a normalised, immutably-updated store is where reference-based change
+detection pays off the most.
