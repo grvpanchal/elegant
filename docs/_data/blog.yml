@@ -20,6 +20,101 @@
   - action-creators
   - counter-reducer
   - combine-reducers
+- slug: agent-skills-are-reusable-knowledge
+  title: Agent skills are how you stop re-explaining yourself to the model
+  date: 2026-08-03
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - skills
+  - workflow
+  - reuse
+  description: If you find yourself pasting the same architecture rules and conventions
+    into every prompt, you have discovered the need for a skill — a packaged, reusable
+    set of instructions the model loads for a class of task instead of you retyping
+    it.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
+- slug: ai-and-accessibility
+  title: AI writes markup fast, and accessibility is exactly what it drops
+  date: 2026-08-05
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - accessibility
+  - quality
+  - guardrails
+  description: A model will happily generate a div that looks like a button, because
+    it renders and looks right. Accessibility lives in the parts that do not show
+    — roles, names, keyboard behaviour — which is precisely what optimizing for "looks
+    right" skips.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-a11y-gate
+  - accessible-combobox
+  - form-field-molecule
+- slug: ai-and-technical-debt
+  title: AI does not remove technical debt — it lets you create it faster
+  date: 2026-07-29
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - technical-debt
+  - quality
+  - guardrails
+  description: A model that generates code at ten times human speed also generates
+    debt at ten times human speed, if you let it. The productivity is real; so is
+    the pile it can leave behind without a standard to hold it to.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-atom-guardrail
+  - harness-state-shape
+- slug: ai-cannot-hold-your-architecture
+  title: AI cannot hold your architecture, so you have to
+  date: 2026-07-31
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - architecture
+  - state
+  - quality
+  description: A model has no memory of your system and no stake in its shape, so
+    it optimizes each task locally and erodes the structure globally. The durable
+    job is owning the architecture the model keeps forgetting.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - harness-state-shape
+  - presentational-vs-container
+  - normalize-entities
+- slug: ai-generated-tests-need-a-human-oracle
+  title: AI-generated tests need a human oracle
+  date: 2026-07-30
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - testing
+  - quality
+  - evals
+  description: A model is great at writing test scaffolding and terrible at deciding
+    what "correct" is. Ask it to test existing code and it will assert that the current
+    behaviour — bugs and all — is right. The oracle has to be you.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-skill-eval
+  - debounce-utility
+  - deep-clone
 - slug: ai-harness-for-ui-and-state
   title: An AI harness for keeping UI and State apart
   date: 2026-09-17
@@ -40,6 +135,25 @@
   - harness-state-shape
   - harness-atom-guardrail
   - harness-bundle-budget
+- slug: ai-in-the-frontend-sdlc
+  title: Where AI actually fits in the frontend development lifecycle
+  date: 2026-08-09
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - workflow
+  - guardrails
+  - sdlc
+  description: AI is not one thing you bolt onto the end of development. It shows
+    up at every stage — scaffolding, implementing, reviewing, testing — and it is
+    strong at some and dangerous at others. Knowing which is the whole skill.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
+  - harness-a11y-gate
 - slug: atoms-molecules-organisms
   title: 'Atoms, molecules, organisms: the vocabulary of a component system'
   date: 2026-09-20
@@ -222,6 +336,24 @@
   related_practice:
   - debounce-utility
   - design-search-experience
+- slug: evals-are-tests-for-judgement
+  title: Evals are tests for the things unit tests can't check
+  date: 2026-08-04
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - evals
+  - quality
+  - testing
+  description: A unit test checks that a function returns the right value. An eval
+    checks that a piece of prose, a design, or an AI output meets a standard you can
+    describe but not compute. As AI writes more, evals become as important as tests.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-skill-eval
+  - harness-atom-guardrail
 - slug: event-bubbling-and-capturing
   title: 'Event bubbling and capturing: the two trips every click takes'
   date: 2026-09-09
@@ -240,6 +372,26 @@
   related_practice:
   - event-delegation
   - quiz-event-propagation
+- slug: executable-guardrails-beat-review
+  title: An executable guardrail beats a review comment every time
+  date: 2026-08-06
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - quality
+  - ci
+  description: A rule that lives in a senior engineer's head gets enforced when they
+    happen to review. A rule that lives in a check gets enforced on every diff, forever,
+    by something that never gets tired. In an age of AI-authored code, that difference
+    decides.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-link-checker
+  - harness-bundle-budget
+  - harness-atom-guardrail
 - slug: flexbox-or-grid-pick-by-axis
   title: Flexbox or Grid? Pick by how many axes you are laying out
   date: 2026-09-12
@@ -387,6 +539,25 @@
   related_practice:
   - offline-first-list
   - retry-with-backoff
+- slug: prompt-to-component-workflow
+  title: 'Prompt to component: the quality is bounded by the boundary you hand over'
+  date: 2026-08-08
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - components
+  - workflow
+  - architecture
+  description: Asking a model for a component produces good code or a mess depending
+    almost entirely on how sharply you scoped the request. The skill is not prompting
+    tricks — it is drawing the box before you ask.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-atom-guardrail
+  - loading-button-atom
+  - form-field-molecule
 - slug: proxy-or-fix-cors
   title: Proxy it or fix CORS? Two answers to the same cross-origin wall
   date: 2026-08-15
@@ -478,6 +649,25 @@
   related_practice:
   - responsive-image-set
   - cache-headers-basics
+- slug: reviewing-ai-diffs-adversarially
+  title: 'Review an AI diff adversarially: assume it works and looks for the catch'
+  date: 2026-08-07
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - review
+  - quality
+  - architecture
+  description: The question for an AI diff is never "does it run" — it usually does.
+    It is "what would make this wrong that the tests do not cover?" Reviewing AI code
+    well means reading it looking for the plausible-but-broken.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-a11y-gate
+  - harness-state-shape
+  - presentational-vs-container
 - slug: selectors-derive-they-dont-store
   title: Selectors derive; they don't store
   date: 2026-08-31
@@ -664,6 +854,25 @@
   related_practice:
   - render-strategy-choice
   - responsive-image-set
+- slug: the-harness-pattern
+  title: 'The harness pattern: make ''is it done'' a number, not an opinion'
+  date: 2026-08-01
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - guardrails
+  - harness
+  - quality
+  description: A harness is the set of checks that decide whether work is good enough,
+    run automatically. Build one and "is this done" stops being a meeting and becomes
+    an exit code — which is the only way autonomous or AI-heavy work stays honest.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-link-checker
+  - harness-bundle-budget
+  - harness-skill-eval
 - slug: the-request-success-fail-triple
   title: The request/success/fail triple is the shape of every fetch
   date: 2026-08-28
@@ -780,6 +989,24 @@
   - debounce-utility
   - design-search-experience
   - normalize-entities
+- slug: when-not-to-use-ai-on-the-frontend
+  title: When not to use AI on the frontend
+  date: 2026-08-02
+  author: The Elegant team
+  category: ai-and-frontend
+  tags:
+  - ai
+  - judgement
+  - architecture
+  - workflow
+  description: Using AI well includes knowing when not to. There are tasks where a
+    model is slower, riskier, or actively misleading, and reaching for it there is
+    not sophistication — it is a mistake that costs you more than typing would have.
+  cover: /assets/img/ai-sdlc-flow.png
+  reading_minutes: 4
+  related_practice:
+  - harness-state-shape
+  - presentational-vs-container
 - slug: when-you-dont-need-redux
   title: When you don't need Redux
   date: 2026-08-24
