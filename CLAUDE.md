@@ -341,6 +341,30 @@ bza agents/organisation.yaml . -i "..."               # through the COO once fou
 bza agents/organisation.yaml . --status --graph       # offices, treasury, .benzene/graph.html
 ```
 
+The genome also carries a **`decider`** role (TypeSafe's `typesafe/jev-1.13`), a
+structured-decision model that answers at `/api/alpha/decisions` with a typed,
+calibrated, *deterministic* verdict — the same input gives the same answer, and
+it cannot return a value outside the set you give it. Benzene uses it two ways:
+to **route** an instruction to one of the six skills (a constrained choice,
+~$0.00002, no off-list hallucination), and as a **guardrail decision gate**. The
+`author-playbook` skill declares one: `not-ai-slop`, a choice between `ai_slop`
+and `genuine`. A playbook Jev calls slop drops the guardrail score below
+threshold, so the cell rewrites and the next draft is measured again — the slop
+verdict becomes false because the prose improved, not because the check was
+loosened. The gate is scoped to that prose skill (via the SKILL.md guardrail
+override, which merges without dropping the inherited verifiers); code skills
+carry no gate. Add more gates the same way — `score` gates (a 0..1 rubric) suit
+"is this diagram clear enough to post?"-style quality bars.
+
+Two honest limits, from TypeSafe's own guidance: **calibration is not
+correctness** — a confident verdict can still be wrong, so a Jev gate is *one*
+signal folded into the composite beside the file verifiers, never the only one,
+and its penalty is scaled by the model's confidence. And Jev only *decides*;
+the LLM still writes and reasons. It runs only when the genome has a `decider`
+role and is skipped offline, so the guardrail suite stays hermetic. See
+[TypeSafe's System One announcement](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
+and [a patterns reference](https://gist.github.com/pjburnhill/adf8d28efcad9df037bfdece178ef965).
+
 `agents/skills/` holds the six operating skills (`author-question`,
 `author-plan`, `author-playbook`, `fix-site-health`, `fix-functional`,
 `build-capability`). `AgentManifest.load` resolves `skills: [name]` against

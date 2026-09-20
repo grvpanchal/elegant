@@ -10,6 +10,20 @@ guardrail:
   # its own `verifiers:` REPLACES the manifest's list (GuardrailSpec.merged uses
   # exclude_unset), which would drop the site-wide `verify:capabilities` and
   # leave bza with nothing to discover work from.
+  #
+  # A deterministic Jev gate on prose quality: a playbook is 800+ words a person
+  # will read, so "generic AI slop" is a real failure the file checks cannot
+  # catch. Jev returns the same verdict for the same text every time, so a
+  # failing playbook heals (the cell rewrites) rather than shipping filler. Runs
+  # only when the genome carries a `decider` role; skipped offline.
+  decisions:
+    - name: not-ai-slop
+      question: "Is this playbook genuine, specific writing, or generic AI slop — cliches, padding, and advice so vague it could describe any topic?"
+      type: choice
+      criteria:
+        ai_slop: "cliche-ridden, vague, padded; could be about anything; no concrete detail an expert would recognise"
+        genuine: "specific and concrete; a named technique, a real failure mode, a number or example only someone who did the work would write"
+      reject: [ai_slop]
 ---
 A playbook is the long read: how to prepare for something, how to reason about
 it out loud, and what the common failure looks like. The guardrail measures
