@@ -1,6 +1,24 @@
 # Auto-generated from the front matter of docs/blog/*.md.
 # Regenerate with: python3 scripts/sync-blog-registry.py
 # Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+- slug: accessible-forms-labels-and-errors
+  title: Accessible forms come down to labels, grouping, and error wiring
+  date: 2026-07-02
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - forms
+  - aria
+  description: Most form accessibility is not exotic ARIA — it is labels tied to inputs,
+    related fields grouped, and errors wired so a screen reader announces them. Get
+    those three right and the form works for everyone.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - form-field-molecule
+  - accessible-combobox
 - slug: actions-are-messages-not-setters
   title: Actions are messages, not setters
   date: 2026-09-02
@@ -228,6 +246,24 @@
   - combine-reducers
   - normalize-entities
   - counter-reducer
+- slug: composition-over-configuration
+  title: Composition beats configuration when a component grows props
+  date: 2026-07-04
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - components
+  - api-design
+  - composition
+  description: When a component sprouts a dozen boolean props to cover every variation,
+    the fix is usually not another prop — it is letting the caller compose the pieces.
+    Configuration scales to a point; composition scales past it.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - tabs-molecule
+  - form-field-molecule
 - slug: controlled-vs-uncontrolled-inputs
   title: 'Controlled vs uncontrolled inputs: who owns the value?'
   date: 2026-09-06
@@ -429,6 +465,23 @@
   - harness-link-checker
   - harness-bundle-budget
   - harness-atom-guardrail
+- slug: feature-flags-decouple-deploy-from-release
+  title: Feature flags decouple deploying code from releasing a feature
+  date: 2026-06-26
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - deployment
+  - feature-flags
+  - workflow
+  description: A feature flag lets you merge and deploy unfinished or unreleased code
+    that stays dark until you flip it on. That separation — deploy is not release
+    — is what makes trunk-based development and safe rollouts possible.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - render-strategy-choice
 - slug: flexbox-or-grid-pick-by-axis
   title: Flexbox or Grid? Pick by how many axes you are laying out
   date: 2026-09-12
@@ -612,6 +665,25 @@
   related_practice:
   - data-table-sort
   - infinite-scroll-list
+- slug: memoization-is-caching-with-a-key
+  title: Memoization is just caching with a key you have to get right
+  date: 2026-06-30
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - memoization
+  - react
+  description: Memoization caches a result against its inputs and returns the cache
+    when the inputs repeat. Simple — except the whole thing depends on comparing inputs
+    correctly, which is where most memoization quietly does nothing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - memoized-selector
+  - selector-memoization
+  - debounce-utility
 - slug: micro-frontends-split-by-team
   title: Micro-frontends solve an org problem, not a tech one
   date: 2026-07-13
@@ -722,6 +794,24 @@
   related_practice:
   - offline-first-list
   - retry-with-backoff
+- slug: optimize-the-largest-contentful-paint
+  title: 'Largest Contentful Paint: make the biggest thing appear fast'
+  date: 2026-06-24
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - performance
+  - web-vitals
+  - images
+  description: LCP measures when the largest visible element — usually a hero image
+    or headline — finishes rendering. It is the Core Web Vital users feel most, and
+    fixing it is mostly about the critical path and one image.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - responsive-image-set
+  - render-strategy-choice
 - slug: portals-render-outside-the-tree
   title: Portals render outside the tree so overlays escape their parents
   date: 2026-07-06
@@ -777,6 +867,24 @@
   - presentational-vs-container
   - loading-button-atom
   - form-field-molecule
+- slug: progressive-enhancement-still-matters
+  title: Progressive enhancement still matters, even in a JavaScript world
+  date: 2026-06-29
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - accessibility
+  - resilience
+  - html
+  description: Build on a foundation that works without JavaScript, then layer richness
+    on top. It sounds old-fashioned until a script fails to load, a network flakes,
+    or a crawler visits — and the baseline is what saves you.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - form-field-molecule
+  - responsive-image-set
 - slug: progressive-web-apps-and-service-workers
   title: 'Progressive web apps: the service worker is the whole trick'
   date: 2026-07-16
@@ -1181,6 +1289,25 @@
   related_practice:
   - presentational-vs-container
   - harness-state-shape
+- slug: the-cost-of-a-dependency
+  title: Every dependency is a loan, and the interest is paid in bytes and risk
+  date: 2026-06-25
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - performance
+  - dependencies
+  - bundling
+  description: Adding a package feels free — one install command. The real cost shows
+    up later in bundle size, security surface, maintenance, and the day it breaks.
+    Weigh it before you borrow, not after.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - harness-bundle-budget
+  - debounce-utility
+  - deep-clone
 - slug: the-critical-rendering-path
   title: The critical rendering path is the story of your first paint
   date: 2026-08-12
@@ -1199,6 +1326,24 @@
   related_practice:
   - render-strategy-choice
   - responsive-image-set
+- slug: the-event-loop-and-why-ui-freezes
+  title: The event loop, and why a busy function freezes the whole UI
+  date: 2026-07-01
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - javascript
+  - performance
+  - event-loop
+  description: JavaScript runs on one thread, so a function that runs too long blocks
+    everything — clicks, scrolls, rendering, all frozen until it returns. Understanding
+    the event loop is understanding why, and how to keep the thread free.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - debounce-utility
+  - retry-with-backoff
 - slug: the-harness-pattern
   title: 'The harness pattern: make ''is it done'' a number, not an opinion'
   date: 2026-08-01
@@ -1235,6 +1380,24 @@
   reading_minutes: 3
   related_practice:
   - action-creators
+  - retry-with-backoff
+  - normalize-entities
+- slug: the-request-waterfall
+  title: 'The request waterfall: when your fetches wait in line for no reason'
+  date: 2026-06-23
+  author: The Elegant team
+  category: architecture
+  tags:
+  - server
+  - performance
+  - async
+  - data
+  description: A waterfall is a chain of requests that each wait for the previous
+    one when they did not have to. It is the quiet cause of slow pages — data that
+    could have loaded in parallel loading in sequence instead.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
   - retry-with-backoff
   - normalize-entities
 - slug: the-store-is-one-source-of-truth
@@ -1350,6 +1513,24 @@
   related_practice:
   - query-string-state
   - design-search-experience
+- slug: throttling-scroll-and-resize
+  title: Scroll and resize fire constantly — throttle them or pay for it
+  date: 2026-06-28
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - events
+  - throttle
+  description: Scroll and resize can fire dozens of times a second, and doing real
+    work in their handlers is a reliable way to jank the page. Throttle them, or move
+    the work to the platform APIs built for exactly this.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - infinite-scroll-list
+  - debounce-utility
 - slug: thunks-and-sagas-handle-the-async
   title: Thunks and sagas both handle async — they just disagree on how
   date: 2026-08-29
@@ -1389,6 +1570,24 @@
   - presentational-vs-container
   - render-strategy-choice
   - design-micro-frontends
+- slug: web-components-and-the-platform
+  title: Web components are the platform's answer to reusable UI
+  date: 2026-06-27
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - web-components
+  - platform
+  - shadow-dom
+  description: Custom elements, shadow DOM, and templates let you build framework-agnostic
+    components the browser understands natively. They will not replace your framework,
+    but they are the right tool for cross-framework, long-lived UI.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
 - slug: what-frontend-interviews-measure
   title: What frontend interviews actually measure
   date: 2026-09-15
@@ -1446,6 +1645,25 @@
   related_practice:
   - simple-store
   - counter-component
+- slug: why-organisms-should-not-fetch
+  title: Why an organism should not fetch its own data
+  date: 2026-07-03
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - atomic-design
+  - architecture
+  - data
+  description: The moment a reusable organism fetches its own data, it stops being
+    reusable and becomes a feature bolted to one endpoint. Keeping the fetch above
+    it, in a container, is what keeps the UI layer portable and testable.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
+  - normalize-entities
 - slug: z-index-and-stacking-contexts
   title: 'z-index: 9999 doesn''t work, and stacking contexts are why'
   date: 2026-07-09
