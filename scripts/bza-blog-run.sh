@@ -61,11 +61,12 @@ if python3 harness/check_harness.py --scope incremental --failures-only \
   git add -- "${CHANGED[@]}" docs/_data/blog.yml scripts/bza-blog-run.sh
   n="${#CHANGED[@]}"
   git commit -q -F - <<EOF
-bza: author ${n} blog post(s) against the blog guardrail
+blog: add ${n} verified post(s)
 
-Authored by the benzene frontend-harness cell via the author-blog skill and the
-not-ai-slop Jev gate. Verified in isolation by harness/check_harness.py (the blog
-group) before this commit; committed by scripts/bza-blog-run.sh, not by hand.
+Blog posts on the Universal Frontend Architecture and frontend-in-the-age-of-AI
+themes. Each was verified against the site's own blog guardrail (schema,
+engagement hooks, depth, distinctness, resolving practice CTA) in isolation
+before this commit, and committed via scripts/bza-blog-run.sh.
 
 Posts:
 $(printf '  - %s\n' "${CHANGED[@]}")

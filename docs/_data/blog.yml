@@ -40,6 +40,152 @@
   - loading-button-atom
   - form-field-molecule
   - tabs-molecule
+- slug: controlled-vs-uncontrolled-inputs
+  title: 'Controlled vs uncontrolled inputs: who owns the value?'
+  date: 2026-09-06
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - forms
+  - state
+  - components
+  description: The whole controlled-versus-uncontrolled question comes down to one
+    thing — does your component's state own the input's value, or does the DOM? Pick
+    per field, not per app.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - form-field-molecule
+  - query-string-state
+- slug: css-specificity-decides-who-wins
+  title: CSS specificity decides who wins, and it is not about order
+  date: 2026-09-13
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - specificity
+  - cascade
+  description: When two rules target the same element, the more specific selector
+    wins — regardless of which came last. Understanding the tiebreak is the difference
+    between fixing a style and piling !important on it.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: custom-properties-are-runtime-css-variables
+  title: Custom properties are runtime variables, and that changes theming
+  date: 2026-09-11
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - theming
+  - custom-properties
+  description: A Sass variable is gone by the time the browser runs. A CSS custom
+    property is live — it cascades, inherits, and can be changed at runtime, which
+    is why theming and dark mode are built on it.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
+- slug: debounce-and-throttle-are-different-tools
+  title: Debounce and throttle are different tools for different problems
+  date: 2026-09-05
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - events
+  - javascript
+  description: Both limit how often a function runs, but they answer different questions.
+    Debounce waits for quiet; throttle enforces a steady rate. Using the wrong one
+    makes a search box feel broken.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - debounce-utility
+  - design-search-experience
+- slug: event-bubbling-and-capturing
+  title: 'Event bubbling and capturing: the two trips every click takes'
+  date: 2026-09-09
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - events
+  - dom
+  - delegation
+  description: Every DOM event travels down to the target and back up again. Knowing
+    which phase your listener runs in is what makes event delegation, and stopping
+    propagation, predictable instead of magic.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - event-delegation
+  - quiz-event-propagation
+- slug: flexbox-or-grid-pick-by-axis
+  title: Flexbox or Grid? Pick by how many axes you are laying out
+  date: 2026-09-12
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - css
+  - layout
+  - flexbox
+  - grid
+  description: The endless flexbox-versus-grid debate has a boring answer — one axis,
+    use flexbox; two axes, use grid. Everything else is a corollary of that one distinction.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - data-table-sort
+  - responsive-image-set
+- slug: focus-management-is-the-keyboard-users-cursor
+  title: Focus management is the keyboard user's cursor
+  date: 2026-09-08
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - focus
+  - keyboard
+  description: For a keyboard or screen-reader user, focus is the cursor. A dialog
+    that opens without moving focus, or a menu that traps it, is as broken as a mouse
+    that stops moving.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+  - form-field-molecule
+- slug: immutability-is-how-you-detect-change-cheaply
+  title: Immutability is how you detect change cheaply
+  date: 2026-09-03
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - immutability
+  - performance
+  - react
+  description: Immutable updates are not about purity for its own sake. They let the
+    framework decide 'did this change?' with a reference check instead of a deep scan
+    — which is what keeps re-renders bounded.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - counter-reducer
+  - memoized-selector
+  - normalize-entities
 - slug: normalize-your-api-responses
   title: 'Normalize your API responses: the refactor that pays for itself'
   date: 2026-09-21
@@ -58,6 +204,25 @@
   related_practice:
   - normalize-entities
   - deep-clone
+  - memoized-selector
+- slug: pure-functions-and-why-reducers-are-pure
+  title: Pure functions, and why a reducer has to be one
+  date: 2026-09-04
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - reducers
+  - functional
+  description: A reducer that reads the clock, mutates its input, or fires a request
+    is not a reducer — it is a bug. The purity rule is what makes state predictable,
+    testable, and time-travellable.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - counter-reducer
+  - combine-reducers
   - memoized-selector
 - slug: real-virtual-shadow-dom
   title: 'Real DOM, Virtual DOM, Shadow DOM: three different things with one word'
@@ -78,6 +243,42 @@
   - event-delegation
   - counter-component
   - theme-toggle
+- slug: reflow-and-repaint-are-not-the-same
+  title: Reflow and repaint are not the same, and the difference is your frame budget
+  date: 2026-09-10
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - performance
+  - rendering
+  - layout
+  description: Changing a color repaints. Changing a size reflows. Reflow is the expensive
+    one, and doing it inside a loop is how a smooth list turns into a janky one.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - infinite-scroll-list
+  - skeleton-list
+- slug: semantic-html-is-the-cheapest-accessibility
+  title: Semantic HTML is the cheapest accessibility you will ever ship
+  date: 2026-09-14
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - html
+  - semantics
+  description: Before you reach for a single ARIA attribute, use the element that
+    already means what you want. A button is a button; a div pretending to be one
+    is a bug waiting to happen.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - form-field-molecule
+  - accessible-combobox
+  - loading-button-atom
 - slug: surviving-frontend-in-the-age-of-ai
   title: Surviving as a frontend engineer in the age of AI
   date: 2026-09-18
@@ -97,6 +298,24 @@
   - harness-atom-guardrail
   - harness-skill-eval
   - harness-a11y-gate
+- slug: the-accessibility-tree-is-what-screen-readers-read
+  title: The accessibility tree is what screen readers actually read
+  date: 2026-09-07
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - aria
+  - semantics
+  description: Screen readers do not read your DOM. They read a parallel structure
+    the browser builds from it — the accessibility tree — and knowing that explains
+    why a styled div announces nothing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - accessible-combobox
+  - form-field-molecule
 - slug: universal-frontend-architecture
   title: 'The Universal Frontend Architecture: UI, Server, and State as three seams'
   date: 2026-09-19
