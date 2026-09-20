@@ -1,6 +1,25 @@
 # Auto-generated from the front matter of docs/blog/*.md.
 # Regenerate with: python3 scripts/sync-blog-registry.py
 # Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+- slug: actions-are-messages-not-setters
+  title: Actions are messages, not setters
+  date: 2026-09-02
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - actions
+  - architecture
+  description: The most common Redux mistake is treating actions like setters — SET_USER,
+    SET_LOADING, SET_ERROR. An action should describe something that happened, not
+    command the store how to change.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - action-creators
+  - counter-reducer
+  - combine-reducers
 - slug: ai-harness-for-ui-and-state
   title: An AI harness for keeping UI and State apart
   date: 2026-09-17
@@ -40,6 +59,43 @@
   - loading-button-atom
   - form-field-molecule
   - tabs-molecule
+- slug: colocate-state-until-you-cant
+  title: Colocate state until you can't
+  date: 2026-08-25
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - architecture
+  - react
+  - components
+  description: The right home for a piece of state is the smallest scope that needs
+    it. Lifting everything to a global store by default is how a simple app grows
+    a state-management problem it never needed.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - counter-component
+  - query-string-state
+- slug: combine-reducers-splits-the-store
+  title: combineReducers splits the store without splitting the truth
+  date: 2026-08-23
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - reducers
+  - architecture
+  description: One state tree can still have many owners. combineReducers gives each
+    slice its own reducer while keeping a single store — the trick is that each reducer
+    sees only its slice, and that constraint is a feature.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - combine-reducers
+  - normalize-entities
+  - counter-reducer
 - slug: controlled-vs-uncontrolled-inputs
   title: 'Controlled vs uncontrolled inputs: who owns the value?'
   date: 2026-09-06
@@ -186,6 +242,24 @@
   - counter-reducer
   - memoized-selector
   - normalize-entities
+- slug: middleware-is-the-stores-pipeline
+  title: Middleware is the store's pipeline, not a grab bag
+  date: 2026-08-30
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - middleware
+  - async
+  description: Middleware sits between dispatch and the reducer, and each one can
+    inspect, delay, transform, or swallow an action. Understanding it as an ordered
+    pipeline is what makes async and logging predictable.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - apply-middleware
+  - middleware-order
 - slug: normalize-your-api-responses
   title: 'Normalize your API responses: the refactor that pays for itself'
   date: 2026-09-21
@@ -205,6 +279,24 @@
   - normalize-entities
   - deep-clone
   - memoized-selector
+- slug: optimistic-updates-and-rollback
+  title: 'Optimistic updates: show it now, reconcile later'
+  date: 2026-08-26
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - ux
+  - async
+  - patterns
+  description: An optimistic update applies the change to the UI before the server
+    confirms it, then rolls back if the server disagrees. It makes an app feel instant
+    — and it is only safe if you plan the rollback.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - offline-first-list
+  - retry-with-backoff
 - slug: pure-functions-and-why-reducers-are-pure
   title: Pure functions, and why a reducer has to be one
   date: 2026-09-04
@@ -260,6 +352,25 @@
   related_practice:
   - infinite-scroll-list
   - skeleton-list
+- slug: selectors-derive-they-dont-store
+  title: Selectors derive; they don't store
+  date: 2026-08-31
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - selectors
+  - memoization
+  - performance
+  description: A selector is a function from state to a derived value. Used well,
+    it is the seam that lets you reshape state without touching components — and memoized,
+    it keeps derived data cheap.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - memoized-selector
+  - selector-memoization
+  - normalize-entities
 - slug: semantic-html-is-the-cheapest-accessibility
   title: Semantic HTML is the cheapest accessibility you will ever ship
   date: 2026-09-14
@@ -279,6 +390,25 @@
   - form-field-molecule
   - accessible-combobox
   - loading-button-atom
+- slug: server-state-is-not-client-state
+  title: Server state is not client state, and treating them the same hurts
+  date: 2026-08-27
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - architecture
+  - caching
+  - async
+  description: The data you fetch from a server and the state your UI owns are different
+    animals with different rules. Cramming server data into your Redux store as if
+    you owned it is the source of most stale-data bugs.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - offline-first-list
+  - normalize-entities
+  - retry-with-backoff
 - slug: surviving-frontend-in-the-age-of-ai
   title: Surviving as a frontend engineer in the age of AI
   date: 2026-09-18
@@ -316,6 +446,81 @@
   related_practice:
   - accessible-combobox
   - form-field-molecule
+- slug: the-request-success-fail-triple
+  title: The request/success/fail triple is the shape of every fetch
+  date: 2026-08-28
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - async
+  - patterns
+  - redux
+  description: Every asynchronous call has three outcomes worth modelling — it started,
+    it worked, it failed — and a single boolean isLoading cannot represent them. The
+    triple is why your spinners and errors behave.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - action-creators
+  - retry-with-backoff
+  - normalize-entities
+- slug: the-store-is-one-source-of-truth
+  title: The store is one source of truth, or it is not a source of truth
+  date: 2026-09-01
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - store
+  - architecture
+  description: A single source of truth is not a slogan — it is a constraint. The
+    moment the same fact lives in two places, you own the job of keeping them in sync,
+    and you will lose.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - simple-store
+  - combine-reducers
+  - counter-reducer
+- slug: the-url-is-state-too
+  title: The URL is state too — and often the right place for it
+  date: 2026-08-22
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - routing
+  - url
+  - ux
+  description: Filters, tabs, search queries and pagination all belong in the URL
+    more often than in a store. If a user would want to bookmark, share, or reload
+    into a view, that view's state should live in the address bar.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - query-string-state
+  - design-search-experience
+- slug: thunks-and-sagas-handle-the-async
+  title: Thunks and sagas both handle async — they just disagree on how
+  date: 2026-08-29
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - async
+  - sagas
+  description: A thunk is a function you dispatch; a saga is a long-running process
+    that watches for actions. Pick by how complex your async is — most apps need thunks,
+    some genuinely need sagas.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - apply-middleware
+  - retry-with-backoff
+  - action-creators
 - slug: universal-frontend-architecture
   title: 'The Universal Frontend Architecture: UI, Server, and State as three seams'
   date: 2026-09-19
@@ -357,3 +562,21 @@
   - debounce-utility
   - design-search-experience
   - normalize-entities
+- slug: when-you-dont-need-redux
+  title: When you don't need Redux
+  date: 2026-08-24
+  author: The Elegant team
+  category: terminology
+  tags:
+  - state
+  - redux
+  - architecture
+  - react
+  description: Redux is a tool for a specific problem — a lot of client state, changed
+    from many places, that many parts of the app must read. If that is not your problem,
+    Redux is overhead you will resent.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 3
+  related_practice:
+  - simple-store
+  - counter-component
