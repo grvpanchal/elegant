@@ -1,60 +1,90 @@
 ---
 title: "Responsive images: describe the options, let the browser choose"
-layout: post
 slug: responsive-images-let-the-browser-choose
+layout: post
 date: 2026-08-10
 author: The Elegant team
 category: terminology
 tags: [ui, performance, images, web-vitals]
 description: 'Shipping one large image to every device wastes data on phones and looks soft on retina screens. srcset and sizes let you describe the options and hand the choice to the browser, which knows the device better than you do.'
 cover: /assets/img/diagrams/server-system-diagram.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [responsive-image-set, cache-headers-basics]
 ---
 
-Images are usually the heaviest thing on a page, so getting them right is the
-highest-leverage performance work you can do. The mistake is shipping one image
-size to everyone: a 2000px hero wastes megabytes on a phone that will display it
-at 375px, and a 375px image looks blurry on a high-density laptop screen. The fix
-is not to guess the device — it is to describe your options and let the browser,
-which knows the viewport and pixel density, pick.
+Ship one image to every device and you lose both ways: a phone on cellular
+downloads a 2000px hero it will render at 375px (wasted data and a slow LCP), while
+a retina laptop gets an image too small to look crisp. The fix is not to pick a
+"medium" size that is wrong for everyone. It is to **describe the options** and let
+the *browser* choose, because at request time the browser knows things you never
+can at build time — the device pixel ratio, the viewport width, the current network
+— and it picks the smallest file that will still look sharp. `srcset` and `sizes`
+are how you hand it that choice.
 
-## srcset offers resolutions
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="ri-t ri-d" class="blog-figure__svg">
+  <title id="ri-t">The author lists image widths; the browser matches one to the device</title>
+  <desc id="ri-d">A srcset lists 400w, 800w and 1600w options. Three devices — phone, laptop, retina — each receive the appropriately sized file chosen by the browser.</desc>
+  <rect x="30" y="70" width="140" height="60" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="100" y="94" text-anchor="middle" fill="#157878" font-size="10">srcset</text><text x="100" y="112" text-anchor="middle" fill="#819198" font-size="9">400 · 800 · 1600w</text>
+  <path d="M170 85 L250 55" stroke="#819198" stroke-width="2" marker-end="url(#ri-a)"/><path d="M170 100 L250 100" stroke="#819198" stroke-width="2" marker-end="url(#ri-a)"/><path d="M170 115 L250 145" stroke="#819198" stroke-width="2" marker-end="url(#ri-a)"/>
+  <g font-size="9" text-anchor="middle">
+    <rect x="250" y="40" width="150" height="30" rx="5" fill="#f3f6fa" stroke="#155799"/><text x="325" y="59" fill="#155799">phone → 400w</text>
+    <rect x="250" y="85" width="150" height="30" rx="5" fill="#f3f6fa" stroke="#155799"/><text x="325" y="104" fill="#155799">laptop → 800w</text>
+    <rect x="250" y="130" width="150" height="30" rx="5" fill="#fff4ec" stroke="#fe854c"/><text x="325" y="149" fill="#c2571a">retina → 1600w</text>
+  </g>
+  <text x="500" y="100" text-anchor="middle" fill="#819198" font-size="10">browser picks the</text><text x="500" y="116" text-anchor="middle" fill="#819198" font-size="10">smallest sharp file</text>
+  <defs><marker id="ri-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>You publish several widths and describe the slot; the browser, knowing the device and viewport, downloads exactly one — the smallest that still looks crisp.</figcaption>
+</figure>
 
-The `srcset` attribute lists the same image at several widths, and `sizes` tells
-the browser how wide the image will actually render at different breakpoints.
-Given both, the browser does the math — viewport, layout width, device pixel
-ratio — and downloads the single best file, no JavaScript involved. A phone grabs
-the small one and saves data; a retina laptop grabs the large one and stays sharp.
-You are not detecting the device; you are handing the browser the information it
-needs to choose, which it does better and more cheaply than any script could.
+## srcset lists the widths; sizes describes the slot
 
-## picture handles art direction and formats
+`srcset` gives the browser the candidate files and their intrinsic widths (the `w`
+descriptor). `sizes` tells it how wide the image will *display* at various
+breakpoints, so it can do the maths — display width × pixel ratio — and pick:
 
-When you need more than a resolution swap — a different *crop* on mobile, or a
-modern format with a fallback — `<picture>` with `<source>` elements is the tool.
-Use it to serve a tightly-cropped image on narrow screens and a wide one on
-desktop (art direction), or to offer AVIF and WebP with a JPEG fallback so
-capable browsers get the smaller modern format and older ones still work. The
-browser picks the first `<source>` it supports, so you get progressive
-enhancement for free.
+```html
+<img
+  src="/hero-800.jpg"                         <!-- fallback for old browsers -->
+  srcset="/hero-400.jpg 400w,
+          /hero-800.jpg 800w,
+          /hero-1600.jpg 1600w"
+  sizes="(max-width: 600px) 100vw, 50vw"      <!-- full width on phones, half on desktop -->
+  width="800" height="450"                     <!-- reserve the box: no layout shift -->
+  alt="A city skyline at dusk">
+```
 
-## Reserve the space to avoid layout shift
+On a 375px phone the browser computes ~375 CSS px × 2 DPR ≈ 750px and grabs the
+800w file; on a wide retina desktop it reaches for the 1600w. You wrote the options
+once; the browser made the right call for each visitor.
 
-A fast image that arrives late still hurts if it shoves the page around when it
-lands — that is Cumulative Layout Shift, and it is jarring and bad for your Core
-Web Vitals. Always give images explicit `width` and `height` attributes (or a CSS
-`aspect-ratio`), so the browser reserves the correct box before the image loads
-and nothing jumps when it arrives. This one attribute pair fixes a large share of
-real-world layout-shift complaints.
+## picture: when the image itself should change
 
-## Lazy-load below the fold, prioritize above it
+`srcset` chooses between sizes of the *same* image. When you need to change the
+image — a different crop on mobile (art direction), or a modern format with a
+fallback — use `<picture>` with `<source>` elements, which let you swap by media
+query or type:
 
-Finally, tell the browser what is urgent. Add `loading="lazy"` to images below the
-fold so they are not fetched until the user scrolls near them, saving bandwidth on
-content they may never see. Conversely, do *not* lazy-load your hero image — it is
-your Largest Contentful Paint element, so mark it high priority and let it load
-immediately. The through-line is the same as the rest of responsive images: give
-the browser accurate signals about size, format, and urgency, and it will make
-better decisions than a hard-coded choice ever could. The responsive-image
-exercise builds exactly this markup.
+```html
+<picture>
+  <source type="image/avif" srcset="/hero.avif">   <!-- modern format if supported -->
+  <source media="(max-width: 600px)" srcset="/hero-square.jpg"> <!-- tighter crop on phones -->
+  <img src="/hero.jpg" alt="A city skyline at dusk" width="800" height="450">
+</picture>
+```
+
+The browser takes the first `<source>` it supports and matches, falling back to the
+`<img>`.
+
+## Always reserve the box, and lazy-load below the fold
+
+Two habits make responsive images pay off without side effects. Always set `width`
+and `height` (or an `aspect-ratio`) so the browser reserves the correct box before
+the file arrives — otherwise the page reflows when it loads, hurting Cumulative
+Layout Shift. And add `loading="lazy"` to images *below* the fold so they do not
+compete for bandwidth with the first screen — but never to the LCP hero, which you
+want eager and high priority. Describe the options, reserve the space, defer what
+is offscreen, and the browser does the rest better than a fixed choice ever could.
+The responsive-image-set exercise builds exactly this `srcset`/`sizes` markup, which
+is where the "hand the choice to the browser" idea becomes muscle memory.

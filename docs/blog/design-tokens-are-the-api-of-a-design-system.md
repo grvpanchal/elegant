@@ -8,59 +8,93 @@ category: architecture
 tags: [ui, design-system, theming, tokens]
 description: 'A design token is a named value — a color, a space, a radius — used everywhere instead of a raw number. Treating tokens as the design system''s public API is what makes theming, dark mode, and rebrands a config change instead of a find-and-replace.'
 cover: /assets/img/atomic-design.png
-reading_minutes: 4
+reading_minutes: 5
 related_practice: [theme-toggle, loading-button-atom]
 ---
 
-A design token is a named value standing in for a raw one: `--color-primary`
-instead of `#157878`, `--space-4` instead of `1rem`, `--radius-md` instead of
-`6px`. It sounds like a naming convention, and treated shallowly it is one.
-Treated as the *public API* of your design system, it is the thing that turns
-theming, dark mode, and rebrands from a codebase-wide find-and-replace into a
-config change.
+A design token is a named value — `color.brand`, `space.md`, `radius.card` — used
+everywhere in place of a raw `#fe854c` or `16px`. That sounds like a naming
+convention, but the useful way to see it is as an **API**: tokens are the design
+system's public interface, and components are consumers that only ever reference
+the names, never the underlying values. Draw that line and a rebrand, a dark mode,
+or a density change becomes editing the *implementation* behind the API — a config
+change in one place — instead of a find-and-replace across a thousand components
+that will always miss some.
 
-## Names, not literals, everywhere
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 200" role="img" aria-labelledby="dt2-t dt2-d" class="blog-figure__svg">
+  <title id="dt2-t">Components consume token names; the token layer maps names to values</title>
+  <desc id="dt2-d">Components reference token names like color.brand and space.md. A token layer maps those names to concrete values, and a theme swaps the values without touching components.</desc>
+  <rect x="30" y="70" width="120" height="60" rx="8" fill="#fff4ec" stroke="#fe854c" stroke-width="2.5"/><text x="90" y="95" text-anchor="middle" fill="#c2571a" font-size="10">components</text><text x="90" y="113" text-anchor="middle" fill="#819198" font-size="9">use names only</text>
+  <path d="M150 100 L250 100" stroke="#819198" stroke-width="2" marker-end="url(#dt2-a)"/><text x="200" y="90" text-anchor="middle" fill="#819198" font-size="9">color.brand</text>
+  <rect x="250" y="60" width="150" height="80" rx="8" fill="#e8f0f8" stroke="#157878" stroke-width="2.5"/><text x="325" y="88" text-anchor="middle" fill="#157878" font-size="10">token layer (API)</text><text x="325" y="108" text-anchor="middle" fill="#819198" font-size="9">name → value</text>
+  <path d="M400 100 L500 100" stroke="#819198" stroke-width="2" marker-end="url(#dt2-a)"/>
+  <rect x="500" y="55" width="110" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="555" y="80" text-anchor="middle" fill="#155799" font-size="9">light: #fe854c</text>
+  <rect x="500" y="105" width="110" height="40" rx="6" fill="#f3f6fa" stroke="#155799" stroke-width="2"/><text x="555" y="130" text-anchor="middle" fill="#155799" font-size="9">dark: #ff9a63</text>
+  <text x="325" y="165" text-anchor="middle" fill="#819198" font-size="9">swap values here — components never change</text>
+  <defs><marker id="dt2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#819198"/></marker></defs>
+</svg>
+<figcaption>Components depend on the token names; the token layer resolves names to values. Change the values (a theme) and the consumers are untouched.</figcaption>
+</figure>
 
-The rule is that components never use raw values — no `#157878`, no `1rem`, no
-`6px` in a component's styles. They use tokens. A button's background is
-`var(--color-primary)`, its padding is `var(--space-3)`, its corners are
-`var(--radius-md)`. The raw values exist in exactly one place, the token
-definitions, and everything else references them by name. This is the same
-principle as not scattering magic numbers through code: the literal lives once, and
-the meaning ("primary color," "medium radius") is what the rest of the system
-speaks.
+## Components consume names, never raw values
 
-## Theming becomes redefining tokens
+The discipline is that no component contains a literal colour, spacing, or radius —
+it references a token. In CSS the natural carrier is a custom property, because it
+is a live, inheritable name:
 
-Once components speak in tokens, a theme is just a different set of token values.
-Dark mode redefines `--color-bg` and `--color-text` inside a media query or a
-`[data-theme]` scope, and every component follows because they all reference the
-tokens, not the literals. A rebrand changes `--color-primary` in one place and the
-whole product updates. A white-label deployment ships a token file per client. None
-of this touches component code, because the components were never coupled to
-values — only to names. This is why serious theming is built on tokens plus CSS
-custom properties, which make those names live at runtime.
+```css
+:root {
+  --color-brand: #fe854c;
+  --space-md: 16px;
+  --radius-card: 8px;
+}
+.card {
+  padding: var(--space-md);        /* the NAME, not 16px */
+  border-radius: var(--radius-card);
+  border-color: var(--color-brand);
+}
+```
 
-## Tokens have tiers
+A reviewer (or a lint rule) can now enforce a simple invariant: a raw hex or px
+value in a component is a bug, because it bypasses the API.
 
-Mature token systems have layers, and the layering is what keeps them flexible.
-*Primitive* tokens are the raw palette: `--blue-500`, `--gray-100`. *Semantic*
-tokens give those meaning: `--color-primary: var(--blue-500)`,
-`--color-danger: var(--red-500)`. Components use the *semantic* tokens, never the
-primitives. So "make primary green instead of blue" is one edit to the semantic
-layer, and "adjust our blue" is one edit to the primitive — and components, which
-only ever said `--color-primary`, are untouched either way. Skipping the semantic
-tier and using primitives directly in components is the common mistake that makes
-rebrands painful again.
+## Tiered tokens: primitives, semantics, components
 
-## The token file is a contract
+Mature systems layer the API so intent is expressed, not just values. **Primitive**
+tokens are the raw palette (`--blue-500`); **semantic** tokens name a role
+(`--color-action` → `--blue-500`); **component** tokens name a specific use
+(`--button-bg` → `--color-action`). Components consume the semantic or component
+tier, so you can change what "action" means without touching the palette or the
+components:
 
-Because tokens are the API, the token file is a contract between design and
-engineering, and between the design system and its consumers. Renaming or removing
-a token is a breaking change, exactly like changing a function signature, and
-should be treated with the same care. Adding one is safe; changing what one means
-ripples everywhere it is used, which is the point — that ripple is the leverage.
-Treat tokens as a versioned, deliberate interface and your design system scales;
-treat them as loose variables and they drift back into magic numbers with extra
-steps. The theme-toggle exercise is tokens-plus-custom-properties made concrete,
-and the loading-button atom is a component that should speak only in tokens.
+```css
+:root {
+  --blue-500: #1e6bb8;             /* primitive: a raw colour */
+  --color-action: var(--blue-500); /* semantic: the ROLE */
+  --button-bg: var(--color-action);/* component: this specific use */
+}
+.button { background: var(--button-bg); }
+```
+
+## The payoff: theming and rebrands become config
+
+Because components only touch the API, changing the *implementation* reprices the
+whole system at once. Dark mode redefines the semantic tier; a rebrand redefines
+the primitives; a density change redefines the spacing scale — each is one block of
+overrides, and every component inherits the change with zero edits:
+
+```css
+[data-theme="dark"] {
+  --color-action: #4c9be8;   /* re-point one semantic token; every button follows */
+}
+```
+
+That is the whole argument for treating tokens as an API rather than as shared
+constants: an API has a stable surface (the names) and a swappable
+implementation (the values), which is exactly the property that turns "rebrand the
+app" from a multi-week grep into a config edit. Tokens are also what let design and
+engineering share one vocabulary — the designer's "action colour" and the
+developer's `--color-action` are the same token. The theme-toggle exercise builds
+the theme-swap-behind-the-API move directly, which is the clearest demonstration
+of why the indirection pays for itself.

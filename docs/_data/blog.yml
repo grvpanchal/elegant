@@ -369,7 +369,7 @@
     property is live — it cascades, inherits, and can be changed at runtime, which
     is why theming and dark mode are built on it.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - theme-toggle
   - loading-button-atom
@@ -425,7 +425,7 @@
     API is what makes theming, dark mode, and rebrands a config change instead of
     a find-and-replace.
   cover: /assets/img/atomic-design.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - theme-toggle
   - loading-button-atom
@@ -1065,7 +1065,7 @@
     looks soft on retina screens. srcset and sizes let you describe the options and
     hand the choice to the browser, which knows the device better than you do.
   cover: /assets/img/diagrams/server-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - responsive-image-set
   - cache-headers-basics
@@ -1213,7 +1213,7 @@
     says "here is the shape of what is coming, in this exact spot." The second feels
     faster and shifts less, and the reasons are worth knowing.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - skeleton-list
   - infinite-scroll-list
@@ -1847,7 +1847,7 @@
     problem is not a bigger number — it is that z-index only competes within a stacking
     context, and something created a new one you did not notice.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 4
+  reading_minutes: 5
   related_practice:
   - tabs-molecule
   - accessible-combobox
