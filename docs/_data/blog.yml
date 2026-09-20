@@ -479,7 +479,7 @@
     which phase your listener runs in is what makes event delegation, and stopping
     propagation, predictable instead of magic.
   cover: /assets/img/ui-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - event-delegation
   - quiz-event-propagation

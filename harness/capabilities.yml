@@ -462,6 +462,24 @@ checks:
     required: true
     threshold: 1.0
     why: "No two posts may share a title or a description — the anti-padding check for a volume target."
+  - id: blog.code
+    owns: ["docs/blog/*"]
+    requires: [blog.registry]
+    scope: incremental
+    group: blog
+    weight: 2
+    required: true
+    threshold: 2
+    why: "A post must show, not just tell: at least {threshold} runnable code blocks (patterns.dev / greatfrontend parity)."
+  - id: blog.diagram
+    owns: ["docs/blog/*"]
+    requires: [blog.registry]
+    scope: incremental
+    group: blog
+    weight: 2
+    required: true
+    threshold: 1
+    why: "A post must carry at least one inline, themed SVG diagram that actually draws a flow or architecture — no network, no wall of text."
   - id: blog.index_filter
     owns: ["docs/blog/index.md", "docs/assets/js/blog-index.js"]
     requires: [blog.registry]

@@ -215,6 +215,8 @@ The marketing and SEO surface at `docs/blog/`. The count is a growth target (a b
 | `blog.engagement` | 2 | yes | incremental | all | Every post must carry the engagement hooks: >=2 tags, a cover, reading time, a resolving practice CTA, and a layout that renders byline/TOC/related/CTA. |
 | `blog.depth` | 1 | yes | incremental | `400` | A post under `400` words of prose is a note, not a read. |
 | `blog.distinct` | 1 | yes | incremental | all | No two posts may share a title or a description — the anti-padding check for a volume target. |
+| `blog.code` | 2 | yes | incremental | `2` | A post must show, not just tell: at least `2` runnable code blocks (patterns.dev / greatfrontend parity). |
+| `blog.diagram` | 2 | yes | incremental | `1` | A post must carry at least one inline, themed SVG diagram that actually draws a flow or architecture — no network, no wall of text. |
 | `blog.index_filter` | 1 | yes | incremental | all | The blog index must filter by category and tag, compose them, clear, and show an empty state — proven in a real browser. |
 
 ### progress

@@ -781,6 +781,22 @@ body.playground__resizing { cursor: ns-resize; user-select: none; }
   &__meta { color: $blockquote-text-color; font-size: 0.82rem; }
 }
 
+.blog-figure {
+  margin: 1.75rem 0;
+  padding: 1rem;
+  background: $practice-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  text-align: center;
+
+  &__svg { width: 100%; height: auto; max-width: 640px; }
+  figcaption, &__caption {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: $blockquote-text-color;
+  }
+}
+
 .blog-related__list { list-style: none; padding: 0; }
 .blog-related__card { padding: 0.5rem 0; border-top: 1px solid $border-color; }
 .blog-related__link { font-weight: 600; }

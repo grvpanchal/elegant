@@ -99,19 +99,62 @@ offices:
         file: investors/ledger.md
         pattern: "(?i)commitment"
 
-# The roster the CTO genome measured (see its comments): cheapest well-known paid
-# models that are a step up from free, free kept as the last fallback.
+# Model roster for the chartered offices. The CMO is the blogging office, and a
+# blog now has to reach patterns.dev / greatfrontend quality — rich prose PLUS
+# runnable code PLUS a themed inline-SVG diagram (blog.code, blog.diagram,
+# blog.depth). Cheap models game that: asked for "100 posts" they emit thin,
+# code-less stubs the guardrail rejects. So the blog primary is upgraded to a
+# strong model, and the author-blog skill decomposes each post into a CLUSTER of
+# deliverables — outline -> prose -> code -> diagram -> assemble+heal.
+#
+# THE BLOGGING CLUSTER (target roles). True per-subtask model routing needs the
+# engine's ModelSpec.role Literal extended (benzene ships primary/judge/router/
+# decider/evolver only), so today one strong `primary` runs the decomposed skill
+# and self-heals against the blog guardrail. When the roles below are added to the
+# engine, split them out; the intended assignment is:
+#   writer      -> anthropic/claude-sonnet-5   (prose: specific, opinionated)
+#   coder       -> openai/gpt-4.1              (runnable, idiomatic code examples)
+#   illustrator -> anthropic/claude-sonnet-5   (themed inline SVG that draws a flow)
 models:
   - role: primary
     provider: openrouter
-    id: deepseek/deepseek-v4-flash-0731
-    effort: low
-    fallback_ids: [openai/gpt-oss-120b, openai/gpt-oss-20b, nvidia/nemotron-3-super-120b-a12b:free]
+    id: anthropic/claude-sonnet-5      # strong enough for rich prose + code + themed SVG in one pass
+    fallback_ids: [openai/gpt-4.1, anthropic/claude-haiku-4.5, deepseek/deepseek-chat-v3.1]
     api_key_env: OPENROUTER_API_KEY
-    max_tokens: 12000
+    max_tokens: 16000
+    temperature: 0.4
+    timeout_s: 300
+    price_per_mtok: [2.0, 10.0]   # live OpenRouter price for claude-sonnet-5
+  # The blogging cluster: author-blog's stages route to these roles (engine
+  # feature — benzene/manifest.py SkillStage). writer drafts prose + assembles,
+  # coder writes the runnable examples, illustrator draws the themed SVG.
+  - role: writer
+    provider: openrouter
+    id: anthropic/claude-sonnet-5
+    fallback_ids: [openai/gpt-4.1, anthropic/claude-haiku-4.5]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 16000
+    temperature: 0.5
+    timeout_s: 300
+    price_per_mtok: [2.0, 10.0]
+  - role: coder
+    provider: openrouter
+    id: openai/gpt-4.1
+    fallback_ids: [deepseek/deepseek-chat-v3.1, anthropic/claude-sonnet-5]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    temperature: 0.2
+    timeout_s: 300
+    price_per_mtok: [2.0, 8.0]
+  - role: illustrator
+    provider: openrouter
+    id: anthropic/claude-sonnet-5      # SVG is spatial code; the strongest model wins here
+    fallback_ids: [openai/gpt-4.1]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
     temperature: 0.3
-    timeout_s: 240
-    price_per_mtok: [0.040, 0.080]   # live OpenRouter price
+    timeout_s: 300
+    price_per_mtok: [2.0, 10.0]
   - role: judge
     provider: openrouter
     id: openai/gpt-oss-20b

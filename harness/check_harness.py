@@ -1114,6 +1114,44 @@ def _blog_distinct(site: Site, threshold):
     return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} distinct"
 
 
+# A blog post at patterns.dev / greatfrontend quality is not a wall of prose: it
+# interleaves runnable code and a figure. These two checks make that the standard.
+# `blog.code` counts fenced code blocks; `blog.diagram` requires an inline SVG
+# (themed, no network — the guardrail's browser cannot fetch an image).
+_CODE_FENCE_RE = re.compile(r"^```", re.M)
+
+
+@check("blog.code")
+def _blog_code(site: Site, threshold):
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        blocks = len(_CODE_FENCE_RE.findall(p.body)) // 2
+        if blocks >= threshold:
+            ok += 1
+        else:
+            deficits.append(f"{p.rel}: {blocks} code block(s), need {threshold} — show, don't just tell")
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} have >= {threshold} code blocks"
+
+
+@check("blog.diagram")
+def _blog_diagram(site: Site, threshold):
+    ok, deficits = 0, []
+    subjects = site.sel(site.blog)
+    for p in subjects:
+        body = p.body.lower()
+        svgs = body.count("<svg")
+        # A real figure, not an empty placeholder: the SVG must draw something.
+        drawn = any(tag in body for tag in ("<path", "<rect", "<circle", "<line", "<polyline", "<polygon", "<text"))
+        if svgs >= 1 and drawn:
+            ok += 1
+        elif svgs >= 1:
+            deficits.append(f"{p.rel}: <svg> present but draws nothing — needs a real themed diagram")
+        else:
+            deficits.append(f"{p.rel}: no inline <svg> diagram (themed, no network)")
+    return ratio(ok, len(subjects)), deficits[:MAX_DEFICITS], f"{ok}/{len(subjects)} have a diagram"
+
+
 # ---- progress
 @check("progress.tracker")
 def _prog_tracker(site: Site, threshold):
