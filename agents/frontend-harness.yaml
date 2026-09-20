@@ -97,6 +97,37 @@ models:
     temperature: 0.3
     timeout_s: 240
     price_per_mtok: [0.040, 0.080]   # live OpenRouter price (was 0.060/0.120)
+  # The blogging cluster's roles (author-blog stages route here). The CTO keeps
+  # its cheap deepseek primary for question/plan/harness work; only the blog
+  # cluster's stages use these strong models — a blog must reach patterns.dev
+  # grade (blog.code, blog.diagram), which deepseek games with thin stubs.
+  - role: writer
+    provider: openrouter
+    id: anthropic/claude-sonnet-5
+    fallback_ids: [openai/gpt-4.1, anthropic/claude-haiku-4.5]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 16000
+    temperature: 0.5
+    timeout_s: 300
+    price_per_mtok: [2.0, 10.0]
+  - role: coder
+    provider: openrouter
+    id: openai/gpt-4.1
+    fallback_ids: [deepseek/deepseek-chat-v3.1, anthropic/claude-sonnet-5]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    temperature: 0.2
+    timeout_s: 300
+    price_per_mtok: [2.0, 8.0]
+  - role: illustrator
+    provider: openrouter
+    id: anthropic/claude-sonnet-5
+    fallback_ids: [openai/gpt-4.1]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    temperature: 0.3
+    timeout_s: 300
+    price_per_mtok: [2.0, 10.0]
   - role: judge
     provider: openrouter
     id: openai/gpt-oss-20b
