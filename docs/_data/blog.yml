@@ -336,6 +336,25 @@
   related_practice:
   - debounce-utility
   - design-search-experience
+- slug: design-tokens-are-the-api-of-a-design-system
+  title: Design tokens are the API of a design system
+  date: 2026-07-25
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - design-system
+  - theming
+  - tokens
+  description: A design token is a named value — a color, a space, a radius — used
+    everywhere instead of a raw number. Treating tokens as the design system's public
+    API is what makes theming, dark mode, and rebrands a config change instead of
+    a find-and-replace.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - theme-toggle
+  - loading-button-atom
 - slug: evals-are-tests-for-judgement
   title: Evals are tests for the things unit tests can't check
   date: 2026-08-04
@@ -429,6 +448,62 @@
   - accessible-combobox
   - tabs-molecule
   - form-field-molecule
+- slug: folder-structure-follows-architecture
+  title: Folder structure should follow architecture, not file type
+  date: 2026-07-27
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - organization
+  - atomic-design
+  - maintainability
+  description: Grouping every component in one folder, every style in another, every
+    test in a third feels tidy and ages badly. Structure that mirrors your architecture
+    — atoms, molecules, containers, state — tells a new reader how the app is built.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
+- slug: from-junior-to-senior-frontend
+  title: 'From junior to senior frontend: the shift is from code to consequences'
+  date: 2026-07-17
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - seniority
+  - architecture
+  - growth
+  description: The jump to senior is not writing fancier code. It is caring about
+    the consequences of code — how it ages, how it fails, how the next person changes
+    it — and making decisions with the whole system in mind.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - harness-atom-guardrail
+  - presentational-vs-container
+  - harness-state-shape
+- slug: how-to-prepare-for-a-frontend-interview
+  title: How to prepare for a frontend interview without boiling the ocean
+  date: 2026-07-22
+  author: The Elegant team
+  category: career
+  tags:
+  - interview
+  - career
+  - preparation
+  - practice
+  description: 'Most candidates prepare by grinding random problems and hoping. The
+    loop is legible: prepare per round — utilities, UI components, system design,
+    behavioural — and drill the specific muscle each one tests.'
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - accessible-combobox
+  - debounce-utility
+  - design-search-experience
 - slug: http-cache-headers-are-a-contract
   title: HTTP cache headers are a contract you are signing with every browser
   date: 2026-08-16
@@ -502,6 +577,25 @@
   related_practice:
   - apply-middleware
   - middleware-order
+- slug: narrate-your-thinking-in-the-coding-round
+  title: In the coding round, your narration is most of the score
+  date: 2026-07-18
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - communication
+  - coding
+  - career
+  description: The interviewer cannot read your mind, and they are scoring your thinking,
+    not just your code. Silence while you type — even to a correct answer — leaves
+    most of the available signal unspoken. Talk.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - debounce-utility
+  - event-emitter
+  - deep-clone
 - slug: normalize-your-api-responses
   title: 'Normalize your API responses: the refactor that pays for itself'
   date: 2026-09-21
@@ -539,6 +633,25 @@
   related_practice:
   - offline-first-list
   - retry-with-backoff
+- slug: presentational-and-container-components
+  title: 'Presentational and container components: the split that keeps testing sane'
+  date: 2026-07-28
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - architecture
+  - components
+  - testing
+  description: Split components by whether they render or whether they fetch and decide.
+    The presentational half takes props and stays dumb; the container half talks to
+    the outside. That one boundary is what makes both halves testable and reusable.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - presentational-vs-container
+  - loading-button-atom
+  - form-field-molecule
 - slug: prompt-to-component-workflow
   title: 'Prompt to component: the quality is bounded by the boundary you hand over'
   date: 2026-08-08
@@ -743,6 +856,24 @@
   related_practice:
   - session-and-tokens
   - proxy-and-cors
+- slug: skeleton-screens-vs-spinners
+  title: Skeleton screens beat spinners, and it is not close
+  date: 2026-07-23
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - ux
+  - performance
+  - loading
+  description: A spinner says "wait, something is happening somewhere." A skeleton
+    says "here is the shape of what is coming, in this exact spot." The second feels
+    faster and shifts less, and the reasons are worth knowing.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - skeleton-list
+  - infinite-scroll-list
 - slug: ssg-builds-pages-ahead-of-time
   title: 'Static site generation: render once, serve a million times'
   date: 2026-08-20
@@ -836,6 +967,24 @@
   - offline-first-list
   - cache-headers-basics
   - skeleton-list
+- slug: the-container-line
+  title: 'The container line: draw it, and defend it with a check'
+  date: 2026-07-26
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - state
+  - ui
+  - guardrails
+  description: Somewhere in your tree is a line above which components may touch the
+    store and below which they may not. Naming that line — and enforcing it with a
+    check — is what keeps your UI layer portable and testable.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - presentational-vs-container
+  - harness-state-shape
 - slug: the-critical-rendering-path
   title: The critical rendering path is the story of your first paint
   date: 2026-08-12
@@ -911,6 +1060,82 @@
   - simple-store
   - combine-reducers
   - counter-reducer
+- slug: the-system-design-round-is-about-tradeoffs
+  title: The frontend system design round is about trade-offs, not diagrams
+  date: 2026-07-20
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - system-design
+  - architecture
+  - career
+  description: There is no right answer in a frontend system design round, and that
+    is the point. The interviewer is testing whether you can name a trade-off, take
+    a side, and defend it — not whether you can draw the "correct" boxes.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - design-search-experience
+  - design-micro-frontends
+  - design-localized-app
+- slug: the-take-home-is-a-different-game
+  title: The take-home is a different game from the live round
+  date: 2026-07-21
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - take-home
+  - quality
+  - career
+  description: A live coding round rewards thinking out loud under time pressure.
+    A take-home rewards the opposite — polish, structure, tests, and the judgement
+    to know when to stop. Treating one like the other is how strong candidates underperform.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - data-table-sort
+  - form-field-molecule
+  - accessible-combobox
+- slug: the-testing-pyramid-for-frontend
+  title: The testing pyramid, adjusted for the frontend
+  date: 2026-07-24
+  author: The Elegant team
+  category: architecture
+  tags:
+  - testing
+  - quality
+  - architecture
+  - frontend
+  description: The classic pyramid — many unit tests, some integration, few end-to-end
+    — needs a frontend twist. The most valuable tests here are the ones that render
+    a component and interact with it the way a user does. Test behaviour, not implementation.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - deep-clone
+  - accessible-combobox
+  - debounce-utility
+- slug: the-ui-coding-round
+  title: The UI coding round rewards the parts that don't show in a screenshot
+  date: 2026-07-19
+  author: The Elegant team
+  category: interview
+  tags:
+  - interview
+  - ui
+  - accessibility
+  - components
+  description: Anyone can make a component look right in an interview. What separates
+    a pass is the invisible half — keyboard operation, focus, correct roles, coherent
+    state — done while the clock runs, not bolted on at the end.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - accessible-combobox
+  - tabs-molecule
+  - data-table-sort
 - slug: the-url-is-state-too
   title: The URL is state too — and often the right place for it
   date: 2026-08-22
