@@ -1,6 +1,25 @@
 # Auto-generated from the front matter of docs/blog/*.md.
 # Regenerate with: python3 scripts/sync-blog-registry.py
 # Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+- slug: accessibility-is-not-a-checklist
+  title: Accessibility is not a checklist you run at the end
+  date: 2026-06-20
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - accessibility
+  - quality
+  - process
+  description: Automated checkers catch maybe half of accessibility issues, and only
+    the mechanical half. The rest — does the keyboard flow make sense, does the screen
+    reader tell a coherent story — needs building in, not auditing on.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - harness-a11y-gate
+  - accessible-combobox
+  - form-field-molecule
 - slug: accessible-forms-labels-and-errors
   title: Accessible forms come down to labels, grouping, and error wiring
   date: 2026-07-02
@@ -372,6 +391,25 @@
   related_practice:
   - debounce-utility
   - design-search-experience
+- slug: debugging-is-a-skill-you-can-practice
+  title: Debugging is a skill you can practice, not a talent you're born with
+  date: 2026-06-17
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - debugging
+  - process
+  - craft
+  description: Fast debuggers are not smarter — they follow a method. Reproduce, isolate,
+    form a hypothesis, test it, repeat. Guessing and changing things at random feels
+    like debugging and mostly wastes time.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - event-emitter
+  - deep-clone
+  - debounce-utility
 - slug: design-tokens-are-the-api-of-a-design-system
   title: Design tokens are the API of a design system
   date: 2026-07-25
@@ -959,6 +997,24 @@
   - counter-reducer
   - combine-reducers
   - memoized-selector
+- slug: reading-a-frontend-job-description
+  title: Reading a frontend job description for what it actually says
+  date: 2026-06-14
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - job-search
+  - interview
+  - hiring
+  description: A job description is a wish list, a signal about the team, and a hint
+    about the interview — if you read it critically. The required years and the twenty
+    listed technologies rarely mean what they literally say.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - design-search-experience
+  - design-micro-frontends
 - slug: real-virtual-shadow-dom
   title: 'Real DOM, Virtual DOM, Shadow DOM: three different things with one word'
   date: 2026-09-16
@@ -1125,6 +1181,24 @@
   related_practice:
   - session-and-tokens
   - proxy-and-cors
+- slug: ship-small-diffs
+  title: 'Ship small diffs: the pull request nobody can review is nobody''s friend'
+  date: 2026-06-15
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - workflow
+  - review
+  - craft
+  description: A 40-line pull request gets a real review in minutes. A 2000-line one
+    gets a rubber stamp, because nobody can hold it in their head. Small diffs are
+    not a nicety — they are how bugs get caught and how you ship faster.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - harness-bundle-budget
+  - harness-link-checker
 - slug: skeleton-screens-vs-spinners
   title: Skeleton screens beat spinners, and it is not close
   date: 2026-07-23
@@ -1180,6 +1254,25 @@
   - render-strategy-choice
   - design-localized-app
   - cache-headers-basics
+- slug: state-machines-for-ui
+  title: State machines turn impossible UI states into unreachable ones
+  date: 2026-06-22
+  author: The Elegant team
+  category: terminology
+  tags:
+  - ui
+  - state
+  - patterns
+  - reliability
+  description: A pile of booleans can represent nonsense — loading and error true
+    at once. A state machine names the legal states and the transitions between them,
+    so the impossible combinations simply cannot occur.
+  cover: /assets/img/state-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - tabs-molecule
+  - toast-notifications
+  - offline-first-list
 - slug: surviving-frontend-in-the-age-of-ai
   title: Surviving as a frontend engineer in the age of AI
   date: 2026-09-18
@@ -1199,6 +1292,26 @@
   - harness-atom-guardrail
   - harness-skill-eval
   - harness-a11y-gate
+- slug: test-behaviour-not-implementation
+  title: Test behaviour, not implementation, or your tests become the bug
+  date: 2026-06-19
+  author: The Elegant team
+  category: terminology
+  tags:
+  - testing
+  - quality
+  - refactoring
+  - frontend
+  description: A test that asserts on internal state breaks every time you refactor,
+    even when nothing user-facing changed. A test that asserts on behaviour survives
+    refactors and fails only when something real breaks. The distinction decides whether
+    your suite helps or hurts.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 4
+  related_practice:
+  - deep-clone
+  - counter-reducer
+  - accessible-combobox
 - slug: the-accessibility-tree-is-what-screen-readers-read
   title: The accessibility tree is what screen readers actually read
   date: 2026-09-07
@@ -1308,6 +1421,24 @@
   - harness-bundle-budget
   - debounce-utility
   - deep-clone
+- slug: the-cost-of-premature-abstraction
+  title: 'The cost of premature abstraction: wrong is more expensive than repeated'
+  date: 2026-06-16
+  author: The Elegant team
+  category: architecture
+  tags:
+  - architecture
+  - abstraction
+  - maintainability
+  - craft
+  description: Pulling two similar bits of code into a shared abstraction feels responsible.
+    Do it too early, before you know how they will actually diverge, and you build
+    the wrong abstraction — which costs more than the duplication ever would.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - presentational-vs-container
+  - combine-reducers
 - slug: the-critical-rendering-path
   title: The critical rendering path is the story of your first paint
   date: 2026-08-12
@@ -1363,6 +1494,25 @@
   - harness-link-checker
   - harness-bundle-budget
   - harness-skill-eval
+- slug: the-portfolio-that-gets-interviews
+  title: The portfolio that gets interviews shows depth, not a wall of clones
+  date: 2026-06-18
+  author: The Elegant team
+  category: career
+  tags:
+  - career
+  - portfolio
+  - interview
+  - projects
+  description: A dozen tutorial to-do apps say less than one project built to a real
+    standard — tested, accessible, deployed, and explained. Depth on a few things
+    beats breadth across many, because depth is what a reviewer cannot fake-detect.
+  cover: /assets/img/ui-server-state.png
+  reading_minutes: 4
+  related_practice:
+  - design-search-experience
+  - accessible-combobox
+  - data-table-sort
 - slug: the-request-success-fail-triple
   title: The request/success/fail triple is the shape of every fetch
   date: 2026-08-28
@@ -1400,6 +1550,24 @@
   related_practice:
   - retry-with-backoff
   - normalize-entities
+- slug: the-single-responsibility-of-a-component
+  title: A component should do one job, and you should be able to name it
+  date: 2026-06-21
+  author: The Elegant team
+  category: architecture
+  tags:
+  - ui
+  - components
+  - architecture
+  - maintainability
+  description: If you cannot describe a component in one sentence without saying "and",
+    it is doing too much. The single-responsibility test is the cheapest way to know
+    when to split — and where.
+  cover: /assets/img/atomic-design.png
+  reading_minutes: 4
+  related_practice:
+  - atom-boundaries
+  - presentational-vs-container
 - slug: the-store-is-one-source-of-truth
   title: The store is one source of truth, or it is not a source of truth
   date: 2026-09-01
