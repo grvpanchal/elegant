@@ -260,7 +260,7 @@
     slice its own reducer while keeping a single store — the trick is that each reducer
     sees only its slice, and that constraint is a feature.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - combine-reducers
   - normalize-entities
@@ -753,7 +753,7 @@
     inspect, delay, transform, or swallow an action. Understanding it as an ordered
     pipeline is what makes async and logging predictable.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - apply-middleware
   - middleware-order
@@ -1714,7 +1714,7 @@
     that watches for actions. Pick by how complex your async is — most apps need thunks,
     some genuinely need sagas.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - apply-middleware
   - retry-with-backoff
@@ -1810,7 +1810,7 @@
     from many places, that many parts of the app must read. If that is not your problem,
     Redux is overhead you will resent.
   cover: /assets/img/state-system-diagram.png
-  reading_minutes: 3
+  reading_minutes: 5
   related_practice:
   - simple-store
   - counter-component

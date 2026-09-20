@@ -12,65 +12,98 @@ reading_minutes: 5
 related_practice: [normalize-entities, deep-clone, memoized-selector]
 ---
 
-Every app starts the same way: the API returns a deeply nested object, and you
-store it exactly as it arrived. Then the first edit request comes in — "update
-the author's display name" — and you discover the cost of that decision. You
-cannot update one author without walking the whole tree, cloning every level
-above it, and hoping you did not accidentally share a reference. This post makes
-the case for flattening that payload into entity tables keyed by id, and why it
-is the highest-leverage refactor in a state layer.
+APIs return data shaped for *transport*: deeply nested, with the same entity
+duplicated wherever it is referenced. A list of posts each carries its author
+object; the same author appears in ten posts. If you store that payload in your
+state as-is, every one of those copies is now a fact you have to keep in sync, and
+updating an author's name means finding and editing ten nested objects. The fix
+is **normalization**: flatten the nesting into flat tables keyed by id, exactly
+like a relational database. It is the one state refactor that reliably makes
+everything downstream simpler.
 
-## What normalization actually is
+<figure class="blog-figure" data-blog-diagram>
+<svg viewBox="0 0 640 220" role="img" aria-labelledby="nz-t nz-d" class="blog-figure__svg">
+  <title id="nz-t">Nested duplicated payload versus normalised entity tables keyed by id</title>
+  <desc id="nz-d">On the left two posts each embed a copy of the same author. On the right posts and users are separate tables keyed by id, and posts reference the author by id, so the author exists once.</desc>
+  <text x="150" y="26" text-anchor="middle" fill="#c2571a" font-size="12" font-weight="700">nested (duplicated)</text>
+  <g fill="#fff4ec" stroke="#fe854c" stroke-width="2" font-size="9" text-anchor="middle">
+    <rect x="55" y="40" width="190" height="55" rx="6"/><text x="150" y="60" fill="#c2571a">post 1 → author {id:7, name}</text>
+    <rect x="55" y="105" width="190" height="55" rx="6"/><text x="150" y="125" fill="#c2571a">post 2 → author {id:7, name}</text>
+  </g>
+  <text x="150" y="185" text-anchor="middle" fill="#819198" font-size="9">author 7 stored twice → edit both or drift</text>
+  <line x1="320" y1="26" x2="320" y2="200" stroke="#dce6f0"/>
+  <text x="480" y="26" text-anchor="middle" fill="#157878" font-size="12" font-weight="700">normalised</text>
+  <g fill="#e8f0f8" stroke="#157878" stroke-width="2" font-size="9" text-anchor="middle">
+    <rect x="360" y="40" width="240" height="30" rx="5"/><text x="480" y="59" fill="#157878">posts.byId: 1 → {authorId:7}, 2 → {authorId:7}</text>
+    <rect x="360" y="90" width="240" height="30" rx="5"/><text x="480" y="109" fill="#157878">users.byId: 7 → {name}</text>
+  </g>
+  <text x="480" y="160" text-anchor="middle" fill="#819198" font-size="9">author 7 stored once → edit one place</text>
+</svg>
+<figcaption>The same data, two shapes. Nested duplicates the author into every post; normalised stores it once and references it by id.</figcaption>
+</figure>
 
-Normalization means storing each kind of thing once, in a table keyed by its
-id, and referencing it by that id everywhere else. A nested `post -> author ->
-comments` payload becomes three maps: `posts`, `authors`, and `comments`. A post
-holds `authorId` and a list of `commentIds`, not the objects themselves.
+## The shape: byId plus allIds
 
-The rule of thumb: **one update touches one place.** When the author's name
-changes, you update `authors[42].name` and every screen that reads it sees the
-new value. With a nested tree you would have to find every copy of that author
-and change them all — and miss the one you forgot.
+The normalised form for a collection is two parts: a `byId` map for O(1) lookup by
+id, and an `allIds` array to preserve order and let you iterate. A transform turns
+the API's array into this shape:
 
-## Why the nested shape feels fine at first
+```js
+function normalize(posts) {
+  const byId = {};
+  const allIds = [];
+  for (const post of posts) {
+    byId[post.id] = post;      // keyed lookup
+    allIds.push(post.id);      // ordered list
+  }
+  return { byId, allIds };
+}
+// { byId: { 1: {...}, 2: {...} }, allIds: [1, 2] }
+```
 
-The nested shape is not lazy; it is convenient. Rendering a post is a single
-read of one object, and the data is already shaped for the view. That is why the
-refactor keeps getting postponed. The problem is that reads are the easy half.
-Writes, deduplication, and caching all punish the nested shape, and those are
-the operations that grow as the app does.
+Nested relationships get the same treatment: pull the authors into their own
+`users.byId` table and replace each post's embedded author with an `authorId`.
 
-The second trap is reference sharing. When you clone a nested object to update
-one leaf, a shallow copy leaves the inner objects shared between the old and new
-versions. Two components can end up mutating the same author object and
-corrupting each other's view. Normalized tables make this impossible by
-construction: there is exactly one object per id, and you replace it wholesale
-rather than mutating it.
+## Reads and updates both get cheaper
 
-## What you get back
+With `byId`, looking up a post is `state.posts.byId[id]` — no `.find()` scan of an
+array. And updating an entity touches exactly one place, immutably, without
+walking a nested tree:
 
-Three concrete wins. First, **selectors become cheap and memoizable** — a
-derived selector that joins `posts` and `authors` recomputes only when one of
-its inputs changes by reference, which is exactly what a normalized store gives
-you. Second, **deduplication is free**: the same author appearing in ten posts
-is stored once, so you never render ten copies of the same data. Third,
-**updates stop being a search**: "find every place this appears" becomes "update
-this one id".
+```js
+// update one user's name — one entry, no matter how many posts reference them
+case "USER_RENAMED":
+  return {
+    ...state,
+    users: {
+      ...state.users,
+      byId: { ...state.users.byId, [action.id]: {
+        ...state.users.byId[action.id], name: action.name,
+      }},
+    },
+  };
+```
 
-The trade-off is real: reads need a join step, and the view layer has to
-assemble what the API used to hand over whole. But that assembly is a pure
-function of ids, which means it is testable, memoizable, and shared — a far
-better place for the complexity than scattered across every mutation.
+Every post that references `authorId: 7` now reads the new name automatically,
+because there was only ever one copy.
 
-## When to make the leap
+## Rehydrate the shape with selectors
 
-Do it when you see the tell-tale signs: a second feature that needs the same
-nested data, a bug from two copies of one entity drifting apart, or a deep-clone
-utility being called in more than one place. That is the moment the convenience
-of the nested shape has been outweighed by the cost of maintaining it. The
-refactor is mechanical once you decide to do it — write the flattening function,
-build the id-keyed tables, and point your selectors at them.
+The nested shape was convenient for rendering, and you do not lose it — you
+*derive* it back with a selector at read time, joining the tables. A memoized
+selector recombines `posts` with their `users` only when either table changes, so
+the join is cheap and the stored state stays flat:
 
-Normalization is not glamorous, but it is the refactor that makes every other
-piece of your state code — selectors, memoization, updates — simpler at once.
-That is why it pays for itself.
+```js
+const selectPostsWithAuthors = createSelector(
+  [(s) => s.posts.allIds, (s) => s.posts.byId, (s) => s.users.byId],
+  (ids, posts, users) =>
+    ids.map((id) => ({ ...posts[id], author: users[posts[id].authorId] }))
+);
+```
+
+This is the same principle behind a database's normal forms: store each fact once,
+join on read. Normalisation front-loads a little transform code and pays it back
+on every update you no longer have to duplicate and every list scan you turn into
+a keyed lookup. The normalize-entities exercise builds the `byId`/`allIds`
+transform and the selector join, which is the whole pattern in miniature.
