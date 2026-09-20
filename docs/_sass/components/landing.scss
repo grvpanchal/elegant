@@ -1,0 +1,148 @@
+// The home page below the hero. One column of sections, each with a kicker,
+// a title and a lede, so the page reads in order: the harness, then the
+// practice built on its terminology. The hero and the proof / surfaces
+// partials carry their own scoped styles.
+.landing-section {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem 0 2rem;
+
+  &__kicker {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #157878;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0 0 0.75rem;
+    text-align: center;
+  }
+
+  &__lede {
+    max-width: 44rem;
+    margin: 0 auto 1.5rem;
+    text-align: center;
+    color: #555;
+  }
+
+  &__cta {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  &--practice {
+    padding-top: 2rem;
+  }
+}
+
+.landing-divider {
+  max-width: 80rem;
+  margin: 1rem auto 2rem;
+}
+
+// The three layers every boilerplate ships: each a card that opens the
+// matching terminology section, because the layer *is* the vocabulary.
+.landing-layers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.landing-layer {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #157878;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    border-color: #157878;
+    text-decoration: none;
+  }
+
+  h3 {
+    margin: 0 0 0.4rem;
+    color: #157878;
+  }
+
+  p {
+    flex: 1 1 auto;
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  &__more {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #157878;
+  }
+}
+
+// The three perspectives on UI and UX.
+.landing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.5rem;
+}
+
+.landing-card {
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0.75rem 1rem 0.25rem;
+  }
+
+  p {
+    margin: 0;
+    padding: 0.25rem 1rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+.landing-figure {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+// Entry points into the terminology, as a row of pills.
+.landing-terms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+
+  a {
+    padding: 0.45rem 1rem;
+    border: 1px solid #157878;
+    border-radius: 999px;
+    color: #157878;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      background: #157878;
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
