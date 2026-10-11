@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <path id="knob" d="M176.06 105.8 L176.06 134.83 A4.95 4.95 0 0 0 185.21 137.44 A25.3 25.3 0 1 1 185.21 164.16 A4.95 4.95 0 0 0 176.06 166.77 L176.06 195.8" fill="none"/>
+    <clipPath id="knob-clip"><path d="M176.41 100V202H256V100Z"/></clipPath>
+    <clipPath id="knob-disk"><circle cx="206.7" cy="150.8" r="33.6"/></clipPath>
+    <clipPath id="gap-clip"><path d="M174.31 100V202H256V100Z"/></clipPath>
+    <clipPath id="gap-disk"><circle cx="206.7" cy="150.8" r="35.35"/></clipPath>
+    <mask id="gap" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <g clip-path="url(#gap-clip)"><g clip-path="url(#gap-disk)"><use href="#knob" stroke="#000" stroke-width="19.9"/></g></g>
+    </mask>
+  </defs>
+  <path d="M44.04 79.8 L89.11 79.8 A4.95 4.95 0 0 0 91.76 70.67 A25.3 25.3 0 1 1 118.84 70.67 A4.95 4.95 0 0 0 121.49 79.8 L156.06 79.8 A20 20 0 0 1 176.06 99.8 L176.06 134.83 A4.95 4.95 0 0 0 185.21 137.44 A25.3 25.3 0 1 1 185.21 164.16 A4.95 4.95 0 0 0 176.06 166.77 L176.06 212 A20 20 0 0 1 156.06 232 L44.04 232 A20 20 0 0 1 24.04 212 L24.04 166.74 A4.95 4.95 0 0 1 33.2 164.13 A25.3 25.3 0 1 0 33.2 137.47 A4.95 4.95 0 0 1 24.04 134.86 L24.04 99.8 A20 20 0 0 1 44.04 79.8Z" fill="none" stroke="#202028" stroke-width="16.4" stroke-linejoin="round" mask="url(#gap)"/>
+  <g clip-path="url(#knob-clip)"><g clip-path="url(#knob-disk)"><use href="#knob" stroke="#ff8850" stroke-width="16.4"/></g></g>
+</svg>
