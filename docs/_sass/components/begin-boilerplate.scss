@@ -91,15 +91,8 @@
     text-align: center;
     padding-top: 4px;
 
-    // The brand PNGs are 256px so they stay crisp on 2x and 3x screens; the
-    // circle shows them at 64px and lets the browser downsample.
     img {
       z-index: -1;
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
     }
 
     .text {
