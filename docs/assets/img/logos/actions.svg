@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+<defs>
+<mask id="cutGear" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><rect width="256" height="256" fill="#fff"/><circle cx="198.2" cy="173.25" r="30.75" fill="#000"/><polygon points="205 170.22 100 96.91 100 244.84" fill="#000"/></mask>
+<mask id="gearVis" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><rect width="256" height="256" fill="#fff"/><polygon points="196.53 170.25 100 102.86 100 238.86" fill="#000"/></mask>
+<mask id="cutMonitor" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><rect width="256" height="256" fill="#fff"/><g fill="#000" stroke="#000" stroke-width="9.75" stroke-linejoin="round"><path d="M159 152.65L157 152.65C110 156.9 85.95 203.75 113.45 243.75C102.45 217.75 121 188 157 187.55L159 187.55Z"/><path d="M157 142.5L196.75 170.25L157 198.5Z"/></g><path d="M157 142.5L196.75 170.25L157 198.5Z" fill="#000" stroke="#000" stroke-width="10.55" stroke-linejoin="round"/><g mask="url(#gearVis)"><g fill="#000" stroke="#000" stroke-linejoin="round"><circle cx="198.2" cy="173.55" r="42" stroke-width="9.75"/><g stroke-width="20.25"><polygon points="190.74 137.38 193.43 122.73 205.18 122.99 207.23 137.74"/><polygon points="218.5 142.7 230.76 134.25 238.89 142.73 229.91 154.62"/><polygon points="234.37 166.09 249.02 168.78 248.76 180.53 234.01 182.58"/><polygon points="229.05 193.85 237.5 206.11 229.02 214.24 217.13 205.26"/><polygon points="205.66 209.72 202.97 224.37 191.22 224.11 189.17 209.36"/><polygon points="177.9 204.4 165.64 212.85 157.51 204.37 166.49 192.48"/><polygon points="162.03 181.01 147.38 178.32 147.64 166.57 162.39 164.52"/><polygon points="167.35 153.25 158.9 140.99 167.38 132.86 179.27 141.84"/></g></g></g></mask>
+</defs>
+<g fill="#202028">
+<g mask="url(#cutMonitor)">
+<path fill-rule="evenodd" d="M27.3 8.3H206a6 6 0 0 1 6 6V145.5a6 6 0 0 1-6 6H27.3a6 6 0 0 1-6-6V14.3a6 6 0 0 1 6-6ZM34.6 19.5V131.3H199V19.5Z"/>
+<rect x="47.8" y="36.4" width="138" height="28.6"/>
+<rect x="47.8" y="78" width="138" height="12"/>
+<rect x="47.8" y="102" width="138" height="12"/>
+<rect x="98" y="150" width="60" height="10"/>
+<path d="M71.3 159H160V173H57.3A14 14 0 0 1 71.3 159Z"/>
+</g>
+<g mask="url(#cutGear)"><g fill="#202028" stroke="#202028" stroke-linejoin="round"><circle cx="198.2" cy="173.55" r="42" stroke-width="0"/><g stroke-width="10.5"><polygon points="190.74 137.38 193.43 122.73 205.18 122.99 207.23 137.74"/><polygon points="218.5 142.7 230.76 134.25 238.89 142.73 229.91 154.62"/><polygon points="234.37 166.09 249.02 168.78 248.76 180.53 234.01 182.58"/><polygon points="229.05 193.85 237.5 206.11 229.02 214.24 217.13 205.26"/><polygon points="205.66 209.72 202.97 224.37 191.22 224.11 189.17 209.36"/><polygon points="177.9 204.4 165.64 212.85 157.51 204.37 166.49 192.48"/><polygon points="162.03 181.01 147.38 178.32 147.64 166.57 162.39 164.52"/><polygon points="167.35 153.25 158.9 140.99 167.38 132.86 179.27 141.84"/></g></g></g>
+</g>
+<g fill="#ff8850"><path d="M159 152.65L157 152.65C110 156.9 85.95 203.75 113.45 243.75C102.45 217.75 121 188 157 187.55L159 187.55Z"/><path d="M157 142.5L196.75 170.25L157 198.5Z"/></g>
+</svg>
