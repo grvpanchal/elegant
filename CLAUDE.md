@@ -438,7 +438,7 @@ reading at these model prices, not a fault to tune away.
 
 ## The book (`scripts/book/`)
 
-`npm run build-book` prints **The Elegant Frontend**, the whole glossary as one
+`npm run build-book` prints **Elegant Frontend**, the whole glossary as one
 PDF: three parts (UI, Server, State) in `docs/_data/topics/*.csv` order, one
 chapter per term. `build-book.rb` joins each term's doc (summary, key insight,
 description, the first code example with only its first framework tab, common

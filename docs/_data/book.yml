@@ -5,7 +5,7 @@ pages: 354
 size_mb: 3.6
 chapters: 45
 built: 2026-10-11
-source_sha256: 358ab633058aa873d29582fad98bddaabe6de82d4f3f415ff83d602fd8a9d8af
+source_sha256: 2d2187a9dab1007d2b78d6d8a801c4e8f36b55eb193844977133987f347b7d27
 parts:
   - { layer: ui, title: "The UI Side", terms: 16, logo: organism, page: 6 }
   - { layer: server, title: "The Server Side", terms: 20, logo: container, page: 103 }

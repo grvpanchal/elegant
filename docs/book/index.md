@@ -1,5 +1,5 @@
 ---
-title: The Elegant Frontend, the book
+title: Elegant Frontend, the book
 layout: default
 slug: book
 description: Download every UI, server and state term on the site, with its best practices, as one free PDF.

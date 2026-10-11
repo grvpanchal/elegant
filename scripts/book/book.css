@@ -1,11 +1,11 @@
-/* The Elegant Frontend — print stylesheet. Palette and icon tiles follow the
+/* Elegant Frontend — print stylesheet. Palette and icon tiles follow the
    site: orange #fe854c headings and tile borders, navy #202028 ink, muted
    #606c71 body text (see docs/_includes/topics.html for the tile). */
 @page {
   size: A4;
   margin: 20mm 18mm 22mm 18mm;
   @bottom-center { content: counter(page); font: 9pt "Liberation Sans", sans-serif; color: #606c71; }
-  @top-right { content: "The Elegant Frontend"; font: 8pt "Liberation Sans", sans-serif; color: #b3b8bc; letter-spacing: 0.06em; text-transform: uppercase; }
+  @top-right { content: "Elegant Frontend"; font: 8pt "Liberation Sans", sans-serif; color: #b3b8bc; letter-spacing: 0.06em; text-transform: uppercase; }
 }
 @page cover { margin: 0; @bottom-center { content: none; } @top-right { content: none; } }
 @page part { @top-right { content: none; } }

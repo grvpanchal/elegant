@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Assemble "The Elegant Frontend" book as one print-ready HTML file.
+# Assemble "Elegant Frontend" book as one print-ready HTML file.
 #
 # Three parts (UI, Server, State), one chapter per term in the order of
 # docs/_data/topics/<layer>.csv. Each chapter joins the term's doc
@@ -303,7 +303,7 @@ cover_html = <<~HTML
       <img class="cover__logo" src="#{file_url('assets/img/light-logo.png')}" alt="">
       <span>elegantfrontend.training</span>
     </div>
-    <h1 class="cover__title">The Elegant<br>Frontend</h1>
+    <h1 class="cover__title">Elegant<br>Frontend</h1>
     <p class="cover__subtitle">Terminology and best practices for the<br><b class="ui">UI</b>, the <b class="server">server</b> and the <b class="state">state</b> of every frontend</p>
     #{iso_stack(parts)}
     <p class="cover__author">#{esc AUTHOR}</p>
@@ -330,14 +330,14 @@ html = <<~HTML
   <html lang="en">
   <head>
   <meta charset="utf-8">
-  <title>The Elegant Frontend</title>
+  <title>Elegant Frontend</title>
   <style>#{css}</style>
   </head>
   <body>
   #{cover_html}
   <section class="titlepage">
     <img class="titlepage__logo" src="file://#{File.join(DOCS, 'assets/img/light-logo.png')}" alt="">
-    <h1 class="titlepage__title">The Elegant Frontend</h1>
+    <h1 class="titlepage__title">Elegant Frontend</h1>
     <p class="titlepage__subtitle">Terminology and best practices for the UI, the server and the state of a modern frontend</p>
     <div class="titlepage__rule"></div>
     <p class="titlepage__author">#{esc AUTHOR}</p>
