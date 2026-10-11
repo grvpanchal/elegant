@@ -23,7 +23,10 @@ design_offices: true
 parallel: 4
 skills_dir: skills                      # agents/skills: the operating skills a charter may name
 board:                                  # where the COO's plans live as a timeline
-  kind: local                           # Linear: {kind: linear, team: <KEY>, project: <name>, api_key_env: LINEAR_API_KEY}
+  kind: linear                          # the COO's plans land as Linear issues (one per step)
+  team: ELT                             # Linear team key
+  project: Elegant Training Project     # issues grouped under this project
+  api_key_env: LINEAR_API_KEY           # key read from this env var at run time
 evaluations:
   cxo: {format: product_hunt, every: 3}
   cio: {format: shark_tank, every: 5}
@@ -78,6 +81,8 @@ offices:
         required: true
         timeout_s: 900
   - office: cxo
+    # Collect analytics data, build UX via design, and own the audience/network
+    # channels (web analytics, social, SEO) — the MEDIA-leverage source the CIO reads.
     founded_when: {milestone: launch}
     verifiers:
       - type: file_pattern
@@ -85,13 +90,22 @@ offices:
         file: experience/perspective.md
         pattern: "(?i)maintain"
   - office: cfo
-    founded_when: {any_metric: {revenue_usd: 1, investment_usd: 1}}
+    # Business model for an exponential financial goal: revenue earned FROM CUSTOMERS.
+    # Founds on first revenue; investment (capital raised from investors) is the CIO's
+    # domain, not conflated into this gate.
+    founded_when: {any_metric: {revenue_usd: 1}}
     verifiers:
       - type: file_pattern
         name: verify:guardrails
         file: finance/guardrails.md
         pattern: "value_usd"
   - office: cio
+    # Chief INVESTMENT officer, on Naval's leverage concept. It builds leverage by
+    # reading the other offices — CODE (CTO's guardrail-green platform), MEDIA (CXO
+    # analytics + CMO campaigns), CAPITAL (CFO revenue), LABOR (the org itself) — and
+    # once leverage is built it PITCHES (shark_tank eval) to raise investment, logged
+    # as investor commitments in investors/ledger.md. Founds once media leverage
+    # (audience/traction) exists — the precondition to pitch; investment_usd is its target.
     founded_when: {any_metric: {users: 100, satisfaction: 0.7}}
     verifiers:
       - type: file_pattern
@@ -107,12 +121,11 @@ offices:
 # strong model, and the author-blog skill decomposes each post into a CLUSTER of
 # deliverables — outline -> prose -> code -> diagram -> assemble+heal.
 #
-# THE BLOGGING CLUSTER (target roles). True per-subtask model routing needs the
-# engine's ModelSpec.role Literal extended (benzene ships primary/judge/router/
-# decider/evolver only), so today one strong `primary` runs the decomposed skill
-# and self-heals against the blog guardrail. When the roles below are added to the
-# engine, split them out; the intended assignment is:
-#   writer      -> anthropic/claude-sonnet-5   (prose: specific, opinionated)
+# THE BLOGGING CLUSTER (live). Per-subtask model routing is now in the engine
+# (benzene/manifest.py SkillStage, benzene/session.py run_clustered_session), so
+# author-blog's stages each run on their own role below — no longer one primary
+# doing everything. The assignment:
+#   writer      -> anthropic/claude-sonnet-5   (prose: specific, opinionated; also assembles)
 #   coder       -> openai/gpt-4.1              (runnable, idiomatic code examples)
 #   illustrator -> anthropic/claude-sonnet-5   (themed inline SVG that draws a flow)
 models:
