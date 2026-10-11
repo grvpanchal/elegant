@@ -436,6 +436,25 @@ is how it improves. And the treasury will read **burning** while cells cost
 more than `value_usd: 0.05` per verified build — that is the CFO's honest
 reading at these model prices, not a fault to tune away.
 
+## The book (`scripts/book/`)
+
+`npm run build-book` prints **Elegant Frontend**, the whole glossary as one
+PDF: three parts (UI, Server, State) in `docs/_data/topics/*.csv` order, one
+chapter per term. `build-book.rb` joins each term's doc (summary, key insight,
+description, the first code example with only its first framework tab, common
+mistakes) with its skill's key principles, do/don't and quality gates;
+`print-book.mjs` prints it with Chromium in two passes so the contents shows real
+page numbers, and writes `docs/assets/book/{elegant-frontend.pdf,cover.jpg}`
+plus `docs/_data/book.yml` (generated — never hand-edit), which the download card
+(`_includes/book-download.html`, on the home page and `/book/`) reads. The PDF is
+committed, not built in CI, so **re-run it after editing a term doc or skill**;
+`source_sha256` in `book.yml` hashes the sources it was built from. The front
+matter is a cover (the home page's "Why three layers" figures redrawn: the
+UI-Server-State wordmark, the three sides as panels with their frameworks
+feeding in), a title page with the author from `_config.yml`, and a page per
+part. Chapter openers copy the term page's header (big centred logo, centred
+title); the contents and part openers use the terminology page's orange tile.
+
 ## Doc reviewer subagent
 
 A custom subagent at `.claude/agents/doc-reviewer.md` reviews terminology docs (`docs/{ui,server,state}/*.md`) for readability + learner engagement, with durable memory in `.github/doc-review/state.json`. **Before opening a PR that touches any doc under those paths**: list the modified docs, invoke the `doc-reviewer` subagent on each (one at a time so memory updates are resumable), commit any fixes it applies, and surface in the PR description any issues it reports. The agent is allowed to fix small issues in place (paragraph rewrites, stale headings, missing transitions) but stops and reports for anything structural or that would touch >40 lines. See `.github/doc-review/README.md` for the schema and workflow.

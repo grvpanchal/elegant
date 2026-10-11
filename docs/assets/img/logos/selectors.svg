@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <mask id="cut-orange" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <path d="M126.22 7V88.25C126.22 126.25 95.60 157.70 57.60 157.70" fill="none" stroke="#000" stroke-width="40.60"/>
+    </mask>
+    <mask id="cut-stem" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <path d="M126.22 7V88.25C126.22 126.25 95.60 157.70 57.60 157.70" fill="none" stroke="#000" stroke-width="40.60"/>
+      <path d="M126.22 88.50C126.22 131.10 160.90 157.90 197.50 157.90" fill="none" stroke="#000" stroke-width="31.65"/>
+    </mask>
+  </defs>
+  <g fill="none" stroke-width="15.25">
+    <path d="M126.50 88.50V200" stroke="#20202a" mask="url(#cut-stem)"/>
+    <path d="M126.22 88.50C126.22 131.10 160.90 157.90 197.50 157.90" stroke="#ff864d" mask="url(#cut-orange)"/>
+    <circle cx="222.63" cy="157.30" r="24.65" stroke="#ff864d"/>
+    <path d="M126.22 7V88.25C126.22 126.25 95.60 157.70 57.60 157.70" stroke="#20202a"/>
+    <path d="M88.65 45.85L127.00 7.50L165.35 45.85" stroke="#20202a" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="32.94" cy="157.30" r="24.65" stroke="#20202a"/>
+    <circle cx="126.50" cy="223.90" r="24.65" stroke="#20202a"/>
+  </g>
+</svg>

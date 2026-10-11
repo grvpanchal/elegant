@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <g fill="none" stroke="#000" stroke-width="9">
+        <path d="M113.5 51.5V268.5M5 160H222"/>
+        <ellipse cx="113.5" cy="160" rx="52" ry="98.5"/>
+        <path d="M5 74.62A170 170 0 0 0 222 74.62M5 244.88A170 170 0 0 1 222 244.88"/>
+      </g>
+      <path d="M149.23 82.46A51.5 51.5 0 1 1 230.77 82.46L193.17 131.2A4 4 0 0 1 186.83 131.2Z" fill="#000" stroke="#000" stroke-width="14" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <circle cx="113.5" cy="160" r="98.5" fill="#202028" mask="url(#m)"/>
+  <path d="M149.23 82.46A51.5 51.5 0 1 1 230.77 82.46L193.17 131.2A4 4 0 0 1 186.83 131.2ZM161.5 51a28.75 28.75 0 1 0 57.5 0a28.75 28.75 0 1 0 -57.5 0Z" fill="#ff8850" fill-rule="evenodd"/>
+</svg>

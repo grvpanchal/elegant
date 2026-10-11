@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <mask id="gap" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <circle cx="129.77" cy="84.48" r="27.8" fill="#000"/>
+      <circle cx="93.2" cy="134.66" r="27.8" fill="#000"/>
+      <circle cx="166.34" cy="134.68" r="27.8" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="none" stroke="#202028" stroke-width="10.2" mask="url(#gap)">
+    <circle cx="64" cy="77" r="57.1"/>
+    <circle cx="192" cy="77" r="57.1"/>
+    <circle cx="129.6" cy="184.1" r="57.1"/>
+  </g>
+  <g fill="#202028">
+    <circle cx="64" cy="76.9" r="27.7"/>
+    <circle cx="192" cy="76.9" r="27.7"/>
+    <circle cx="129.6" cy="184.1" r="27.7"/>
+  </g>
+  <g fill="#ff864f">
+    <circle cx="129.77" cy="84.48" r="13.6"/>
+    <circle cx="93.2" cy="134.66" r="13.6"/>
+    <circle cx="166.34" cy="134.68" r="13.6"/>
+  </g>
+</svg>

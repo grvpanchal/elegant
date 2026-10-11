@@ -1,0 +1,28 @@
+{%- comment -%}
+The vocabulary the harness is built from, as the same orange icon tiles the
+UI, Server and State pages use. Read from site.data.topics, so a term added
+to a section shows up here without touching the home page. Owned by the
+landing group.
+{%- endcomment -%}
+<div class="landing-terms">
+  {%- assign layers = "ui,server,state" | split: "," -%}
+  {%- for layer in layers -%}
+  {%- assign terms = site.data.topics[layer] -%}
+  <div class="landing-terms__layer">
+    <h3 class="landing-terms__title">
+      <a href="{{ '/' | append: layer | append: '/' | relative_url }}">{% if layer == "ui" %}UI{% else %}{{ layer | capitalize }}{% endif %}</a>
+      <span class="landing-terms__count">{{ terms | size }} terms</span>
+    </h3>
+    <ul class="landing-terms__grid">
+      {%- for term in terms %}
+      <li>
+        <a class="term-tile" href="{{ '/' | append: layer | append: '/' | append: term.slug | relative_url }}">
+          <span class="term-tile__icon"><img src="{{ '/assets/img/logos/' | append: term.slug | append: '.png' | relative_url }}" alt="{{ term.title }} icon" width="48" height="48" loading="lazy"></span>
+          <span class="term-tile__label">{{ term.title }}</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+  {%- endfor -%}
+</div>
