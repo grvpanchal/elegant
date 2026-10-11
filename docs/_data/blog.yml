@@ -283,6 +283,24 @@
   related_practice:
   - tabs-molecule
   - form-field-molecule
+- slug: container-queries-style-by-the-parent
+  title: 'Container queries: size a component by its parent, not the viewport'
+  date: 2026-09-22
+  author: The Elegant team
+  category: terminology
+  tags:
+  - css
+  - layout
+  - responsive
+  - ui
+  description: A media query asks "how wide is the viewport?" A container query asks
+    "how wide is my parent?" — and that is the question a reusable component actually
+    needs answered before it can lay itself out.
+  cover: /assets/img/ui-system-diagram.png
+  reading_minutes: 5
+  related_practice:
+  - responsive-image-set
+  - data-table-sort
 - slug: controlled-vs-uncontrolled-inputs
   title: 'Controlled vs uncontrolled inputs: who owns the value?'
   date: 2026-09-06
