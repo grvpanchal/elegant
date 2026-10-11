@@ -1,0 +1,247 @@
+/* The Elegant Frontend — print stylesheet. Palette and icon tiles follow the
+   site: orange #fe854c headings and tile borders, navy #202028 ink, muted
+   #606c71 body text (see docs/_includes/topics.html for the tile). */
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm 18mm;
+  @bottom-center { content: counter(page); font: 9pt "Liberation Sans", sans-serif; color: #606c71; }
+  @top-right { content: "The Elegant Frontend"; font: 8pt "Liberation Sans", sans-serif; color: #b3b8bc; letter-spacing: 0.06em; text-transform: uppercase; }
+}
+@page cover { margin: 0; @bottom-center { content: none; } @top-right { content: none; } }
+@page part { @top-right { content: none; } }
+@page plain { @top-right { content: none; } @bottom-center { content: none; } }
+@page ui { @top-right { content: "Part I \00B7  The UI Side"; } }
+@page server { @top-right { content: "Part II \00B7  The Server Side"; } }
+@page state { @top-right { content: "Part III \00B7  The State Side"; } }
+.cover { page: cover; }
+.part { page: part; }
+.chapter[data-layer="ui"] { page: ui; }
+.chapter[data-layer="server"] { page: server; }
+.chapter[data-layer="state"] { page: state; }
+
+:root {
+  --orange: #fe854c;
+  --ink: #202028;
+  --text: #3a3f44;
+  --muted: #606c71;
+  --tint: #fff7f2;
+  --rule: #f0d9cc;
+  --code-bg: #f6f8fa;
+}
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0;
+  font-family: "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--text);
+}
+a { color: #c4501a; text-decoration: none; }
+h1, h2, h3, h4 { color: var(--ink); line-height: 1.25; break-after: avoid; }
+h2 {
+  font-size: 15pt;
+  color: var(--orange);
+  margin: 1.6em 0 0.5em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 12pt; margin: 1.3em 0 0.4em; }
+h4 { font-size: 10.5pt; margin: 1.1em 0 0.3em; }
+p, li { orphans: 3; widows: 3; }
+ul, ol { padding-left: 1.3em; }
+li { margin: 0.15em 0; }
+strong { color: var(--ink); }
+img { max-width: 100%; }
+blockquote {
+  margin: 1em 0;
+  padding: 0.4em 1em;
+  border-left: 3px solid var(--orange);
+  background: var(--tint);
+  color: var(--ink);
+}
+table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 1em 0; break-inside: avoid; }
+th, td { border: 1px solid #e3e6e8; padding: 4px 6px; text-align: left; vertical-align: top; }
+th { background: var(--tint); color: var(--ink); }
+
+code {
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  font-size: 8.6pt;
+  background: var(--code-bg);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  color: #383e45;
+}
+pre, .highlight {
+  font-size: 8pt;
+  line-height: 1.45;
+  background: var(--code-bg);
+  border: 1px solid #e8ebee;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+pre { padding: 0.7em 0.9em; margin: 0.8em 0; }
+div.highlight { padding: 0; margin: 0.8em 0; }
+div.highlight pre { border: 0; margin: 0; background: transparent; }
+pre code { background: transparent; padding: 0; font-size: inherit; color: inherit; }
+
+/* The icon tile, exactly as the terminology pages draw it. */
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 84px;
+  width: 84px;
+  border: 2px solid var(--orange);
+  border-radius: 8px;
+  background: #fff;
+  flex: none;
+}
+.icon-box img { height: 64px; width: 64px; }
+.icon-box--lg { height: 76px; width: 76px; }
+.icon-box--lg img { height: 58px; width: 58px; }
+.icon-box--xs { height: 22px; width: 22px; border-width: 1.5px; border-radius: 4px; margin-right: 8px; }
+.icon-box--xs img { height: 16px; width: 16px; }
+.icon-label { display: block; font-size: 9pt; font-weight: bold; color: var(--ink); margin-top: 6px; }
+
+/* Cover: the stacked-layers figure, exploded into the three sides. */
+.cover {
+  position: relative;
+  height: 297mm;
+  overflow: hidden;
+  padding: 20mm 20mm 0;
+  background-color: #fffaf6;
+  background-image: radial-gradient(rgba(32, 32, 40, 0.13) 0.35mm, transparent 0.4mm);
+  background-size: 6mm 6mm;
+  color: var(--ink);
+}
+.cover::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5mm; background: var(--orange);
+}
+.cover::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5mm;
+  background: linear-gradient(90deg, #5aa9f5 0 33.3%, #22c27a 33.3% 66.6%, #ff6b63 66.6%);
+}
+.cover__top { display: flex; align-items: center; gap: 3mm; color: var(--muted); font-size: 9pt; letter-spacing: 0.14em; text-transform: uppercase; }
+.cover__logo { width: 14mm; height: auto; }
+.cover__title {
+  margin: 16mm 0 0;
+  font-size: 58pt; line-height: 0.98; letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.cover__subtitle { margin: 7mm 0 0; font-size: 14pt; line-height: 1.4; color: var(--muted); }
+.cover__subtitle b.ui { color: #2f7fd0; }
+.cover__subtitle b.server { color: #139457; }
+.cover__subtitle b.state { color: #d8433d; }
+.cover__stack { display: block; width: 176mm; height: auto; margin: 8mm 0 0 -4mm; font-family: "Liberation Sans", sans-serif; }
+.cover__author {
+  position: absolute; left: 20mm; bottom: 17mm; margin: 0;
+  font-size: 13pt; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink);
+}
+.cover__author::before { content: ""; display: block; width: 14mm; height: 1mm; background: var(--orange); margin-bottom: 4mm; }
+
+/* Title page */
+.titlepage { page: plain; position: relative; height: 255mm; text-align: center; padding-top: 36mm; break-after: page; }
+.titlepage__logo { width: 46mm; height: auto; }
+.titlepage__title { font-size: 34pt; margin: 8mm 0 4mm; }
+.titlepage__subtitle { font-size: 13pt; color: var(--muted); max-width: 120mm; margin: 0 auto; }
+.titlepage__rule { width: 30mm; height: 1mm; background: var(--orange); margin: 14mm auto; }
+.titlepage__author { font-size: 18pt; color: var(--ink); font-weight: bold; margin: 0; }
+.titlepage__site { margin: 2mm 0 0; color: var(--orange); }
+.titlepage__colophon { position: absolute; bottom: 0; left: 0; right: 0; font-size: 8.5pt; color: var(--muted); }
+.titlepage__colophon p { margin: 1mm auto; max-width: 140mm; }
+
+/* The three parts */
+.threeparts { page: plain; break-after: page; }
+.threeparts__kicker { margin: 10mm 0 0; color: var(--orange); font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; font-size: 9pt; }
+.threeparts__title { font-size: 30pt; margin: 2mm 0 4mm; }
+.threeparts__lede { font-size: 12pt; color: var(--muted); margin: 0 0 10mm; }
+.threeparts__part {
+  display: flex; gap: 7mm; align-items: flex-start;
+  padding: 7mm 0; border-top: 1px solid var(--rule); color: var(--text);
+}
+.threeparts__body { display: block; }
+.threeparts__no { display: block; color: var(--side); font-weight: bold; font-size: 9pt; letter-spacing: 0.1em; text-transform: uppercase; }
+.threeparts__name { display: block; color: var(--ink); font-size: 18pt; font-weight: bold; margin: 1mm 0 2mm; }
+.threeparts__intro { display: block; font-size: 10.5pt; }
+.threeparts__meta { display: block; margin-top: 2mm; color: var(--muted); font-size: 9pt; }
+
+/* Front matter and contents */
+.frontmatter, .toc { break-after: page; }
+.frontmatter h1, .toc h1 { font-size: 22pt; color: var(--orange); margin: 0 0 6mm; }
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li { margin: 0; }
+.toc a { display: flex; align-items: center; color: var(--ink); padding: 1.2mm 0; }
+.toc .toc-title { flex: 1; }
+.toc .toc-page { min-width: 10mm; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.toc .toc-part { margin-top: 5mm; break-inside: avoid-page; }
+.toc .toc-part > a { font-weight: bold; color: var(--orange); font-size: 12pt; border-bottom: 1px solid var(--rule); padding-bottom: 1.5mm; margin-bottom: 1mm; }
+.toc .toc-part ol { columns: 2; column-gap: 10mm; }
+.toc .toc-part ol li { break-inside: avoid; font-size: 9.5pt; }
+
+/* Part openers */
+.part { break-before: page; break-after: page; padding-top: 30mm; }
+.part__eyebrow { color: var(--orange); font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
+.part__title { font-size: 34pt; margin: 2mm 0 6mm; }
+.part__intro { font-size: 12.5pt; color: var(--muted); max-width: 150mm; }
+.part__terms {
+  list-style: none; padding: 0; margin: 12mm 0 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6mm 2mm;
+}
+.part__terms li { text-align: center; }
+.part__terms a { display: block; }
+
+/* Chapters */
+.chapter { break-before: page; }
+/* Chapter opener: the term page's own header (docs/_includes/doc-image.html),
+   a big centred logo over a big centred title. */
+.chapter__head {
+  text-align: center;
+  break-inside: avoid;
+  padding-top: 4mm;
+  padding-bottom: 6mm;
+  margin-bottom: 7mm;
+  border-bottom: 2px solid var(--orange);
+}
+.chapter__eyebrow { margin: 3mm 0 0; color: var(--muted); font-size: 9pt; text-transform: uppercase; letter-spacing: 0.08em; }
+.chapter__logo { display: block; width: 52mm; height: 52mm; margin: 0 auto; }
+.chapter__title { margin: 6mm 0 0; font-size: 34pt; }
+.chapter__summary {
+  background: var(--tint);
+  border-radius: 8px;
+  padding: 3mm 5mm 3mm 3mm;
+  break-inside: avoid;
+}
+.chapter__summary::before {
+  content: "At a glance";
+  display: block; margin-left: 2mm;
+  color: var(--orange); font-weight: bold; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.chapter__summary ul { margin: 1mm 0 0; }
+.key-insight {
+  margin: 5mm 0;
+  padding: 3mm 5mm;
+  border-left: 4px solid var(--orange);
+  color: var(--ink);
+  font-size: 11pt;
+  break-inside: avoid;
+}
+.key-insight p { margin: 0; }
+.dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 4mm 0; break-inside: avoid; }
+.dodont > div { border-radius: 8px; padding: 3mm 4mm; font-size: 9.5pt; }
+.dodont__do { background: #effaf3; border: 1px solid #bfe5cc; }
+.dodont__dont { background: #fdf0ef; border: 1px solid #f2c6c2; }
+.dodont p:first-child { margin: 0 0 1mm; text-transform: uppercase; letter-spacing: 0.06em; font-size: 8.5pt; }
+.dodont ul { margin: 0; padding-left: 1.1em; }
+.gates ul { list-style: none; padding: 0; columns: 2; column-gap: 6mm; }
+.gates li { break-inside: avoid; padding-left: 6mm; position: relative; font-size: 9.5pt; }
+.gates li::before {
+  content: ""; position: absolute; left: 0; top: 0.3em;
+  width: 3mm; height: 3mm; border: 1.5px solid var(--orange); border-radius: 2px;
+}
+.chapter__more {
+  margin-top: 8mm; padding-top: 3mm;
+  border-top: 1px solid var(--rule);
+  font-size: 9pt; color: var(--muted);
+}

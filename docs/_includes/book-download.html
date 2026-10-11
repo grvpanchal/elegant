@@ -1,0 +1,29 @@
+{%- comment -%}
+The book's download card. Every figure comes from docs/_data/book.yml, which
+scripts/book/print-book.mjs writes beside the PDF, so the page count and size
+on the button are the ones in the file. Used on the home page and /book/.
+{%- endcomment -%}
+{%- assign book = site.data.book -%}
+<div class="book-download">
+  <a class="book-download__cover" href="{{ book.file | relative_url }}" download>
+    <img src="{{ book.cover | relative_url }}" alt="Cover of The Elegant Frontend, the book" width="397" height="561" loading="lazy">
+  </a>
+  <div class="book-download__body">
+    <p class="book-download__kicker">The book &middot; free PDF</p>
+    <h3 class="book-download__title">The Elegant Frontend</h3>
+    <p class="book-download__lede">
+      Every term on this site and its best practices in one book: what it is, a worked example,
+      the common mistakes and the quality gates, in {{ book.chapters }} chapters.
+    </p>
+    <ul class="book-download__parts">
+      {%- for part in book.parts %}
+      <li>
+        <span class="book-download__part-icon"><img src="{{ '/assets/img/logos/' | append: part.logo | append: '.png' | relative_url }}" alt="" width="32" height="32"></span>
+        <span><strong>Part {% cycle 'I', 'II', 'III' %}: {{ part.title }}</strong><small>{{ part.terms }} terms</small></span>
+      </li>
+      {%- endfor %}
+    </ul>
+    <a class="landing-button book-download__button" href="{{ book.file | relative_url }}" download="the-elegant-frontend.pdf">Download the PDF</a>
+    <p class="book-download__meta">{{ book.pages }} pages &middot; {{ book.size_mb }} MB &middot; updated {{ book.built | date: "%B %Y" }}</p>
+  </div>
+</div>

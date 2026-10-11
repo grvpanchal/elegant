@@ -1,0 +1,134 @@
+// The book download card (_includes/book-download.html) and the /book/ page.
+// Same palette and icon tile as the landing page.
+
+.book-download {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+  padding: 2rem;
+  border: 1px solid $landing-line;
+  border-radius: $landing-radius;
+  background: $landing-tint;
+
+  &__cover {
+    display: block;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(32, 32, 40, 0.08), 0 12px 28px rgba(32, 32, 40, 0.16);
+    transition: transform 0.15s ease;
+
+    &:hover { transform: translateY(-3px); }
+    img { display: block; width: 100%; height: auto; }
+  }
+
+  &__kicker {
+    margin: 0 0 0.25rem;
+    color: $landing-orange;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    color: $landing-ink;
+    font-size: 1.6rem;
+  }
+
+  &__lede {
+    margin: 0 0 1.25rem;
+    color: $landing-muted;
+  }
+
+  &__parts {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    strong { display: block; color: $landing-ink; font-size: 0.95rem; }
+    small { color: $landing-muted; font-size: 0.8rem; }
+  }
+
+  &__part-icon {
+    @extend %landing-tile;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 8px;
+
+    img { width: 32px; height: 32px; }
+  }
+
+  &__button { margin-right: 1rem; }
+
+  &__meta {
+    display: inline-block;
+    margin: 0.75rem 0 0;
+    color: $landing-muted;
+    font-size: 0.85rem;
+  }
+
+  @media screen and (max-width: 48em) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.25rem;
+
+    &__cover { max-width: 11rem; margin: 0 auto; }
+  }
+}
+
+.book-contents {
+  margin-top: 2.5rem;
+
+  &__part {
+    margin: 2rem 0 0.75rem;
+    color: $landing-orange;
+    font-size: 1.25rem;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0;
+    color: $landing-ink;
+
+    &:hover { text-decoration: none; color: $landing-orange; }
+  }
+
+  &__icon {
+    @extend %landing-tile;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: 8px;
+
+    img { width: 28px; height: 28px; }
+  }
+
+  &__no {
+    margin-left: auto;
+    color: $landing-muted;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+  }
+}

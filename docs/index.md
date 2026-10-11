@@ -103,6 +103,16 @@ title: Frontend Architecture Principles
   </p>
 </section>
 
+<section id="book" class="landing-section">
+  <p class="landing-section__kicker">Take it with you</p>
+  <h2 class="landing-section__title">Read it as a book</h2>
+  <p class="landing-section__lede">
+    All three sides, every term and its best practices, in one PDF you can read offline.
+    The <a href="{{ '/book/' | relative_url }}">book page</a> lists every chapter.
+  </p>
+  {% include book-download.html %}
+</section>
+
 <section class="landing-section">
   <p class="landing-section__kicker">Keep going</p>
   <h2 class="landing-section__title">Where to go from here</h2>
