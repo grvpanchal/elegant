@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <mask id="gap" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <circle cx="145" cy="99.4" r="20.6" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="#20202a">
+    <path d="M54 39V21q0-3 3-3h151q3 0 3 3v194q0 3-3 3h-19v-11.5h11V29.2H66V39z"/>
+    <rect x="33" y="40" width="13" height="14" rx="3.5"/>
+    <rect x="60" y="40.3" width="15" height="11.7" rx="2.5"/>
+    <rect x="87.4" y="40.3" width="15.6" height="11.7" rx="2.5"/>
+    <rect x="116" y="40.3" width="15" height="11.7" rx="2.5"/>
+    <rect x="144" y="40.3" width="15" height="11.7" rx="2.5"/>
+    <rect x="172" y="40" width="14" height="14" rx="3.5"/>
+    <rect x="33" y="66" width="11" height="14.5" rx="2.5"/>
+    <rect x="33" y="92" width="11" height="14" rx="2.5"/>
+    <rect x="33" y="118.3" width="11" height="13.7" rx="2.5"/>
+    <rect x="33" y="145" width="11" height="14" rx="2.5"/>
+    <rect x="33" y="171" width="11" height="14.5" rx="2.5"/>
+    <rect x="33" y="197" width="11" height="14.5" rx="2.5"/>
+    <rect x="174" y="66" width="12" height="14.5" rx="2.5"/>
+    <rect x="174" y="92" width="12" height="14" rx="2.5"/>
+    <rect x="174" y="118.6" width="12" height="13.4" rx="2.5"/>
+    <rect x="174" y="145" width="12" height="14" rx="2.5"/>
+    <rect x="174" y="171" width="12" height="14.5" rx="2.5"/>
+    <rect x="174" y="197" width="14" height="15" rx="2.5"/>
+    <rect x="33" y="223" width="13" height="14" rx="3.5"/>
+    <rect x="60" y="225.7" width="15" height="11.3" rx="2.5"/>
+    <rect x="87.4" y="225.7" width="15.6" height="11.3" rx="2.5"/>
+    <rect x="116" y="225.7" width="15" height="11.3" rx="2.5"/>
+    <rect x="144" y="225.7" width="15" height="11.3" rx="2.5"/>
+    <rect x="172" y="223" width="14" height="14" rx="3.5"/>
+    <circle cx="110.6" cy="136.8" r="25.7"/>
+  </g>
+  <circle cx="111" cy="137" r="49.8" fill="none" stroke="#20202a" stroke-width="7" mask="url(#gap)"/>
+  <circle cx="145" cy="99.4" r="13.8" fill="#fe854c"/>
+</svg>
