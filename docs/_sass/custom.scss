@@ -93,6 +93,9 @@
     align-items: center;
     flex: 1 1 auto;
     min-width: 0;
+    // Desktop: push the links (and the account widget) to the right edge.
+    // The mobile block below switches this to a stretched column.
+    justify-content: flex-end;
   }
 
   .navlist {
@@ -115,6 +118,65 @@
         }
       }
     }
+  }
+
+  // "Learn" dropdown: a button in the bar that opens a panel of the secondary
+  // surfaces (Practice, Plans, Lists, Playbooks, Blog). It opens on hover/focus
+  // on desktop and on click everywhere (main.js toggles [data-open]); on phones
+  // it expands inline inside the hamburger column.
+  .has-dropdown {
+    position: relative;
+  }
+  .navlink-dropdown {
+    font: inherit;
+    color: darken(#000, 5%);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    &:hover {
+      color: #000;
+    }
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+  }
+  .dropdown-caret {
+    width: 0.45rem;
+    height: 0.45rem;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  .has-dropdown[data-open] .dropdown-caret {
+    transform: translateY(1px) rotate(-135deg);
+  }
+  .dropdown-menu {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    > li {
+      list-style-type: none;
+      > a {
+        display: block;
+        color: darken(#000, 5%);
+        white-space: nowrap;
+        padding: 0.6rem 1rem;
+        &:hover {
+          text-decoration: none;
+          color: #000;
+        }
+      }
+    }
+  }
+  .has-dropdown[data-open] > .dropdown-menu {
+    display: block;
   }
 
   &.scrolled {
@@ -148,12 +210,43 @@
         color: $header-heading-color;
       }
     }
+    .navlink-dropdown {
+      color: darken($header-heading-color, 5%);
+      &:hover {
+        color: $header-heading-color;
+      }
+    }
+  }
+
+  // Desktop: the Learn panel is an absolutely-positioned popover under the
+  // button, right-aligned to its edge, opening on hover or keyboard focus.
+  @media screen and (min-width: 48.0625em) {
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      min-width: 11rem;
+      background: #fff;
+      border: 1px solid rgba($color: #000, $alpha: 0.15);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba($color: #000, $alpha: 0.14);
+      padding: 0.3rem 0;
+      z-index: 120;
+    }
+    .has-dropdown:hover > .dropdown-menu,
+    .has-dropdown:focus-within > .dropdown-menu {
+      display: block;
+    }
+    .has-dropdown:hover .dropdown-caret,
+    .has-dropdown:focus-within .dropdown-caret {
+      transform: translateY(1px) rotate(-135deg);
+    }
   }
 
   // Phone and small tablet: the brand and the hamburger share the bar; the
   // menu drops below it as a full-width column and is closed until the button
   // opens it. The cutoff is wider than the theme's small breakpoint because
-  // eight links wrap into a second row anywhere under about 48em.
+  // the links wrap into a second row anywhere under about 48em.
   @media screen and (max-width: 48em) {
     .brand-name {
       min-height: 56px;
@@ -181,6 +274,13 @@
           padding: 0.75rem 1rem;
         }
       }
+    }
+    .navlink-dropdown {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .dropdown-menu {
+      padding-left: 1rem;
     }
     .account-widget {
       margin: 0.5rem 1rem 0;
