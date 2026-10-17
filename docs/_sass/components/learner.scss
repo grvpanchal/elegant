@@ -1,0 +1,1557 @@
+// The learner surfaces: courses and lessons, the dashboard, the account flow
+// and pricing. Same language as the home page and the practice bank — white
+// space, orange accents, navy ink, hairline borders — with one deliberate
+// difference: filled buttons and small orange text use $learner-accent, a
+// darker step of the site orange, because white on #fe854c is 2.4:1 and these
+// are the buttons people press most (white on $learner-accent is 5.3:1).
+
+$learner-orange: $section-headings-color;     // #fe854c, headings and tiles
+$learner-accent: #b9460f;                     // filled buttons, small orange text
+$learner-accent-hover: #9a3d0f;
+$learner-ink: #202028;
+$learner-text: $body-text-color;              // #606c71 — muted text that still passes AA
+$learner-line: #e3e8ef;
+$learner-surface: #f8fafc;
+$learner-tint: #fff7f2;
+$learner-pass: #1a7f5a;
+$learner-pass-tint: #e8f6ef;
+$learner-warn: #7c4a03;
+$learner-warn-tint: #fef3c7;
+$learner-fail: #b4341f;
+$learner-focus: #1e6bb8;
+$learner-radius: 10px;
+
+%learner-focus {
+  &:focus-visible {
+    outline: 3px solid $learner-focus;
+    outline-offset: 2px;
+  }
+}
+
+// ---------------------------------------------------------------- buttons
+.course-button,
+.tier__cta,
+.account-form button[type="submit"],
+.account-form .account-form__submit {
+  @extend %learner-focus;
+  display: inline-block;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background: $learner-accent;
+  border: 1px solid $learner-accent;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+    background: $learner-accent-hover;
+    border-color: $learner-accent-hover;
+  }
+
+  &[disabled],
+  &[aria-busy="true"] {
+    opacity: 0.6;
+    cursor: progress;
+  }
+}
+
+.course-button--small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.account-secondary {
+  @extend %learner-focus;
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: $learner-ink;
+  text-decoration: none;
+  background: #fff;
+  border: 1px solid #c9d3df;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    color: $learner-ink;
+    text-decoration: none;
+    border-color: $learner-accent;
+  }
+}
+
+.account-form .account-linkbutton,
+.account-linkbutton {
+  @extend %learner-focus;
+  display: inline;
+  padding: 0;
+  font: inherit;
+  color: $body-link-color;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+// ---------------------------------------------------------------- nav widget
+.account-widget {
+  position: relative;
+  gap: 0.5rem;
+
+  &__dashboard {
+    @extend %learner-focus;
+    padding: 0.2rem 0.4rem;
+    font-weight: 600;
+    color: inherit;
+    border-radius: 4px;
+
+    &:hover { text-decoration: underline; }
+  }
+
+  &__me {
+    @extend %learner-focus;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    max-width: 100%;
+    padding: 0.15rem 0.5rem 0.15rem 0.15rem;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: inherit;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__avatar {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    background: $learner-accent;
+    border-radius: 50%;
+  }
+
+  &__label {
+    display: inline-block;
+    min-width: 0;
+    max-width: 6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__caret {
+    width: 0;
+    height: 0;
+    border-top: 5px solid currentColor;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
+
+  &__me[aria-expanded="true"] &__caret { transform: rotate(180deg); }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: max-content;
+    max-width: min(20rem, 90vw);
+    padding: 0.85rem 1rem;
+    color: $learner-ink;
+    background: #fff;
+    border: 1px solid $learner-line;
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(32, 32, 40, 0.14);
+  }
+
+  &__who {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  &__full {
+    display: block;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  &__kind {
+    display: inline-block;
+    margin-top: 0.2rem;
+    padding: 0 0.45rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: $learner-text;
+    border: 1px solid #c9d3df;
+    border-radius: 8px;
+
+    &:empty { display: none; }
+  }
+
+  &__link {
+    @extend %learner-focus;
+    font-size: 0.88rem;
+    color: $body-link-color;
+  }
+
+  &__menu &__signout {
+    @extend %learner-focus;
+    color: $learner-ink;
+    border-color: #c9d3df;
+    opacity: 1;
+  }
+
+  &__signin-link { @extend %learner-focus; }
+}
+
+.site-nav.dark .account-widget__avatar {
+  color: $learner-accent;
+  background: #fff;
+}
+
+// Phones and tablets: the widget sits in the opened menu column, so the
+// account menu opens in place instead of floating.
+@media screen and (max-width: 60em) {
+  .account-widget {
+    flex-wrap: wrap;
+    font-size: 1rem;
+
+    &__dashboard {
+      flex: 1 1 100%;
+      padding: 0.6rem 0;
+      font-weight: 400;
+    }
+
+    &__label { max-width: 14rem; }
+
+    &__menu {
+      position: static;
+      flex: 1 1 100%;
+      width: auto;
+      max-width: none;
+      margin-top: 0.5rem;
+      box-shadow: none;
+    }
+  }
+}
+
+// Desktop: eleven links and the account fit the 64rem bar only with slightly
+// tighter link padding; between 60em and 64em the brand name gives way too.
+@media screen and (min-width: 60.0625em) {
+  .site-nav .navlist > li > a {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 60.0625em) and (max-width: 64em) {
+  .site-nav .navlist > li > a {
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+    font-size: 0.95rem;
+  }
+  .site-nav .brand-name .brand-title { display: none; }
+}
+
+// ---------------------------------------------------------------- account
+.account-status {
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0 1.5rem;
+  color: $learner-ink;
+  background: $learner-surface;
+  border: 1px solid $learner-line;
+  border-left: 4px solid #c9d3df;
+  border-radius: 6px;
+
+  &[data-kind="account"] { border-left-color: $learner-pass; }
+  &[data-kind="device"] { border-left-color: $learner-orange; }
+}
+
+.account-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+  border-bottom: 1px solid $learner-line;
+
+  [role="tab"] {
+    @extend %learner-focus;
+    padding: 0.55rem 0.8rem;
+    margin-bottom: -1px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: $learner-text;
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+
+    &:hover { color: $learner-ink; }
+
+    &[aria-selected="true"] {
+      color: $learner-ink;
+      border-bottom-color: $learner-accent;
+    }
+  }
+}
+
+.account-form {
+  &__field input { max-width: 100%; }
+
+  &__title {
+    flex: 1 1 100%;
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+    color: $learner-ink;
+  }
+
+  &__notice {
+    flex: 1 1 100%;
+    padding: 0.6rem 0.8rem;
+    margin: 0.75rem 0 0;
+    color: #14532d;
+    background: $learner-pass-tint;
+    border-radius: 6px;
+  }
+
+  &__hint { color: $learner-text; }
+}
+
+.account-panel .account-form__notice,
+.account-panel .account-form__error { margin-top: 0.75rem; }
+
+.account-signedin {
+  &__who {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    color: $learner-ink;
+    overflow-wrap: anywhere;
+  }
+
+  &__sync {
+    margin: 0 0 0.75rem;
+
+    &[data-tone="pass"] { color: $learner-pass; }
+    &[data-tone="warn"] { color: $learner-warn; }
+  }
+
+  &__import {
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    background: $learner-tint;
+    border-radius: 6px;
+
+    p { margin: 0 0 0.5rem; }
+  }
+
+  &__password {
+    margin: 1rem 0;
+
+    summary {
+      @extend %learner-focus;
+      font-weight: 600;
+      color: $learner-ink;
+      cursor: pointer;
+    }
+
+    form { margin-top: 0.75rem; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+  }
+}
+
+// ---------------------------------------------------------------- courses
+.courses-lede,
+.courses-after {
+  max-width: 46rem;
+  color: $learner-text;
+  line-height: 1.6;
+}
+
+.course-group {
+  margin: 2rem 0 0;
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+}
+
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-top: 4px solid $learner-orange;
+  border-radius: $learner-radius;
+
+  &__title {
+    margin: 0 0 0.4rem;
+    font-size: 1.15rem;
+    line-height: 1.3;
+
+    a { color: $learner-ink; }
+  }
+
+  &__summary {
+    flex: 1 1 auto;
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: $learner-text;
+  }
+
+  &__meta {
+    margin: 0;
+    font-size: 0.82rem;
+    color: $learner-text;
+  }
+
+  .progress-tracker { margin: 0.75rem 0; }
+  .course-button { align-self: flex-start; }
+}
+
+.course {
+  &__kicker,
+  .lesson__kicker {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+
+  &__title { margin: 0 0 0.5rem; color: $learner-ink; line-height: 1.2; }
+
+  &__summary {
+    max-width: 46rem;
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  &__meta,
+  &__prereq {
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+    color: $learner-text;
+  }
+
+  &__progress {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1.25rem;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    background: $learner-tint;
+    border: 1px solid lighten($learner-orange, 28%);
+    border-radius: $learner-radius;
+
+    .progress-tracker { flex: 1 1 16rem; margin: 0; }
+  }
+
+  &__section { margin: 2rem 0 0; }
+
+  &__outcomes {
+    padding: 0;
+    list-style: none;
+
+    li {
+      position: relative;
+      padding-left: 1.6rem;
+      margin: 0.4rem 0;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0.2rem;
+        top: 0.45em;
+        width: 0.5rem;
+        height: 0.8rem;
+        border: solid $learner-pass;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+      }
+    }
+  }
+}
+
+.course-module {
+  padding: 1rem 0 0.5rem;
+  border-top: 1px solid $learner-line;
+
+  &__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    color: $learner-ink;
+  }
+
+  &__num {
+    padding: 0.05rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $learner-accent;
+    background: $learner-tint;
+    border-radius: 10px;
+  }
+
+  &__summary {
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+  }
+}
+
+.course-lessons {
+  padding: 0;
+  margin: 0 0 0.75rem;
+  list-style: none;
+}
+
+.course-lesson {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding: 0.55rem 0.25rem;
+  border-bottom: 1px dashed $learner-line;
+
+  &:last-child { border-bottom: 0; }
+
+  &__num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $learner-text;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__link { font-weight: 600; }
+
+  &__meta {
+    font-size: 0.8rem;
+    color: $learner-text;
+    white-space: nowrap;
+  }
+
+  &.is-done .course-lesson__link { color: $learner-text; }
+
+  input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: $learner-pass;
+  }
+
+  @media (max-width: 40em) {
+    grid-template-columns: auto auto minmax(0, 1fr);
+
+    &__meta { grid-column: 3; white-space: normal; }
+  }
+}
+
+// ---------------------------------------------------------------- lesson
+.lesson {
+  &__kicker {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+
+  &__title { margin: 0 0 0.5rem; color: $learner-ink; line-height: 1.2; }
+
+  &__lede {
+    max-width: 46rem;
+    margin: 0 0 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: $learner-text;
+  }
+
+  &__body {
+    max-width: 46rem;
+
+    h2 { margin-top: 1.75rem; }
+    pre { overflow-x: auto; }
+    .highlight { max-width: 100%; }
+  }
+}
+
+.lesson-term {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  max-width: 46rem;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  background: $learner-tint;
+  border: 1px solid lighten($learner-orange, 28%);
+  border-radius: $learner-radius;
+
+  &__tile {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: #fff;
+    border: 2px solid $learner-orange;
+    border-radius: 10px;
+
+    img { display: block; width: 48px; height: 48px; object-fit: contain; }
+  }
+
+  &__body { min-width: 0; }
+
+  &__label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+
+  &__name {
+    margin: 0.1rem 0 0.4rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    a { color: $learner-ink; }
+  }
+
+  &__more {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: $learner-text;
+  }
+
+  &__insight {
+    margin: 0;
+    line-height: 1.55;
+    color: $learner-ink;
+  }
+
+  @media (max-width: 30em) {
+    flex-direction: column;
+  }
+}
+
+.lesson-apply {
+  max-width: 46rem;
+  margin: 2.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid $learner-line;
+
+  h2 { margin-top: 0; }
+
+  .skill-alert { margin: 1rem 0; max-width: none; }
+}
+
+.skill-alert--card .skill-alert__text strong { overflow-wrap: anywhere; }
+
+.practice-card {
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-left: 4px solid $learner-orange;
+  border-radius: $learner-radius;
+
+  &__label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+
+  &__title {
+    margin: 0.2rem 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  &__summary {
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+  }
+
+  &__done {
+    display: none;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #14532d;
+    background: $learner-pass-tint;
+    border-radius: 10px;
+  }
+
+  &.is-done {
+    border-left-color: $learner-pass;
+
+    .practice-card__done { display: inline-block; }
+  }
+}
+
+.lesson-complete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  max-width: 46rem;
+  margin: 2rem 0 1.5rem;
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1.1rem;
+    font-weight: 700;
+    color: $learner-ink;
+    background: #fff;
+    border: 2px solid $learner-accent;
+    border-radius: 8px;
+    cursor: pointer;
+
+    input {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin: 0;
+      accent-color: $learner-pass;
+    }
+
+    &:focus-within {
+      outline: 3px solid $learner-focus;
+      outline-offset: 2px;
+    }
+  }
+
+  &.is-done &__toggle {
+    color: #14532d;
+    background: $learner-pass-tint;
+    border-color: $learner-pass;
+  }
+
+  &__note {
+    margin: 0;
+    font-size: 0.9rem;
+    color: $learner-pass;
+  }
+}
+
+.lesson-pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 0.75rem;
+  max-width: 46rem;
+  margin: 0 0 1.5rem;
+
+  &__link {
+    @extend %learner-focus;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.85rem 1rem;
+    color: $learner-ink;
+    background: #fff;
+    border: 1px solid $learner-line;
+    border-radius: $learner-radius;
+
+    &:hover {
+      text-decoration: none;
+      border-color: $learner-orange;
+      box-shadow: 0 6px 18px rgba(254, 133, 76, 0.12);
+    }
+
+    &--next { text-align: right; }
+  }
+
+  &__dir {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $learner-accent;
+  }
+
+  &__title { font-weight: 600; }
+}
+
+.lesson-outline {
+  max-width: 46rem;
+  padding: 0.75rem 1rem;
+  margin: 0 0 1rem;
+  background: $learner-surface;
+  border: 1px solid $learner-line;
+  border-radius: 6px;
+
+  summary {
+    @extend %learner-focus;
+    font-weight: 700;
+    color: $learner-ink;
+    cursor: pointer;
+  }
+
+  &__module {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $learner-text;
+  }
+
+  &__list {
+    margin: 0;
+    padding-left: 1.4rem;
+
+    li { padding: 0.15rem 0; }
+    .is-current a { font-weight: 700; color: $learner-ink; }
+  }
+
+  &__done {
+    display: none;
+    margin-left: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $learner-pass;
+  }
+
+  li.is-done .lesson-outline__done { display: inline; }
+}
+
+// ---------------------------------------------------------------- dashboard
+.dash {
+  &__head h1 { margin-bottom: 0.5rem; }
+
+  &__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.4rem;
+    padding: 0.75rem 1rem;
+    margin: 0 0 1.5rem;
+    font-size: 0.92rem;
+    color: $learner-ink;
+    background: $learner-surface;
+    border: 1px solid $learner-line;
+    border-radius: 6px;
+  }
+}
+
+.dash-plan { color: $learner-text; }
+
+.dash-pill {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: $learner-ink;
+  background: #e8edf3;
+  border-radius: 10px;
+
+  &--pass { color: #14532d; background: $learner-pass-tint; }
+  &--warn { color: $learner-warn; background: $learner-warn-tint; }
+}
+
+.dash-section {
+  margin: 0 0 2rem;
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  &__lede {
+    margin: 0 0 0.75rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+  }
+
+  &__more { margin: 0.5rem 0 0; font-size: 0.92rem; }
+}
+
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dash-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  background: #fff;
+  border: 1px solid lighten($learner-orange, 28%);
+  border-radius: $learner-radius;
+
+  &__value {
+    font-size: 1.9rem;
+    line-height: 1;
+    color: $learner-ink;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__label {
+    font-size: 0.85rem;
+    color: $learner-text;
+  }
+}
+
+.dash-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1rem;
+  margin: 0 0 2rem;
+
+  .dash-section { margin: 0; }
+}
+
+.dash-card {
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-radius: $learner-radius;
+
+  &__lede {
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+  }
+}
+
+.dash-empty {
+  margin: 0 0 0.75rem;
+  color: $learner-text;
+}
+
+.dash-continue__context {
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $learner-accent;
+}
+
+.dash-recent {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $learner-line;
+
+  &__title { margin: 0 0 0.35rem; font-size: 0.9rem; color: $learner-ink; }
+
+  &__list {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.88rem;
+
+    li { padding: 0.15rem 0; }
+  }
+
+  &__when { color: $learner-text; }
+}
+
+.dash-reco {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__item {
+    padding: 0.55rem 0;
+    border-bottom: 1px dashed $learner-line;
+
+    &:last-child { border-bottom: 0; }
+  }
+
+  &__link { display: block; font-weight: 600; }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+  }
+}
+
+// Activity heatmap: one hue, light to dark (validated with the dataviz
+// ordinal check: monotone lightness, visible steps, light end >= 2:1 on white).
+$heat-0: #eceff3;
+$heat-1: #fb9a5f;
+$heat-2: #ec7432;
+$heat-3: #c4521a;
+$heat-4: #8a360d;
+
+.heat {
+  display: flex;
+  gap: 0.4rem;
+  max-width: 100%;
+
+  &__days {
+    display: grid;
+    grid-template-rows: repeat(7, var(--heat-cell, 14px));
+    gap: var(--heat-gap, 3px);
+    padding-top: 1.25rem;
+    font-size: 0.68rem;
+    line-height: var(--heat-cell, 14px);
+    color: $learner-text;
+  }
+
+  &__scroll {
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  &__months {
+    display: grid;
+    grid-template-columns: repeat(12, var(--heat-cell, 14px));
+    gap: var(--heat-gap, 3px);
+    height: 1.25rem;
+    font-size: 0.68rem;
+    color: $learner-text;
+    white-space: nowrap;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-rows: repeat(7, var(--heat-cell, 14px));
+    grid-auto-columns: var(--heat-cell, 14px);
+    grid-auto-flow: column;
+    gap: var(--heat-gap, 3px);
+  }
+
+  @media (min-width: 40em) {
+    --heat-cell: 22px;
+    --heat-gap: 4px;
+  }
+}
+
+.heat-cell {
+  display: block;
+  width: var(--heat-cell, 14px);
+  height: var(--heat-cell, 14px);
+  background: $heat-0;
+  border-radius: 3px;
+
+  &[data-level="1"] { background: $heat-1; }
+  &[data-level="2"] { background: $heat-2; }
+  &[data-level="3"] { background: $heat-3; }
+  &[data-level="4"] { background: $heat-4; }
+  &--future { visibility: hidden; }
+  &.is-today { box-shadow: 0 0 0 2px #fff, 0 0 0 3px $learner-ink; }
+}
+
+.heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0.6rem 0 0;
+  font-size: 0.75rem;
+  color: $learner-text;
+
+  .heat-cell { --heat-cell: 12px; }
+}
+
+.dash-table-toggle {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+
+  summary {
+    @extend %learner-focus;
+    color: $body-link-color;
+    cursor: pointer;
+  }
+}
+
+.dash-table {
+  margin: 0.5rem 0 0;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.25rem 1rem 0.25rem 0;
+    text-align: left;
+    border-bottom: 1px solid $learner-line;
+  }
+}
+
+.dash-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem 1.5rem;
+
+  &__title {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $learner-text;
+  }
+}
+
+.dash-bars {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dash-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.2rem 0.5rem;
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+
+  &__label { color: $learner-ink; }
+  &__value { color: $learner-text; font-variant-numeric: tabular-nums; }
+
+  &__rail {
+    grid-column: 1 / -1;
+    display: block;
+    height: 8px;
+    overflow: hidden;
+    background: #e3e8ef;
+    border-radius: 4px;
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    background: $learner-orange;
+    border-radius: 4px;
+  }
+
+  &.is-complete .dash-bar__fill { background: $learner-pass; }
+}
+
+.dash-rows {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dash-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-radius: $learner-radius;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  &__title { font-weight: 700; }
+
+  &__count {
+    font-size: 0.85rem;
+    color: $learner-text;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dash-bar__rail { grid-column: auto; }
+  .course-button { justify-self: start; max-width: 100%; }
+  &.is-complete .dash-bar__fill { background: $learner-pass; }
+}
+
+.dash-terms {
+  display: grid;
+  gap: 1rem;
+
+  &__layer {
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border: 1px solid lighten($learner-orange, 28%);
+    border-radius: $learner-radius;
+
+    .dash-bar__rail { margin: 0.25rem 0 0.75rem; }
+  }
+
+  &__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin: 0;
+    font-size: 1.05rem;
+    color: $learner-ink;
+  }
+
+  &__count {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $learner-text;
+  }
+}
+
+.term-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.term-chip {
+  @extend %learner-focus;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.82rem;
+  color: $learner-ink;
+  background: #fff;
+  border: 1px solid #c9d3df;
+  border-radius: 999px;
+
+  &:hover { text-decoration: none; border-color: $learner-accent; }
+
+  &__state {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &--started {
+    background: $learner-tint;
+    border-color: $learner-orange;
+    border-style: dashed;
+
+    .term-chip__state { color: $learner-accent; }
+  }
+
+  &--mastered {
+    background: $learner-pass-tint;
+    border-color: $learner-pass;
+
+    .term-chip__state { color: #14532d; }
+  }
+}
+
+// ---------------------------------------------------------------- pricing
+.pricing {
+  &__head { max-width: 46rem; }
+
+  &__badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $learner-warn;
+    background: $learner-warn-tint;
+    border: 2px solid #e2b33c;
+    border-radius: 6px;
+  }
+
+  &__lede {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+}
+
+.sandbox-note {
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.5rem;
+  color: #4a3003;
+  background: $learner-warn-tint;
+  border: 1px solid #e2b33c;
+  border-left: 5px solid #c98b06;
+  border-radius: 6px;
+
+  p { margin: 0; }
+}
+
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0 0 2rem;
+  list-style: none;
+}
+
+.tier {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-top: 4px solid #c9d3df;
+  border-radius: $learner-radius;
+
+  &--paid { border-top-color: $learner-orange; }
+
+  &__name { margin: 0; font-size: 1.3rem; color: $learner-ink; }
+
+  &__tagline {
+    margin: 0.25rem 0 0.75rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+  }
+
+  &__price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin: 0 0 0.25rem;
+
+    strong { font-size: 2rem; line-height: 1.1; color: $learner-ink; }
+    span { font-size: 0.85rem; color: $learner-text; }
+  }
+
+  &__tbd { font-size: 1.35rem !important; }
+
+  &__sandbox {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.1rem 0.5rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: $learner-warn;
+    background: $learner-warn-tint;
+    border-radius: 6px;
+  }
+
+  &__features {
+    flex: 1 1 auto;
+    padding: 0;
+    margin: 0.5rem 0 1rem;
+    list-style: none;
+
+    li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin: 0.4rem 0;
+      font-size: 0.92rem;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0.15rem;
+        top: 0.4em;
+        width: 0.4rem;
+        height: 0.7rem;
+        border: solid $learner-pass;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+
+      &.is-planned { color: $learner-text; }
+      &.is-planned::before { border-color: #c9d3df; }
+    }
+  }
+
+  &__planned {
+    padding: 0 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $learner-text;
+    border: 1px solid #c9d3df;
+    border-radius: 8px;
+  }
+
+  &__cta { width: 100%; }
+
+  &__cta--free {
+    color: $learner-ink;
+    background: #fff;
+    border-color: #c9d3df;
+
+    &:hover { color: $learner-ink; background: $learner-surface; border-color: $learner-accent; }
+  }
+
+  &__cta-note { font-weight: 400; }
+}
+
+.checkout,
+.receipt {
+  max-width: 40rem;
+  padding: 1.25rem;
+  margin: 0 0 2rem;
+  background: #fff;
+  border: 1px solid $learner-line;
+  border-radius: $learner-radius;
+
+  &__title { margin: 0 0 0.75rem; color: $learner-ink; }
+}
+
+.checkout {
+  border-top: 4px solid $learner-orange;
+
+  &__summary { margin: 0 0 1rem; }
+
+  &__summary div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed $learner-line;
+  }
+
+  &__summary dt { min-width: 11rem; font-weight: 600; color: $learner-ink; }
+  &__summary dd { margin: 0; }
+
+  &__status {
+    margin: 0 0 0.75rem;
+    font-size: 0.92rem;
+
+    &[data-tone="pass"] { color: $learner-pass; }
+    &[data-tone="fail"] { color: $learner-fail; }
+  }
+
+  &__buttons { min-height: 3rem; max-width: 26rem; }
+  &__actions { margin: 0.75rem 0 0; }
+}
+
+.receipt {
+  background: $learner-pass-tint;
+  border-color: #b9e2cd;
+  border-top: 4px solid $learner-pass;
+
+  &__fields {
+    margin: 0 0 1rem;
+
+    div {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 0.75rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px dashed #b9e2cd;
+    }
+
+    dt { min-width: 8rem; font-weight: 600; color: $learner-ink; }
+    dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  }
+
+  &__note { margin: 0; font-size: 0.9rem; color: $learner-ink; }
+}
+
+.receipts__list {
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+
+  li { margin: 0.3rem 0; overflow-wrap: anywhere; }
+}
+
+.pricing-faq {
+  max-width: 46rem;
+
+  dt { margin-top: 1rem; font-weight: 700; color: $learner-ink; }
+  dd { margin: 0.25rem 0 0; color: $learner-text; }
+}
+
+// ------------------------------------------------- headings inside .main-content
+// The theme styles `.main-content h1..h5` (orange, normal weight, 2rem/1rem
+// margins) at a higher specificity than a single class. Page and section titles
+// keep that orange — it is the site's voice — but card titles and small labels
+// are restated here: ink for titles (orange text this small fails contrast) and
+// the AA accent for uppercase labels, with the tight margins cards need.
+.main-content {
+  .course__title,
+  .lesson__title { margin: 0 0 0.5rem; line-height: 1.2; }
+
+  .course-group__title { margin: 0 0 0.75rem; font-weight: 700; color: $learner-accent; }
+  .course-card__title { margin: 0 0 0.4rem; font-weight: 600; color: $learner-ink; }
+  .course-module__title { margin: 0 0 0.25rem; font-weight: 600; color: $learner-ink; }
+
+  .practice-card__title { margin: 0.2rem 0 0.35rem; font-weight: 600; color: $learner-ink; }
+
+  .dash-section__title { margin: 0 0 0.75rem; }
+  .dash-recent__title { margin: 0 0 0.35rem; font-weight: 700; color: $learner-ink; }
+  .dash-breakdown__title { margin: 0 0 0.5rem; font-weight: 700; color: $learner-text; }
+  .dash-terms__title { margin: 0; font-weight: 700; color: $learner-ink; }
+
+  .tier__name { margin: 0; font-weight: 700; color: $learner-ink; }
+  .checkout__title,
+  .receipt__title { margin: 0 0 0.75rem; }
+
+  .account-form__title { margin: 0 0 0.25rem; font-weight: 700; color: $learner-ink; }
+  .account-signedin__who { margin: 0 0 0.5rem; font-weight: 600; color: $learner-ink; }
+  .account-panel h3 { margin-top: 0; }
+}

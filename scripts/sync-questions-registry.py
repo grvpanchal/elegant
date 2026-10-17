@@ -2,14 +2,13 @@
 """Sync docs/_data/questions.yml from the question pages on disk.
 
 Every practice question is one markdown file under docs/practice/ whose front
-matter carries the contract in harness/capabilities.yml (format, difficulty,
-layer, topics, skill, minutes). This script flattens that front matter into a
+matter carries its contract (format, difficulty, layer, topics, skill,
+minutes). This script flattens that front matter into a
 registry the site reads at build time:
 
   * docs/practice/index.md renders the filterable bank from it
   * docs/assets/js/practice-index.js filters and searches it client-side
   * docs/_data/plans.yml items resolve against it
-  * harness/check_harness.py fails when it drifts from disk
 
 Generated, never hand-edited. Run after adding or editing a question:
 
@@ -32,7 +31,7 @@ FIELDS = ("slug", "title", "format", "difficulty", "layer", "topics",
 
 HEADER = """# Auto-generated from the front matter of docs/practice/*.md.
 # Regenerate with: python3 scripts/sync-questions-registry.py
-# Do not hand-edit: harness/check_harness.py (bank.registry) fails on drift.
+# Do not hand-edit: regenerate it instead.
 """
 
 FM_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.S)

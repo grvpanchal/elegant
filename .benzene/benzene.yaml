@@ -1,0 +1,113 @@
+# The CTO office of the elegant organisation (benzene-org.yaml beside this file): three sub-agents, one cell per
+# skill (cell_per_skill in the organisation file), each held to the bars its skill owns in benzene-standards.yaml.
+#
+#   training-site      the learner experience under docs/: dashboard, free courses, practice, login, pricing, checkout
+#   template-harness   the elegant skills + every template's AGENTS.md + the integrity check; "build a todo app" stable
+#   docs-maintainer    the terminology docs, complete and current, each backed by its Agent Skill
+#
+# Every CTO run is built in its own git worktree (heartbeat.worktree): beta against the workspace, then the CEO's
+# final approval merges it. Nothing is pushed by the organisation.
+name: elegant-cto
+description: CTO office — build and keep the Elegant Frontend AI Harness training site, its templates and its docs to the standard
+system: |
+  You are a cell of the CTO office of the elegant organisation. Its purpose: the best Frontend AI Harness training site
+  (https://elegantfrontend.training), where every lesson is a frontend term of the UI / Server / State architecture and
+  the Agent Skill that encodes it, for frontend developers who lost their jobs to AI.
+
+  The repository: docs/ is the Jekyll site; templates/ holds seven interchangeable front-end templates over one atomic
+  architecture; skills/ holds the Agent Skills, one per term; .benzene/ is the organisation itself (its standard, its
+  skills, its checks under .benzene/checks/, the offices' material). You work in a git worktree of it: your change is
+  reviewed, beta-tested and approved before it lands, so make it complete and small.
+
+  Work like an operator: read the failing check's exact output, list and read the files it names, change only what the
+  finding needs, write each file with write_workspace_file, then say which files changed and why. Never invent a path, a
+  script, a price, a URL or a number; never write a secret into a file; never touch .benzene/ (the organisation's record)
+  unless the instruction names a file there.
+capability: Build and maintain the Elegant training site, its templates and its terminology docs to the researched standard
+skills: [training-site, template-harness, docs-maintainer]
+tools: [list_workspace_files, read_workspace_file, write_workspace_file, fetch_url]
+
+models:
+  - role: primary
+    provider: openrouter
+    id: qwen/qwen3.7-flash
+    fallback_ids: [deepseek/deepseek-v4-flash-0731]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 12000
+    temperature: 0.3
+    timeout_s: 300
+    price_per_mtok: [0.03, 0.13]
+  - role: coder                        # the training site and the templates: real frontend work
+    provider: openrouter
+    id: qwen/qwen3.7-plus
+    fallback_ids: [deepseek/deepseek-v4-flash-0731, qwen/qwen3.7-flash]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 16000
+    temperature: 0.2
+    timeout_s: 360
+    price_per_mtok: [0.32, 1.28]
+  - role: writer                       # the terminology docs: current, specific prose
+    provider: openrouter
+    id: anthropic/claude-sonnet-5
+    fallback_ids: [qwen/qwen3.7-plus]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 16000
+    temperature: 0.4
+    timeout_s: 360
+    price_per_mtok: [2.0, 10.0]
+  - role: judge
+    provider: openrouter
+    id: qwen/qwen3.7-flash
+    fallback_ids: [deepseek/deepseek-v4-flash-0731]
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 3000
+    temperature: 0
+    timeout_s: 120
+    price_per_mtok: [0.03, 0.13]
+  - role: router
+    provider: openrouter
+    id: qwen/qwen3.7-flash
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 2000
+    timeout_s: 90
+    price_per_mtok: [0.03, 0.13]
+  - role: scout
+    provider: openrouter
+    id: qwen/qwen3.7-flash
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 3000
+    timeout_s: 120
+    price_per_mtok: [0.03, 0.13]
+  - role: decider                      # TypeSafe Jev: routing among the sub-agents and the not-ai-slop gates
+    provider: openrouter
+    id: typesafe/jev-router
+    api_key_env: OPENROUTER_API_KEY
+    timeout_s: 60
+    price_per_mtok: [0.042, 0.0]
+  - role: evolver
+    provider: openrouter
+    id: anthropic/claude-sonnet-5
+    api_key_env: OPENROUTER_API_KEY
+    max_tokens: 8000
+    timeout_s: 240
+    price_per_mtok: [2.0, 10.0]
+
+guardrail:
+  min_chars: 20
+  max_chars: 16000
+  forbidden_patterns: ["as an ai language model"]
+  verifier_fail_cap: 0.40
+  max_cost_usd: 0.60
+  value_usd: 0.10
+  max_latency_s: 1800
+  judge_weight: 0.4
+  pass_threshold: 0.70
+  require_written_files: true
+
+homeostasis:
+  divide_below: 0.55
+  evolve_below: 0.75
+  heal_max_attempts: 2
+  min_tasks_before_divide: 3
+  mature_after_verified_tasks: 1
+  repair_skill_on_failure: true

@@ -1,0 +1,80 @@
+name: Bug
+description: Something on the training site, in a template or in the CLI is broken.
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. One bug per issue, please.
+        **Never paste a password, a token, an email address or a payment detail here.** This repository is public.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is it?
+      options:
+        - Practice question or its in-browser workspace
+        - Course or lesson
+        - Dashboard or progress
+        - Account or sign-in
+        - Pricing or sandbox checkout
+        - Book download
+        - Blog or another site page
+        - A template (npx elegant <template>)
+        - The CLI (npx elegant)
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page URL or template name
+      description: The full address of the page (https://elegantfrontend.training/...) or the template, for example chota-react-rtk.
+      placeholder: https://elegantfrontend.training/practice/action-creators.html
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Number each step, starting from opening the page.
+      placeholder: |
+        1. Open the page
+        2. Click "Run tests"
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, device and OS
+      placeholder: Firefox 131 on Android 15, or Node 20 on macOS 15
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output or error message
+      description: Paste it as text. Remove anything personal first.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the open issues and this has not been reported yet.
+          required: true
+        - label: This issue contains no password, token, email address or payment detail.
+          required: true

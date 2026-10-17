@@ -150,11 +150,12 @@
     }
   }
 
-  // Phone and small tablet: the brand and the hamburger share the bar; the
-  // menu drops below it as a full-width column and is closed until the button
-  // opens it. The cutoff is wider than the theme's small breakpoint because
-  // eight links wrap into a second row anywhere under about 48em.
-  @media screen and (max-width: 48em) {
+  // Phone and tablet: the brand and the hamburger share the bar; the menu
+  // drops below it as a full-width column and is closed until the button opens
+  // it. The cutoff is wider than the theme's small breakpoint because ten links
+  // plus the Dashboard link and the account menu wrap into a second row
+  // anywhere under about 60em.
+  @media screen and (max-width: 60em) {
     .brand-name {
       min-height: 56px;
     }

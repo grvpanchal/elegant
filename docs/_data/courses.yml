@@ -1,0 +1,101 @@
+# Free courses (docs/courses/). This file owns ORDER and GROUPING only:
+# a course is an ordered list of modules, a module an ordered list of lesson
+# slugs. Everything about one lesson — its title, the term it teaches, the
+# Agent Skill that encodes it, the practice question — lives in that lesson's
+# front matter (docs/courses/<course>/<lesson>.md, `layout: lesson`), so there
+# is one place to edit it.
+#
+# Contract, checked by `python3 scripts/check-courses.py`:
+#   - every lesson slug below has a page at docs/courses/<course.slug>/<slug>.md
+#     whose front matter has `course: <course.slug>` and `slug: <slug>`
+#   - every lesson page is listed in exactly one module here
+#   - a lesson's progress key is "lesson:<course>/<slug>" (progress.js)
+#
+# Reading time is computed from the lesson body at build time; never type it.
+- slug: ui-layer
+  title: "UI layer: terminology for the AI era"
+  layer: ui
+  category: The three layers
+  order: 10
+  summary: The words that decide where a component belongs, what crosses its boundary and what it owes the people using it — the vocabulary you prompt and review an agent's UI code in.
+  outcome:
+    - Name the boundary of any component an agent hands you — atom, molecule or container — and say what is wrong with it.
+    - Write props and events as a contract an agent can implement without guessing.
+    - Ask for loading and accessibility states up front instead of finding them missing in review.
+  prerequisites: You can read HTML and a little JavaScript. No framework is assumed; examples come from the React, Vue, Angular and Web Components templates.
+  modules:
+    - title: Speak component
+      summary: The unit you ask an agent for, the data going in and the events coming out.
+      lessons: [component, props, events]
+    - title: Atomic design as a review checklist
+      summary: Use the atomic levels to decide where code belongs before you read a line of it.
+      lessons: [atom, molecule]
+    - title: Ship UI people can use
+      summary: The two states agents leave out unless you name them.
+      lessons: [skeleton, accessibility]
+
+- slug: state-layer
+  title: "State layer: terminology for the AI era"
+  layer: state
+  category: The three layers
+  order: 20
+  summary: Where a value lives, how a change is described, applied and observed, and how async work stays honest — the Redux-family vocabulary every store in the templates shares.
+  outcome:
+    - Decide whether a value is local, global, server or URL state before an agent puts it in the store.
+    - Read an action, a reducer and a middleware as one write path and spot the impure step.
+    - Specify selectors and async operations so the UI never computes, races or lies about loading.
+  prerequisites: Comfortable with JavaScript objects and arrays. Redux, NgRx and Pinia examples are explained as they appear.
+  modules:
+    - title: Where state lives
+      summary: Classify a value first; the store is one answer, not the default.
+      lessons: [state, store]
+    - title: The write path
+      summary: An event is described, applied purely, and intercepted on the way.
+      lessons: [actions, reducer, middleware]
+    - title: The read path and async
+      summary: Derive instead of storing, and model every request as a lifecycle.
+      lessons: [selectors, operations]
+
+- slug: server-layer
+  title: "Server layer: terminology for the AI era"
+  layer: server
+  category: The three layers
+  order: 30
+  summary: Everything between the browser and the component tree — containers, routes, rendering strategies, the app shell, proxies and sessions — named precisely enough to brief an agent on.
+  outcome:
+    - Keep data access in containers and route state in the URL, so presentational code stays testable.
+    - Choose SSR, SSG or an app shell from the constraints of a brief, and defend the choice.
+    - Spot the plausible-but-insecure answer in proxy and session code before it ships.
+  prerequisites: You have shipped a page that talks to an API. HTTP basics help; everything else is introduced.
+  modules:
+    - title: Routes and containers
+      summary: Where data enters the UI, and where the address bar keeps its share of state.
+      lessons: [container, router]
+    - title: Rendering strategies
+      summary: When HTML is made — per request, at build time, or once as a cached shell.
+      lessons: [ssr, ssg, app-shell]
+    - title: The network edge
+      summary: The two places a confident agent most often writes an insecure answer.
+      lessons: [proxy, session]
+
+- slug: agent-skills
+  title: Harnessing AI with Agent Skills
+  layer: harness
+  category: The AI harness
+  order: 40
+  summary: How to drive a coding agent with the site's Agent Skills — what a SKILL.md is, how one activates, and the guardrails, thresholds and evals that tell you the agent's work is right without reading every diff.
+  outcome:
+    - Read and install a SKILL.md, and know which one an agent will load for the file it is editing.
+    - Write the guardrail before the skill, with thresholds a real codebase can pass.
+    - Catch an agent satisfying the measure instead of the goal, and score a skill with an eval set.
+  prerequisites: Finish one lesson of a layer course first, so the terms the skills encode are familiar. You need a terminal and any Agent-Skills-compatible coding agent.
+  modules:
+    - title: What a skill is
+      summary: A procedure, a measurement and the loop between them.
+      lessons: [skills-guardrails-loop, anatomy-of-a-skill, install-and-activate]
+    - title: Guardrails before skills
+      summary: Decide how you would know the work is wrong, then make it executable.
+      lessons: [guardrail-first, thresholds-and-budgets]
+    - title: Closing the loop
+      summary: What an agent does to your checks, and how to score a skill instead of arguing about it.
+      lessons: [measure-not-goal, eval-a-skill]

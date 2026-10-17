@@ -186,18 +186,66 @@
   // ------------------------------------------------------------- the widget
   function paint() {
     var profile = api.current();
+    // "account" is a verified sign-in; "device" is a typed profile name. The
+    // nav says which, so nobody mistakes a device profile for an account.
+    var kind = profile ? (providerName === "local" ? "device" : "account") : "guest";
     Array.prototype.forEach.call(document.querySelectorAll("[data-account-widget]"), function (node) {
       var nameEl = node.querySelector("[data-account-name]");
+      var kindEl = node.querySelector("[data-account-kind]");
       var inEl = node.querySelector("[data-account-signed-in]");
       var outEl = node.querySelector("[data-account-signed-out]");
+      var fullEl = node.querySelector("[data-account-name-full]");
+      var initialEl = node.querySelector("[data-account-initial]");
+      var toggle = node.querySelector("[data-account-menu-toggle]");
+      var label = kind === "account" ? "Account" : kind === "device" ? "Device profile" : "";
       if (nameEl) nameEl.textContent = profile ? profile.name : "";
+      if (fullEl) fullEl.textContent = profile ? profile.name : "";
+      if (initialEl) initialEl.textContent = profile ? String(profile.name).trim().charAt(0).toUpperCase() : "";
+      if (toggle) toggle.setAttribute("title", profile ? "Signed in as " + profile.name + " (" + label + ")" : "");
+      if (kindEl) kindEl.textContent = label;
+      if (!profile) closeMenus();
       if (inEl) inEl.hidden = !profile;
       if (outEl) outEl.hidden = Boolean(profile);
       node.setAttribute("data-signed-in", profile ? "true" : "false");
+      node.setAttribute("data-account-kind-of", kind);
+    });
+  }
+
+  // The signed-in menu in the nav: a disclosure button. Escape or a click
+  // outside closes it; Escape returns focus to the button.
+  function closeMenus(except) {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-account-menu-toggle]"), function (btn) {
+      if (btn === except) return;
+      btn.setAttribute("aria-expanded", "false");
+      var menu = document.getElementById(btn.getAttribute("aria-controls"));
+      if (menu) menu.hidden = true;
+    });
+  }
+
+  function initMenus() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-account-menu-toggle]"), function (btn) {
+      var menu = document.getElementById(btn.getAttribute("aria-controls"));
+      if (!menu) return;
+      btn.addEventListener("click", function () {
+        var open = btn.getAttribute("aria-expanded") !== "true";
+        closeMenus(btn);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        menu.hidden = !open;
+      });
+      menu.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") { closeMenus(); btn.focus(); }
+      });
+      btn.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && btn.getAttribute("aria-expanded") === "true") { closeMenus(); }
+      });
+    });
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest || !event.target.closest(".account-widget__in")) closeMenus();
     });
   }
 
   function init() {
+    initMenus();
     Array.prototype.forEach.call(document.querySelectorAll("[data-account-signin-form]"), function (form) {
       form.addEventListener("submit", function (event) {
         event.preventDefault();

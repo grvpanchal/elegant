@@ -8,9 +8,10 @@ description: Print a completion certificate for any finished Frontend AI Harness
 <h1>Certificate of completion</h1>
 
 <p class="certificate-lede">
-Progress lives in this browser only — there is no account and nothing is sent
-anywhere. Pick a plan you have finished and print the card below, or export the
-raw JSON if you would rather keep the record yourself.
+Progress lives in this browser — and in your account too, if you
+<a href="{{ '/account/' | relative_url }}">sign in</a>. Pick a plan you have
+finished and print the card below, or export the raw JSON if you would rather
+keep the record yourself.
 </p>
 
 <form class="certificate-form" onsubmit="return false;">
@@ -41,6 +42,4 @@ raw JSON if you would rather keep the record yourself.
 
 <p class="certificate__note" id="cert-note" hidden></p>
 
-<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
-<script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>
 <script type="text/javascript" src="{{ '/assets/js/certificate.js' | relative_url }}"></script>

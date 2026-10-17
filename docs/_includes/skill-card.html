@@ -1,0 +1,42 @@
+{%- comment -%}
+The Agent Skill that encodes a term, for any page that names one (a course
+lesson today). Same markup and classes as doc-skill-download.html, so the copy
+button is wired by main.js and it looks like the skill alert on the term pages.
+
+Usage:  {% include skill-card.html skill="ui-props" term="Props" %}
+
+Renders nothing for a skill that is not in docs/_data/skills.yml, so a typo
+cannot ship a dead download link.
+{%- endcomment -%}
+{%- assign _skill = include.skill -%}
+{%- if _skill and site.data.skills contains _skill -%}
+{%- assign _install = "npx skills add " | append: site.skills_repo | append: " --skill " | append: _skill -%}
+<div class="skill-alert skill-alert--card">
+  <div class="skill-alert__content">
+    <svg class="skill-alert__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+    </svg>
+    <div class="skill-alert__text">
+      <strong>Agent Skill: {{ _skill }}</strong>
+      <span>The <code>SKILL.md</code> that encodes {% if include.term %}{{ include.term }}{% else %}this term{% endif %} for a coding agent. Install it into your agent, or download it for any Agent-Skills-compatible runtime.</span>
+    </div>
+  </div>
+  <div class="skill-alert__actions">
+    <div class="skill-alert__command">
+      <code>{{ _install }}</code>
+      <button type="button" class="skill-alert__copy" data-copy="{{ _install }}" aria-label="Copy install command for {{ _skill }}" title="Copy install command">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+        <span class="skill-alert__copy-label">Copy</span>
+      </button>
+    </div>
+    <a href="{{ '/skills/' | append: _skill | append: '/SKILL.md' | relative_url }}" class="skill-alert__download" download="{{ _skill }}-SKILL.md">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+      </svg>
+      <span>Download <span class="sr-only">{{ _skill }} SKILL.md</span></span>
+    </a>
+  </div>
+</div>
+{%- endif -%}

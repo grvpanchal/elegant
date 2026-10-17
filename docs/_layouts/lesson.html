@@ -1,0 +1,135 @@
+---
+layout: default
+---
+{%- comment -%}
+One lesson of a free course. Front matter is a contract:
+
+  course    the course slug in docs/_data/courses.yml
+  slug      this lesson's slug (= filename), listed in one of that course's modules
+  term      <layer>/<doc slug> — the terminology doc the lesson teaches
+  skill     the Agent Skill that encodes it (docs/_data/skills.yml)
+  practice  a question slug from docs/_data/questions.yml
+  description, insight
+
+Order, prev/next and "Lesson n of m" come from courses.yml; "mark complete" is
+a progress.js key, "lesson:<course>/<slug>", so it syncs like a question does.
+{%- endcomment -%}
+{%- assign course = site.data.courses | where: "slug", page.course | first -%}
+{%- assign key = "lesson:" | append: page.course | append: "/" | append: page.slug -%}
+{%- assign tparts = page.term | split: "/" -%}
+{%- assign tlayer = tparts[0] -%}
+{%- assign tslug = tparts[1] -%}
+{%- assign tdoc = site.data.topics[tlayer] | where: "slug", tslug | first -%}
+{%- assign tlabel = tlayer | capitalize -%}{%- if tlayer == "ui" -%}{%- assign tlabel = "UI" -%}{%- endif -%}
+{%- assign words = page.content | strip_html | number_of_words -%}
+{%- assign mins = words | plus: 199 | divided_by: 200 -%}
+{%- if course -%}
+{%- include course-data.html course=course -%}
+{%- assign idx = -1 -%}
+{%- assign module_title = "" -%}
+{%- for lp in cd_lessons -%}
+  {%- if lp.slug == page.slug -%}{%- assign idx = forloop.index0 -%}{%- endif -%}
+{%- endfor -%}
+{%- for m in course.modules -%}
+  {%- if m.lessons contains page.slug -%}{%- assign module_title = m.title -%}{%- assign module_n = forloop.index -%}{%- endif -%}
+{%- endfor -%}
+{%- assign prev_i = idx | minus: 1 -%}
+{%- assign next_i = idx | plus: 1 -%}
+{%- if idx > 0 -%}{%- assign prev = cd_lessons[prev_i] -%}{%- endif -%}
+{%- assign next = cd_lessons[next_i] -%}
+{%- endif -%}
+<article class="lesson" data-lesson-key="{{ key }}">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ '/courses/' | relative_url }}">Courses</a> /
+    {% if course %}<a href="{{ '/courses/' | append: course.slug | append: '/' | relative_url }}">{{ course.title }}</a> /{% endif %}
+    <span aria-current="page">{{ page.title }}</span>
+  </nav>
+  <p class="lesson__kicker">
+    {%- if course and idx >= 0 -%}
+    Module {{ module_n }}: {{ module_title }} · Lesson {{ idx | plus: 1 }} of {{ cd_count }} · {{ mins }} min read
+    {%- else -%}
+    {{ mins }} min read
+    {%- endif -%}
+  </p>
+  <h1 class="lesson__title">{{ page.title }}</h1>
+  {%- if page.description %}<p class="lesson__lede">{{ page.description }}</p>{% endif %}
+
+  {%- if tdoc %}
+  <aside class="lesson-term" aria-label="The term this lesson teaches">
+    <a class="lesson-term__tile" href="{{ '/' | append: tlayer | append: '/' | append: tslug | append: '.html' | relative_url }}" tabindex="-1" aria-hidden="true">
+      <img src="{{ '/assets/img/logos/' | append: tslug | append: '.png' | relative_url }}" alt="" width="48" height="48">
+    </a>
+    <div class="lesson-term__body">
+      <p class="lesson-term__label">The term · {{ tlabel }} layer</p>
+      <p class="lesson-term__name"><a href="{{ '/' | append: tlayer | append: '/' | append: tslug | append: '.html' | relative_url }}">{{ tdoc.title }}</a> <span class="lesson-term__more">— read the full doc</span></p>
+      {%- if page.insight %}
+      <p class="lesson-term__insight"><strong>Key insight.</strong> {{ page.insight }}</p>
+      {%- endif %}
+    </div>
+  </aside>
+  {%- endif %}
+
+  <div class="lesson__body">
+    {{ content }}
+  </div>
+
+  <section class="lesson-apply" aria-labelledby="apply-heading">
+    <h2 id="apply-heading">Encode it, then practise it</h2>
+    {% include skill-card.html skill=page.skill term=tdoc.title %}
+    {% include practice-card.html slug=page.practice %}
+  </section>
+
+  <div class="lesson-complete" data-question data-slug="{{ key }}">
+    <label class="lesson-complete__toggle">
+      <input type="checkbox" data-progress-toggle="{{ key }}">
+      <span>Mark lesson complete</span>
+    </label>
+    <p class="lesson-complete__note" data-lesson-note role="status" aria-live="polite"></p>
+  </div>
+
+  {%- if course %}
+  <nav class="lesson-pager" aria-label="Lessons">
+    {%- if prev %}
+    <a class="lesson-pager__link lesson-pager__link--prev" href="{{ prev.url | relative_url }}" rel="prev">
+      <span class="lesson-pager__dir">Previous lesson</span>
+      <span class="lesson-pager__title">{{ prev.title }}</span>
+    </a>
+    {%- else %}
+    <a class="lesson-pager__link lesson-pager__link--prev" href="{{ '/courses/' | append: course.slug | append: '/' | relative_url }}">
+      <span class="lesson-pager__dir">Course overview</span>
+      <span class="lesson-pager__title">{{ course.title }}</span>
+    </a>
+    {%- endif %}
+    {%- if next %}
+    <a class="lesson-pager__link lesson-pager__link--next" href="{{ next.url | relative_url }}" rel="next">
+      <span class="lesson-pager__dir">Next lesson</span>
+      <span class="lesson-pager__title">{{ next.title }}</span>
+    </a>
+    {%- else %}
+    <a class="lesson-pager__link lesson-pager__link--next" href="{{ '/dashboard/' | relative_url }}">
+      <span class="lesson-pager__dir">Last lesson — well done</span>
+      <span class="lesson-pager__title">See your dashboard</span>
+    </a>
+    {%- endif %}
+  </nav>
+
+  <details class="lesson-outline">
+    <summary>Course contents ({{ cd_count }} lessons)</summary>
+    {%- for m in course.modules %}
+    <p class="lesson-outline__module">Module {{ forloop.index }}: {{ m.title }}</p>
+    <ol class="lesson-outline__list">
+      {%- for s in m.lessons -%}
+      {%- assign lp = cd_lessons | where: "slug", s | first -%}
+      {%- if lp %}
+      <li data-done-key="lesson:{{ course.slug }}/{{ s }}"{% if s == page.slug %} class="is-current"{% endif %}>
+        <a href="{{ lp.url | relative_url }}"{% if s == page.slug %} aria-current="page"{% endif %}>{{ lp.title }}</a>
+        <span class="lesson-outline__done">done</span>
+      </li>
+      {%- endif -%}
+      {%- endfor %}
+    </ol>
+    {%- endfor %}
+  </details>
+  {%- endif %}
+</article>
+<script type="text/javascript" src="{{ '/assets/js/courses.js' | relative_url }}" defer></script>

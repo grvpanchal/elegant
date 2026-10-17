@@ -1,0 +1,92 @@
+---
+layout: default
+---
+{%- comment -%}
+One free course: its promise, its progress, and its modules and lessons in
+order. The page's front matter names the course (`course: <slug>`); the
+structure comes from docs/_data/courses.yml and every lesson's title, term and
+reading time from the lesson pages themselves (docs/courses/<course>/*.md).
+{%- endcomment -%}
+{%- assign course = site.data.courses | where: "slug", page.course | first -%}
+{%- if course -%}
+{%- include course-data.html course=course -%}
+{%- assign layer_label = course.layer | capitalize -%}
+{%- if course.layer == "ui" -%}{%- assign layer_label = "UI" -%}{%- elsif course.layer == "harness" -%}{%- assign layer_label = "AI harness" -%}{%- endif -%}
+<article class="course">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="{{ '/courses/' | relative_url }}">Courses</a> / <span aria-current="page">{{ course.title }}</span>
+  </nav>
+  <p class="course__kicker">Free course · {{ layer_label }}</p>
+  <h1 class="course__title">{{ course.title }}</h1>
+  <p class="course__summary">{{ course.summary }}</p>
+  <p class="course__meta">
+    {{ course.modules | size }} modules · {{ cd_count }} lessons · about {{ cd_minutes }} min of reading · no signup
+  </p>
+  {%- if course.prerequisites %}
+  <p class="course__prereq"><strong>Before you start:</strong> {{ course.prerequisites }}</p>
+  {%- endif %}
+
+  <div class="course__progress">
+    {% include progress-tracker.html slugs=cd_keys title="Your progress" %}
+    <a class="course-button" href="{{ cd_first_url }}" data-course-continue data-lessons="{{ cd_json | escape }}">Start course</a>
+  </div>
+
+  {%- if course.outcome %}
+  <section class="course__section" aria-labelledby="learn-heading">
+    <h2 id="learn-heading">What you will be able to do</h2>
+    <ul class="course__outcomes">
+      {%- for line in course.outcome %}
+      <li>{{ line }}</li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  <section class="course__section" aria-labelledby="contents-heading">
+    <h2 id="contents-heading">Course contents</h2>
+    {%- assign n = 0 -%}
+    {%- for module in course.modules %}
+    <section class="course-module" aria-labelledby="module-{{ forloop.index }}">
+      <h3 class="course-module__title" id="module-{{ forloop.index }}">
+        <span class="course-module__num">Module {{ forloop.index }}</span>
+        {{ module.title }}
+      </h3>
+      {%- if module.summary %}<p class="course-module__summary">{{ module.summary }}</p>{% endif %}
+      <ol class="course-lessons">
+        {%- for lslug in module.lessons -%}
+        {%- assign lp = cd_lessons | where: "slug", lslug | first -%}
+        {%- if lp -%}
+        {%- assign n = n | plus: 1 -%}
+        {%- assign key = "lesson:" | append: course.slug | append: "/" | append: lslug -%}
+        {%- assign words = lp.content | strip_html | number_of_words -%}
+        {%- assign mins = words | plus: 199 | divided_by: 200 -%}
+        {%- assign tparts = lp.term | split: "/" -%}
+        {%- assign tlayer = tparts[0] -%}
+        {%- assign tslug = tparts[1] -%}
+        {%- assign tdoc = site.data.topics[tlayer] | where: "slug", tslug | first -%}
+        <li class="course-lesson" data-question data-slug="{{ key }}">
+          <label class="course-lesson__check">
+            <input type="checkbox" data-progress-toggle="{{ key }}">
+            <span class="sr-only">Mark “{{ lp.title }}” complete</span>
+          </label>
+          <span class="course-lesson__num" aria-hidden="true">{% if n < 10 %}0{% endif %}{{ n }}</span>
+          <a class="course-lesson__link" href="{{ lp.url | relative_url }}">{{ lp.title }}</a>
+          <span class="course-lesson__meta">{% if tdoc %}{{ tdoc.title }} · {% endif %}{{ mins }} min</span>
+        </li>
+        {%- endif -%}
+        {%- endfor %}
+      </ol>
+    </section>
+    {%- endfor %}
+  </section>
+
+  {%- if cd_missing != "" %}
+  <p class="plan-missing">Listed in <code>docs/_data/courses.yml</code> with no lesson page: <code>{{ cd_missing }}</code>.</p>
+  {%- endif %}
+
+  {{ content }}
+</article>
+{%- else -%}
+<p class="plan-missing">No entry for <code>{{ page.course }}</code> in <code>docs/_data/courses.yml</code>.</p>
+{%- endif -%}
+<script type="text/javascript" src="{{ '/assets/js/courses.js' | relative_url }}" defer></script>

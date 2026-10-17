@@ -1,8 +1,8 @@
 /**
  * Contract: default-export `async (subject) => [{name, pass, message?}, ...]`.
  * `subject` is the learner's module namespace, or its default export.
- * The same file runs in the browser playground and under Node in
- * harness/check_harness.py, so keep it dependency-free.
+ * The same file runs in the browser playground and under Node, so keep it
+ * dependency-free.
  */
 const check = (name, fn) => {
   try {

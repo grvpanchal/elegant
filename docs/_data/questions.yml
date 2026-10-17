@@ -1,6 +1,6 @@
 # Auto-generated from the front matter of docs/practice/*.md.
 # Regenerate with: python3 scripts/sync-questions-registry.py
-# Do not hand-edit: harness/check_harness.py (bank.registry) fails on drift.
+# Do not hand-edit: regenerate it instead.
 - slug: accessible-combobox
   title: Build an accessible combobox
   format: ui-coding
