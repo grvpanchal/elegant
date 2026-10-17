@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs><path id="link" d="M46.19 16.15 A64.25 64.25 0 0 0 -16 -64.25 H-80 A64.25 64.25 0 0 0 -144.25 0 A64.25 64.25 0 0 0 -80 64.25 H-30.99 A79.6 79.6 0 0 1 -56.99 31.75 H-80 A31.75 31.75 0 0 1 -111.75 0 A31.75 31.75 0 0 1 -80 -31.75 H-16 A31.75 31.75 0 0 1 12.3 14.4 Q11.34 16.15 13.34 16.15 Z"/></defs>
+  <use href="#link" fill="#202028" transform="translate(128 128) rotate(-45)"/>
+  <use href="#link" fill="#ff8850" transform="translate(128 128) rotate(135)"/>
+</svg>

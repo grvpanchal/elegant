@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <mask id="gaps" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+      <rect width="256" height="256" fill="#fff"/>
+      <circle cx="86.57" cy="83.78" r="19.3" fill="#000"/>
+      <circle cx="168.64" cy="83.75" r="19.3" fill="#000"/>
+      <circle cx="86.54" cy="165.86" r="19.3" fill="#000"/>
+      <circle cx="168.65" cy="165.86" r="19.3" fill="#000"/>
+      <circle cx="45.48" cy="124.77" r="19.3" fill="#000"/>
+      <circle cx="127.64" cy="124.79" r="19.3" fill="#000"/>
+      <circle cx="209.74" cy="124.81" r="19.3" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="none" stroke="#21212a" stroke-width="8.92" mask="url(#gaps)">
+    <circle cx="46.16" cy="84.39" r="37.31"/>
+    <circle cx="129.58" cy="84.39" r="37.31"/>
+    <circle cx="210.04" cy="84.39" r="37.31"/>
+    <circle cx="46.16" cy="167.81" r="37.31"/>
+    <circle cx="129.59" cy="167.81" r="37.31"/>
+    <circle cx="210.04" cy="167.81" r="37.31"/>
+  </g>
+  <g fill="#21212a">
+    <circle cx="46.16" cy="84.39" r="14.87"/>
+    <circle cx="129.58" cy="84.39" r="14.87"/>
+    <circle cx="210.04" cy="84.39" r="14.87"/>
+    <circle cx="46.16" cy="167.81" r="14.87"/>
+    <circle cx="129.59" cy="167.81" r="14.87"/>
+    <circle cx="210.04" cy="167.81" r="14.87"/>
+  </g>
+  <g fill="#ff864f">
+    <circle cx="86.57" cy="83.78" r="10.2"/>
+    <circle cx="168.64" cy="83.75" r="10.2"/>
+    <circle cx="86.54" cy="165.86" r="10.2"/>
+    <circle cx="168.65" cy="165.86" r="10.2"/>
+    <circle cx="45.48" cy="124.77" r="10.2"/>
+    <circle cx="127.64" cy="124.79" r="10.2"/>
+    <circle cx="209.74" cy="124.81" r="10.2"/>
+  </g>
+</svg>

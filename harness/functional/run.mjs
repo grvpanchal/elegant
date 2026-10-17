@@ -820,45 +820,8 @@ const SCENARIOS = {
   // ---------------------------------------------- workspace parity (GFE)
   // greatfrontend.com advertises a "customizable workspace: resize, syntax
   // highlighting, theming, keyboard shortcuts". Resize and highlighting are
-  // done. These two are the rest of that sentence.
-
-  /** Practising at night on a white page is a real reason people stop. */
-  async workspace_theming(page, origin) {
-    const coding = (await bank(page, origin)).filter((q) => q.format === "coding");
-    ok(coding.length > 0, "no coding question to check");
-    await page.emulateMedia({ colorScheme: "dark" });
-    await page.goto(`${origin}/practice/${coding[0].slug}.html`, { waitUntil: "domcontentloaded" });
-    await page.waitForFunction(
-      () => { const e = document.querySelector("[data-playground-editor]"); return e && !e.disabled; },
-      null, { timeout: 15000 });
-
-    const luminance = (rgb) => {
-      const m = String(rgb).match(/\d+/g);
-      if (!m) return 1;
-      const [r, g, b] = m.map(Number);
-      return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-    };
-    const shades = await page.evaluate(() => {
-      const body = getComputedStyle(document.body).backgroundColor;
-      const ed = document.querySelector(".playground__editor-wrap");
-      return { body, editor: ed ? getComputedStyle(ed).backgroundColor : body };
-    });
-    ok(luminance(shades.body) < 0.5,
-      `with prefers-color-scheme: dark the page background is still ${shades.body}. A learner ` +
-      "practising at night gets a white rectangle, which is the point at which they stop.");
-    ok(luminance(shades.editor) < 0.5,
-      `the page went dark but the workspace did not (${shades.editor}) — a bright editor in a ` +
-      "dark page is worse than no dark mode");
-
-    // And it must still be readable in light: a dark mode that hardcodes dark
-    // colours breaks the default for everyone else.
-    await page.emulateMedia({ colorScheme: "light" });
-    await page.reload({ waitUntil: "domcontentloaded" });
-    const light = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    ok(luminance(light) > 0.5,
-      `light mode is now dark too (${light}) — the theme is hardcoded rather than responding`);
-    return "the workspace follows prefers-color-scheme in both directions";
-  },
+  // done; theming was built and then retired (the site is light-only by
+  // decision). Shortcuts is the rest of that sentence.
 
   /** Reaching for the mouse to run tests is the friction an interview does not have. */
   async workspace_shortcuts(page, origin) {

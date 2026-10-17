@@ -105,6 +105,40 @@ loop(tabsNodes, (tabsNode) => {
   loop(nodes, (node, i) => onTabSelect(nodes, node, i));
 });
 
+// Mobile menu: the hamburger opens and closes the nav column on phones.
+// Escape, a click outside the nav, or following a link all close it.
+(() => {
+  const nav = document.querySelector('.site-nav');
+  const toggle = nav && nav.querySelector('[data-nav-toggle]');
+  const menu = nav && nav.querySelector('[data-nav-menu]');
+  if (!nav || !toggle || !menu) return;
+
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(!nav.classList.contains('is-open'));
+  });
+
+  menu.addEventListener('click', (event) => {
+    if (event.target.closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    if (nav.classList.contains('is-open') && !nav.contains(event.target)) setOpen(false);
+  });
+})();
+
 // Scroll behaviour: non-home pages only — hide title, enlarge logo on scroll
 if (window.location.pathname !== '/') {
   const siteNav = document.querySelector('.site-nav');

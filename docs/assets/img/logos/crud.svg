@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#20202a">
+    <!-- create: open square with pencil -->
+    <path stroke-width="5.2" d="M73.3 25.8H31.3A8.3 8.3 0 0 0 23 34.1V94.1A8.3 8.3 0 0 0 31.3 102.4H91.25A8.3 8.3 0 0 0 99.55 94.1V52.4"/>
+    <path stroke-width="5.5" transform="translate(0.25 0.25)" d="M102.95 10.55L114.4 21.98L82.8 53.6L71.35 42.15Z M71.35 42.15L65.5 59.5L82.8 53.6"/>
+    <!-- read: document -->
+    <rect x="162.4" y="18.4" width="76.1" height="90.4" rx="9.1" stroke-width="5.8"/>
+    <path stroke-width="5.3" d="M181.35 37.5H219.55M181.35 56.5H219.55M181.35 75.4H219.55M181.35 94.45H219.55"/>
+    <!-- delete: trash can -->
+    <path stroke-width="5.8" d="M177.2 152V146.2A6.6 6.6 0 0 1 183.8 139.6H205.75A6.6 6.6 0 0 1 212.35 146.2V152"/>
+    <rect x="155.65" y="152.2" width="78.1" height="13.3" rx="6.65" stroke-width="5.8"/>
+    <path stroke-width="5.9" d="M162.3 165.5V227.7A9.6 9.6 0 0 0 171.9 237.3H217.4A9.6 9.6 0 0 0 227 227.7V165.5"/>
+    <path stroke-width="5.6" d="M180.7 176.6V222.2M194.7 176.6V222.2M208.8 176.6V222.2"/>
+  </g>
+  <!-- update: refresh arrow -->
+  <g stroke="#ff864d" stroke-width="6.7">
+    <path d="M29.38 195.61A41.5 41.5 0 1 1 40.9 217.75"/>
+    <path d="M14.5 176.7L27.6 196.1L45.45 180"/>
+  </g>
+</svg>

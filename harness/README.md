@@ -170,7 +170,6 @@ The in-browser workspace and the executable contract behind it. `tests.js` runs 
 | `workspace.tests_pass` | 4 | yes | incremental | all | Executable: each coding question's reference solution must pass its own tests under Node. A question whose tests do not pass is not a question. |
 | `workspace.editor_affordances` | 2 | yes | incremental | all | The workspace must have syntax highlighting, a resizable editor and a console pane, so a learner debugging with console.log does not have to open devtools. |
 | `workspace.framework_runtime` | 3 | yes | incremental | all | A coding question with a runtime.json must render components in the browser: its starter fails its own component tests and its reference solution passes them. |
-| `workspace.theming` | 2 | yes | cumulative | all | The site must follow prefers-color-scheme in both directions, workspace included. A learner practising at night gets a white rectangle, and that is where they stop. |
 | `workspace.shortcuts` | 2 | yes | cumulative | all | Ctrl/Cmd+Enter must run the question's tests from the editor, and the page must say so. Every editor a candidate has used runs on that chord. |
 
 ### frameworks

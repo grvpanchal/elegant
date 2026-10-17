@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#20202a">
+    <rect x="24" y="24" width="32" height="32"/>
+    <polygon points="40,112 56,144 24,144"/>
+    <circle cx="40" cy="216" r="16"/>
+    <line x1="56" y1="40" x2="128" y2="64"/>
+    <line x1="52" y1="128" x2="128" y2="128"/>
+    <line x1="56" y1="216" x2="128" y2="192"/>
+    <rect x="88" y="32" width="144" height="192" rx="16"/>
+    <path d="M88 96H232M88 160H232" stroke-linecap="butt"/>
+    <path d="M160 120V136M184 120V136M208 120V136M160 184V200M184 184V200M208 184V200"/>
+  </g>
+  <path stroke="#fe854c" d="M160 56V72M184 56V72M208 56V72"/>
+</svg>

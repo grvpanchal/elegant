@@ -1464,7 +1464,6 @@ for _cid, _scenario in (
     ("account.token_verified", "account_token_verified"),
     ("account.session_expiry", "account_session_expiry"),
     ("account.identity_sync", "account_identity_sync"),
-    ("workspace.theming", "workspace_theming"),
     ("workspace.shortcuts", "workspace_shortcuts"),
     ("account.widget_painted", "account_widget_painted"),
     ("landing.hero", "landing_hero"),

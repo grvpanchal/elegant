@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <g fill="none" stroke="#20202a" stroke-width="26.8">
+    <line x1="60" y1="196.3" x2="111.7" y2="144.6"/>
+    <line x1="166.9" y1="89.4" x2="215" y2="41.3"/>
+    <circle cx="139.3" cy="117" r="38.9"/>
+  </g>
+  <polygon fill="#20202a" points="9.5,171.6 84.6,171.6 84.6,246.8"/>
+  <polygon fill="#ff864d" points="166.8,15.8 240.5,15.8 240.5,89.5"/>
+</svg>

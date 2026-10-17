@@ -1,0 +1,388 @@
+// The home page below the hero, in the site's own visual language: white
+// space, orange headings, navy text, and the orange-outlined icon tiles the
+// UI, Server and State pages use. The page reads in order: the harness, then
+// the practice built on its terminology.
+
+$landing-orange: $section-headings-color;      // #fe854c, the site's heading colour
+$landing-ink: #202028;                         // the navy of the icon set
+$landing-muted: $body-text-color;              // #606c71
+$landing-line: #ececf1;
+$landing-tint: #fff7f2;                        // a whisper of orange for the practice band
+$landing-radius: 12px;
+
+.landing-section {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 3rem 0 1rem;
+
+  &__kicker {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $landing-orange;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0 auto 0.75rem;
+    max-width: 40rem;
+    text-align: center;
+    color: $landing-ink;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    line-height: 1.2;
+  }
+
+  &__lede {
+    max-width: 42rem;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: $landing-muted;
+    line-height: 1.6;
+  }
+
+  &__cta {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+}
+
+// The practice half sits on a faint orange band so the page visibly turns
+// from "what the harness is" to "now you practise it".
+.landing-band {
+  margin: 3rem -1rem 0;
+  padding: 0 1rem 3rem;
+  background: $landing-tint;
+  border-top: 1px solid lighten($landing-orange, 30%);
+  border-bottom: 1px solid lighten($landing-orange, 30%);
+}
+
+// The orange-outlined tile from the section pages, shared by the layer cards
+// and the terminology grid.
+%landing-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $landing-orange;
+  border-radius: 10px;
+  background: #fff;
+
+  img {
+    display: block;
+    object-fit: contain;
+  }
+}
+
+// ---------------------------------------------------------------- layers
+.landing-layers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
+}
+
+.landing-layer {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border: 1px solid $landing-line;
+  border-radius: $landing-radius;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: $landing-orange;
+    box-shadow: 0 8px 24px rgba(254, 133, 76, 0.12);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  &__icon {
+    @extend %landing-tile;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1rem;
+
+    img { width: 56px; height: 56px; }
+  }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    color: $landing-ink;
+    font-size: 1.25rem;
+  }
+
+  p {
+    flex: 1 1 auto;
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: $landing-muted;
+  }
+
+  &__more {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $landing-orange;
+  }
+}
+
+// ---------------------------------------------------------- perspectives
+.landing-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
+}
+
+.landing-card {
+  margin: 0;
+  border: 1px solid $landing-line;
+  border-radius: $landing-radius;
+  overflow: hidden;
+  background: #fff;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-bottom: 1px solid $landing-line;
+  }
+
+  figcaption { padding: 1rem 1.25rem 1.25rem; }
+
+  h3 {
+    margin: 0 0 0.35rem;
+    color: $landing-orange;
+    font-size: 1.05rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: $landing-muted;
+  }
+}
+
+.landing-figure {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid $landing-line;
+  border-radius: $landing-radius;
+  background: #fff;
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+// ------------------------------------------------------------ terminology
+.landing-terms {
+  display: grid;
+  gap: 2rem;
+}
+
+.landing-terms__layer {
+  padding: 1.5rem;
+  border: 1px solid lighten($landing-orange, 28%);
+  border-radius: $landing-radius;
+  background: #fff;
+}
+
+.landing-terms__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+
+  a {
+    color: $landing-ink;
+    text-decoration: none;
+
+    &:hover { color: $landing-orange; }
+  }
+}
+
+.landing-terms__count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $landing-muted;
+}
+
+.landing-terms__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.75rem, 1fr));
+  gap: 1rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.term-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-align: center;
+  text-decoration: none;
+
+  &__icon {
+    @extend %landing-tile;
+    width: 64px;
+    height: 64px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    img { width: 48px; height: 48px; }
+  }
+
+  &__label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: $landing-orange;
+  }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: none;
+
+    .term-tile__icon {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(254, 133, 76, 0.18);
+    }
+  }
+}
+
+// ------------------------------------------------------------------ proof
+.landing-proof {
+  margin: 2.5rem auto 0;
+  text-align: center;
+}
+
+.landing-proof__total {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  color: $landing-ink;
+
+  strong {
+    color: $landing-orange;
+    font-size: 1.6rem;
+  }
+}
+
+.landing-proof__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.75rem;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.9rem 0.5rem;
+    border: 1px solid lighten($landing-orange, 28%);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  strong {
+    font-size: 1.6rem;
+    line-height: 1;
+    color: $landing-ink;
+  }
+
+  span {
+    font-size: 0.85rem;
+    color: $landing-muted;
+  }
+}
+
+// ---------------------------------------------------------------- buttons
+.landing-button {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  background: $landing-orange;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: darken($landing-orange, 8%);
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+// --------------------------------------------------------------- surfaces
+.landing-surfaces__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+
+  a {
+    position: relative;
+    display: block;
+    padding: 1.25rem 2.75rem 1.25rem 1.25rem;
+    border: 1px solid $landing-line;
+    border-left: 4px solid $landing-orange;
+    border-radius: 10px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: $landing-orange;
+      box-shadow: 0 8px 24px rgba(254, 133, 76, 0.12);
+      text-decoration: none;
+    }
+  }
+
+  h3 {
+    margin: 0 0 0.35rem;
+    color: $landing-ink;
+    font-size: 1.05rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: $landing-muted;
+  }
+
+  span {
+    position: absolute;
+    top: 1.15rem;
+    right: 1.1rem;
+    font-weight: 700;
+    color: $landing-orange;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-section { padding-top: 2.25rem; }
+  .landing-terms__layer { padding: 1rem; }
+  .landing-terms__grid { grid-template-columns: repeat(auto-fill, minmax(4.1rem, 1fr)); gap: 0.85rem 0.5rem; }
+  .term-tile__label { font-size: 0.72rem; }
+  .term-tile__icon { width: 56px; height: 56px; }
+  .term-tile__icon img { width: 42px; height: 42px; }
+}
