@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount, shallowMount } from '@vue/test-utils'
 import Alert from './Alert.component.vue'
+import { iconSrc } from '../../../utils/icons'
 
 describe('<Alert />', () => {
   it('renders successfully with error variant', () => {
@@ -58,7 +59,7 @@ describe('<Alert />', () => {
       props: { show: true, variant: 'error', message: 'Test' },
     })
     const src = wrapper.vm.getImageSrc()
-    expect(src).toContain('alert-triangle')
+    expect(src).toBe(iconSrc('alert-triangle', 24, 'ffffff'))
   })
 
   it('returns correct image src for info variant', () => {
@@ -66,7 +67,7 @@ describe('<Alert />', () => {
       props: { show: true, message: 'Test' },
     })
     const src = wrapper.vm.getImageSrc()
-    expect(src).toContain('info')
+    expect(src).toBe(iconSrc('info', 24, 'ffffff'))
   })
 
   it('returns correct variant class for error', () => {

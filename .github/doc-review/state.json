@@ -123,8 +123,8 @@
     },
     "ui/component": {
       "doc": "ui/component",
-      "last_sha": "083579b007890b98b8f8c990ce366f45f20cb94c",
-      "last_reviewed_at": "2026-04-26T13:12:12Z",
+      "last_sha": "2a14e89ff40c1a4d6f52b6b0f9d07f80be4872ef",
+      "last_reviewed_at": "2026-10-20T15:34:45Z",
       "score": 25,
       "axes": {
         "hook": 4,
@@ -135,16 +135,15 @@
         "engagement_glue": 4
       },
       "issues_fixed": [
-        "Tightened the opening blockquote phrasing on lines 8-9 ('interactive unit of UI', 'binding HTML, JS, and CSS together')",
-        "Expanded References from 3 bare URLs to 6 named, topical links (React, Vue, Angular, MDN Web Components, Lit, Components in JS)",
-        "Normalized UK 'behaviour' to US 'behavior' on line 194 to match the rest of the doc",
-        "Renamed code-comment filename from ToggleSwitch.js to ToggleSwitch.jsx on line 201 to match the React templates' .jsx convention for JSX-bearing files",
-        "Renamed code-comment filename from App.js to App.jsx on line 318 for the same reason"
+        "Icon-helper review: added a short paragraph before the Alert code tabs introducing iconSrc(name, size, color) (what it is, where it lives, that Angular uses app/utils/icons) and noting the snippets are trimmed, so the new import and call in all four tabs are not unexplained (lines 32-34)"
       ],
       "issues_reported": [
         "Section order deviates from the standard cadence: 'Key Insight' (line 12) appears before 'Detailed Description' (line 16), but the rest of docs/{ui,state,server} follows Glossary -> Detailed Description -> Key Insight. Reordering touches structural headings, so flagging rather than fixing.",
         "Practical and Advanced examples (ToggleSwitch in React, Card in Vue) are stand-alone snippets that don't correspond to anything in templates/chota-*; sibling docs in docs/ui generally root practical examples in the actual template tree. Worth aligning in a follow-up.",
-        "Quiz Q1 is narrowly Web-Components-specific (Custom Elements / Shadow DOM / Templates) while the rest of the doc is framework-agnostic; a learner who understood the doc could still miss this question. Consider rephrasing to test the cross-framework concept the page actually teaches."
+        "Quiz Q1 is narrowly Web-Components-specific (Custom Elements / Shadow DOM / Templates) while the rest of the doc is framework-agnostic; a learner who understood the doc could still miss this question. Consider rephrasing to test the cross-framework concept the page actually teaches.",
+        "Alert tabs are condensed, not verbatim, from the real templates: Vue tab sets showAlert from this.show (template: true), Angular tab defaults message to '' (template: 'Alert'), and data-testid/data-value props are dropped. The prose now says 'trimmed', but the Vue initial-state difference is behavioral.",
+        "Template bug, not a doc bug: templates/chota-wc-saga/src/ui/atoms/Alert/Alert.component.js passes `.alt={variant}` to app-image (missing `$`, so the alt is the literal string '{variant}'); the doc tab shows the correct `alt=${variant}`. Worth fixing in the template.",
+        "Angular tab defines `get src()` and `get classes()` but not Alert.component.html that consumes them, so a learner cannot see where iconSrc's result is used; consider a one-line comment or showing the template line (new code, so left to a human)."
       ]
     },
     "ui/props": {

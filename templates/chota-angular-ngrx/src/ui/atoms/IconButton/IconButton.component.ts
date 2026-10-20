@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import ButtonComponent from '../Button/Button.component';
 import ImageComponent from '../Image/Image.component';
 import { AtomicService } from '../../../app/utils/providers/AtomicService';
+import { iconSrc } from '../../../app/utils/icons';
 
 @Component({
   selector: 'app-icon-button',
@@ -26,9 +27,7 @@ export default class IconButtonComponent implements OnInit, OnDestroy {
   }
 
   get src() {
-    return `https://icongr.am/feather/${this.iconName}.svg?size=${this.size}&color=${
-      this.color || this.themeColor
-    }`;
+    return iconSrc(this.iconName, this.size, this.color || this.themeColor);
   }
 
   @Output() onClick = new EventEmitter<Event>();

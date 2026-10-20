@@ -8,6 +8,7 @@
 import { defineComponent } from 'vue'
 import Button from '../Button/Button.component.vue';
 import Image from '../Image/Image.component.vue';
+import { iconSrc } from '../../../utils/icons';
 
 export default defineComponent({
   components: { Button, Image },
@@ -22,7 +23,7 @@ export default defineComponent({
       return `button icon-only ${this.variant}`;
     },
     getImageSrc() {
-      return `https://icongr.am/feather/${this.iconName}.svg?size=${this.size}&color=${this.color ? this.color : this.themeColor}`;
+      return iconSrc(this.iconName, this.size, this.color ? this.color : this.themeColor);
     }
   },
   watch: {

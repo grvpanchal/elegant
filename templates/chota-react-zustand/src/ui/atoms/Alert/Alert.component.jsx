@@ -4,6 +4,7 @@ import "./Alert.style.css";
 
 import IconButton from "../IconButton/IconButton.component";
 import Image from "../Image/Image.component";
+import { iconSrc } from "../../../utils/icons";
 
 export default function Alert({ variant, show, message, onCloseClick }) {
   const [showAlert, setShowAlert] = useState(show);
@@ -27,9 +28,7 @@ export default function Alert({ variant, show, message, onCloseClick }) {
     >
       <div className="message">
         <Image
-          src={`https://icongr.am/feather/${
-            variant === "error" ? "alert-triangle" : "info"
-          }.svg?size=24&color=ffffff`}
+          src={iconSrc(variant === "error" ? "alert-triangle" : "info", 24, "ffffff")}
           alt={variant}
         />
         <span>{message}</span>

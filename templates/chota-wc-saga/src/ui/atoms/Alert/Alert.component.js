@@ -7,6 +7,7 @@ import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 import '../IconButton/app-icon-button';
 import '../Image/app-image';
 import emit from "../../../utils/events/emit";
+import { iconSrc } from "../../../utils/icons";
 
 export default function Alert({ variant, show, message }) {
   useComputedStyles(this, [style]);
@@ -30,10 +31,8 @@ export default function Alert({ variant, show, message }) {
     >
       <div class="message">
         <app-image
-          .src=${`https://icongr.am/feather/${
-            variant === "error" ? "alert-triangle" : "info"
-          }.svg?size=24&color=ffffff`}
-          .alt={variant}
+          .src=${iconSrc(variant === "error" ? "alert-triangle" : "info", 24, "ffffff")}
+          .alt=${variant}
         ></app-image>
         <span>${message}</span>
       </div>

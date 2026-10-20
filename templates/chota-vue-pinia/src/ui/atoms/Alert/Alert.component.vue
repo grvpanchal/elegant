@@ -14,6 +14,7 @@
 import { defineComponent } from "vue";
 import Image from "../Image/Image.component.vue";
 import IconButton from "../IconButton/IconButton.component.vue";
+import { iconSrc } from "../../../utils/icons";
 
 export default defineComponent({
   components: { Image, IconButton },
@@ -39,7 +40,7 @@ export default defineComponent({
       }
     },
     getImageSrc() {
-      return `https://icongr.am/feather/${this.variant === "error" ? "alert-triangle" : "info"}.svg?size=24&color=ffffff`;
+      return iconSrc(this.variant === "error" ? "alert-triangle" : "info", 24, "ffffff");
     },
     getVariant() {
       return this.variant === 'error' ? 'error' : 'primary';
