@@ -1,7 +1,10 @@
 /**
- * The account page's Supabase controls: sign in, create an account, email a
- * magic link, reset a password, and — once signed in — the sync state, a
- * password change and sign-out.
+ * The Supabase controls of the sign-in page (/account/: sign in, email a magic
+ * link, reset a password, and — once signed in — the sync state, a password
+ * change and sign-out) and the create-account page (/account/create/). Each
+ * page wires the forms it has. One view shows at a time ([data-sb-view]), and
+ * the page's heading and lede follow whichever block is showing, from its
+ * data-sb-title and data-sb-lede.
  *
  * Kept apart from account-supabase.js on purpose: that file is the provider and
  * has no opinion about markup, so a page that wants a different sign-in surface
@@ -21,33 +24,21 @@
 
   ready(function () {
     var api = window.ElegantSupabase;
-    var seam = window.ElegantAccount;
     var sync = window.ElegantProgressSync;
     var progress = window.ElegantProgress;
     var panel = $("[data-account-supabase]");
     var absent = $("[data-account-supabase-absent]");
-    var status = $("[data-account-status]");
+    var switcher = $("[data-sb-switch]");
+    var heading = $("[data-sb-heading]");
+    var subhead = $("[data-sb-subhead]");
     var devicePanel = $("[data-device-panel]");
     var devicePaused = $("[data-device-paused]");
-
-    function paintStatus() {
-      if (!status) return;
-      var who = seam && seam.current();
-      var kind = who ? (seam.providerName() === "local" ? "device" : "account") : "guest";
-      var line = sync ? sync.describe().text : "Progress is saved in this browser only.";
-      if (kind === "account") status.textContent = "Signed in as " + (who.email || who.name) + ". " + line;
-      else if (kind === "device") status.textContent = "Using the device profile " + who.name + " — not a verified account. " + line;
-      else status.textContent = "Not signed in. " + line;
-      status.setAttribute("data-kind", kind);
-    }
 
     // No project configured: say so, rather than showing a form that cannot work.
     if (!api || !api.configured) {
       if (panel) panel.hidden = true;
       if (absent) absent.hidden = false;
-      paintStatus();
-      document.addEventListener("account:changed", paintStatus);
-      document.addEventListener("progress:sync", paintStatus);
+      if (switcher) switcher.hidden = true;
       return;
     }
     if (absent) absent.hidden = true;
@@ -74,43 +65,44 @@
 
     function clearNotes() { say(message, ""); say(error, ""); if (resend) resend.hidden = true; }
 
-    // ---------------------------------------------------------------- tabs
-    var tabs = $$("[data-sb-tab]");
-    function selectTab(name, focus) {
-      tabs.forEach(function (tab) {
-        var on = tab.getAttribute("data-sb-tab") === name;
-        tab.setAttribute("aria-selected", on ? "true" : "false");
-        tab.tabIndex = on ? 0 : -1;
-        var target = document.getElementById(tab.getAttribute("aria-controls"));
-        if (target) target.hidden = !on;
-        if (on && focus) tab.focus();
-      });
+    // --------------------------------------------------------------- views
+    var views = $$("[data-sb-view]");
+    var first = views.length ? views[0].getAttribute("data-sb-view") : "";
+    var view = first;
+
+    function viewNode(name) { return $("[data-sb-view='" + name + "']"); }
+
+    function showView(name, focus) {
+      if (!viewNode(name)) return;
+      view = name;
+      views.forEach(function (node) { node.hidden = node.getAttribute("data-sb-view") !== name; });
       clearNotes();
+      paint();
+      var field = focus && $("input, button", viewNode(name));
+      if (field) field.focus();
     }
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener("click", function () { selectTab(tab.getAttribute("data-sb-tab")); });
-      tab.addEventListener("keydown", function (event) {
-        var next = null;
-        if (event.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
-        else if (event.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
-        else if (event.key === "Home") next = tabs[0];
-        else if (event.key === "End") next = tabs[tabs.length - 1];
-        if (!next) return;
-        event.preventDefault();
-        selectTab(next.getAttribute("data-sb-tab"), true);
-      });
-    });
+
     $$("[data-sb-goto]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var name = btn.getAttribute("data-sb-goto");
         // Carry the email across so nobody types it twice.
         var from = btn.closest("form");
         var typed = from && from.elements.email ? from.elements.email.value : "";
-        selectTab(name, true);
+        showView(name, true);
         var to = $("[data-sb-form='" + name + "']");
         if (to && typed && to.elements.email && !to.elements.email.value) to.elements.email.value = typed;
       });
     });
+
+    // The page's heading and lede name what the showing block is for.
+    function headline(node) {
+      if (!node) return;
+      if (heading && node.hasAttribute("data-sb-title")) heading.textContent = node.getAttribute("data-sb-title");
+      if (subhead && node.hasAttribute("data-sb-lede")) {
+        subhead.textContent = node.getAttribute("data-sb-lede");
+        subhead.hidden = !subhead.textContent;
+      }
+    }
 
     // ------------------------------------------------------------- painting
     function paintSync() {
@@ -140,19 +132,22 @@
 
     function paint() {
       var who = api.current();
-      var recovering = api.recoveryPending();
+      // A reset link lands on the sign-in page, the one with the new-password form.
+      var recovering = api.recoveryPending() && Boolean(recovery);
       if (panel) panel.hidden = false;
       if (signedOut) signedOut.hidden = Boolean(who);
       if (signedIn) signedIn.hidden = !who || recovering;
       if (recovery) recovery.hidden = !(who && recovering);
+      // "Don't have an account?" belongs to the page's main form, not to a reset or a sent email.
+      if (switcher) switcher.hidden = Boolean(who) || !(viewNode(view) && viewNode(view).hasAttribute("data-sb-switchable"));
       if (emailOut) emailOut.textContent = who ? (who.email || who.name) : "";
+      headline(who ? (recovering ? recovery : signedIn) : viewNode(view));
       // A verified account and a device profile at once would be two answers
       // to "who is this"; the device controls wait until the account signs out.
       if (devicePanel) devicePanel.hidden = Boolean(who);
       if (devicePaused) devicePaused.hidden = !who;
       paintSync();
       paintGuestImport(who);
-      paintStatus();
     }
 
     function run(button, work) {
@@ -200,7 +195,9 @@
       return api.signUp(email, form.elements.password.value).then(function (res) {
         form.reset();
         if (res && res.pending) {
-          say(message, "Check " + email + " for a confirmation link. Follow it and you are signed in on that browser.");
+          var sentTo = $("[data-sb-sent-to]");
+          if (sentTo) sentTo.textContent = email;
+          showView("sent");
           if (resend) resend.hidden = false;
         }
       });
@@ -208,13 +205,13 @@
 
     wire("magic", function (form, email) {
       return api.sendMagicLink(email).then(function () {
-        say(message, "Sent. Open the link in the email to " + email + " on this device to sign in. It works once and expires.");
+        say(message, "Check " + email + " for your sign-in link. Open it on this device; it works once.");
       });
     });
 
     wire("reset", function (form, email) {
       return api.sendPasswordReset(email).then(function () {
-        say(message, "If " + email + " has an account, a reset link is on its way. It brings you back here to choose a new password.");
+        say(message, "If " + email + " has an account, a reset link is on its way.");
       });
     });
 
@@ -224,7 +221,7 @@
         if (!email) { say(error, "Type your email in the form first."); return; }
         run(resend, function () {
           return api.resendConfirmation(email).then(function () {
-            say(message, "Confirmation email sent again to " + email + ".");
+            say(message, "Sent again to " + email + ".");
           });
         });
       });
@@ -246,10 +243,8 @@
         api.updatePassword(recovery.elements.password.value).then(function () {
           recovery.reset();
           paint();
-          say(message, "");
-          if (syncText) syncText.focus && syncText.setAttribute("tabindex", "-1");
-          var who = $("[data-sb-signed-in] h3");
-          if (who) { who.setAttribute("tabindex", "-1"); who.focus(); }
+          say(message, "Password saved.");
+          if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus(); }
         }).catch(function (err) {
           say(recoveryError, (err && err.message) || "That did not work.");
         }).then(function () { btn.disabled = false; });
@@ -278,9 +273,7 @@
     $$("[data-sb-signout]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         if (api.current()) api.signOut();
-        paint();
-        var first = tabs[0];
-        if (first) first.focus();
+        showView(first, true);
       });
     });
 
@@ -311,10 +304,10 @@
     function showRedirect(result) {
       if (result) {
         if (!result.ok) {
-          selectTab(result.code === "otp_expired" ? "magic" : "signin");
+          showView(result.code === "otp_expired" ? "magic" : "signin");
           say(error, result.message);
         } else if (result.type === "signup") {
-          say(message, "Email confirmed — you are signed in.");
+          say(message, "Email confirmed. You're signed in.");
         }
         // a recovery link: paint() shows the new-password form
       }

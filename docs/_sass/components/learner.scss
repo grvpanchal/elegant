@@ -117,6 +117,9 @@ $learner-radius: 10px;
     &:hover { text-decoration: underline; }
   }
 
+  // The dashboard is a signed-in learner's; a guest's nav offers Sign in only.
+  &[data-signed-in="false"] &__dashboard { display: none; }
+
   &__me {
     @extend %learner-focus;
     display: inline-flex;
@@ -235,7 +238,7 @@ $learner-radius: 10px;
 
 // Phones and tablets: the widget sits in the opened menu column, so the
 // account menu opens in place instead of floating.
-@media screen and (max-width: 60em) {
+@media screen and (max-width: 48em) {   // the nav's breakpoint (custom.scss)
   .account-widget {
     flex-wrap: wrap;
     font-size: 1rem;
@@ -259,64 +262,199 @@ $learner-radius: 10px;
   }
 }
 
-// Desktop: eleven links and the account fit the 64rem bar only with slightly
-// tighter link padding; between 60em and 64em the brand name gives way too.
-@media screen and (min-width: 60.0625em) {
-  .site-nav .navlist > li > a {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-}
-
-@media screen and (min-width: 60.0625em) and (max-width: 64em) {
-  .site-nav .navlist > li > a {
-    padding-left: 0.45rem;
-    padding-right: 0.45rem;
-    font-size: 0.95rem;
-  }
-  .site-nav .brand-name .brand-title { display: none; }
-}
-
 // ---------------------------------------------------------------- account
-.account-status {
-  padding: 0.75rem 1rem;
-  margin: 0.75rem 0 1.5rem;
-  color: $learner-ink;
-  background: $learner-surface;
-  border: 1px solid $learner-line;
-  border-left: 4px solid #c9d3df;
-  border-radius: 6px;
+// Sign in (/account/) and create an account (/account/create/), laid out as
+// the best sign-in pages are: a narrow centred column, the heading, one line
+// linking the other page, the fields and one button. Scoped under .auth so the
+// theme's .main-content a / h1 / h2 rules do not win.
+.auth {
+  max-width: 24rem;
+  margin: 2rem auto 3rem;
 
-  &[data-kind="account"] { border-left-color: $learner-pass; }
-  &[data-kind="device"] { border-left-color: $learner-orange; }
-}
+  .auth__title {
+    margin: 0 0 0.5rem;
+    font-size: 2rem;
+    line-height: 1.25;
+    text-align: center;
+  }
 
-.account-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  margin: 0 0 1rem;
-  border-bottom: 1px solid $learner-line;
-
-  [role="tab"] {
-    @extend %learner-focus;
-    padding: 0.55rem 0.8rem;
-    margin-bottom: -1px;
-    font-size: 0.92rem;
-    font-weight: 600;
+  .auth__switch,
+  .auth__lede {
+    margin: 0 0 2rem;
+    text-align: center;
     color: $learner-text;
-    background: transparent;
-    border: 0;
-    border-bottom: 3px solid transparent;
-    border-radius: 4px 4px 0 0;
+  }
+
+  .auth__absent { color: $learner-text; }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .auth-form__label {
+    margin: 0 0 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $learner-ink;
+  }
+
+  .auth-form__forgot {
+    margin: -0.25rem 0 1.5rem;
+    font-size: 0.92rem;
+  }
+
+  .auth-form__input {
+    width: 100%;
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+    font-size: 1rem;      // 16px, so iOS does not zoom into the field
+    color: $learner-ink;
+    background: #fff;
+    border: 1px solid #c9d3df;
+    border-radius: 8px;
+
+    &:focus {
+      outline: none;
+      border-color: $learner-focus;
+      box-shadow: 0 0 0 3px rgba(30, 107, 184, 0.2);
+    }
+  }
+
+  .auth-form__hint {
+    margin: -0.6rem 0 1rem;
+    font-size: 0.85rem;
+    color: $learner-text;
+  }
+
+  .auth-form__submit,
+  .auth-form__alt {
+    @extend %learner-focus;
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
     cursor: pointer;
 
-    &:hover { color: $learner-ink; }
+    &:hover { text-decoration: none; }
 
-    &[aria-selected="true"] {
-      color: $learner-ink;
-      border-bottom-color: $learner-accent;
+    &[disabled],
+    &[aria-busy="true"] {
+      opacity: 0.6;
+      cursor: progress;
     }
+  }
+
+  .auth-form__submit {
+    color: #fff;
+    background: $learner-accent;
+    border: 1px solid $learner-accent;
+
+    &:hover {
+      color: #fff;
+      background: $learner-accent-hover;
+      border-color: $learner-accent-hover;
+    }
+  }
+
+  .auth-form__alt {
+    font-weight: 600;
+    color: $learner-ink;
+    background: #fff;
+    border: 1px solid #c9d3df;
+
+    &:hover {
+      color: $learner-ink;
+      border-color: $learner-accent;
+    }
+  }
+
+  [data-sb-resend] { margin-top: 1rem; }
+
+  .auth-form__back {
+    margin: 1.25rem 0 0;
+    font-size: 0.92rem;
+    text-align: center;
+  }
+
+  .auth-sent {
+    text-align: center;
+
+    p { margin: 0 0 1.25rem; }
+  }
+
+  .account-signedin__sync { font-size: 0.92rem; }
+
+  // A disclosure has to look like one: a caret that turns when it opens.
+  summary {
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker { display: none; }
+
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 0.4rem;
+      height: 0.4rem;
+      margin: 0 0 0.2rem 0.5rem;
+      border: solid currentColor;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      transition: transform 0.15s;
+    }
+  }
+
+  details[open] > summary::after {
+    margin-bottom: -0.05rem;
+    transform: rotate(-135deg);
+  }
+
+  .auth-note {
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.92rem;
+    border-radius: 8px;
+  }
+
+  .auth-form .auth-note { margin: 1rem 0 0; }
+  .auth-note--ok { color: #14532d; background: $learner-pass-tint; }
+  .auth-note--error { color: $learner-fail; background: #fdecea; }
+
+  .account-signedin__actions {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .auth-more {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    font-size: 0.92rem;
+    color: $learner-text;
+    border-top: 1px solid $learner-line;
+
+    > summary {
+      @extend %learner-focus;
+      font-weight: 600;
+      color: $learner-text;
+      text-align: center;
+    }
+
+    .account-panel { padding: 1rem; margin: 1rem 0; }
+    .account-form__field input { min-width: 0; }
+  }
+
+  .auth-more__title {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 0.95rem;
+    color: $learner-ink;
   }
 }
 
