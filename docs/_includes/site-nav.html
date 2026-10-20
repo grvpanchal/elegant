@@ -43,9 +43,11 @@
                     <li>
                         <a href="{{ '/blog' | relative_url }}">Blog</a>
                     </li>
+                    {%- if site.pricing_live %}
                     <li>
                         <a href="{{ '/pricing/' | relative_url }}">Pricing</a>
                     </li>
+                    {%- endif %}
                 </ul>
             </li>
         </ul>

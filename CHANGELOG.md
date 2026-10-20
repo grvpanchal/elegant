@@ -4,7 +4,7 @@ This page lists what changed on [elegantfrontend.training](https://elegantfronte
 
 The record starts on 2026-09-20, the day the practice site went live. The seven templates (`npx elegant`) and the 45 Agent Skills came before that; you will find them in the [README](https://github.com/grvpanchal/elegant#readme) and [`skills/`](https://github.com/grvpanchal/elegant/tree/master/skills).
 
-## 2026-10-17
+## 2026-10-20
 
 ### Content
 - **Four free courses with 28 lessons, and no signup.** They are [UI layer](/courses/ui-layer/), [State layer](/courses/state-layer/), [Server layer](/courses/server-layer/) and [Harnessing AI with Agent Skills](/courses/agent-skills/).
@@ -21,7 +21,7 @@ The record starts on 2026-09-20, the day the practice site went live. The seven 
   - the question to do next.
 
   Your browser works all of this out from the progress you have saved.
-- **[Pricing](/pricing/).** Free is the whole site, and it stays that way. Pro and Lifetime are there to fund more courses and questions. Their checkout runs in PayPal's sandbox, so no real money moves, and their prices are not set yet.
+- **[Sign in](/account/) and [create an account](/account/create/) are separate, shorter pages.** Each one is a heading, two fields and one button. Resetting your password or getting a sign-in link by email is one click away, and the email that confirms a new account signs you in.
 - **Where your progress is kept.** The dashboard and the [account page](/account/) now tell you where your progress is: synced to your account, or on this device only.
 
 ### Community

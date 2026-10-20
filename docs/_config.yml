@@ -26,6 +26,12 @@ supabase:
   url: https://ftknnfapxtqqyolggkpc.supabase.co
   anon_key: sb_publishable_wBAMBBfjDfyKxomO-SJcxQ_hx4HfLMk
 
+# Whether docs/pricing/ is on the site. Off until the CFO office sets real
+# prices: the nav, the home page and the dashboard link it only when this is
+# true, and the page itself carries `published: false` while it is off, so
+# turn both on together.
+pricing_live: false
+
 # PayPal checkout for docs/pricing/. SANDBOX ONLY. The client id is a public
 # identifier — like the Supabase publishable key it is designed to ship in
 # client code. There is no PayPal secret anywhere in this site and there must

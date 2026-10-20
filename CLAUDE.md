@@ -92,7 +92,10 @@ Only the **email** provider is enabled on the project. `account-supabase.js`
 does sign-up (confirmation email, so no session until the link is followed),
 password sign-in, magic link (`/otp`), password reset (`/recover`, then
 `PUT /user` from the account page), refresh-token renewal and
-`logout?scope=local`. Email links return to `/account/` as
+`logout?scope=local`. Signing in is `docs/account/index.md` and creating an
+account is `docs/account/create.md` (`/account/create/`); one controller,
+`account-supabase-page.js`, wires whichever forms a page has. Email links from
+both return to `/account/` (the only Redirect URL the Supabase project allows) as
 `#access_token=…&type=…` (or `#error=…`); the provider verifies that token like
 any other, wipes it from the address bar, and also handles it on `hashchange`.
 Every page change of identity goes through `ElegantAccount.useProvider()`, which
@@ -155,6 +158,9 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
   (`elegant.purchases.v1<ns>`), and verification is the CFO office's,
   server-side. No PayPal secret ever goes in this repo, the SDK loads only when
   a paid tier is chosen, and nothing on the site is gated on payment.
+  The page is **unpublished** until real prices are set: `published: false` on
+  the page and `pricing_live: false` in `_config.yml`, which the nav, the home
+  page and the dashboard read before linking it. Turn both on together.
 - `docs/practice/workspace/<slug>/runtime.json` — marks a **component**
   question. Its starter, solution and tests import `@runtime`, a bare specifier
   the question layout's import map points at

@@ -13,6 +13,8 @@ landing.surfaces.
     <a href="{{ '/playbooks/' | relative_url }}"><h3>Playbooks</h3><p>Long reads on how to approach each kind of interview round.</p><span aria-hidden="true">&rarr;</span></a>
     <a href="{{ '/guides/' | relative_url }}"><h3>Company guides</h3><p>The loop each company runs, and the questions that map to each round.</p><span aria-hidden="true">&rarr;</span></a>
     <a href="{{ '/account/' | relative_url }}"><h3>Your account</h3><p>Keep progress on this device, or sign in to carry it to another browser.</p><span aria-hidden="true">&rarr;</span></a>
+    {%- if site.pricing_live %}
     <a href="{{ '/pricing/' | relative_url }}"><h3>Pricing</h3><p>Everything here is free. Pro and Lifetime fund more of it — checkout is a PayPal sandbox for now.</p><span aria-hidden="true">&rarr;</span></a>
+    {%- endif %}
   </div>
 </section>

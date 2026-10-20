@@ -64,7 +64,9 @@ const linksOf = (rel) => {
 };
 const courses = existsSync(join(out, "courses/index.html")) ? [...new Set(linksOf("courses/index.html").filter((h) => h.endsWith("/")))] : [];
 const lessons = courses.flatMap((c) => [...new Set(linksOf(c.slice(1) + "index.html").filter((h) => h.startsWith(c) && h.endsWith(".html")))].slice(0, 2));
-const pages = ["/", "/dashboard/", "/courses/", ...courses, ...lessons, "/practice/", "/plans/", "/pricing/", "/account/"];
+// Pricing is checked only while it is published (`pricing_live` in docs/_config.yml).
+const pricing = existsSync(join(out, "pricing/index.html"));
+const pages = ["/", "/dashboard/", "/courses/", ...courses, ...lessons, "/practice/", "/plans/", ...(pricing ? ["/pricing/"] : []), "/account/", "/account/create/"];
 if (!courses.length) fail("courses", "no course is linked from /courses/");
 
 const browser = await chromium.launch();
@@ -132,12 +134,14 @@ try {
     }
   }
 
-  page = await open(ctx, "/pricing/", errs);
-  const tiers = await page.$$eval(".pricing-tiers .tier, [data-tier]", (n) => n.length).catch(() => 0);
-  if (tiers < 2) fail("pricing", `the pricing page renders ${tiers} tiers`);
-  const sdkEarly = await page.evaluate(() => [...document.scripts].some((s) => /paypal\.com\/sdk|paypal\.com\/web-sdk/.test(s.src)));
-  if (sdkEarly) fail("pricing", "the PayPal SDK loads before a paid tier is chosen");
-  await page.close();
+  if (pricing) {
+    page = await open(ctx, "/pricing/", errs);
+    const tiers = await page.$$eval(".pricing-tiers .tier, [data-tier]", (n) => n.length).catch(() => 0);
+    if (tiers < 2) fail("pricing", `the pricing page renders ${tiers} tiers`);
+    const sdkEarly = await page.evaluate(() => [...document.scripts].some((s) => /paypal\.com\/sdk|paypal\.com\/web-sdk/.test(s.src)));
+    if (sdkEarly) fail("pricing", "the PayPal SDK loads before a paid tier is chosen");
+    await page.close();
+  }
   for (const e of errs) fail("errors", `journey: ${e}`);
   await ctx.close();
 } finally {
@@ -146,7 +150,7 @@ try {
 }
 
 if (!lines.length) {
-  console.log(`ok learner.journey: ${pages.length} pages at 1280 and 375px, the dashboard, a lesson and pricing in Chromium`);
+  console.log(`ok learner.journey: ${pages.length} pages at 1280 and 375px, the dashboard, a lesson${pricing ? " and pricing" : ""} in Chromium`);
   process.exit(0);
 }
 const rules = {};

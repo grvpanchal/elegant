@@ -203,8 +203,13 @@
       node.appendChild(el("a", { href: data.links.account, text: kind === "device" ? "Sign in with an email account" : "Sign in" }));
       node.appendChild(document.createTextNode(kind === "device" ? " to carry it to other browsers. " : " to sync it to your account. "));
     }
-    var receipt = latestReceipt();
     node.appendChild(document.createTextNode(" "));
+    // No pricing page on the site (`pricing_live` off): no plan to name, nothing to link.
+    if (!data.links.pricing) {
+      node.appendChild(el("span", { className: "dash-plan" }, ["Everything here is free."]));
+      return;
+    }
+    var receipt = latestReceipt();
     node.appendChild(el("span", { className: "dash-plan" }, [
       receipt ? "Pro (sandbox receipt " + receipt.orderId + ", not yet verified). "
               : "Free plan — everything here is free. ",

@@ -166,8 +166,8 @@ states a first visit sees.
   "links": {
     "account": {{ '/account/' | relative_url | jsonify }},
     "courses": {{ '/courses/' | relative_url | jsonify }},
-    "practice": {{ '/practice/' | relative_url | jsonify }},
-    "pricing": {{ '/pricing/' | relative_url | jsonify }}
+    "practice": {{ '/practice/' | relative_url | jsonify }}{% if site.pricing_live %},
+    "pricing": {{ '/pricing/' | relative_url | jsonify }}{% endif %}
   }
 }
 </script>
