@@ -1,10 +1,13 @@
 ---
 title: UI Domain - Skills & Learning Path
+description: "The UI terms in learning order: foundations, the atomic design system, styling and user experience, then advanced patterns, and a design system to build."
 layout: doc
 slug: ui-skills
 ---
 
 # UI Domain Terminology Guide
+
+Sixteen UI terms in the order to learn them: four stages from components and props up to Storybook stories, with practice questions along the way and a design system to build at the end. Each stage closes with a checkpoint; if you can already claim it, skip ahead.
 
 ## Quick Links
 
@@ -309,27 +312,27 @@ Use this checklist to track your learning journey:
 - [ ] Completed Component terminology
 - [ ] Completed Element terminology
 - [ ] Completed Props terminology
-- [ ] Built first component codelab
+- [ ] Answered the Component practice question
 
 ### Atomic Design
 - [ ] Completed Atomic Design overview
 - [ ] Completed Atom terminology + quiz
-- [ ] Completed Atom codelab ⭐
-- [ ] Completed Molecule terminology + codelab
+- [ ] Completed both Atom practice questions ⭐
+- [ ] Completed Molecule terminology + practice question
 - [ ] Completed Organism terminology
 - [ ] Completed Template terminology
 
 ### Styling & UX
-- [ ] Completed Theme terminology + codelab
-- [ ] Completed RWD terminology + codelab
+- [ ] Completed Theme terminology + practice question
+- [ ] Completed RWD terminology + practice question
 - [ ] Completed Skeleton terminology
-- [ ] Completed Accessibility terminology + codelab
+- [ ] Completed Accessibility terminology + practice question
 
 ### Advanced
 - [ ] Completed Events terminology
 - [ ] Completed Attributes terminology
 - [ ] Completed DOM terminology
-- [ ] Completed Story terminology + codelab
+- [ ] Completed Story terminology + a practice question
 
 ### Mastery
 - [ ] Started domain mastery project
@@ -342,7 +345,7 @@ Use this checklist to track your learning journey:
 ## Tips for Success
 
 1. **Build While Learning:** Don't just read—implement each concept immediately
-2. **Complete Codelabs:** Hands-on practice cements understanding
+2. **Answer the Practice Questions:** Hands-on work cements understanding
 3. **Take Quizzes:** Test comprehension before moving forward
 4. **Study Examples:** Explore the `demos/` directory for real implementations
 5. **Ask Questions:** Use the terminology pages' references for deeper learning
@@ -353,5 +356,5 @@ Use this checklist to track your learning journey:
 ## Next Steps
 
 👉 **Start here:** [Component Basics](component.html)  
-📚 **Or jump to:** [Atom - Practical Mastery](atom.html) (enhanced with quiz + codelab)  
+📚 **Or jump to:** [Atom - Practical Mastery](atom.html) (with a 5-question quiz)  
 🎯 **Set goal:** Complete Foundation path this week

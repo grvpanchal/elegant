@@ -18,6 +18,16 @@ google_analytics: "G-R8YKPS191K"
 plugins:
   - jekyll-sitemap
 
+# The share card a page shows on LinkedIn, X and in search when it names no
+# `image` of its own: jekyll-seo-tag writes og:image and twitter:image from it.
+# A page's description, when it has none, comes from its own words
+# (_plugins/page_descriptions.rb).
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/og-default.png
+
 # Identity provider for docs/account/. The publishable key is designed to ship
 # in client code and is safe here ONLY because row-level security is on in the
 # project — the key alone reaches no rows, a verified sign-in does. Leave both

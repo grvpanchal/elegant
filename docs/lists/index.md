@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Curated lists
+description: "Ordered sets of practice questions worth doing first: core fundamentals, UI components first, and the state management path."
 ---
 
 # Curated lists

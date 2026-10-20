@@ -150,6 +150,16 @@ Beyond the concept docs, `docs/` carries the practice surfaces:
 - `docs/dashboard/` — computed in the browser (`assets/js/dashboard.js`) from
   progress against a catalogue the page embeds from `docs/_data`; never
   hard-code a count.
+- `docs/skills/index.md` (`/skills/`) — every Agent Skill, from
+  `docs/_data/skill_index.yml`, which `scripts/sync-skills-registry.py`
+  **generates** with `skills.yml` (never hand-edit it; re-run the script after
+  adding a skill or editing a term's Key Insight). The deploy copies `skills/`
+  beside it, so `/skills/<slug>/SKILL.md` is the download.
+- Share cards: every page's `og:image` is `assets/img/og-default.png` unless it
+  sets `image:` (`defaults` in `_config.yml`), and a page with no
+  `description` gets one from `_plugins/page_descriptions.rb`: a question's
+  `summary`, or a term doc's first Key Insight sentence. Any other page needs
+  its own `description` (`material.py seo` fails without one).
 - `docs/pricing/` + `docs/_data/pricing.yml` + `paypal:` in `_config.yml` —
   PayPal **sandbox** checkout (`assets/js/pricing.js`). Prices are placeholders
   owned by the CFO office (`price_usd: 0` = "Price to be set"); the sandbox
