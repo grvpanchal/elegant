@@ -23,6 +23,11 @@ The record starts on 2026-09-20, the day the practice site went live. The seven 
   Your browser works all of this out from the progress you have saved.
 - **[Sign in](/account/) and [create an account](/account/create/) are separate, shorter pages.** Each one is a heading, two fields and one button. Resetting your password or getting a sign-in link by email is one click away, and the email that confirms a new account signs you in.
 - **Where your progress is kept.** The dashboard and the [account page](/account/) now tell you where your progress is: synced to your account, or on this device only.
+- **[Agent Skills](/skills/) on one page.** All 45 skills, grouped by UI, Server and State. Each card links to its
+  term, has the command that installs the skill into your coding agent, and has a download link for the `SKILL.md`.
+  The "downloadable skills" link at the end of every blog post now opens this page instead of a missing one.
+- **A preview when you share a link.** On LinkedIn, X and in search results, a link to any page now shows the Elegant
+  card and a one-line description of that page.
 
 ### Community
 - **The repository now has a public [roadmap](https://github.com/grvpanchal/elegant/blob/master/ROADMAP.md) and a [contribution guide](https://github.com/grvpanchal/elegant/blob/master/CONTRIBUTING.md).** It also has [issue forms](https://github.com/grvpanchal/elegant/issues/new/choose) for three things: reporting a bug, correcting a lesson, and asking for a skill or a question.

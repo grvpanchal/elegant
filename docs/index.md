@@ -1,6 +1,7 @@
 ---
 layout: home
 title: Frontend Architecture Principles
+description: One command scaffolds a UI, server and state project in React, Angular, Vue or Web Components, then you practise frontend interviews on the same terms.
 ---
 
 <section id="harness" class="landing-section">

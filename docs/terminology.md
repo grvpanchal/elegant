@@ -1,5 +1,6 @@
 ---
 title: The State Side
+description: Every term Elegant uses to build a frontend architecture, for the UI, server and state layers, none of them tied to one framework.
 layout: default
 ---
 # Terminology

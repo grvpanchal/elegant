@@ -1131,11 +1131,11 @@
     },
     "ui/skills": {
       "doc": "ui/skills",
-      "last_sha": "f0b7199f0888c5f8f3bf0c51503bf17fdadb0651",
-      "last_reviewed_at": "2026-09-16T02:57:09Z",
-      "score": 15,
+      "last_sha": "37dcc3ca29e5a79a32c2c0d2b6b70b813af1876e",
+      "last_reviewed_at": "2026-10-20T20:11:31Z",
+      "score": 16,
       "axes": {
-        "hook": 2,
+        "hook": 3,
         "cadence": 4,
         "concreteness": 4,
         "common_mistakes": 1,
@@ -1143,17 +1143,15 @@
         "engagement_glue": 3
       },
       "issues_fixed": [
-        "Foundation > Component practice link (line 46) pointed at the bare ../practice/ index with a filter hint; repointed to the specific presentational-vs-container.html quiz (topics: component, props) that matches the step",
-        "Foundation > Props practice link (line 57) repointed from the practice index to props-defaults.html, a quiz whose sole topic is props",
-        "Atomic Design > Molecule practice link (line 82) repointed from the practice index to form-field-molecule.html, a ui-coding question that composes atoms into a molecule",
-        "Styling & UX > Theme practice link (line 105) repointed from the practice index to theme-toggle.html, the only bank question tagged theme",
-        "Styling & UX > RWD practice link (line 111) repointed from the practice index to responsive-image-set.html, a ui-coding question tagged rwd",
-        "Styling & UX > Accessibility practice link (line 123) repointed from the practice index to accessible-combobox.html, a ui-coding question whose primary topic is accessibility"
+        "Added a two-sentence lede under the H1 (line 10) so the page says what it is and how to use it (the four stages, the checkpoints, skip ahead) before dropping into the Quick Links list; it agrees with the new front-matter description",
+        "Replaced the 9 stale 'codelab' promises with 'practice question' wording: Progress Tracking checklist (lines 315, 320, 321, 326, 327, 329, 335), Tips for Success item 2 (line 348) and Next Steps (line 359, now '(with a 5-question quiz)'). No codelab page exists anywhere on the site, and the Atom page has a quiz but no codelab. Closes the codelab issue reported in the 2026-09-16 review"
       ],
       "issues_reported": [
-        "Advanced Patterns > Story practice link (line 152) still points at the bare ../practice/ index \u2014 no bank question has story as its primary/sole topic (only harness-a11y-gate and harness-atom-guardrail carry story as a secondary tag, and both are 40+ min harness-format exercises, a poor fit for a first practice link on this concept); recommend authoring a dedicated easy/medium Story question before repointing this one",
-        "Progress Tracking checklist (lines ~308-338) and Tips for Success (line 345) still say \"codelab\" (\"Built first component codelab\", \"Completed Atom codelab\", \"Complete Codelabs\") even though the codelabs section referenced by this PR never shipped and all Practice links now point at docs/practice/; renaming these ~9 scattered mentions to \"practice question\"/\"exercise\" spans multiple sections and is better done as one deliberate pass rather than folded into this link fix",
-        "This page has no Common Mistakes or Quiz section of its own (it is a navigation/learning-path hub, not a concept doc) \u2014 scored low on those two axes for honesty, but that is a structural property of the page type, not a defect to patch in place; flagging in case the rubric should treat hub pages differently from concept docs"
+        "Verified, no action needed: the front-matter description added by the SEO PR (line 3) is 153 characters (limit 160), accurate to the page (four learning-path stages in order, then the design-system mastery project), parses as a plain YAML string, and a local Jekyll build renders it as meta description and og:description with og:image, twitter:card and canonical present. The page has no Key Insight, so _plugins/page_descriptions.rb could not have supplied one; the explicit line is required",
+        "Practice links are uneven: Story (line 155) still points at the bare ../practice/ index (no bank question has story as its primary topic), and Organism, Skeleton, Events, Attributes and DOM have no Practice link at all although the bank has questions on those topics (e.g. data-table-sort, skeleton-list, ui-events-basics, event-delegation). Choosing one question per step is an authoring call",
+        "Terminology Quick Reference > By Difficulty (lines 244-251) contradicts the Learning Path: Atom is listed Beginner but taught in the Intermediate stage, Atomic Design and Accessibility are listed Advanced but taught in the Intermediate stages, and Story is listed Intermediate but taught in Advanced Patterns. Pick one source of truth and align the other",
+        "Progress Tracking (lines 307-341) says 'Use this checklist to track your learning journey' but renders as disabled static checkboxes that cannot be ticked and are not connected to progress.js or the dashboard; either wire it to progress (code change) or reword it as a self-check list",
+        "Leftover internal markers mean nothing to a reader: '\u2b50 **Enhanced**' on the Atom step (line 74) and the 'Atom - Practical Mastery' link text (line 359, the page is titled 'Atom'). Also this hub page has no Common Mistakes or Quiz of its own, which is why those axes score 1; that is a property of the page type, so the rubric may need a hub-page variant"
       ]
     }
   }

@@ -2,7 +2,10 @@
 title: CLI
 layout: default
 slug: cli
+description: The elegant CLI commands for generating atoms, molecules, organisms, skeletons, widgets, and state operations.
 ---
+
+# CLI
 
 ## Building Atomic Entities
 
