@@ -139,6 +139,44 @@ loop(tabsNodes, (tabsNode) => {
   });
 })();
 
+// Nav dropdowns (the "Learn" menu): click toggles open/closed via [data-open];
+// hover and keyboard focus open it on desktop (CSS). An outside click or Escape
+// closes any open one. On phones the same click expands it inline in the column.
+(() => {
+  const dropdowns = document.querySelectorAll('.site-nav [data-dropdown]');
+  if (!dropdowns.length) return;
+
+  const close = (dropdown) => {
+    dropdown.removeAttribute('data-open');
+    const toggle = dropdown.querySelector('[data-dropdown-toggle]');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  };
+  const closeAll = (except) => dropdowns.forEach((d) => { if (d !== except) close(d); });
+
+  dropdowns.forEach((dropdown) => {
+    const toggle = dropdown.querySelector('[data-dropdown-toggle]');
+    if (!toggle) return;
+    toggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      const isOpen = dropdown.hasAttribute('data-open');
+      closeAll(dropdown);
+      if (isOpen) {
+        close(dropdown);
+      } else {
+        dropdown.setAttribute('data-open', '');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.site-nav [data-dropdown]')) closeAll(null);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll(null);
+  });
+})();
+
 // Scroll behaviour: non-home pages only — hide title, enlarge logo on scroll
 if (window.location.pathname !== '/') {
   const siteNav = document.querySelector('.site-nav');
