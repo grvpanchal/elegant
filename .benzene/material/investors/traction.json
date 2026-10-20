@@ -1,0 +1,19 @@
+{
+  "github_stars": {
+    "value": 1,
+    "source": "https://api.github.com/repos/grvpanchal/elegant",
+    "date": "2026-10-17"
+  },
+  "npm_downloads_last_month": {
+    "value": 257,
+    "source": "https://api.npmjs.org/downloads/point/last-month/elegant",
+    "date": "2026-10-17",
+    "window": {"start": "2026-09-13", "end": "2026-10-12"}
+  },
+  "newsletter_subscribers": {
+    "value": 0,
+    "source": "not measured yet: LinkedIn newsletter subscribers are read by hand",
+    "date": "2026-10-17",
+    "note": "The ConnectSafely field `newsletters` (10 in .benzene/material/experience/analytics.md, 2026-W42) counts newsletters, not subscribers."
+  }
+}

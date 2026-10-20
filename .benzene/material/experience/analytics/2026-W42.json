@@ -1,0 +1,64 @@
+{
+ "week": "2026-W42",
+ "captured_at": "2026-10-17T21:04:01Z",
+ "errors": [],
+ "upload_post": {
+  "instagram": {
+   "followers": 9,
+   "reach": 0,
+   "views": 0,
+   "impressions": 0,
+   "profileViews": 0,
+   "likes": 0,
+   "comments": 0,
+   "shares": 0,
+   "saves": 0,
+   "metric_type": "reach"
+  },
+  "facebook": {
+   "followers": 0,
+   "reach": 0,
+   "impressions": 0,
+   "likes": null,
+   "comments": null,
+   "shares": null,
+   "metric_type": "reach"
+  },
+  "linkedin": {
+   "followers": 2,
+   "reach": 0,
+   "impressions": 0,
+   "profileViews": 28,
+   "likes": 0,
+   "comments": 0,
+   "shares": 0,
+   "metric_type": "reach"
+  },
+  "x": {
+   "followers": 0,
+   "impressions": 0,
+   "likes": 0,
+   "comments": 0,
+   "shares": 0,
+   "metric_type": "impressions"
+  },
+  "youtube": {
+   "followers": 0,
+   "views": null,
+   "likes": 0,
+   "comments": 0,
+   "watch_time_minutes": 0,
+   "metric_type": "views"
+  },
+  "total_impressions_last_week": 0
+ },
+ "connectsafely": {
+  "postImpressions": 128,
+  "totalFollowers": 2626,
+  "profileViewers": 154,
+  "searchAppearances": 35,
+  "connections": null,
+  "newsletters": 10
+ },
+ "combined_audience": 2637
+}

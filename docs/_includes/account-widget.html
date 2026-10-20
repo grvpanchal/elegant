@@ -1,17 +1,31 @@
 {%- comment -%}
-Account state for the site nav.
-
-A profile is stored on this device — there is no server to authenticate
-against, and the sign-in copy says so rather than implying a real account.
-Backed by docs/assets/js/account.js.
+Account state for the site nav: who is signed in, and what kind of identity it
+is. "Account" is an email sign-in verified by the identity provider; "Device
+profile" is a name typed into this browser and verified by nothing — the menu
+says which, so the two are never mistaken for each other.
+Signed in, the nav shows an initial and the (truncated) name; the menu holds
+the full name, its kind, the account link and Sign out, so eleven links and an
+email address fit one row.
+Backed by docs/assets/js/account.js (painting, the menu) and
+account-supabase.js (the verified session, restored on every page).
 {%- endcomment -%}
 <div class="account-widget" data-account-widget data-signed-in="false">
+  <a class="account-widget__dashboard" href="{{ '/dashboard/' | relative_url }}">Dashboard</a>
   <div class="account-widget__in" data-account-signed-in hidden>
-    <a class="account-widget__name" href="{{ '/account/' | relative_url }}">
+    <button type="button" class="account-widget__me" aria-expanded="false" aria-controls="account-menu" data-account-menu-toggle>
+      <span class="account-widget__avatar" aria-hidden="true" data-account-initial></span>
       <span class="sr-only">Signed in as</span>
-      <span data-account-name></span>
-    </a>
-    <button type="button" class="account-widget__signout" data-account-signout>Sign out</button>
+      <span class="account-widget__label" data-account-name></span>
+      <span class="account-widget__caret" aria-hidden="true"></span>
+    </button>
+    <div class="account-widget__menu" id="account-menu" data-account-menu hidden>
+      <p class="account-widget__who">
+        <span class="account-widget__full" data-account-name-full></span>
+        <span class="account-widget__kind" data-account-kind></span>
+      </p>
+      <a class="account-widget__link" href="{{ '/account/' | relative_url }}">Your account</a>
+      <button type="button" class="account-widget__signout" data-account-signout>Sign out</button>
+    </div>
   </div>
   <div class="account-widget__out" data-account-signed-out>
     <a class="account-widget__signin-link" href="{{ '/account/' | relative_url }}">Sign in</a>

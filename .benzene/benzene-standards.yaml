@@ -1,0 +1,1107 @@
+# The researched standard for the elegant organisation, written from standards/<office>.md (2026-10-17).
+# Every bar: what the competition does, the target, who set it, the source, and the check that holds the office to it.
+purpose: 'Build the best Frontend AI Harness training site: every lesson a frontend term of the UI / Server / State architecture
+  and the Agent Skill that encodes it, for frontend developers who lost their jobs to AI, and earn from it.'
+researched: '2026-10-17'
+by: claude code
+material_root: .benzene/material
+competitors:
+- name: GreatFrontEnd
+  behind: Yangshun Tay (founder, CEO; ex-Staff Engineer, Meta); Codeney Pte Ltd, Singapore
+  url: https://www.greatfrontend.com/
+  since: 2022 (GitHub org 2022-08-06; paid product live 2022-10-02)
+- name: Master.dev (Frontend Masters)
+  behind: Marc Grabanski, founder and CEO; 100% bootstrapped
+  url: https://master.dev/
+  since: 2014 (renamed Master.dev on 2026-06-15)
+- name: BigFrontEnd.dev
+  behind: jser合同会社 (JSer LLC), Shibuya, Tokyo
+  url: https://bigfrontend.dev/
+  since: mid-2020 (earliest question created 2020-07-19)
+- name: Frontend Mentor
+  behind: Matt Studdert (founder) and Mike Hayden (co-founder, CTO), London
+  url: https://www.frontendmentor.io/
+  since: '2018'
+- name: Scrimba
+  behind: Per Harald Borgen (CEO) and Sindre Aarsæther (CTO); Scrimba AS, Oslo; YC S20
+  url: https://scrimba.com/
+  since: 2016-11 (Scrimba AS incorporated)
+- name: Flavio Copes
+  behind: Flavio Copes, solo and bootstrapped
+  url: https://flaviocopes.com/courses/
+  since: 2012 (blog); bootcamp cohorts every year since 2020
+- name: Epic Web (Kent C. Dodds)
+  behind: Kent C. Dodds, with a production team of 8 credited roles
+  url: https://www.epicweb.dev/
+  since: 2020 (Epic React by Oct 2020; Epic Web workshops Sep-Oct 2023)
+- name: Josh W. Comeau
+  behind: Josh W. Comeau, solo (ex-Khan Academy)
+  url: https://css-for-js.dev/
+  since: 2020 (course platform © 2020-present; CSS for JS Devs selling by 2021)
+- name: patterns.dev
+  behind: Lydia Hallie and Addy Osmani (co-creators)
+  url: https://www.patterns.dev/
+  since: 2021 (earliest capture 2021-05-31)
+- name: roadmap.sh
+  behind: Kamran Ahmed
+  url: https://roadmap.sh/
+  since: 2017 (GitHub repo created 2017-03-15)
+- name: Linear
+  behind: Linear, the COO's planning tool (a reference for cycles and capacity, not a competitor)
+  url: https://linear.app/method/introduction
+  since: not stated in the reports
+offices:
+  cto:
+    summary: A static training site that builds clean, keeps links, alt text and share tags intact, ships free courses at
+      Flavio Copes' lesson standard and a sandbox-only checkout, over six interchangeable templates and current term docs.
+    report: standards/cto.md
+    scale:
+      cells: 3
+      reason: 'three sub-agents: the training site, the template harness, the terminology docs'
+    every: 1
+    bars:
+    - name: site-builds
+      statement: '`python3 .benzene/checks/site.py build` runs the Jekyll build of docs/ to completion with no error or Liquid
+        exception in its output and produces index.html.'
+      target: 'yes: exit 0, 0 build errors, 0 Liquid exceptions, index.html built'
+      competitors:
+        Flavio Copes: Astro static site (Alpine.js, Pagefind); /courses/ 8,765 B HTML wire
+        patterns.dev: Astro v2.7.2 static site on Netlify
+        roadmap.sh: built with Astro and deployed on GitHub Pages, the same static constraint as ours
+      sources:
+      - https://flaviocopes.com/courses/
+      - https://www.patterns.dev/
+      - https://roadmap.sh/about
+      when: heal
+      skill: training-site
+      check:
+        type: command
+        name: verify:site-build
+        command:
+        - python3
+        - .benzene/checks/site.py
+        - build
+        cwd: .
+        timeout_s: 900
+    - name: site-health
+      statement: Every built page outside demos, assets, storybooks, skills and blog drafts has no broken internal link, no
+        <img> without alt (unless role=presentation) and exactly one <h1>.
+      target: '0 findings: 0 broken links, 0 images without alt, 1 h1 per page'
+      competitors:
+        Master.dev (Frontend Masters): 77 of 1,337 <img> on /courses/ lack alt; no lang attribute
+        BigFrontEnd.dev: 8 of 8 home-page <img> lack alt; no skip link
+        Frontend Mentor: skip link 'Skip to content' and <main> on /challenges
+        Flavio Copes: skip link plus <main> on /courses/
+      sources:
+      - https://master.dev/courses/
+      - https://bigfrontend.dev/
+      - https://www.frontendmentor.io/challenges
+      when: heal
+      skill: training-site
+      check:
+        type: command
+        name: verify:site-health
+        command:
+        - python3
+        - .benzene/checks/site.py
+        - health
+        cwd: .
+        timeout_s: 900
+    - name: no-client-secret
+      statement: No tracked or unignored file holds the value of a daemon secret (PAYPAL_SECRET, SUPABASE_SECRET, the API
+        keys), and nothing under docs/ or templates/ matches sb_secret_, service_role, sk-or-v1- or lin_api_.
+      target: 0 matches
+      competitors:
+        Epic Web (Kent C. Dodds): checkout forms post to its own server route /api/skill/checkout/stripe
+        Josh W. Comeau: loads paddle.js; Paddle is the merchant of record
+        roadmap.sh: sells Pro from an Astro site on GitHub Pages
+      sources:
+      - https://developer.paypal.com/sdk/js/set-up
+      - https://supabase.com/docs/guides/functions/secrets
+      - https://www.epicweb.dev/full-stack
+      when: heal
+      skill: training-site
+      check:
+        type: command
+        name: verify:no-secrets
+        command:
+        - python3
+        - .benzene/checks/site.py
+        - secrets
+        cwd: .
+        timeout_s: 900
+    - name: free-courses
+      statement: docs/_data/courses.yml lists at least 4 free courses (UI, State, Server, Agent Skills), each with at least
+        5 lessons, and at least 20 free lessons in all.
+      target: '>= 4 courses, >= 5 lessons each, >= 20 free lessons'
+      competitors:
+        Flavio Copes: 87 free courses, no signup; AI Agent Skills 5 modules, 25 lessons
+        Master.dev (Frontend Masters): 5 full courses free with an account, plus a free bootcamp (21 h 6 min)
+        Scrimba: 25 free courses; Learn Agentic Coding free, 35 lessons
+        Epic Web (Kent C. Dodds): free 'Get Started With React' tutorial, 20 lessons
+      sources:
+      - https://flaviocopes.com/courses/
+      - https://master.dev/free/
+      - https://scrimba.com/t/t0ai
+      when: heal
+      why: Free courses are the top of every competitor's funnel, and Flavio Copes gives away 87 with no signup.
+      skill: training-site
+      check:
+        type: command
+        name: verify:courses
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - courses
+        cwd: .
+        timeout_s: 900
+    - name: share-ready-seo
+      statement: Every built page outside demos, skills, assets and blog drafts (redirects aside) carries a non-empty meta
+        description, an absolute https og:image, a twitter:card and a canonical link.
+      target: 100% of pages; 0 missing description, og:image, twitter:card or canonical
+      competitors:
+        GreatFrontEnd: per-question og:image (/api/og?title=...), canonical, twitter:card summary_large_image
+        roadmap.sh: dynamic og:image /og/roadmap/frontend plus FAQPage JSON-LD
+        patterns.dev: og:image points at http://localhost:3000 (anti-pattern)
+        Josh W. Comeau: no canonical on the home page (anti-pattern)
+      sources:
+      - https://www.greatfrontend.com/questions/javascript/debounce
+      - https://roadmap.sh/frontend
+      - https://www.patterns.dev/
+      when: heal
+      why: Every share card and search result is drawn from these tags, and the leaders emit them on every page.
+      skill: training-site
+      check:
+        type: command
+        name: verify:seo
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - seo
+        cwd: .
+        timeout_s: 900
+    - name: pricing-page-sync
+      statement: Every tier in .benzene/material/finance/pricing.md appears in docs/_data/pricing.yml with the same price_usd.
+      target: 0 missing tiers, 0 price mismatches (to $0.001)
+      competitors:
+        roadmap.sh: 'pricing API and /premium page agree: Pro $10/mo, $100/yr'
+        GreatFrontEnd: prices rendered from page data (countryCode, conversionFactor, withPPP)
+        Master.dev (Frontend Masters): '''300+'' and ''250+ courses'' on the same page (anti-pattern)'
+      sources:
+      - https://api.roadmap.sh/v1-subscription-pricing
+      - https://www.greatfrontend.com/pricing
+      - https://master.dev/features/
+      when: heal
+      why: A price on the site that differs from the CFO's pricing is a promise nobody made.
+      skill: training-site
+      check:
+        type: command
+        name: verify:pricing-sync
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - pricing-sync
+        cwd: .
+        timeout_s: 900
+    - name: sandbox-checkout
+      statement: 'docs/_config.yml sets paypal.env: sandbox and a client_id, the pricing or checkout page loads the PayPal
+        SDK from PayPal (never vendored under docs/), and no live PayPal host is referenced before finance/go-live.md exists.'
+      target: 'yes: sandbox env and client_id, SDK loaded from paypal.com, 0 vendored SDK files, 0 live-host references'
+      competitors:
+        Master.dev (Frontend Masters): accepts PayPal beside Stripe cards and the App Store
+        Frontend Mentor: card, PayPal and Google Pay through Chargebee
+        Josh W. Comeau: Paddle checkout with PayPal accepted
+        Epic Web (Kent C. Dodds): Stripe only; 'No' to PayPal
+      sources:
+      - https://developer.paypal.com/sdk/js/v5/configuration/
+      - https://master.dev/faq/join/
+      - https://www.frontendmentor.io/pro
+      when: heal
+      why: Payments are proven in PayPal's sandbox, with the SDK loaded the way PayPal requires, before any live money can
+        move.
+      skill: training-site
+      check:
+        type: command
+        name: verify:checkout
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - checkout
+        cwd: .
+        timeout_s: 900
+    - name: learner-journey
+      statement: In a real browser a learner opens the dashboard and the courses, marks a lesson complete and reaches pricing,
+        with no console error and no horizontal scroll at 375 px wide.
+      target: 'yes: 4 of 4 steps pass, 0 console errors, 0 px horizontal overflow at 375 px'
+      competitors:
+        GreatFrontEnd: '''No signup required'': home, question, run; but tests are ''not supported on mobile devices'''
+        roadmap.sh: 1 click to full content, no login
+        Flavio Copes: '''Mark lesson complete'' and ''Next lesson'' on every lesson, no signup'
+        Frontend Mentor: GitHub login, local build, then submit (anti-example)
+      sources:
+      - https://www.greatfrontend.com/questions/javascript/debounce
+      - https://roadmap.sh/frontend
+      - https://flaviocopes.com/courses/javascript/arrow-functions/
+      when: heal
+      why: The competitors that win get a learner to a first lesson in one or two clicks with no signup, on a phone as well
+        as a desktop.
+      skill: training-site
+      check:
+        type: command
+        name: verify:learner-journey
+        command:
+        - node
+        - .benzene/checks/functional.mjs
+        cwd: .
+        timeout_s: 900
+    - name: template-integrity
+      statement: Every template under templates/ has src/**/ui/{atoms,molecules,organisms,templates,skeletons} and a containers
+        folder, and each layer holds the same todo-app parts as the other templates.
+      target: 0 layout or consistency findings across all templates
+      competitors:
+        GreatFrontEnd: 'all 59 UI questions in 5 variants: React, Vanilla, Angular, Vue, Svelte'
+        Epic Web (Kent C. Dodds): epicshop exercises share one problem / solution folder layout with a Diff tab
+        patterns.dev: 53 patterns across vanilla (27), React (15) and Vue (11)
+      sources:
+      - https://www.greatfrontend.com/questions
+      - https://github.com/epicweb-dev/epicshop
+      - https://www.patterns.dev/vanilla/singleton-pattern
+      when: heal
+      skill: template-harness
+      check:
+        type: command
+        name: verify:template-integrity
+        command:
+        - python3
+        - .benzene/checks/templates.py
+        - integrity
+        cwd: .
+        timeout_s: 900
+    - name: template-agents-config
+      statement: Every template's AGENTS.md has Architecture, Skills, Commands and 'Build a todo app' sections, names at least
+        8 existing skills/<name> folders and says how to run its build and test scripts.
+      target: 4 of 4 sections, >= 8 known skills, 0 unknown skills, build and test commands named
+      competitors:
+        Frontend Mentor: AGENTS.md and CLAUDE.md in every challenge, for Claude Code, Cursor and Copilot
+        Epic Web (Kent C. Dodds): 30-line AGENTS.md linking docs/agents/*; skills-lock.json pins ship-pr by hash
+        patterns.dev: 58 skills installed with npx skills add PatternsDev/skills/react
+        Scrimba: '''Multiple AGENTS.md files'' and ''Skills Challenge'' lessons'
+      sources:
+      - https://www.frontendmentor.io/articles/agents-md-files-in-every-challenge
+      - https://github.com/kentcdodds/kentcdodds.com
+      - https://github.com/PatternsDev/skills
+      when: heal
+      skill: template-harness
+      check:
+        type: command
+        name: verify:template-agents
+        command:
+        - python3
+        - .benzene/checks/templates.py
+        - agents
+        cwd: .
+        timeout_s: 900
+    - name: todo-app-stability
+      statement: elegant-opencode's 'build a todo app', run 25 times on this repository's skills/, finishes with 0 failures
+        and the same file-tree hash on every run.
+      target: 25 runs, 0 failures, 1 tree hash
+      competitors:
+        Master.dev (Frontend Masters): 'nearest only: ''Harness Engineering & Agent Orchestration'' video course (2026-07-01),
+          no graded agent run'
+        Frontend Mentor: 'nearest only: AI code review on 7 dimensions, scored out of 10, per submission'
+      sources:
+      - https://master.dev/learn/ai/
+      - https://www.frontendmentor.io/guides/solution-reports-overview
+      when: heal
+      why: The harness is worth teaching only if an agent that follows the skills builds the same todo app every run.
+      skill: template-harness
+      check:
+        type: command
+        name: verify:todo-stability
+        command:
+        - python3
+        - .benzene/checks/templates.py
+        - stability
+        - '25'
+        cwd: .
+        timeout_s: 900
+    - name: terminology-docs-current
+      statement: Every term in docs/_data/topics/{ui,server,state}.csv has a doc with title, layout, slug and a reviewed date
+        at most 120 days old, the six shared sections, at least 2 reference links (one dated 2025 or later) and its skills/<layer>-<slug>/SKILL.md.
+      target: 100% of terms; 0 missing, stale, sectionless, under-referenced or skill-less docs
+      competitors:
+        patterns.dev: '53 pattern pages; HN: ''reads like its 2017 ... breadth but no depth'''
+        roadmap.sh: 120 learnable frontend nodes; Claude Code roadmap added 2026-02-10
+        Flavio Copes: '''All 87 free courses rewritten'' (changelog)'
+        Josh W. Comeau: '''The most recent significant update was in December 2025'''
+      sources:
+      - https://news.ycombinator.com/item?id=46231327
+      - https://roadmap.sh/claude-code
+      - https://flaviocopes.com/changelog/
+      when: heal
+      skill: docs-maintainer
+      check:
+        type: command
+        name: verify:terminology-docs
+        command:
+        - python3
+        - .benzene/checks/docs.py
+        cwd: .
+        timeout_s: 900
+    channels:
+    - name: github
+      kind: code
+      office: cto
+      material:
+      - CHANGELOG.md
+      access_env: GITHUB_TOKEN
+      note: 'never pushed by the organisation: the CEO merges and pushes'
+  coo:
+    summary: 'Run the organisation as Linear prescribes and the most public competitors show: a 90-day public roadmap, a monthly
+      curated changelog, sprints inside each office''s capacity, and contribution paths with labelled forms and a check-first
+      rule.'
+    report: standards/coo.md
+    scale:
+      cells: 1
+      reason: one plan, one voice
+    every: 1
+    bars:
+    - name: roadmap-90-days
+      statement: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress
+        items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about
+        90 days).
+      target: '>= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row'
+      competitors:
+        GreatFrontEnd: public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25
+        Master.dev (Frontend Masters): 8 live workshops scheduled up to 173 days ahead
+        Linear: a single lead per project; target dates at month precision
+      sources:
+      - https://www.greatfrontend.com/interviews/roadmap
+      - https://frontendmasters.com/
+      - https://linear.app/docs/projects
+      when: heal
+      check:
+        type: command
+        name: verify:roadmap
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - roadmap
+        cwd: .
+        timeout_s: 900
+    - name: changelog-monthly
+      statement: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and
+        at least one link to a shipped page (/practice/, /courses/, /skills/ ...).
+      target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link
+      competitors:
+        roadmap.sh: 21 dated entries since 2024-09-13; median gap 31 days, max 99
+        Linear: 10 entries 2 Jul - 8 Oct 2026; median gap 11 days
+        Flavio Copes: 68 dated entries since 2026-05-31; 'not a list of commits'
+      sources:
+      - https://roadmap.sh/changelog
+      - https://linear.app/changelog
+      - https://web.archive.org/web/20261006202438/https://flaviocopes.com/changelog/
+      when: heal
+      check:
+        type: command
+        name: verify:changelog
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - changelog
+        cwd: .
+        timeout_s: 900
+    - name: sprint-within-capacity
+      statement: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps
+        planned in it than its capacity.
+      target: a current sprint exists; planned steps <= capacity for every office
+      competitors:
+        Linear: capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common
+      sources:
+      - https://linear.app/docs/use-cycles
+      - https://linear.app/method/introduction
+      when: heal
+      why: Linear sizes each cycle from the velocity a team has shown, so an overloaded office stalls the plan for every other
+        office.
+      check:
+        type: command
+        name: verify:sprint
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - sprint
+        cwd: .
+        timeout_s: 900
+    - name: contributing-guide
+      statement: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors
+        to check with the owner before large work.
+      target: 3 of 3 sections plus a check-first rule
+      competitors:
+        roadmap.sh: '148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition'
+        Epic Web (Kent C. Dodds): '''check with me before doing a bunch of work''; content edits through the GitHub UI'
+      sources:
+      - https://github.com/nilbuild/developer-roadmap
+      - https://github.com/epicweb-dev/epic-stack
+      - https://github.com/kentcdodds/kentcdodds.com
+      when: heal
+      check:
+        type: command
+        name: verify:contributing
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - contributing
+        cwd: .
+        timeout_s: 900
+    - name: issue-forms
+      statement: '.github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction,
+        skill-or-question-request), and config.yml sets blank_issues_enabled: false.'
+      target: '>= 3 labelled forms; blank_issues_enabled: false'
+      competitors:
+        roadmap.sh: '5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord'
+        GreatFrontEnd: 2 templates (question-report, article-report); 14 content-type labels
+      sources:
+      - https://github.com/nilbuild/developer-roadmap
+      - https://github.com/greatfrontend/greatfrontend
+      when: heal
+      check:
+        type: command
+        name: verify:issue-forms
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - issue-forms
+        cwd: .
+        timeout_s: 900
+  cmo:
+    summary: 'Market at the leaders'' cadence: three posts a week syndicated under our canonical, one newsletter a week, platform-fit
+      LinkedIn, X, Instagram and Facebook posts that each carry one UTM-tagged showcase link, and boosts only for proven posts.'
+    report: standards/cmo.md
+    scale:
+      cells: 7
+      reason: 'seven sub-agents: blog, newsletter, LinkedIn, X, Instagram, Facebook, ad boosts'
+    every: 3
+    bars:
+    - name: profile
+      statement: marketing/profile.md carries name, handle, bio, link, avatar, header, about and theme, its avatar is a file
+        in the workspace, and its bio is at most 160 characters.
+      target: 8 of 8 fields; avatar file exists; bio <= 160 characters
+      competitors:
+        Master.dev (Frontend Masters): footer links X, LinkedIn and Facebook as MasterDotDev, but Instagram is still @FrontendMasters
+        Frontend Mentor: JSON-LD sameAs lists X, LinkedIn, Facebook and Discord
+        GreatFrontEnd: footer links Blog, Medium, DEV, LinkedIn, Discord, GitHub and X
+      sources:
+      - https://master.dev/
+      - https://www.frontendmentor.io/
+      - https://www.greatfrontend.com/
+      when: publish
+      check:
+        type: command
+        name: verify:profile
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - profile
+        cwd: .
+        timeout_s: 900
+    - name: post-front-matter
+      statement: Every social post under marketing/posts has channel, date, claim, source, campaign and showcase_url, and
+        its showcase_url (on elegantfrontend.training with utm_source=<channel>&utm_medium=social&utm_campaign=<campaign>)
+        is in the post or its first_comment.
+      target: 100% of posts; 0 missing fields; 0 untagged or absent showcase links
+      competitors:
+        GreatFrontEnd: README links tagged utm_source=github&utm_medium=referral&utm_campaign=top-js-qns
+        roadmap.sh: footer link tagged utm_campaign=Footer
+        Frontend Mentor: '''The link... is in the first comment'''
+      sources:
+      - https://raw.githubusercontent.com/greatfrontend/top-javascript-interview-questions/main/README.md
+      - https://roadmap.sh/
+      - https://www.linkedin.com/company/frontend-mentor
+      when: publish
+      why: One tagged showcase link per post is how a campaign's clicks are counted back to the post that earned them.
+      check:
+        type: command
+        name: verify:posts
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - posts
+        cwd: .
+        timeout_s: 900
+    - name: article-quality
+      statement: Every article under marketing/articles has title, date, 1-4 tags, canonical_url at elegantfrontend.training/blog/<slug>.html,
+        ai_assistance (none or assisted, disclosed in the first two paragraphs when assisted), related_practice and description,
+        plus a code example, an original figure and at least 700 words.
+      target: 100% of articles; 1-4 tags; >= 700 words; >= 1 code fence and >= 1 figure
+      competitors:
+        GreatFrontEnd: review cashback article 'must not be written with the assistance of AI'
+        patterns.dev: Lydia Hallie's visual explainers at 4,452 / 4,156 / 4,080 dev.to reactions
+        Josh W. Comeau: interactive posts; 'CSS Gradients...' reached 1,075 HN points
+      sources:
+      - https://www.greatfrontend.com/interviews/promotions
+      - https://dev.to/api/articles?username=lydiahallie&per_page=100
+      - https://dev.to/guidelines-for-ai-assisted-articles-on-dev
+      when: heal
+      why: dev.to, Medium and Google penalise AI filler, so every article teaches with code and an original figure and says
+        when AI helped.
+      skill: blog-writer
+      check:
+        type: command
+        name: verify:articles
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - articles
+        cwd: .
+        timeout_s: 900
+    - name: blog-cadence
+      statement: At least 3 articles under marketing/articles are dated in the current ISO week.
+      target: '>= 3 articles per ISO week'
+      competitors:
+        GreatFrontEnd: 3-4 posts a week (Oct 16, 15, 14, 9, 6, 2026)
+        Master.dev (Frontend Masters): about 17 posts in 30 days
+        Scrimba: 15 posts in 14 days
+        Flavio Copes: 25 posts in 12 days
+      sources:
+      - https://www.greatfrontend.com/blog
+      - https://blog.master.dev/feed/
+      - https://flaviocopes.com/rss.xml
+      when: heal
+      why: The competitors publish several posts a week; our 25-day gap loses search and social momentum.
+      skill: blog-writer
+      check:
+        type: command
+        name: verify:blog-cadence
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - blog-cadence
+        cwd: .
+        timeout_s: 900
+    - name: syndication-canonical
+      statement: Every article lists devto, hashnode and medium copies under syndication, and each copy carries the article's
+        own canonical_url.
+      target: 3 of 3 channels per article; 100% of copies carry our canonical
+      competitors:
+        Flavio Copes: 37 of 39 dev.to copies canonical on flaviocopes.com
+        Josh W. Comeau: 3 of 3 dev.to posts canonical on joshwcomeau.com
+        Frontend Mentor: 8 of 12 dev.to posts canonical on frontendmentor.io
+        GreatFrontEnd: 0 of 6 dev.to posts canonical on its site (anti-pattern)
+      sources:
+      - https://dev.to/api/articles?username=flaviocopes&per_page=1000
+      - https://dev.to/api/articles?username=joshwcomeau
+      - https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls
+      when: heal
+      why: Copies on dev.to, Hashnode and Medium build our search rank only when their canonical points back to our page.
+      skill: blog-writer
+      check:
+        type: command
+        name: verify:syndication
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - syndication
+        cwd: .
+        timeout_s: 900
+    - name: weekly-newsletter
+      statement: Exactly one newsletter issue is dated in each ISO week, the current one included, each with subject, preheader,
+        to, date, claim and source, Lead / Bottom Line / Links (3-5 links) / Practice Question sections, and no email address.
+      target: 1 issue per ISO week; 3-5 links per issue; 0 email addresses
+      competitors:
+        Epic Web (Kent C. Dodds): kentcdodds.com newsletter 'emailed to you each week'; Epic Web 40,000+
+        Flavio Copes: weekly newsletter to 150,000+ people at 22-28% opens
+        roadmap.sh: three weeklies at 178.0k / 266.4k / 195.8k subscribers
+        patterns.dev: 'AI Weekly ''Every Monday'', stopped after #17 on June 29, 2026 (anti-pattern)'
+      sources:
+      - https://kentcdodds.com/subscribe
+      - https://web.archive.org/web/20261015191357id_/https://flaviocopes.com/sponsor/
+      - https://www.patterns.dev/ai/weekly
+      when: heal
+      why: Email is the lever that turned the competitors' audiences into launches, and a skipped week breaks the habit.
+      skill: newsletter
+      check:
+        type: command
+        name: verify:newsletter
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - newsletter
+        cwd: .
+        timeout_s: 900
+    - name: linkedin-carousels
+      statement: Every LinkedIn post is at most 3,000 characters with 3-5 hashtags and a deck or media; each deck has 5-9
+        slides, a document_title and a last slide pointing at elegantfrontend.training; and at least 5 LinkedIn posts, 2 of
+        them decks, are dated this ISO week.
+      target: <= 3,000 characters; 3-5 hashtags; 5-9 slides; >= 5 posts a week, >= 2 of them decks
+      competitors:
+        GreatFrontEnd: 10 posts in 5 days; '5 React pairs that sound similar...' carousels; 89,925 followers
+        Master.dev (Frontend Masters): about 9 posts a week; 148,026 followers
+        roadmap.sh: about 10 posts a week; 9,687 followers
+      sources:
+      - https://www.linkedin.com/company/greatfrontend
+      - https://www.linkedin.com/company/masterdotdev
+      - https://business.linkedin.com/marketing-solutions/linkedin-pages/best-practices
+      when: heal
+      why: Terminology carousels are the format GreatFrontEnd's best LinkedIn posts use, and LinkedIn reports a 2x lift for
+        Pages that post weekly.
+      skill: linkedin
+      check:
+        type: command
+        name: verify:linkedin
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - linkedin
+        cwd: .
+        timeout_s: 900
+    - name: x-posts-fit
+      statement: Every X post and thread part is at most 280 weighted characters (a URL counts 23, an emoji 2), and a thread
+        carries at most one URL.
+      target: <= 280 weighted characters per part; <= 1 URL per thread
+      competitors:
+        Epic Web (Kent C. Dodds): 'Kent C. Dodds: 331,517 X followers'
+        Master.dev (Frontend Masters): 133,150 X followers
+        Josh W. Comeau: 122,260 X followers
+      sources:
+      - https://docs.x.com/fundamentals/counting-characters
+      - https://docs.x.com/x-api/getting-started/pricing.md
+      - https://x.com/joshwcomeau
+      when: heal
+      why: A post over X's counter fails to publish, and a post with a link costs $0.20 on the API against $0.015.
+      skill: x
+      check:
+        type: command
+        name: verify:x
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - x
+        cwd: .
+        timeout_s: 900
+    - name: instagram-carousels
+      statement: Every Instagram post has a caption of at most 2,200 characters with at most 5 hashtags, and a carousel deck
+        of 2-10 slides (or media).
+      target: <= 2,200 characters; <= 5 hashtags; 2-10 slides
+      competitors:
+        GreatFrontEnd: 43K followers, 615 posts
+        Master.dev (Frontend Masters): 46K followers, 589 posts (@frontendmasters)
+        Frontend Mentor: 721 followers, 63 posts
+      sources:
+      - https://www.instagram.com/greatfrontend/
+      - https://www.instagram.com/frontendmasters/
+      - https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media
+      when: heal
+      why: Assets outside the Instagram Graph API's limits are rejected at publish time.
+      skill: instagram
+      check:
+        type: command
+        name: verify:instagram
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - instagram
+        cwd: .
+        timeout_s: 900
+    - name: facebook-mirrors-instagram
+      statement: At least one Facebook post exists, and every Instagram campaign has a Facebook post with the same campaign.
+      target: 0 Instagram campaigns without a Facebook twin
+      competitors:
+        Master.dev (Frontend Masters): Facebook Page 83,103 followers beside Instagram 46K
+        Frontend Mentor: Facebook 3,090 followers beside Instagram 721
+      sources:
+      - https://www.facebook.com/MasterDotDev
+      - https://www.facebook.com/frontendmentor
+      - https://developers.facebook.com/docs/video-api/guides/reels-publishing
+      when: heal
+      why: One asset reaches both of Meta's audiences when every Instagram campaign has its Facebook twin.
+      skill: facebook
+      check:
+        type: command
+        name: verify:facebook
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - facebook
+        cwd: .
+        timeout_s: 900
+    - name: boost-rules
+      statement: Every boost proposal under marketing/ads records platform, the boosted post, 72-hour and 30-day median engagement,
+        daily budget, days, objective, KPI and evidence; it boosts only a post at >= 2x its 30-day median and meets LinkedIn's
+        $25 a day and $100 a campaign; and all proposals total at most $500.
+      target: engagement_72h >= 2x median; LinkedIn >= $25/day and >= $100/campaign; total <= $500
+      competitors:
+        Frontend Mentor: 'grew without ads: ''We haven''t experimented with ads'''
+        Scrimba: 118 Facebook ads, run only 2025-10-02 to 2025-12-02, at scale
+        Master.dev (Frontend Masters): Facebook ads 2026-02-21 to 2026-06-18, all inactive
+      sources:
+      - https://www.starterstory.com/stories/we-built-a-180k-year-learn-to-code-community
+      - https://www.facebook.com/ads/library/?q=scrimba
+      - https://business.linkedin.com/advertise/ads/boosting/tips
+      when: heal
+      why: Paid reach only amplifies what already works, and the competitors grew organically before they bought ads.
+      skill: ad-boosts
+      check:
+        type: command
+        name: verify:boosts
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - boosts
+        cwd: .
+        timeout_s: 900
+    channels:
+    - name: linkedin
+      kind: post
+      office: cmo
+      material:
+      - .benzene/material/marketing/posts/linkedin-*.md
+      access_env: UPLOAD_POST_API_KEY
+    - name: x
+      kind: post
+      office: cmo
+      material:
+      - .benzene/material/marketing/posts/x-*.md
+      access_env: UPLOAD_POST_API_KEY
+    - name: instagram
+      kind: post
+      office: cmo
+      material:
+      - .benzene/material/marketing/posts/instagram-*.md
+      access_env: UPLOAD_POST_API_KEY
+    - name: facebook
+      kind: post
+      office: cmo
+      material:
+      - .benzene/material/marketing/posts/facebook-*.md
+      access_env: UPLOAD_POST_API_KEY
+    - name: devto
+      kind: article
+      office: cmo
+      material:
+      - .benzene/material/marketing/articles/*.md
+      access_env: DEVTO_API_KEY
+    - name: hashnode
+      kind: article
+      office: cmo
+      material:
+      - .benzene/material/marketing/articles/*.md
+      access_env: HASHNODE_TOKEN
+    - name: medium
+      kind: article
+      office: cmo
+      material:
+      - .benzene/material/marketing/articles/*.md
+      note: 'no new API tokens: imported by a person'
+    - name: newsletter
+      kind: email
+      office: cmo
+      material:
+      - .benzene/material/marketing/newsletter/*.md
+      note: 'LinkedIn newsletters have no API: a person publishes'
+    - name: ads
+      kind: other
+      office: cmo
+      material:
+      - .benzene/material/marketing/ads/*.md
+      budget_usd_month: 0
+      note: 'proposals only: nothing is spent'
+    duty: 'Heartbeat duty: prepare this week''s material, one step per sub-agent, all of it held for the CEO''s review in
+      the marketing room (nothing is posted). First read .benzene/material/experience/analytics-report.md and .benzene/material/marketing/profile.md.
+      Then: the blog writer one new article in .benzene/material/marketing/articles/; the newsletter agent this ISO week''s
+      issue in .benzene/material/marketing/newsletter/ if it is missing; LinkedIn one terminology post, a document carousel
+      (a deck in .benzene/material/marketing/slides/) when fewer than two decks are dated this week; X one thread on the same
+      campaign; Instagram one carousel; Facebook the twin of the newest Instagram campaign; ad boosts a proposal only when
+      a post''s engagement is at least twice the channel''s median, otherwise nothing. Every post keeps its showcase_url with
+      UTM tags. If the campaign needs product work, end with one line ''SUGGEST COO: <the product work>''.'
+  cxo:
+    summary: 'Listen the way the competitors that grew did: a weekly analytics snapshot and its reading, every piece of feedback
+      logged with its source and response, and a beta report on every CTO change before the CEO approves it.'
+    report: standards/cxo.md
+    scale:
+      cells: 3
+      reason: 'three sub-agents: the analytics report, the feedback log, the beta tests of the CTO''s changes'
+    every: 3
+    bars:
+    - name: analytics-snapshot-weekly
+      statement: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has
+        upload_post, connectsafely and combined_audience.
+      target: newest snapshot <= 8 days old; 3 of 3 keys
+      competitors:
+        roadmap.sh: homepage counts '52K Discord Members', '+3.2M Registered Users'
+        Frontend Mentor: live counter 'Join 1,202,288 developers'
+        GreatFrontEnd: '''2M+ engineers helped'', ''Verifiable by Google Analytics'''
+      sources:
+      - https://roadmap.sh
+      - https://www.frontendmentor.io
+      - https://docs.upload-post.com/api/get-analytics.md
+      when: heal
+      why: Feedback cannot steer until the combined audience is measured, and the weekly snapshot is that measure.
+      skill: analytics-report
+      check:
+        type: command
+        name: verify:analytics
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - analytics
+        cwd: .
+        timeout_s: 900
+    - name: analytics-read-weekly
+      statement: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed
+        and Suggestion sections.
+      target: report week == newest snapshot week; 4 of 4 sections
+      competitors:
+        Scrimba: weekly Town Hall 'Every Tuesday'
+        Master.dev (Frontend Masters): a member survey was cited as the basis for the 2026 rebrand
+        roadmap.sh: monthly changelog; collaborators reply in about 1-2 days
+      sources:
+      - https://scrimba.com/articles/how-scrimba-came-to-be/
+      - https://blog.master.dev/?p=9941
+      - https://roadmap.sh/changelog
+      when: heal
+      skill: analytics-report
+      check:
+        type: command
+        name: verify:analytics-report
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - analytics-report
+        cwd: .
+        timeout_s: 900
+    - name: feedback-logged-and-answered
+      statement: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source,
+        feedback and response.
+      target: 2 of 2 sections; 100% of response rows complete
+      competitors:
+        GreatFrontEnd: 'issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern)'
+        roadmap.sh: 3 open vs 3,214 closed issues; replies in about 1-2 days
+        Scrimba: replies to 25% of negative Trustpilot reviews
+        patterns.dev: 'skills issue #6 answered the next day; #9 has 0 comments'
+      sources:
+      - https://github.com/greatfrontend/greatfrontend/issues/7
+      - https://github.com/kamranahmedse/developer-roadmap/issues/10434
+      - https://www.trustpilot.com/review/scrimba.com
+      when: heal
+      why: The competitors that answered fast kept their communities, while GreatFrontEnd's median close slipped from 2.9
+        to 697 days.
+      skill: feedback-log
+      check:
+        type: command
+        name: verify:feedback-log
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - feedback-log
+        cwd: .
+        timeout_s: 900
+    - name: beta-tested-before-approval
+      statement: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording
+        persona, tasks, passed, failed and severity.
+      target: 100% of beta and review changes have a complete report
+      competitors:
+        Josh W. Comeau: about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad'
+        Epic Web (Kent C. Dodds): content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch
+        Frontend Mentor: platform beta (Apr 2019) 'Based on community feedback'
+      sources:
+      - https://failory.com/interview/css-for-js-developers
+      - https://www.joyofreact.com/
+      - https://www.epicweb.dev/credits
+      when: heal
+      why: Josh W. Comeau and Epic Web tested their material with learners before launch, so every CTO change gets a beta
+        reading before the CEO approves it.
+      skill: beta-test
+      check:
+        type: command
+        name: verify:beta
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - beta
+        cwd: .
+        timeout_s: 900
+    duty: 'Heartbeat duty: read the newest snapshot in .benzene/material/experience/analytics/ (the instrument takes it weekly)
+      and update .benzene/material/experience/analytics-report.md for its week; update .benzene/material/experience/feedback-log.md
+      with anything new on the record; and write a beta report in .benzene/material/experience/beta/<change id>.md for every
+      CTO change in beta or review in .benzene/changes.json that has none, reading the change''s files and .benzene/material/experience/ux-model.md.
+      Never a person''s name or comment text. End with one line ''SUGGEST COO: <the one feature the numbers or the feedback
+      support>''.'
+  cfo:
+    summary: Price inside the band the competition sets (monthly <= $15, annual <= $120, lifetime <= 1.5x annual) with the
+      between-jobs discount none of them offers and a 30-day refund, model the business honestly, and prove PayPal in the
+      sandbox first.
+    report: standards/cfo.md
+    scale:
+      cells: 2
+      reason: 'two sub-agents: pricing and the business model, the sandbox payment flow'
+    every: 3
+    bars:
+    - name: pricing-ladder
+      statement: finance/pricing.md offers exactly free, monthly, annual and lifetime tiers (team optional), each with price,
+        billing, licence and >= 3 gates (free >= 3 includes), priced free $0, monthly <= $15, annual <= $120 and <= 10x monthly,
+        lifetime <= 1.5x annual, with a between-jobs discount >= 40% on annual, a 30-day refund and no discounted price under
+        the $10 fee floor.
+      target: monthly <= $15; annual <= $120 and <= 10x monthly; lifetime <= 1.5x annual; between_jobs >= 40%; refund_days
+        >= 30; every net price >= $10
+      competitors:
+        GreatFrontEnd: $39/mo, $120/yr, lifetime $180 (1.5x annual); student 40% off annual; non-refundable
+        Frontend Mentor: $15/mo, $120/yr; automatic regional discounts; 14-day refund
+        roadmap.sh: Pro $10/mo, $100/yr (10x monthly)
+        Josh W. Comeau: unconditional 30-day refund; 20% student discount
+      sources:
+      - https://www.greatfrontend.com/pricing
+      - https://www.frontendmentor.io/pro
+      - https://roadmap.sh/premium
+      when: heal
+      why: Prices outside the market band, or under PayPal's fee floor, lose either the learner or the margin.
+      skill: pricing
+      check:
+        type: command
+        name: verify:pricing
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - pricing
+        cwd: .
+        timeout_s: 900
+    - name: business-model-and-projection
+      statement: finance/business-model.md has Who Pays, For What, Billing Unit and Costs sections, finance/projection.md
+        has Assumptions, Twelve Months and Break-Even sections, and every dollar figure in them is labelled SIMULATED, target
+        or assumption, or cites a source.
+      target: 7 of 7 sections; 0 unlabelled money figures
+      competitors:
+        Frontend Mentor: $1.6k MRR from 284 subscribers two weeks after PRO; break-even at just over $17K a month (2021)
+        Scrimba: 2022 revenue NOK 18.7M at an operating result of NOK -0.3M; ~1% of users paying
+        Josh W. Comeau: costs about $450 a month, '99% profit' (2021)
+      sources:
+      - https://www.indiehackers.com/product/frontend-mentor
+      - https://www.failory.com/interview/frontend-mentor
+      - https://vend.com/news/schibsted-ventures-invests-in-upskilling-company-scrimba
+      when: heal
+      skill: pricing
+      check:
+        type: command
+        name: verify:finance-docs
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - finance-docs
+        cwd: .
+        timeout_s: 900
+    - name: paypal-sandbox-flow
+      statement: With PAYPAL_CLIENT_ID and PAYPAL_SECRET from the daemon's environment, the PayPal sandbox (api-m.sandbox.paypal.com)
+        issues an OAuth token and creates a USD 1.00 CAPTURE order with status CREATED.
+      target: 'yes: OAuth token issued and order status CREATED, on the sandbox only'
+      competitors:
+        Master.dev (Frontend Masters): takes PayPal beside Stripe cards and the App Store
+        Frontend Mentor: PayPal among card and Google Pay options, billed on Chargebee
+        Josh W. Comeau: Paddle (merchant of record) with PayPal accepted
+        Epic Web (Kent C. Dodds): Stripe only, no PayPal
+      sources:
+      - https://developer.paypal.com/api/rest/
+      - https://developer.paypal.com/api/rest/integration/orders-api/
+      - https://developer.paypal.com/tools/sandbox/accounts/
+      when: heal
+      skill: payments
+      check:
+        type: command
+        name: verify:paypal-sandbox
+        command:
+        - python3
+        - .benzene/scripts/paypal_sandbox.py
+        - check
+        cwd: .
+        timeout_s: 120
+    duty: 'Heartbeat duty: keep .benzene/material/finance/pricing.md, business-model.md and projection.md inside their bars
+      and current with the record (a price change is the CEO''s: propose it, never apply it), and .benzene/material/finance/payments.md
+      and ledger.jsonl current with the sandbox flow (.benzene/scripts/paypal_sandbox.py). End with one line ''SUGGEST COO:
+      <the change the numbers support>'' when the model needs product work.'
+  cio:
+    summary: 'Pitch the way the seeded competitors did: a short learner-worded problem, a narrow audience, dated why-now signals
+      and a priced competition table, with every traction number tied to a record and checked against live APIs.'
+    report: standards/cio.md
+    scale:
+      cells: 2
+      reason: 'two sub-agents: the pitch, the traction record'
+    every: 5
+    bars:
+    - name: pitch-complete
+      statement: investors/pitch.md has Problem, For Whom, Why Now, Traction, Ask, Use of Funds, Risks and Competition sections
+        (each but Competition >= 40 words), a first Problem sentence of <= 25 words, a For Whom naming the frontend developer,
+        >= 3 Why Now lines with a URL and a 2025+ date, and >= 6 competitor rows with a price and a URL.
+      target: 8 of 8 sections; first Problem sentence <= 25 words; >= 3 dated why-now URLs; >= 6 priced competitor rows
+      competitors:
+        GreatFrontEnd: '''Preparing for Front End interviews is tough.'' (7 words)'
+        Scrimba: YC one-liner 'hireable devs for 1% of the price'; why-now via Schibsted (2023)
+        Josh W. Comeau: for 'intermediate JavaScript framework developers (React, Vue, Angular)'
+      sources:
+      - https://www.greatfrontend.com/about
+      - https://www.ycombinator.com/companies/scrimba
+      - https://www.indiehackers.com/post/launched-my-first-course-earned-over-us-500-000-ama-4382405cd5
+      when: heal
+      why: An AI organisation has no founder's face to lend trust, so the pitch must carry every part an investor checks.
+      skill: pitch
+      check:
+        type: command
+        name: verify:pitch
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - pitch
+        cwd: .
+        timeout_s: 900
+    - name: traction-on-the-record
+      statement: Every number in the pitch's Traction section cites a record (a URL or path) and an ISO date, and investors/traction.json
+        holds github_stars, npm_downloads_last_month and newsletter_subscribers as {value, source, date}, with stars and npm
+        downloads within 5% (or 2) of the live GitHub and npm APIs.
+      target: 100% of traction lines cited; 3 of 3 metrics as {value, source, date}; live drift <= max(2, 5%)
+      competitors:
+        GreatFrontEnd: '''2M+ engineers helped'', ''Verifiable by Google Analytics'''
+        Josh W. Comeau: 'Paddle dashboard: $577k revenue, 4,773 orders'
+        Frontend Mentor: 'dated public milestones: $1.6k MRR from 284 subscribers (2020)'
+        roadmap.sh: publishes 370K stars, +3.2M registered, 52K Discord on its own pages
+      sources:
+      - https://www.greatfrontend.com/
+      - https://www.indiehackers.com/post/launched-my-first-course-earned-over-us-500-000-ama-4382405cd5
+      - https://roadmap.sh/about
+      when: heal
+      why: Every traction claim must be checkable against a record, because an AI organisation cannot borrow a founder's reputation.
+      skill: traction
+      check:
+        type: command
+        name: verify:traction
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - traction
+        cwd: .
+        timeout_s: 900
+    duty: 'Heartbeat duty: refresh .benzene/material/investors/traction.json from the live APIs (fetch_url) and the CXO''s
+      snapshot, and keep pitch.md, listing.md and scores.md true to it: every number with its record and date. Nothing is
+      sent to an investor.'
+showcase:
+  kind: site
+  what: 'The training site itself: the dashboard, the free courses and the practice bank, every lesson a term with its downloadable
+    Agent Skill, built from this repository by Jekyll.'
+  build:
+  - python3
+  - .benzene/checks/site.py
+  - build
+  - --out
+  - docs/_site
+  index: docs/_site/index.html
+  must_use:
+  - /courses/
+  - /practice/
+  pages:
+  - docs/_site/dashboard/index.html
+  - docs/_site/courses/index.html
+  skill: training-site
+  fresh: true
+audience:
+  metric: combined_audience
+  at_least: 5000
+  why: 'Feedback steers the roadmap at 30 distinct people giving substantive feedback in a rolling 30-day window, or at 5,000
+    combined audience, whichever comes first: Josh W. Comeau shaped CSS for JS Devs with about 30 testers, and Scrimba took
+    nine months to reach 5,000 users before its next launch tripled it. Below the threshold every item is still logged and
+    answered, and the roadmap follows the competitor bar, not individual requests.'

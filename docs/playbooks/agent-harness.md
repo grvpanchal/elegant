@@ -136,8 +136,5 @@ for the boring task is usually the one you keep.
 - [Write a guardrail for the ui-atom skill](../practice/harness-atom-guardrail.html)
   — build the checker, seed four broken atoms, and record how many attempts an
   agent needs to go green.
-- Read `harness/README.md` in this repository: it is a working example of the
-  contribution-scoped, dependency-ordered guardrail described above, with 42
-  capabilities measured by one script.
 - Then look at `templates/chota-react-redux` and ask which of its conventions
   you could turn into a check today.

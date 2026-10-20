@@ -26,6 +26,9 @@
                 </button>
                 <ul class="dropdown-menu" id="learn-menu" data-dropdown-menu>
                     <li>
+                        <a href="{{ '/courses/' | relative_url }}">Courses</a>
+                    </li>
+                    <li>
                         <a href="{{ '/practice' | relative_url }}">Practice</a>
                     </li>
                     <li>
@@ -40,6 +43,11 @@
                     <li>
                         <a href="{{ '/blog' | relative_url }}">Blog</a>
                     </li>
+                    {%- if site.pricing_live %}
+                    <li>
+                        <a href="{{ '/pricing/' | relative_url }}">Pricing</a>
+                    </li>
+                    {%- endif %}
                 </ul>
             </li>
         </ul>

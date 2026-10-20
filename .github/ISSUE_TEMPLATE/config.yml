@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Learn on elegantfrontend.training
+    url: https://elegantfrontend.training
+    about: Free courses, practice questions and Agent Skills, with no signup. Look there before you open an issue.
+  - name: Fix a typo or a broken link yourself
+    url: https://github.com/grvpanchal/elegant/blob/master/CONTRIBUTING.md#content-changes
+    about: You can edit any page from the GitHub UI and propose the change. You do not need an issue.

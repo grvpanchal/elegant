@@ -1,0 +1,73 @@
+name: Content correction
+description: A lesson, terminology doc, practice question, guide or Agent Skill is wrong or out of date.
+title: "[Correction]: "
+labels: ["content-correction", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a typo or a broken link, you can fix it yourself. Open the file on GitHub, click the pencil icon and propose the change. [CONTRIBUTING.md](https://github.com/grvpanchal/elegant/blob/master/CONTRIBUTING.md#content-changes) shows how.
+        Use this form when something is wrong and you want us to fix it.
+  - type: input
+    id: url
+    attributes:
+      label: Page URL or skill
+      description: The full address of the page, or the skill folder, for example skills/state-selectors.
+      placeholder: https://elegantfrontend.training/state/selectors.html
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      options:
+        - UI
+        - Server
+        - State
+        - Agent Skills or the harness
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is it?
+      options:
+        - A factual error
+        - Out of date (a newer version or practice replaces it)
+        - A code example that does not run or is wrong
+        - A quiz answer or a test that is wrong
+        - The doc and its Agent Skill disagree
+        - Unclear or misleading wording
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What the page says now
+      description: Quote the exact sentence or code.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What it should say
+      description: Give the corrected sentence or code.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link we can check, such as a spec, MDN, or the framework's own docs or changelog.
+      placeholder: https://developer.mozilla.org/...
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: The source is not my own course, blog or product, or, if it is, it is the primary source for this fact and I say so above.
+          required: true

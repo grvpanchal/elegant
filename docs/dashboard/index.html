@@ -1,0 +1,174 @@
+---
+title: Dashboard
+layout: default
+slug: dashboard
+description: Your progress across the Frontend AI Harness — questions solved by format, difficulty and layer, courses, study plans, terminology mastery and your last twelve weeks of activity.
+---
+
+{%- comment -%}
+Everything below is computed in the browser from progress.js — there is no
+server to ask. The page ships the catalogue it needs to interpret those keys
+(questions, plans, courses, terms) as one JSON block built from docs/_data, so
+a renamed question or a new course appears here without touching this file.
+dashboard.js does the arithmetic; the markup is the skeleton plus the empty
+states a first visit sees.
+{%- endcomment -%}
+
+<div class="dash">
+  <header class="dash__head">
+    <h1>Dashboard</h1>
+    <p class="dash__identity" data-dash-identity>
+      Progress is saved in this browser only. <a href="{{ '/account/' | relative_url }}">Sign in</a> to sync it to your account.
+    </p>
+  </header>
+
+  <noscript>
+    <p class="dash-empty">The dashboard is worked out in your browser from the progress it has saved, so it needs JavaScript.</p>
+  </noscript>
+
+  <section class="dash-section" aria-labelledby="dash-glance">
+    <h2 id="dash-glance" class="dash-section__title">Progress at a glance</h2>
+    <ul class="dash-stats">
+      <li class="dash-stat"><strong class="dash-stat__value" data-stat="questions">0</strong> <span class="dash-stat__label">of {{ site.data.questions | size }} questions solved</span></li>
+      <li class="dash-stat"><strong class="dash-stat__value" data-stat="lessons">0</strong> <span class="dash-stat__label" data-stat-label="lessons">lessons complete</span></li>
+      <li class="dash-stat"><strong class="dash-stat__value" data-stat="terms">0</strong> <span class="dash-stat__label" data-stat-label="terms">terms mastered</span></li>
+      <li class="dash-stat"><strong class="dash-stat__value" data-stat="streak">0</strong> <span class="dash-stat__label" data-stat-label="streak">day streak</span></li>
+    </ul>
+  </section>
+
+  <div class="dash-pair">
+    <section class="dash-section dash-card" aria-labelledby="dash-continue">
+      <h2 id="dash-continue" class="dash-section__title">Continue where you left off</h2>
+      <div data-dash-continue>
+        <p class="dash-empty">Nothing started yet. The first lesson of a course is a three-minute read.</p>
+        <a class="course-button" href="{{ '/courses/' | relative_url }}">Browse the free courses</a>
+      </div>
+      <div class="dash-recent" data-dash-recent hidden>
+        <h3 class="dash-recent__title">Recently completed</h3>
+        <ol class="dash-recent__list" data-dash-recent-list></ol>
+      </div>
+    </section>
+
+    <section class="dash-section dash-card" aria-labelledby="dash-next">
+      <h2 id="dash-next" class="dash-section__title">Recommended next</h2>
+      <p class="dash-card__lede" data-dash-recommend-why>Three quick questions to start on.</p>
+      <ol class="dash-reco" data-dash-recommend></ol>
+    </section>
+  </div>
+
+  <section class="dash-section" aria-labelledby="dash-activity">
+    <h2 id="dash-activity" class="dash-section__title">Activity, last 12 weeks</h2>
+    <p class="dash-section__lede" data-heat-summary>No activity yet — your first completion lights up today's square.</p>
+    <div class="heat" data-heat role="img" aria-label="Activity over the last 12 weeks: none yet.">
+      <div class="heat__days" aria-hidden="true"><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span><span></span></div>
+      <div class="heat__scroll">
+        <div class="heat__months" aria-hidden="true" data-heat-months></div>
+        <div class="heat__grid" data-heat-grid></div>
+      </div>
+    </div>
+    <div class="heat-legend" aria-hidden="true">
+      <span>Less</span>
+      <span class="heat-cell" data-level="0"></span><span class="heat-cell" data-level="1"></span><span class="heat-cell" data-level="2"></span><span class="heat-cell" data-level="3"></span><span class="heat-cell" data-level="4"></span>
+      <span>More</span>
+    </div>
+    <details class="dash-table-toggle" data-heat-table-wrap hidden>
+      <summary>Activity as a list</summary>
+      <table class="dash-table">
+        <caption class="sr-only">Completions per day, last 12 weeks</caption>
+        <thead><tr><th scope="col">Day</th><th scope="col">Completed</th></tr></thead>
+        <tbody data-heat-table></tbody>
+      </table>
+    </details>
+  </section>
+
+  <section class="dash-section" aria-labelledby="dash-solved">
+    <h2 id="dash-solved" class="dash-section__title">Questions solved</h2>
+    <div class="dash-breakdown">
+      <div class="dash-breakdown__group">
+        <h3 class="dash-breakdown__title">By layer</h3>
+        <ul class="dash-bars" data-dash-bars="layer"></ul>
+      </div>
+      <div class="dash-breakdown__group">
+        <h3 class="dash-breakdown__title">By format</h3>
+        <ul class="dash-bars" data-dash-bars="format"></ul>
+      </div>
+      <div class="dash-breakdown__group">
+        <h3 class="dash-breakdown__title">By difficulty</h3>
+        <ul class="dash-bars" data-dash-bars="difficulty"></ul>
+      </div>
+    </div>
+    <p class="dash-section__more"><a href="{{ '/practice/' | relative_url }}">Open the question bank</a></p>
+  </section>
+
+  <section class="dash-section" aria-labelledby="dash-courses">
+    <h2 id="dash-courses" class="dash-section__title">Courses</h2>
+    <ul class="dash-rows" data-dash-courses></ul>
+  </section>
+
+  <section class="dash-section" aria-labelledby="dash-plans">
+    <h2 id="dash-plans" class="dash-section__title">Study plans</h2>
+    <ul class="dash-rows" data-dash-plans></ul>
+  </section>
+
+  <section class="dash-section" aria-labelledby="dash-terms">
+    <h2 id="dash-terms" class="dash-section__title">Terminology mastery</h2>
+    <p class="dash-section__lede">
+      A term is <strong>mastered</strong> when everything linked to it is done: its course lesson
+      and every bank question tagged with it. <strong>Started</strong> means at least one is.
+    </p>
+    <div class="dash-terms" data-dash-terms></div>
+  </section>
+</div>
+
+{%- comment -%} The catalogue dashboard.js interprets progress keys against. {%- endcomment -%}
+{%- assign layers = "ui,server,state" | split: "," -%}
+<script type="application/json" id="dashboard-data">
+{
+  "questions": [
+    {%- for q in site.data.questions -%}
+    {"slug":{{ q.slug | jsonify }},"title":{{ q.title | jsonify }},"format":{{ q.format | jsonify }},"difficulty":{{ q.difficulty | jsonify }},"layer":{{ q.layer | jsonify }},"topics":{{ q.topics | jsonify }},"skill":{{ q.skill | jsonify }},"minutes":{{ q.minutes | default: 0 }},"url":{{ '/practice/' | append: q.slug | append: '.html' | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "plans": [
+    {%- for plan in site.data.plans -%}
+    {"slug":{{ plan.slug | jsonify }},"title":{{ plan.title | jsonify }},"url":{{ '/plans/' | append: plan.slug | append: '.html' | relative_url | jsonify }},"items":[
+      {%- for item in plan.items -%}
+      {%- assign q = site.data.questions | where: "slug", item.ref | first -%}
+      {%- if q -%}
+      {"ref":{{ item.ref | jsonify }},"title":{{ q.title | jsonify }},"url":{{ '/practice/' | append: item.ref | append: '.html' | relative_url | jsonify }}}
+      {%- else -%}
+      {%- assign rparts = item.ref | split: "/" -%}
+      {%- assign rlayer = rparts[0] -%}
+      {%- assign rslug = rparts[1] -%}
+      {%- assign rdoc = site.data.topics[rlayer] | where: "slug", rslug | first -%}
+      {"ref":{{ item.ref | jsonify }},"title":{% if rdoc %}{{ rdoc.title | prepend: "Read: " | jsonify }}{% else %}{{ item.ref | jsonify }}{% endif %},"url":{{ '/' | append: item.ref | append: '.html' | relative_url | jsonify }}}
+      {%- endif -%}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "courses": [
+    {%- assign sorted_courses = site.data.courses | sort: "order" -%}
+    {%- for course in sorted_courses -%}
+    {%- include course-data.html course=course -%}
+    {"slug":{{ course.slug | jsonify }},"title":{{ course.title | jsonify }},"url":{{ '/courses/' | append: course.slug | append: '/' | relative_url | jsonify }},"lessons":{{ cd_json }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "terms": {
+    {%- for layer in layers -%}
+    {{ layer | jsonify }}: [
+      {%- for t in site.data.topics[layer] -%}
+      {"slug":{{ t.slug | jsonify }},"title":{{ t.title | jsonify }},"url":{{ '/' | append: layer | append: '/' | append: t.slug | append: '.html' | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  },
+  "links": {
+    "account": {{ '/account/' | relative_url | jsonify }},
+    "courses": {{ '/courses/' | relative_url | jsonify }},
+    "practice": {{ '/practice/' | relative_url | jsonify }}{% if site.pricing_live %},
+    "pricing": {{ '/pricing/' | relative_url | jsonify }}{% endif %}
+  }
+}
+</script>
+<script type="text/javascript" src="{{ '/assets/js/dashboard.js' | relative_url }}" defer></script>

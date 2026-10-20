@@ -1,6 +1,6 @@
 # Auto-generated from the front matter of docs/blog/*.md.
 # Regenerate with: python3 scripts/sync-blog-registry.py
-# Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+# Do not hand-edit: regenerate it instead.
 - slug: accessibility-is-not-a-checklist
   title: Accessibility is not a checklist you run at the end
   date: 2026-06-20

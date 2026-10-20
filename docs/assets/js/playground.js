@@ -6,9 +6,8 @@
  *   solution.js  the reference implementation (never fetched by this runner)
  *   tests.js     `export default async (subject) => [{name, pass, message?}]`
  *
- * The same tests.js is what harness/check_harness.py runs under Node against
- * solution.js (capability `workspace.tests_pass`), so a question that is green
- * here is green in CI and vice versa — one contract, two runners.
+ * The same tests.js runs under Node against solution.js, so a question that is
+ * green here is green under Node and vice versa — one contract, two runners.
  *
  * The editor is a plain textarea with three affordances layered on top:
  *   - syntax highlighting: a transparent <pre> behind the textarea paints the

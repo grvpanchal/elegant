@@ -1,0 +1,138 @@
+---
+title: Pricing
+layout: default
+slug: pricing
+published: false   # off until prices are set; _config.yml `pricing_live` turns the links on with it
+description: Elegant is free. Pro and Lifetime fund new courses and questions; checkout runs in PayPal's sandbox while prices are set by the CFO office.
+---
+{%- comment -%}
+Tiers come from docs/_data/pricing.yml; the PayPal client id and environment
+from `paypal:` in _config.yml. pricing.js loads the PayPal JS SDK only when a
+paid tier is chosen, creates the order in the browser (actions.order.create),
+captures it on approval and keeps the receipt in this browser. There is no
+PayPal secret on this site, and nothing on the site is locked behind payment.
+{%- endcomment -%}
+{%- assign sandbox = false -%}
+{%- if site.paypal.env == "sandbox" -%}{%- assign sandbox = true -%}{%- endif -%}
+<div class="pricing">
+  <header class="pricing__head">
+    {%- if sandbox %}
+    <p class="pricing__badge">Sandbox</p>
+    {%- endif %}
+    <h1>Pricing</h1>
+    <p class="pricing__lede">
+      Everything on this site is free, and stays free: every course, question, plan and Agent Skill.
+      The paid tiers exist to fund more of it.
+    </p>
+    {%- if sandbox %}
+    <div class="sandbox-note" role="note">
+      <p><strong>This checkout is a PayPal sandbox.</strong> Orders go to PayPal's test environment and are paid
+      with sandbox test accounts — no real money moves and no card is charged. Prices are placeholders: the
+      CFO office sets them.</p>
+    </div>
+    {%- endif %}
+  </header>
+
+  <ul class="pricing-tiers">
+    {%- for tier in site.data.pricing %}
+    <li class="tier{% if tier.checkout %} tier--paid{% else %} tier--free{% endif %}" id="tier-{{ tier.slug }}">
+      <h2 class="tier__name">{{ tier.name }}</h2>
+      <p class="tier__tagline">{{ tier.tagline }}</p>
+      <p class="tier__price">
+        {%- if tier.price_usd > 0 -%}
+        <strong>${{ tier.price_usd }}</strong> <span>{{ tier.billing }}</span>
+        {%- elsif tier.checkout -%}
+        <strong class="tier__tbd">Price to be set</strong> <span>{{ tier.billing }} · set by the CFO office</span>
+        {%- else -%}
+        <strong>$0</strong> <span>{{ tier.billing }}</span>
+        {%- endif -%}
+      </p>
+      {%- if tier.checkout and sandbox %}
+      <p class="tier__sandbox">Sandbox test order: ${{ tier.sandbox_amount_usd }} {{ site.paypal.currency }}</p>
+      {%- endif %}
+      <ul class="tier__features">
+        {%- for f in tier.features %}
+        <li{% if f.planned %} class="is-planned"{% endif %}>{{ f.text }}{% if f.planned %} <span class="tier__planned">planned</span>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+      {%- if tier.checkout %}
+      <button type="button" class="tier__cta" data-checkout="{{ tier.slug }}" aria-controls="checkout"{% unless sandbox %} disabled{% endunless %}>
+        {{ tier.cta }}{% if sandbox %} <span class="tier__cta-note">(sandbox)</span>{% endif %}
+      </button>
+      {%- else %}
+      <a class="tier__cta tier__cta--free" href="{{ tier.cta_url | relative_url }}">{{ tier.cta }}</a>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ul>
+
+  <section class="checkout" id="checkout" data-checkout-panel hidden aria-labelledby="checkout-title">
+    <h2 class="checkout__title" id="checkout-title" tabindex="-1">Checkout: <span data-checkout-name></span></h2>
+    <dl class="checkout__summary">
+      <div><dt>Tier</dt><dd data-checkout-tier></dd></div>
+      <div><dt>Sandbox test amount</dt><dd data-checkout-amount></dd></div>
+      <div><dt>Environment</dt><dd>PayPal sandbox — test accounts only</dd></div>
+    </dl>
+    <p class="checkout__status" data-checkout-status role="status" aria-live="polite">Loading PayPal…</p>
+    <div class="checkout__buttons" id="paypal-buttons" data-paypal-buttons></div>
+    <p class="checkout__actions">
+      <button type="button" class="account-secondary" data-checkout-cancel>Choose a different tier</button>
+    </p>
+  </section>
+
+  <section class="receipt" data-receipt hidden aria-labelledby="receipt-title">
+    <h2 class="receipt__title" id="receipt-title" tabindex="-1">Receipt</h2>
+    <p class="receipt__lede">Thank you. PayPal's sandbox captured this order.</p>
+    <dl class="receipt__fields">
+      <div><dt>Order ID</dt><dd><code data-receipt-order></code></dd></div>
+      <div><dt>Status</dt><dd data-receipt-status></dd></div>
+      <div><dt>Tier</dt><dd data-receipt-tier></dd></div>
+      <div><dt>Amount</dt><dd data-receipt-amount></dd></div>
+      <div><dt>Capture ID</dt><dd><code data-receipt-capture></code></dd></div>
+      <div><dt>Paid by</dt><dd data-receipt-payer></dd></div>
+      <div><dt>Captured</dt><dd data-receipt-when></dd></div>
+    </dl>
+    <p class="receipt__note">
+      <strong>Not yet verified.</strong> This receipt is kept in this browser, under whoever is signed in.
+      A browser cannot prove a payment to itself, so server-side verification of the order is done by the
+      CFO office; until then this receipt unlocks nothing — and nothing on the site is locked anyway.
+      Keep the order ID if you contact us about it.
+    </p>
+  </section>
+
+  <section class="receipts" data-receipts hidden aria-labelledby="receipts-title">
+    <h2 id="receipts-title">Your sandbox receipts</h2>
+    <ul class="receipts__list" data-receipts-list></ul>
+  </section>
+
+  <section class="pricing-faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions</h2>
+    <dl>
+      <dt>Is anything locked behind a paid tier?</dt>
+      <dd>No. Free is the whole site: courses, questions, plans, skills and the dashboard. Paying funds more of it.</dd>
+      <dt>Is this real money?</dt>
+      <dd>Not while the page says Sandbox. PayPal's sandbox uses test buyer accounts; nothing is charged.</dd>
+      <dt>Who checks that a payment happened?</dt>
+      <dd>The CFO office verifies orders server-side against PayPal. This page only records the order ID PayPal returned.</dd>
+      <dt>What do the paid tiers cost?</dt>
+      <dd>Prices are being set by the CFO office. Until then the tiers show "Price to be set" and the sandbox uses a test amount.</dd>
+    </dl>
+  </section>
+</div>
+
+<script type="application/json" id="pricing-data">
+{
+  "paypal": {
+    "env": {{ site.paypal.env | default: "" | jsonify }},
+    "clientId": {{ site.paypal.client_id | default: "" | jsonify }},
+    "currency": {{ site.paypal.currency | default: "USD" | jsonify }}
+  },
+  "tiers": [
+    {%- assign paid = site.data.pricing | where: "checkout", true -%}
+    {%- for tier in paid -%}
+    {"slug":{{ tier.slug | jsonify }},"name":{{ tier.name | jsonify }},"billing":{{ tier.billing | jsonify }},"amount":{{ tier.sandbox_amount_usd | default: "1.00" | jsonify }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+<script type="text/javascript" src="{{ '/assets/js/pricing.js' | relative_url }}" defer></script>

@@ -4,8 +4,7 @@
 The blog index (docs/blog/index.md) and the per-post "keep reading" / practice
 CTA includes read docs/_data/blog.yml, not the pages directly, so filtering and
 cross-linking are instant and cannot drift from a renamed post. This script is
-the single writer of that file; harness/check_harness.py (blog.registry) fails
-if the file and the pages disagree, so never hand-edit it.
+the single writer of that file, so never hand-edit it.
 
 Drafts under docs/blog/drafts/ are deliberately not published and not listed —
 only top-level docs/blog/*.md posts count.
@@ -29,7 +28,7 @@ FIELDS = ("slug", "title", "date", "author", "category", "tags",
 
 HEADER = """# Auto-generated from the front matter of docs/blog/*.md.
 # Regenerate with: python3 scripts/sync-blog-registry.py
-# Do not hand-edit: harness/check_harness.py (blog.registry) fails on drift.
+# Do not hand-edit: regenerate it instead.
 """
 
 FM_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.S)

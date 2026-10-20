@@ -1,0 +1,130 @@
+# The elegant organisation: one purpose (the CEO seat), six offices, each founded at the first beat from its researched
+# blueprint (benzene-standards.yaml) as its sub-agents, one cell per skill. Everything lives in .benzene/: this file,
+# the CTO genome (benzene.yaml), the standard and the research behind it (standards/), the sub-agents' skills
+# (skills/), the checks (checks/), the instruments (scripts/), the offices' material (material/), the rooms (rooms/).
+#
+#   benzene serve . --beat-every 3600 --tunnel benzene,cloudflared    # the daemon: the graph, the rooms, the reviews
+#
+# Nothing goes out (heartbeat.publish: false): every item an office prepares waits in its room with Approve / Reject.
+# Approved joins the Linear release plan; rejected feedback joins the healing feedback pool, reworked by its office.
+# The CTO builds in git worktrees: beta, then the CEO's final approval merges the change. Nothing is pushed.
+name: elegant
+purpose: |
+  Build the best Frontend AI Harness training site (https://elegantfrontend.training): every lesson a frontend term of
+  the UI / Server / State architecture and the Agent Skill that encodes it, for frontend developers who lost their jobs
+  to AI, with free courses, a practice dashboard and paid tiers that a developer between jobs can afford; and earn from it.
+standards: benzene-standards.yaml
+scale: c-suite
+skills_dir: skills
+design_offices: false                  # every chartered office below is given: its sub-agents are decided, not invented
+found_from_blueprint: true
+parallel: 3
+coder: {cli: claude, max_per_beat: 1, timeout_s: 1800, retry_beats: 3}
+
+offices:
+  - office: cto
+    manifest: benzene.yaml
+    cell_per_skill: true
+  - office: coo                          # the built-in planner: a plan before any instruction drills down to an office
+  - office: cmo
+    cell_per_skill: true
+    charter:
+      capability: Prepare the brand's material on every channel, held for the CEO's review, never posted
+      pass_threshold: 0.70
+      value_usd: 0.05
+      system: |
+        You are a cell of the CMO office of the elegant organisation (purpose: the best Frontend AI Harness training site,
+        https://elegantfrontend.training, for frontend developers who lost their jobs to AI). You prepare material under
+        .benzene/material/marketing/ for the brand's accounts (Instagram @elegantfrontend, X @elegantfrontend, YouTube
+        @elegantfrontend, the LinkedIn and Facebook pages "Elegant Architecture"). Nothing you write is posted: it is drawn
+        as its channel shows it in the marketing room and the CEO approves or rejects each item; a rejection comes back to
+        you with the CEO's feedback. Follow your skill's format exactly; read profile.md, the CXO's analytics and the
+        site's terminology before writing; never invent a link, a number, a version or a quote.
+      skills: [{name: blog-writer}, {name: newsletter}, {name: linkedin}, {name: x}, {name: instagram}, {name: facebook}, {name: ad-boosts}]
+  - office: cxo
+    cell_per_skill: true
+    charter:
+      capability: Read the audience and the users honestly, and beta-test every change before the CEO approves it
+      pass_threshold: 0.70
+      value_usd: 0.05
+      system: |
+        You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for
+        (frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and
+        ConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.
+        Never a person's name, handle or comment text in a file; never a number that is not on the record.
+      skills: [{name: analytics-report}, {name: feedback-log}, {name: beta-test}]
+  - office: cfo
+    cell_per_skill: true
+    charter:
+      capability: Price the site for developers between jobs and run the PayPal sandbox payment flow
+      pass_threshold: 0.70
+      value_usd: 0.05
+      system: |
+        You are a cell of the CFO office of the elegant organisation. You keep the pricing, the business model, the
+        projection and the sandbox payment flow under .benzene/material/finance/, held to the market band the research
+        found and to PayPal's sandbox. A price change is the CEO's decision: propose it, never apply it alone. Never a live
+        PayPal host, never a secret in a file.
+      skills: [{name: pricing}, {name: payments}]
+  - office: cio
+    cell_per_skill: true
+    charter:
+      capability: Keep the pitch and the traction record ready for the moment the audience floor is met
+      pass_threshold: 0.70
+      value_usd: 0.05
+      system: |
+        You are a cell of the CIO office of the elegant organisation. You keep the pitch, the investor listing, the leverage
+        scores and the traction record under .benzene/material/investors/, every number from the record or a live API.
+        Nothing is sent to an investor: the CEO decides.
+      skills: [{name: pitch}, {name: traction}]
+
+models:
+  - {role: primary, provider: openrouter, id: qwen/qwen3.7-flash, fallback_ids: [deepseek/deepseek-v4-flash-0731], api_key_env: OPENROUTER_API_KEY,
+     max_tokens: 12000, temperature: 0.3, timeout_s: 300, price_per_mtok: [0.03, 0.13]}
+  - {role: writer, provider: openrouter, id: anthropic/claude-sonnet-5, fallback_ids: [qwen/qwen3.7-plus], api_key_env: OPENROUTER_API_KEY,
+     max_tokens: 16000, temperature: 0.5, timeout_s: 360, price_per_mtok: [2.0, 10.0]}
+  - {role: coder, provider: openrouter, id: qwen/qwen3.7-plus, fallback_ids: [deepseek/deepseek-v4-flash-0731], api_key_env: OPENROUTER_API_KEY,
+     max_tokens: 16000, temperature: 0.2, timeout_s: 360, price_per_mtok: [0.32, 1.28]}
+  - {role: judge, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, temperature: 0, timeout_s: 120,
+     price_per_mtok: [0.03, 0.13]}
+  - {role: router, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, timeout_s: 120,
+     price_per_mtok: [0.03, 0.13]}
+  - {role: scout, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, timeout_s: 120,
+     price_per_mtok: [0.03, 0.13]}
+  - {role: decider, provider: openrouter, id: typesafe/jev-router, api_key_env: OPENROUTER_API_KEY, timeout_s: 60, price_per_mtok: [0.042, 0.0]}
+  - {role: evolver, provider: openrouter, id: anthropic/claude-sonnet-5, api_key_env: OPENROUTER_API_KEY, max_tokens: 8000, timeout_s: 240,
+     price_per_mtok: [2.0, 10.0]}
+
+guardrail: {min_chars: 20, max_chars: 16000, forbidden_patterns: ["as an ai language model"], verifier_fail_cap: 0.40, max_cost_usd: 0.50,
+            value_usd: 0.05, max_latency_s: 1800, judge_weight: 0.5, pass_threshold: 0.70}
+
+# The COO plans in Linear: every plan step an issue in team ELT, in the current two-week cycle while its office has
+# capacity (its sub-agents times tasks_per_cell), else in the next cycle, deferred. Approved items join "Release plan";
+# rejected items' feedback joins "Healing feedback pool".
+board: {kind: linear, team: ELT, project: Elegant Training Project, api_key_env: LINEAR_API_KEY, sprints: true, sprint_weeks: 2,
+        tasks_per_cell: 5, release_project: Release plan, feedback_project: Healing feedback pool}
+
+evaluations:
+  cxo: {format: user_panel, every: 3}
+  cio: {format: investor_panel, every: 5}
+
+heartbeat:
+  require_stage: healing
+  approve: [feature]
+  monitor_beats: 3
+  rooms: .benzene/rooms
+  publish: false                       # never post: every item waits in its room for Approve / Reject
+  commit: false
+  release: []
+  rework_per_beat: 2
+  worktree:
+    offices: [cto]
+    builds: true
+    beta_beats: 1
+    build: [python3, .benzene/checks/site.py, build, --out, docs/_site, --baseurl, '/beta/{change}']
+    preview: docs/_site
+    max_open: 3
+
+homeostasis: {divide_below: 0.55, evolve_below: 0.75, heal_max_attempts: 2, min_tasks_before_divide: 3, mature_after_verified_tasks: 1,
+              repair_skill_on_failure: true}
+financial: {min_roi: 1.0, min_spent_usd: 0.05}
+tools: [ask_operator]

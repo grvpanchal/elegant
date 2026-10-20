@@ -6,8 +6,10 @@ docs/.jekyll-cache
 .angular
 dist
 **/project.json
-.benzene
 docs/vendor
+
+# secrets: read from the environment, never committed
+.env
 
 # Python bytecode (compiled artifacts, never source)
 __pycache__/

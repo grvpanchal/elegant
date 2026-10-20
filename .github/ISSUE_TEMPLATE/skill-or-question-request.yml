@@ -1,0 +1,82 @@
+name: Skill or question request
+description: Ask for a new practice question, Agent Skill or lesson, or for a question in another framework.
+title: "[Request]: "
+labels: ["skill-or-question-request", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Requests are planned on the public [roadmap](https://github.com/grvpanchal/elegant/blob/master/ROADMAP.md). If you want to build it yourself, say so below and wait for a reply before you start.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you asking for?
+      options:
+        - A new practice question
+        - A new Agent Skill
+        - A new course lesson
+        - An existing question in another framework
+        - A change to an existing Agent Skill
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      options:
+        - UI
+        - Server
+        - State
+        - Agent Skills or the harness
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Question format (for a question)
+      options:
+        - quiz
+        - coding
+        - ui-coding
+        - system-design
+        - harness
+        - Not sure
+        - Not a question
+  - type: checkboxes
+    id: frameworks
+    attributes:
+      label: Frameworks (for a UI question)
+      options:
+        - label: React
+        - label: Vue
+        - label: Angular
+        - label: Web Components
+  - type: input
+    id: term
+    attributes:
+      label: The term
+      description: The frontend term it is about, for example "selectors", "skeleton" or "ssr".
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What should a learner be able to do afterwards?
+      description: State one concrete skill, such as "write a memoized selector that does not recompute on unrelated updates".
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Where did you meet this?
+      description: An interview round, a code review, an agent's output you had to fix. Links help.
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you like to build it?
+      options:
+        - "No, I am only asking"
+        - "Yes, after the owner replies"
+    validations:
+      required: true

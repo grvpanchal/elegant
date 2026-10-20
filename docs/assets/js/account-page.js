@@ -27,7 +27,7 @@
       if (!profiles.length) {
         var empty = document.createElement("li");
         empty.className = "account-list__empty";
-        empty.textContent = "No profiles yet — sign in above to make one.";
+        empty.textContent = "No device profiles yet — name one above to make one.";
         list.appendChild(empty);
         return;
       }
@@ -46,7 +46,13 @@
         use.type = "button";
         use.className = "account-list__use";
         use.textContent = "Switch to";
-        use.addEventListener("click", function () { account.signIn(profile.name); });
+        use.addEventListener("click", function () {
+          // With an email account signed in, the active provider is not the
+          // device store, and its signIn refuses a typed name — say so here
+          // rather than letting the refusal escape as an uncaught error.
+          try { account.signIn(profile.name); }
+          catch (err) { say("Sign out of your account first, then switch to " + profile.name + ".", "fail"); }
+        });
         item.appendChild(use);
 
         var remove = document.createElement("button");

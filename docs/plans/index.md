@@ -9,9 +9,7 @@ description: Curated study plans over the Frontend AI Harness question bank — 
 
 <p class="plans-lede">
 A plan is an ordered list of questions and readings with a declared time
-budget. The budget is checked: <code>harness/check_harness.py</code> fails the
-build when a plan's steps no longer add up to the hours it promises, so a plan
-cannot quietly rot as questions change.
+budget: its steps add up to the hours it promises.
 </p>
 
 <ul class="plan-list">
@@ -30,5 +28,3 @@ cannot quietly rot as questions change.
 
 <p>Finished one? <a href="{{ '/plans/certificate.html' | relative_url }}">Print your certificate</a>.</p>
 
-<script type="text/javascript" src="{{ '/assets/js/account.js' | relative_url }}"></script>
-<script type="text/javascript" src="{{ '/assets/js/progress.js' | relative_url }}"></script>

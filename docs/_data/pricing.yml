@@ -1,0 +1,56 @@
+# Tiers for docs/pricing/. Order here is the order on the page.
+#
+# PRICES ARE PLACEHOLDERS OWNED BY THE CFO OFFICE. `price_usd: 0` on a paid
+# tier means "not set yet" and the page shows "Price to be set" instead of a
+# number. Nobody but the CFO office changes a price.
+#
+# Checkout runs in PayPal SANDBOX (see `paypal:` in _config.yml). A sandbox
+# order is created for `sandbox_amount_usd`, a test amount paid with sandbox
+# test accounts: no real money moves. It is not a price.
+#
+# Free is the whole site. Paid tiers fund it; they must never take anything
+# away from Free, and a feature listed as `planned: true` is shown as planned.
+- slug: free
+  name: Free
+  tagline: Everything on the site, for everyone, with no signup.
+  price_usd: 0
+  billing: forever
+  checkout: false
+  cta: Start learning
+  cta_url: /courses/
+  features:
+    - text: All four courses and every lesson
+    - text: The full question bank, with the in-browser workspace and its tests
+    - text: Study plans, curated lists, playbooks and the printable certificate
+    - text: The dashboard, and progress synced to your account across browsers
+    - text: Every Agent Skill, to install or download
+
+- slug: pro-yearly
+  name: Pro
+  tagline: Back the site for a year.
+  price_usd: 0 # TBD by CFO
+  billing: per year
+  checkout: true
+  sandbox_amount_usd: "1.00"
+  cta: Check out with PayPal
+  features:
+    - text: Everything in Free — Free keeps every course and question
+    - text: Funds new courses, questions and Agent Skills
+    - text: Your receipt shown on your dashboard
+    - text: Pro-only benefits, as the CFO office decides them
+      planned: true
+
+- slug: lifetime
+  name: Lifetime
+  tagline: Back the site once, with no renewal.
+  price_usd: 0 # TBD by CFO
+  billing: one payment
+  checkout: true
+  sandbox_amount_usd: "2.00"
+  cta: Check out with PayPal
+  features:
+    - text: Everything in Pro, with no yearly renewal
+    - text: Funds new courses, questions and Agent Skills
+    - text: Your receipt shown on your dashboard
+    - text: Lifetime benefits, as the CFO office decides them
+      planned: true

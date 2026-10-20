@@ -1,0 +1,23 @@
+{%- comment -%}
+One question from the bank as a call to action.
+
+Usage:  {% include practice-card.html slug="props-defaults" label="Practise it" %}
+
+Resolved from docs/_data/questions.yml at build time, so a renamed question
+cannot leave a stale title; renders nothing for an unknown slug.
+{%- endcomment -%}
+{%- assign _q = site.data.questions | where: "slug", include.slug | first -%}
+{%- if _q -%}
+<div class="practice-card" data-done-key="{{ _q.slug }}">
+  <p class="practice-card__label">{{ include.label | default: "Practise it" }}</p>
+  <h3 class="practice-card__title"><a href="{{ '/practice/' | append: _q.slug | append: '.html' | relative_url }}">{{ _q.title }}</a></h3>
+  {%- if _q.summary %}<p class="practice-card__summary">{{ _q.summary }}</p>{% endif %}
+  <p class="practice-card__meta">
+    <span class="tag tag--{{ _q.format }}">{{ _q.format }}</span>
+    <span class="tag tag--{{ _q.difficulty }}">{{ _q.difficulty }}</span>
+    <span class="tag">{{ _q.layer }}</span>
+    <span class="tag">{{ _q.minutes }} min</span>
+    <span class="practice-card__done">Solved</span>
+  </p>
+</div>
+{%- endif -%}

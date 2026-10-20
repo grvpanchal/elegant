@@ -1,0 +1,48 @@
+{%- comment -%}
+Resolve one course from docs/_data/courses.yml against its lesson pages.
+
+Usage:  {% include course-data.html course=course %}
+
+Sets, for the caller (Jekyll includes share the caller's scope):
+  cd_lessons   array of lesson pages, in course order (modules flattened)
+  cd_keys      space-separated progress keys ("lesson:<course>/<slug>")
+  cd_json      JSON array [{key, url, title, module, minutes, term}] for scripts
+  cd_count     number of lessons found
+  cd_minutes   total reading time, in minutes
+  cd_first_url URL of the first lesson
+  cd_missing   space-separated lesson slugs listed in courses.yml with no page
+
+Reading time is computed from each lesson body (200 words a minute, rounded
+up, at least 1) so it can never drift from the text.
+{%- endcomment -%}
+{%- assign _c = include.course -%}
+{%- assign _pages = site.pages | where: "course", _c.slug | where: "layout", "lesson" -%}
+{%- assign cd_lessons = "" | split: "" -%}
+{%- assign cd_keys = "" -%}
+{%- assign cd_missing = "" -%}
+{%- assign cd_minutes = 0 -%}
+{%- capture cd_json -%}[
+{%- for _m in _c.modules -%}
+  {%- for _slug in _m.lessons -%}
+    {%- assign _p = _pages | where: "slug", _slug | first -%}
+    {%- if _p -%}
+      {%- assign _words = _p.content | strip_html | number_of_words -%}
+      {%- assign _min = _words | plus: 199 | divided_by: 200 -%}
+      {%- if _min < 1 -%}{%- assign _min = 1 -%}{%- endif -%}
+      {%- assign cd_minutes = cd_minutes | plus: _min -%}
+      {%- assign _key = "lesson:" | append: _c.slug | append: "/" | append: _slug -%}
+      {%- assign cd_keys = cd_keys | append: " " | append: _key -%}
+      {%- assign cd_lessons = cd_lessons | push: _p -%}
+      {%- unless cd_lessons.size == 1 -%},{%- endunless -%}
+      {"key":{{ _key | jsonify }},"url":{{ _p.url | relative_url | jsonify }},"title":{{ _p.title | jsonify }},"module":{{ _m.title | jsonify }},"minutes":{{ _min }},"term":{{ _p.term | jsonify }}}
+    {%- else -%}
+      {%- assign cd_missing = cd_missing | append: " " | append: _slug -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+]{%- endcapture -%}
+{%- assign cd_keys = cd_keys | strip -%}
+{%- assign cd_missing = cd_missing | strip -%}
+{%- assign cd_count = cd_lessons | size -%}
+{%- assign _first = cd_lessons | first -%}
+{%- if _first -%}{%- assign cd_first_url = _first.url | relative_url -%}{%- else -%}{%- assign cd_first_url = "" -%}{%- endif -%}

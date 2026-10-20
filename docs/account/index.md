@@ -1,122 +1,149 @@
 ---
-title: Account
+title: Sign in
 layout: default
 identity_scripts: inline   # this page loads the bundle itself, before its own controllers
 slug: account
-description: Name a profile so your progress is yours, move it between devices, or export it as JSON.
+description: Sign in to Elegant and your progress follows you to any browser. You don't need an account to learn.
 ---
+{%- comment -%}
+Sign in, a sign-in link and a password reset share this card; one form shows at a time and the heading follows it
+(account-supabase-page.js). Creating an account is its own page, /account/create/. Email links from either page
+come back here (`redirect_to`), and this page also shows the signed-in account and the new-password form a reset
+link opens.
 
-<h1>Account</h1>
+Forking the site: the key the pages ship is Supabase's publishable key, safe in client code only while row-level
+security is on. That is the setting to check first (supabase/README.md).
+{%- endcomment -%}
 
-<p class="account-lede">
-This site is static — it is served as files, with no server behind it and no
-database to keep an account in. So a profile here lives <strong>in this
-browser</strong>. It is not authentication: there is no password, nothing is
-verified, and anyone using this browser can switch to any profile on it.
-</p>
+<section class="auth" aria-labelledby="auth-title">
+  <h1 class="auth__title" id="auth-title" data-sb-heading>Sign in to your account</h1>
+  <p class="auth__switch" data-sb-switch>Don't have an account? <a href="{{ '/account/create/' | relative_url }}">Create one for free</a></p>
+  <p class="auth__lede" data-sb-subhead hidden></p>
 
-<p class="account-lede">
-What it does buy you is real. Two people sharing a laptop stop overwriting each
-other's progress, and an export moves everything you have done to another
-device.
-</p>
+  <div class="auth-card" data-account-supabase hidden>
+    <p class="auth-note auth-note--ok" role="status" data-sb-message hidden></p>
+    <p class="auth-note auth-note--error" role="alert" data-sb-error hidden></p>
+    <div data-sb-signed-out>
+      <form class="auth-form" data-sb-view="signin" data-sb-form="signin" data-sb-switchable data-sb-title="Sign in to your account" data-sb-lede="" novalidate>
+        <label class="auth-form__label" for="sb-signin-email">Email</label>
+        <input class="auth-form__input" id="sb-signin-email" type="email" name="email" autocomplete="email" required>
+        <label class="auth-form__label" for="sb-signin-password">Password</label>
+        <input class="auth-form__input" id="sb-signin-password" type="password" name="password" autocomplete="current-password" required>
+        <p class="auth-form__forgot"><button type="button" class="account-linkbutton" data-sb-goto="reset">Forgot your password?</button></p>
+        <button type="submit" class="auth-form__submit">Sign in</button>
+        <p class="auth-form__back"><button type="button" class="account-linkbutton" data-sb-goto="magic">Email me a sign-in link instead</button></p>
+      </form>
 
-<h2>Sign in with an account</h2>
+      <form class="auth-form" data-sb-view="magic" data-sb-form="magic" data-sb-title="Sign in with a link" data-sb-lede="We'll email you a link that signs you in." novalidate hidden>
+        <label class="auth-form__label" for="sb-magic-email">Email</label>
+        <input class="auth-form__input" id="sb-magic-email" type="email" name="email" autocomplete="email" required>
+        <button type="submit" class="auth-form__submit">Email me a link</button>
+        <p class="auth-form__back"><button type="button" class="account-linkbutton" data-sb-goto="signin">Sign in with a password instead</button></p>
+      </form>
 
-<p class="account-lede">
-If this deployment is configured with an identity provider, you can sign in with
-a real credential instead. That <em>is</em> verified: the password is checked by
-the provider, never by this page, and the session it returns is accepted only
-after its signature is checked against the provider's published keys. A token
-this site merely decoded would prove nothing — the payload of a sign-in token is
-readable by anyone, so reading a name out of it is not the same as knowing it.
-</p>
+      <form class="auth-form" data-sb-view="reset" data-sb-form="reset" data-sb-title="Reset your password" data-sb-lede="We'll email you a link to choose a new one." novalidate hidden>
+        <label class="auth-form__label" for="sb-reset-email">Email</label>
+        <input class="auth-form__input" id="sb-reset-email" type="email" name="email" autocomplete="email" required>
+        <button type="submit" class="auth-form__submit">Email me a reset link</button>
+        <p class="auth-form__back"><button type="button" class="account-linkbutton" data-sb-goto="signin">Back to sign in</button></p>
+      </form>
 
-<p class="account-lede">
-The key this page ships is a <strong>publishable</strong> key. It is meant to be
-public and is safe to read, because the database enforces row-level security:
-the key alone cannot reach anybody's rows, only a verified sign-in can. If you
-are forking this site, that is the setting to check first.
-</p>
+      <button type="button" class="auth-form__alt" data-sb-resend hidden>Resend the confirmation email</button>
+    </div>
 
-<div class="account-panel" data-account-supabase hidden>
-  <form class="account-form" data-account-supabase-form>
-    <label class="account-form__field">
-      <span>Email</span>
-      <input type="email" data-account-supabase-email autocomplete="email" required>
-    </label>
-    <label class="account-form__field">
-      <span>Password</span>
-      <input type="password" data-account-supabase-password autocomplete="current-password" required minlength="8">
-    </label>
-    <button type="submit" data-account-supabase-signin>Sign in</button>
-    <button type="button" data-account-supabase-signup>Create an account</button>
-    <p class="account-form__error" role="alert" data-account-supabase-error hidden></p>
-  </form>
-</div>
-
-<div class="account-panel" data-account-oidc hidden>
-  <p class="account-lede">
-    Sign in with an OpenID Connect issuer. This is a real Authorization Code +
-    PKCE flow: the page redirects to the issuer, exchanges the code it gets back,
-    and verifies the returned ID token's signature before it means anything.
-  </p>
-  <button type="button" class="account-oidc__signin" data-account-oidc-signin hidden>
-    Sign in with your account
-  </button>
-  <p class="account-form__error" role="alert" data-account-oidc-error hidden></p>
-</div>
-
-<p class="account-lede" data-account-supabase-absent>
-This deployment has no identity provider configured, so only device profiles are
-available here.
-</p>
-
-<div class="account-panel" data-account-widget data-signed-in="false">
-  <div data-account-signed-out>
-    <h2>Sign in</h2>
-    <form class="account-form" data-account-signin-form>
-      <label class="account-form__field">
-        <span>Profile name</span>
-        <input type="text" data-account-signin-name placeholder="Ada" autocomplete="nickname" required>
-      </label>
-      <button type="submit">Continue</button>
-      <p class="account-form__error" role="alert" data-account-error hidden></p>
+    <form class="auth-form" data-sb-recovery data-sb-title="Choose a new password" data-sb-lede="" novalidate hidden>
+      <label class="auth-form__label" for="sb-recovery-password">New password</label>
+      <input class="auth-form__input" id="sb-recovery-password" type="password" name="password" autocomplete="new-password" required minlength="8" aria-describedby="sb-recovery-hint">
+      <p class="auth-form__hint" id="sb-recovery-hint">At least 8 characters.</p>
+      <label class="auth-form__label" for="sb-recovery-confirm">Repeat it</label>
+      <input class="auth-form__input" id="sb-recovery-confirm" type="password" name="confirm" autocomplete="new-password" required minlength="8">
+      <button type="submit" class="auth-form__submit">Save new password</button>
+      <p class="auth-note auth-note--error" role="alert" data-sb-recovery-error hidden></p>
     </form>
-    <p class="account-form__hint">
-      A name you have used before reopens that profile. A new one starts empty.
+
+    <div class="account-signedin" data-sb-signed-in data-sb-title="Your account" data-sb-lede="" hidden>
+      <p class="account-signedin__who">Signed in as <strong data-sb-email></strong></p>
+      <p class="account-signedin__sync" data-sync-text>Checking your account's progress…</p>
+      <button type="button" class="account-secondary" data-sync-retry hidden>Try syncing again</button>
+      <div class="account-signedin__import" data-sb-guest-import hidden>
+        <p data-sb-guest-import-text></p>
+        <button type="button" class="account-secondary" data-sb-guest-import-go>Add it to my account</button>
+      </div>
+      <p class="account-signedin__actions">
+        <a class="auth-form__submit" href="{{ '/dashboard/' | relative_url }}">Open your dashboard</a>
+        <button type="button" class="auth-form__alt" data-sb-signout>Sign out</button>
+      </p>
+      <details class="account-signedin__password">
+        <summary>Change password</summary>
+        <form class="auth-form" data-sb-password novalidate>
+          <label class="auth-form__label" for="sb-new-password">New password</label>
+          <input class="auth-form__input" id="sb-new-password" type="password" name="password" autocomplete="new-password" required minlength="8">
+          <button type="submit" class="auth-form__submit">Change password</button>
+          <p class="auth-note auth-note--ok" role="status" data-sb-password-message hidden></p>
+          <p class="auth-note auth-note--error" role="alert" data-sb-password-error hidden></p>
+        </form>
+      </details>
+    </div>
+  </div>
+
+  <div class="auth-card" data-account-oidc hidden>
+    <button type="button" class="auth-form__submit" data-account-oidc-signin hidden>Sign in with your account</button>
+    <p class="auth-note auth-note--error" role="alert" data-account-oidc-error hidden></p>
+  </div>
+
+  <p class="auth-card auth__absent" data-account-supabase-absent>
+    Accounts aren't set up on this copy of the site. You can still use a device profile below.
+  </p>
+
+  <details class="auth-more">
+    <summary>Device profiles and backups</summary>
+
+    <p>
+      You don't need an account to learn: progress is saved in this browser. A device profile keeps it separate for
+      each person on a shared computer. It lives in this browser only and isn't an account: there's no password,
+      nothing is verified, and anyone using this browser can switch to it.
     </p>
-  </div>
 
-  <div data-account-signed-in hidden>
-    <h2>Signed in as <span data-account-name></span></h2>
-    <p>Everything you mark done is recorded against this profile.</p>
-    <button type="button" data-account-signout>Sign out</button>
-  </div>
-</div>
+    <p data-device-paused hidden>
+      You're signed in, so your progress is saved to your account. Sign out to use a device profile.
+    </p>
 
-<h2>Move this profile to another device</h2>
+    <div class="account-panel" data-account-widget data-device-panel data-signed-in="false">
+      <div data-account-signed-out>
+        <form class="account-form" data-account-signin-form>
+          <label class="account-form__field">
+            <span>Profile name</span>
+            <input type="text" data-account-signin-name placeholder="Ada" autocomplete="nickname" required>
+          </label>
+          <button type="submit">Use this profile</button>
+          <p class="account-form__error" role="alert" data-account-error hidden></p>
+        </form>
+        <p class="account-form__hint">A name used before reopens its profile. A new name starts empty.</p>
+      </div>
 
-<p>
-Export writes a JSON file holding the profile and its progress. Import it in
-the other browser and you carry on where you stopped. This is the honest
-version of "your account follows you" on a site with nowhere to sync to.
-</p>
+      <div data-account-signed-in hidden>
+        <p>Using the device profile <strong data-account-name></strong>, in this browser only.</p>
+        <button type="button" class="account-secondary" data-account-signout>Stop using it</button>
+      </div>
+    </div>
 
-<div class="account-transfer">
-  <button type="button" id="account-export">Export profile JSON</button>
-  <label class="account-transfer__import">
-    <span>Import a profile</span>
-    <input type="file" id="account-import" accept="application/json,.json">
-  </label>
-  <p class="account-transfer__status" role="status" id="account-status"></p>
-</div>
+    <h2 class="auth-more__title">Profiles on this device</h2>
+    <ul class="account-list" id="account-list"></ul>
 
-<h2>Profiles on this device</h2>
+    <h2 class="auth-more__title">Move your progress to another browser</h2>
+    <p>Export the profile you're using, with its progress, and import the file in the other browser.</p>
+    <div class="account-transfer">
+      <button type="button" id="account-export">Export this profile</button>
+      <label class="account-transfer__import">
+        <span>Import a file</span>
+        <input type="file" id="account-import" accept="application/json,.json">
+      </label>
+      <p class="account-transfer__status" role="status" id="account-status"></p>
+    </div>
 
-<ul class="account-list" id="account-list"></ul>
-
-{% include progress-tracker.html all=true title="This profile" reset=true %}
+    {% include progress-tracker.html all=true title="Question bank progress" reset=true %}
+  </details>
+</section>
 
 {% include identity-scripts.html %}
 <script type="text/javascript" src="{{ '/assets/js/account-page.js' | relative_url }}"></script>

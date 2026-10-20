@@ -3,8 +3,14 @@
  *
  * The site is static — there is no account and no backend — so completion
  * lives in the browser and is exportable as JSON. Every surface that shows
- * progress (the practice index, a plan page, the certificate) reads the same
- * store through this module.
+ * progress (the practice index, a plan page, a course, the dashboard, the
+ * certificate) reads the same store through this module.
+ *
+ * A record is `{ "<key>": "<ISO time it was marked done>" }`. Keys are question
+ * slugs (`action-creators`), concept-doc refs from a plan (`ui/atom`) and
+ * course lessons (`lesson:<course>/<lesson>`). The value has always been the
+ * completion time; older exports may hold `true` instead, which still counts as
+ * done and simply has no date — readers must not assume a parsable timestamp.
  */
 (function () {
   "use strict";
@@ -38,20 +44,65 @@
     }
   }
 
+  function stamp(at) {
+    var t = at ? Date.parse(at) : NaN;
+    return isNaN(t) ? new Date().toISOString() : new Date(t).toISOString();
+  }
+
   var api = {
     isDone: function (slug) {
       return Boolean(load()[slug]);
     },
-    setDone: function (slug, done) {
+    /**
+     * Mark one key done or not. `at` (optional, ISO string) keeps the time the
+     * work was really done — a sync from another device passes the remote
+     * time so the activity heatmap is not rewritten to "today".
+     */
+    setDone: function (slug, done, at) {
       var state = load();
       if (done) {
-        state[slug] = new Date().toISOString();
+        state[slug] = stamp(at);
       } else {
         delete state[slug];
       }
       save(state);
       document.dispatchEvent(new CustomEvent("progress:changed", { detail: { slug: slug, done: done } }));
       return done;
+    },
+    /** When a key was marked done, or null (not done, or a legacy dateless record). */
+    doneAt: function (slug) {
+      var value = load()[slug];
+      if (typeof value !== "string") return null;
+      var t = Date.parse(value);
+      return isNaN(t) ? null : new Date(t);
+    },
+    /** A copy of every record: { key: ISO time | true }. */
+    entries: function () {
+      var state = load();
+      var out = {};
+      Object.keys(state).forEach(function (k) { if (state[k]) out[k] = state[k]; });
+      return out;
+    },
+    /**
+     * Add records in one write — "done wins", so a key already done keeps its
+     * own time. Fires a single progress:changed with no slug (so the sync layer
+     * does not echo each key back) and returns how many keys were new.
+     */
+    merge: function (records, detail) {
+      if (!records) return 0;
+      var state = load();
+      var added = 0;
+      Object.keys(records).forEach(function (k) {
+        if (!k || state[k] || !records[k]) return;
+        state[k] = typeof records[k] === "string" ? stamp(records[k]) : new Date().toISOString();
+        added++;
+      });
+      if (!added) return 0;
+      save(state);
+      var info = { slug: null, done: true, merged: added };
+      for (var d in detail || {}) info[d] = detail[d];
+      document.dispatchEvent(new CustomEvent("progress:changed", { detail: info }));
+      return added;
     },
     toggle: function (slug) {
       return api.setDone(slug, !api.isDone(slug));
@@ -71,6 +122,17 @@
     },
     export: function () {
       return JSON.stringify(load(), null, 2);
+    },
+    /**
+     * Records kept under another namespace ("" is the signed-out guest), read
+     * only — the account page uses it to offer a guest's progress to a new sign-in.
+     */
+    entriesOf: function (namespace) {
+      try {
+        return JSON.parse(window.localStorage.getItem(KEY + (namespace || "")) || "{}") || {};
+      } catch (err) {
+        return {};
+      }
     }
   };
 
