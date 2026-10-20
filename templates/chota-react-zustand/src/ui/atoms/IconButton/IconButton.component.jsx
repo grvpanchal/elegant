@@ -1,4 +1,5 @@
 import { useAtomicContext } from "../../../utils/providers/AtomicProvider";
+import { iconSrc } from "../../../utils/icons";
 import Button from "../Button/Button.component";
 import Image from "../Image/Image.component";
 
@@ -22,9 +23,7 @@ export default function IconButton({
     >
       <Image
         alt={alt}
-        src={`https://icongr.am/feather/${iconName}.svg?size=${size}&color=${
-          color ? color : themeColor
-        }`}
+        src={iconSrc(iconName, size, color ? color : themeColor)}
       />
     </Button>
   );

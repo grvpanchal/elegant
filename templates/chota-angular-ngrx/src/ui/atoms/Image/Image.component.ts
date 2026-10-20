@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { iconSrc } from '../../../app/utils/icons';
 
 @Component({
   selector: 'app-image',
@@ -8,5 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export default class ImageComponent {
   @Input() alt = 'Some Image';
-  @Input() src = 'https://icongr.am/feather/info.svg?size=24&color=000000';
+  @Input() src = iconSrc('info', 24, '000000');
 }

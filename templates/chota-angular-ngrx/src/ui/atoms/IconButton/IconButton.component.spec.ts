@@ -4,6 +4,10 @@ import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { getTheme } from '../../../app/state/config/config.selectors';
 import IconButtonComponent from './IconButton.component';
+import { iconSrc } from '../../../app/utils/icons';
+
+// The icon is an inlined SVG (app/utils/icons.ts); read what it draws.
+const svgOf = (src: string) => decodeURIComponent(src.replace('data:image/svg+xml,', ''));
 
 @Component({
   standalone: true,
@@ -67,7 +71,7 @@ describe('IconButtonComponent', () => {
   it('should generate correct src with default theme color for light theme', () => {
     fixture.detectChanges();
     const iconButton = fixture.debugElement.query(By.directive(IconButtonComponent)).componentInstance;
-    expect(iconButton.src).toContain('color=000000');
+    expect(svgOf(iconButton.src)).toContain('stroke="#000000"');
   });
 
   it('should generate correct src with dark theme color', () => {
@@ -84,21 +88,21 @@ describe('IconButtonComponent', () => {
     component.color = 'ff0000';
     fixture.detectChanges();
     const iconButton = fixture.debugElement.query(By.directive(IconButtonComponent)).componentInstance;
-    expect(iconButton.src).toContain('color=ff0000');
+    expect(svgOf(iconButton.src)).toContain('stroke="#ff0000"');
   });
 
   it('should use provided icon name in src', () => {
     component.iconName = 'edit';
     fixture.detectChanges();
     const iconButton = fixture.debugElement.query(By.directive(IconButtonComponent)).componentInstance;
-    expect(iconButton.src).toContain('edit.svg');
+    expect(iconButton.src).toBe(iconSrc('edit', iconButton.size, iconButton.themeColor));
   });
 
   it('should use provided size in src', () => {
     component.size = '24';
     fixture.detectChanges();
     const iconButton = fixture.debugElement.query(By.directive(IconButtonComponent)).componentInstance;
-    expect(iconButton.src).toContain('size=24');
+    expect(svgOf(iconButton.src)).toContain('width="24"');
   });
 
   it('should emit onClick event', () => {

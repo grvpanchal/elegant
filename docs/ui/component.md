@@ -29,7 +29,9 @@ In the context of the [Atomic Design](atomic-design.html) system, components exi
 
 ### Basic Example: Alert component across frameworks
 
-A component is anything that combines markup, styling, and behavior behind a single name. Here's the same `Alert` atom — props for `variant`, `show`, `message`, an internal boolean, a `useEffect`-style sync with the `show` prop, and a close handler that emits upward — implemented once in each of the `chota-*` templates.
+A component is anything that combines markup, styling, and behavior behind a single name. Here's the same `Alert` atom — props for `variant`, `show`, `message`, an internal boolean, a `useEffect`-style sync with the `show` prop, and a close handler that emits upward — implemented once in each of the `chota-*` templates. The snippets are trimmed to the essentials, and the first line of each names the full file.
+
+One call shows up in every tab but has nothing to do with components: `iconSrc(name, size, color)`. It lives in each template's `utils/icons` (`app/utils/icons` in Angular) and returns an inline `data:` URL for a [Feather](https://feathericons.com) icon, so the Alert draws its icons without a network request. Read it as "give me an image `src`" and keep your eye on the component shape.
 
 {::nomarkdown}<div class="code-tabs">{:/}
 
@@ -40,6 +42,7 @@ import React, { useEffect, useState } from "react";
 import "./Alert.style.css";
 import IconButton from "../IconButton/IconButton.component";
 import Image from "../Image/Image.component";
+import { iconSrc } from "../../../utils/icons";
 
 export default function Alert({ variant, show, message, onCloseClick }) {
   const [showAlert, setShowAlert] = useState(show);
@@ -54,9 +57,7 @@ export default function Alert({ variant, show, message, onCloseClick }) {
   return showAlert ? (
     <div className={`bg-${variant === "error" ? "error" : "primary"} text-white alert`}>
       <div className="message">
-        <Image src={`https://icongr.am/feather/${
-          variant === "error" ? "alert-triangle" : "info"
-        }.svg?size=24&color=ffffff`} alt={variant} />
+        <Image src={iconSrc(variant === "error" ? "alert-triangle" : "info", 24, "ffffff")} alt={variant} />
         <span>{message}</span>
       </div>
       <IconButton variant="clear" alt="close" color="ffffff" iconName="x" size="16" onClick={handleClose} />
@@ -71,6 +72,7 @@ Angular
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import ImageComponent from '../Image/Image.component';
 import IconButtonComponent from '../IconButton/IconButton.component';
+import { iconSrc } from '../../../app/utils/icons';
 
 @Component({
   selector: 'app-alert',
@@ -91,9 +93,7 @@ export default class AlertComponent implements OnChanges {
     return `bg-${this.variant === 'error' ? 'error' : 'primary'} text-white alert`;
   }
   get src() {
-    return `https://icongr.am/feather/${
-      this.variant === 'error' ? 'alert-triangle' : 'info'
-    }.svg?size=24&color=ffffff`;
+    return iconSrc(this.variant === 'error' ? 'alert-triangle' : 'info', 24, 'ffffff');
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -126,6 +126,7 @@ Vue
 import { defineComponent } from "vue";
 import Image from "../Image/Image.component.vue";
 import IconButton from "../IconButton/IconButton.component.vue";
+import { iconSrc } from "../../../utils/icons";
 
 export default defineComponent({
   components: { Image, IconButton },
@@ -137,9 +138,7 @@ export default defineComponent({
       return `bg-${this.variant === 'error' ? 'error' : 'primary'} text-white alert`;
     },
     getImageSrc() {
-      return `https://icongr.am/feather/${
-        this.variant === 'error' ? 'alert-triangle' : 'info'
-      }.svg?size=24&color=ffffff`;
+      return iconSrc(this.variant === 'error' ? 'alert-triangle' : 'info', 24, 'ffffff');
     },
     handleClose(e) {
       this.showAlert = false;
@@ -160,6 +159,7 @@ import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 import '../IconButton/app-icon-button';
 import '../Image/app-image';
 import emit from "../../../utils/events/emit";
+import { iconSrc } from "../../../utils/icons";
 
 export default function Alert({ variant, show, message }) {
   useComputedStyles(this, [style]);
@@ -177,9 +177,7 @@ export default function Alert({ variant, show, message }) {
       variant === "error" ? "error" : "primary"
     } text-white alert`}>
       <div class="message">
-        <app-image .src=${`https://icongr.am/feather/${
-          variant === "error" ? "alert-triangle" : "info"
-        }.svg?size=24&color=ffffff`} alt=${variant}></app-image>
+        <app-image .src=${iconSrc(variant === "error" ? "alert-triangle" : "info", 24, "ffffff")} alt=${variant}></app-image>
         <span>${message}</span>
       </div>
       <app-icon-button .variant=${"clear"} .alt=${"close"} .color=${"ffffff"}

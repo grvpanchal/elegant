@@ -5,6 +5,7 @@ import "../Button/app-button";
 import "../Image/app-image";
 import useComputedStyles from "../../../utils/theme/hooks/useComputedStyles";
 import emit from "../../../utils/events/emit";
+import { iconSrc } from "../../../utils/icons";
 
 export default function IconButton({
   iconName,
@@ -24,9 +25,7 @@ export default function IconButton({
     >
       <app-image
         .alt=${alt}
-        .src=${`https://icongr.am/feather/${iconName}.svg?size=${size}&color=${
-          color ? color : themeColor
-        }`}
+        .src=${iconSrc(iconName, size, color ? color : themeColor)}
       ></app-image>
     </app-button>
   `;

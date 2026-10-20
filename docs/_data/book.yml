@@ -4,8 +4,8 @@ cover: /assets/book/cover.jpg
 pages: 354
 size_mb: 3.6
 chapters: 45
-built: 2026-10-11
-source_sha256: 2d2187a9dab1007d2b78d6d8a801c4e8f36b55eb193844977133987f347b7d27
+built: 2026-10-20
+source_sha256: 6deb4b0b6bd15815dd81c744f4e58e880a3a3acd3a8a4cdc976252a6d508a319
 parts:
   - { layer: ui, title: "The UI Side", terms: 16, logo: organism, page: 6 }
   - { layer: server, title: "The Server Side", terms: 20, logo: container, page: 103 }

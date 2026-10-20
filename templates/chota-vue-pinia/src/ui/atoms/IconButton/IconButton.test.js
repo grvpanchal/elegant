@@ -2,6 +2,9 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount, shallowMount } from '@vue/test-utils'
 import IconButton from './IconButton.component.vue'
 
+// The icon is an inlined SVG (src/utils/icons.js); read what it draws.
+const svgOf = (src) => decodeURIComponent(src.replace('data:image/svg+xml,', ''))
+
 describe('<IconButton />', () => {
   it('renders successfully', () => {
     const wrapper = shallowMount(IconButton, {
@@ -22,8 +25,8 @@ describe('<IconButton />', () => {
       props: { iconName: 'trash-2', alt: 'delete', size: '24' },
     })
     const src = wrapper.vm.getImageSrc()
-    expect(src).toContain('trash-2')
-    expect(src).toContain('size=24')
+    expect(svgOf(src)).toContain('points="3 6 5 6 21 6"')
+    expect(svgOf(src)).toContain('width="24"')
   })
 
   it('generates image src with custom color', () => {
@@ -31,7 +34,7 @@ describe('<IconButton />', () => {
       props: { iconName: 'edit', alt: 'edit', size: '16', color: 'ff0000' },
     })
     const src = wrapper.vm.getImageSrc()
-    expect(src).toContain('color=ff0000')
+    expect(svgOf(src)).toContain('stroke="#ff0000"')
   })
 
   it('emits onClick when clicked', async () => {

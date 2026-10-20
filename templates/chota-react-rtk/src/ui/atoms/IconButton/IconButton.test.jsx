@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react';
 import IconButton from './IconButton.component';
 import TestProvider from '../../../utils/providers/TestProvider';
 
+// The icon is an inlined SVG (src/utils/icons.js); read what it draws.
+const svgOf = (img) => decodeURIComponent(img.getAttribute('src').replace('data:image/svg+xml,', ''));
+
 describe('<IconButton />', () => {
   it('Renders successfully without error', () => {
     const { container } = render(
@@ -13,15 +16,15 @@ describe('<IconButton />', () => {
     expect(container).toBeTruthy();
   });
 
-  it('Renders with correct icon URL', () => {
+  it('Renders the named icon at its size', () => {
     render(
       <TestProvider>
         <IconButton iconName="trash-2" alt="delete" size="24" />
       </TestProvider>,
     );
     const img = screen.getByAltText('delete');
-    expect(img).toHaveAttribute('src', expect.stringContaining('trash-2'));
-    expect(img).toHaveAttribute('src', expect.stringContaining('size=24'));
+    expect(svgOf(img)).toContain('points="3 6 5 6 21 6"');
+    expect(svgOf(img)).toContain('width="24"');
   });
 
   it('Renders with custom color', () => {
@@ -31,7 +34,7 @@ describe('<IconButton />', () => {
       </TestProvider>,
     );
     const img = screen.getByAltText('edit');
-    expect(img).toHaveAttribute('src', expect.stringContaining('color=ff0000'));
+    expect(svgOf(img)).toContain('stroke="#ff0000"');
   });
 
   it('Uses theme color when no color is provided and theme is dark', () => {
@@ -41,17 +44,17 @@ describe('<IconButton />', () => {
       </TestProvider>,
     );
     const img = screen.getByAltText('edit');
-    expect(img).toHaveAttribute('src', expect.stringContaining('color=ffffff'));
+    expect(svgOf(img)).toContain('stroke="#ffffff"');
   });
 
-  it('Uses empty theme color when no color is provided and theme is light', () => {
+  it('Draws black when no color is provided and theme is light', () => {
     render(
       <TestProvider preloadedState={{ config: { theme: 'light', name: 'Test', lang: 'en' } }}>
         <IconButton iconName="edit" alt="edit" size="16" />
       </TestProvider>,
     );
     const img = screen.getByAltText('edit');
-    expect(img).toHaveAttribute('src', expect.stringContaining('color='));
+    expect(svgOf(img)).toContain('stroke="#000000"');
   });
 
   it('Renders with variant class', () => {

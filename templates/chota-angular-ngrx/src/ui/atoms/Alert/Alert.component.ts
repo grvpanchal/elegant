@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import ImageComponent from '../Image/Image.component';
 import IconButtonComponent from '../IconButton/IconButton.component';
+import { iconSrc } from '../../../app/utils/icons';
 
 @Component({
   selector: 'app-alert',
@@ -20,9 +21,7 @@ export default class AlertComponent implements OnChanges {
   }
 
   get src() {
-    return `https://icongr.am/feather/${
-      this.variant === 'error' ? 'alert-triangle' : 'info'
-    }.svg?size=24&color=ffffff`;
+    return iconSrc(this.variant === 'error' ? 'alert-triangle' : 'info', 24, 'ffffff');
   }
 
   @Input() message = 'Alert';

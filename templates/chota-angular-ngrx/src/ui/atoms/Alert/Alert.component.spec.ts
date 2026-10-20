@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import AlertComponent from './Alert.component';
+import { iconSrc } from '../../../app/utils/icons';
 
 @Component({
   standalone: true,
@@ -79,7 +80,7 @@ describe('AlertComponent', () => {
     component.variant = 'info';
     fixture.detectChanges();
     const alert = fixture.debugElement.query(By.directive(AlertComponent)).componentInstance;
-    expect(alert.src).toContain('info.svg');
+    expect(alert.src).toBe(iconSrc('info', 24, 'ffffff'));
   });
 
   it('should use alert-triangle icon for error variant', () => {
@@ -87,7 +88,7 @@ describe('AlertComponent', () => {
     component.variant = 'error';
     fixture.detectChanges();
     const alert = fixture.debugElement.query(By.directive(AlertComponent)).componentInstance;
-    expect(alert.src).toContain('alert-triangle.svg');
+    expect(alert.src).toBe(iconSrc('alert-triangle', 24, 'ffffff'));
   });
 
   it('should hide alert and emit onCloseClick when close button is clicked', () => {
