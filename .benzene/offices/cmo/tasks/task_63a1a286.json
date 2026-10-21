@@ -1,0 +1,125 @@
+{
+  "task_id": "task_63a1a286",
+  "cell_id": "cell_e8a2a016",
+  "cell_name": "elegant-cmo-linkedin",
+  "generation": 0,
+  "instruction": "Heartbeat duty: prepare this week's material, one step per sub-agent, all of it held for the CEO's review in the marketing room (nothing is posted). First read .benzene/material/experience/analytics-report.md and .benzene/material/marketing/profile.md. Then: the blog writer one new article in .benzene/material/marketing/articles/; the newsletter agent this ISO week's issue in .benzene/material/marketing/newsletter/ if it is missing; LinkedIn one terminology post, a document carousel (a deck in .benzene/material/marketing/slides/) when fewer than two decks are dated this week; X one thread on the same campaign; Instagram one carousel; Facebook the twin of the newest Instagram campaign; ad boosts a proposal only when a post's engagement is at least twice the channel's median, otherwise nothing. Every post keeps its showcase_url with UTM tags. If the campaign needs product work, end with one line 'SUGGEST COO: <the product work>'.",
+  "skill": "linkedin",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_e8a2a016",
+    "by": "match",
+    "confidence": 0.9,
+    "reason": "skill triggers matched elegant-cmo-linkedin",
+    "probabilities": {}
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "HTTP 402: {\"error\":{\"message\":\"Insufficient credits. Add more using https://openrouter.ai/settings/credits\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_credits\",\"remedy_hint\":\"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0.0s of 1800s allowed"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "linkedin",
+      "attempt": 1,
+      "model": "qwen/qwen3.7-flash",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Heartbeat duty: prepare this week's material, one step per sub-agent, all of it held for the CEO's review in the marketing room (nothing is posted). First read .benzene/material/experience/analytics-report.md and .benzene/material/marketing/profile.md. Then: the blog writer one new article in .benzene/material/marketing/articles/; the newsletter agent this ISO week's issue in .benzene/material/mar",
+    "approach": "execute with the routed skill linkedin",
+    "steps": [
+      {
+        "step": "Heartbeat duty: prepare this week's material, one step per sub-agent, all of it held for the CEO's review in the marketing room (nothing is posted). First read .benzene/material/experience/analytics-report.md and .benzene/material/marketing/profile.md. Then: the blog writer one new article in .benzene/material/marketing/articles/; the newsletter agent this ISO week's issue in .benzene/material/mar",
+        "skill": "linkedin",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "linkedin",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 1,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.0029406,
+  "actual_cost_usd": 0.0,
+  "latency_s": 0.0,
+  "model": "qwen/qwen3.7-flash",
+  "stop_reason": "error",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792323737.9491637
+}

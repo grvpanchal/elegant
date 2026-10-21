@@ -1,0 +1,81 @@
+{
+  "tasks": 154,
+  "offices": {
+    "cto": {
+      "office": "cto",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 75,
+      "reason": "founded at the start: the product is built first"
+    },
+    "coo": {
+      "office": "coo",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 44,
+      "reason": "the standard is its blueprint: 5 bars"
+    },
+    "cmo": {
+      "office": "cmo",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 31,
+      "reason": "the standard is its blueprint: 11 bars"
+    },
+    "cxo": {
+      "office": "cxo",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 2,
+      "reason": "the standard is its blueprint: 4 bars"
+    },
+    "cfo": {
+      "office": "cfo",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 14,
+      "reason": "the standard is its blueprint: 3 bars"
+    },
+    "cio": {
+      "office": "cio",
+      "status": "active",
+      "founded_at_task": 0,
+      "tasks": 0,
+      "reason": "the standard is its blueprint: 2 bars"
+    }
+  },
+  "milestones": [
+    {
+      "name": "showcase",
+      "task": 0,
+      "ts": 1792272580.7684674,
+      "index": "docs/_site/index.html",
+      "kind": "site"
+    }
+  ],
+  "metrics": {
+    "satisfaction": [
+      0.36
+    ],
+    "upvotes": [
+      1.0
+    ],
+    "investability": [
+      0.2167,
+      0.1333
+    ],
+    "offers": [
+      0.0,
+      0.0
+    ],
+    "investment_usd": [
+      0.0,
+      0.0
+    ]
+  },
+  "evaluation_digests": {
+    "cxo:user_panel": "1b4852687e7bc3bc353028aa0da3283bf25d8071",
+    "cio:investor_panel": "37e74b8872006317806065e056ac60dd771cb2ff"
+  },
+  "deferred": []
+}

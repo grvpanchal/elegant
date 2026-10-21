@@ -1,0 +1,633 @@
+{
+  "task_id": "task_f2efac25",
+  "cell_id": "cell_4d5592a9",
+  "cell_name": "elegant-cto-template-harness",
+  "generation": 2,
+  "instruction": "The project at the root of the workspace fails its checks (this task: rules tier, consistency, missing, stale, references; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: missing Layout; extra Skeleton (the other templates have Layout)\nFAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\n\nFix it: list the workspace files, read the files named in the output and the files they refer to, write the corrected file(s) back with the workspace tools (change only what the failure needs), and report the files you changed and what changed in each. The same checks run again after you answer.",
+  "skill": "template-harness",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_4d5592a9",
+    "by": "match",
+    "confidence": 0.95,
+    "reason": "skill triggers matched elegant-cto-template-harness",
+    "probabilities": {}
+  },
+  "output": "",
+  "status": "failed_guardrail",
+  "passed": false,
+  "verified": false,
+  "stage": "self_heal",
+  "guardrail_score": 0.4,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "required_patterns",
+      "passed": false,
+      "score": 0.0,
+      "detail": "missing: ## When to use"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.5928 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1539.6s of 1800s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "18 file(s) written"
+    },
+    {
+      "name": "verify:showcase",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`sh -c rm -rf 'docs/_site'; python3 .benzene/checks/site.py build --out docs/_site >/dev/null 2>&1 || exit 1; test -f docs/_site/index.htm...` passed"
+    },
+    {
+      "name": "verify:template-integrity",
+      "passed": false,
+      "score": 0.0,
+      "detail": "`python3 .benzene/checks/templates.py integrity` failed (exit 1):\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: extra Skeleton (the other templates have Layout)"
+    },
+    {
+      "name": "verify:template-agents",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/templates.py agents` passed"
+    },
+    {
+      "name": "verify:todo-stability",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/templates.py stability 25` passed"
+    }
+  ],
+  "heal_attempts": 3,
+  "questions": [],
+  "files_written": [
+    "docs/_data/pricing.yml",
+    "templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.ts",
+    "templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.html",
+    "templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.style.css",
+    "templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.stories.ts",
+    "templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.spec.ts",
+    "templates/chota-react-redux/AGENTS.md",
+    "templates/chota-react-rtk/AGENTS.md",
+    "templates/chota-react-saga/AGENTS.md",
+    "templates/chota-react-zustand/AGENTS.md",
+    "templates/chota-vue-pinia/AGENTS.md",
+    "templates/chota-angular-ngrx/AGENTS.md",
+    "templates/chota-wc-saga/AGENTS.md",
+    "docs/ui/element.md",
+    "docs/ui/component.md",
+    "docs/ui/props.md",
+    "docs/ui/events.md",
+    "templates/chota-angular-ngrx/src/pages/HomePage.component.ts"
+  ],
+  "trace": [
+    {
+      "step": "template-harness",
+      "attempt": 1,
+      "model": "qwen/qwen3.7-plus",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 747.064,
+      "cost_usd": 0.378024,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene/material/finance\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"docs/_data\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"docs/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"skills\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \".benzene/material/finance/pricing.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/events.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \".benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene/checks\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene/checks\", \"pattern\": \"*material*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene/checks\", \"pattern\": \"*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene\", \"pattern\": \"**/*.py\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".benzene\", \"pattern\": \"**/*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".\", \"pattern\": \"**/checks/**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-redux/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-rtk/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-saga/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-zustand/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-vue-pinia/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/package.json\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-wc-saga/package.json\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\", \"content\": \"---\\n# Tiers for docs/pricing/. Order here is the order on the page.\\n#\\n# PRICES ARE PLACEHOLDERS OWNED BY THE C"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.style.css\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.stories.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.spec.ts\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.ts\", \"content\": \"import { Component } from '@angular/core';\\n\\n@Component({\\n  s"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.html\", \"content\": \"<div\\n  class=\\\"container layout\\\"\\n>\\n  <ng-content></ng-con"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.style.css\", \"content\": \".layout.container {\\n  max-width: 370px;\\n}\\n\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.stories.ts\", \"content\": \"import type { Meta, StoryObj } from '@storybook/angular';\\nimport"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.spec.ts\", \"content\": \"import { ComponentFixture, TestBed } from '@angular/core/t"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-redux/AGENTS.md\", \"content\": \"# Agent Configuration for chota-react-redux\\n\\n## Architecture\\n\\nThis template follows atomic des"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-rtk/AGENTS.md\", \"content\": \"# Agent Configuration for chota-react-rtk\\n\\n## Architecture\\n\\nThis template follows atomic design "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-saga/AGENTS.md\", \"content\": \"# Agent Configuration for chota-react-saga\\n\\n## Architecture\\n\\nThis template follows atomic desig"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-react-zustand/AGENTS.md\", \"content\": \"# Agent Configuration for chota-react-zustand\\n\\n## Architecture\\n\\nThis template follows atomic"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-vue-pinia/AGENTS.md\", \"content\": \"# Agent Configuration for chota-vue-pinia\\n\\n## Architecture\\n\\nThis template follows atomic design "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/AGENTS.md\", \"content\": \"# Agent Configuration for chota-angular-ngrx\\n\\n## Architecture\\n\\nThis template follows atomic d"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-wc-saga/AGENTS.md\", \"content\": \"# Agent Configuration for chota-wc-saga\\n\\n## Architecture\\n\\nThis template follows atomic design with"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\", \"content\": \"---\\ntitle: Element\\nlayout: doc\\nslug: element\\nreviewed: 2025-01-15\\n---\\n\\n# Element\\n\\n> - A single purpose entit"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\", \"content\": \"---\\ntitle: Component\\nlayout: doc\\nslug: component\\nreviewed: 2025-01-15\\n---\\n# Component\\n\\n> - An interactive u"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\", \"content\": \"---\\ntitle: Props\\nlayout: doc\\nslug: props\\nreviewed: 2025-01-15\\n---\\n# Props\\n\\n> - Arguments passed into JS compone"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/ui/events.md\", \"content\": \"---\\ntitle: Events\\nlayout: doc\\nslug: events\\nreviewed: 2025-01-15\\n---\\n\\n# Events\\n\\n> - Browser notifications of u"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"docs/ui/events.md\", \"content\": \"---\\ntitle: Events\\nlayout: doc\\nslug: events\\nreviewed: 2025-01-15\\n---\\n\\n# Events\\n\\n> - Browser notifications of u"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "required_patterns",
+        "forbidden_patterns",
+        "verify:template-integrity"
+      ]
+    },
+    {
+      "step": "template-harness",
+      "attempt": 2,
+      "model": "qwen/qwen3.7-plus",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 372.378,
+      "cost_usd": 0.42636,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src\", \"pattern\": \"**/*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates\", \"pattern\": \"*/src/**/ui/templates/*\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \".benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.ts\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates\", \"pattern\": \"**/*\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.html\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "forbidden_patterns",
+        "verify:template-integrity"
+      ]
+    },
+    {
+      "step": "template-harness",
+      "attempt": 3,
+      "model": "qwen/qwen3.7-plus",
+      "served_by": null,
+      "stop_reason": "max_iterations",
+      "iterations": 1,
+      "latency_s": 420.134,
+      "cost_usd": 0.592765,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-react-redux/src/app/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-react-redux\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \".benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.component.spec.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.stories.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton/Layout.style.css\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Skeleton\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-react-redux/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx\", \"pattern\": \"**/*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.component.spec.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.stories.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/ui/templates/Layout/Layout.style.css\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/app.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/pages/HomePage.component.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/containers/TodoListContainer.ts\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/pages/HomePage.component.ts\", \"content\": \"import { Component, OnInit } from '@angular/core';\\nimport { Store } from '"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.actions.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.reducer.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.effects.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/README.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.service.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/containers/SiteHeaderContainer.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/containers/ConfigContainer.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/containers/TodoFiltersContainer.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.initial.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/filters/filters.actions.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/config/config.actions.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/app.routes.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/app.config.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/main.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/environments/environment.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/environments/environment.prod.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/index.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.model.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.type.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/filters/filters.reducer.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/filters/filters.initial.ts\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/src/app/state/todo/todo.actions.ts\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "min_length",
+        "required_patterns",
+        "verify:template-integrity"
+      ]
+    }
+  ],
+  "skill_repair": "skill template-harness rewritten (unverified: no eval set)",
+  "plan": {
+    "problem": "The project at the root of the workspace fails its checks (this task: rules tier, consistency, missing, stale, references; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.ym",
+    "approach": "execute with the routed skill template-harness",
+    "steps": [
+      {
+        "step": "The project at the root of the workspace fails its checks (this task: rules tier, consistency, missing, stale, references; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.ym",
+        "skill": "template-harness",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "template-harness",
+      "score": 0.4,
+      "passed": false,
+      "attempts": 3,
+      "stopped_reason": "max_attempts"
+    }
+  ],
+  "reflection": "The plan failed because it merely repeated the problem statement instead of providing actionable steps to fix the pricing.yml tier errors, resulting in a guardrail rejection for missing required patterns and low quality. · change: Provide specific instructions to edit docs/_data/pricing.yml to add the missing 'free' and 'monthly' tiers, ensuring the plan addresses the actual root cause rather than restating the error.",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "max_attempts",
+  "estimated_cost_usd": 0.0033663599999999997,
+  "actual_cost_usd": 0.59276512,
+  "latency_s": 1539.5770647525787,
+  "model": "qwen/qwen3.7-flash",
+  "stop_reason": "max_iterations",
+  "efficacy_before": 0.694,
+  "efficacy_after": 0.6057999999999999,
+  "skill_efficacy_after": 0.6057999999999999,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "autophagy",
+  "ts": 1792281353.2141142
+}

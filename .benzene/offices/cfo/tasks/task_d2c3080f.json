@@ -1,0 +1,133 @@
+{
+  "task_id": "task_d2c3080f",
+  "cell_id": "cell_f395ef25",
+  "cell_name": "elegant-cfo-pricing",
+  "generation": 0,
+  "instruction": "Heartbeat duty: keep .benzene/material/finance/pricing.md, business-model.md and projection.md inside their bars and current with the record (a price change is the CEO's: propose it, never apply it), and .benzene/material/finance/payments.md and ledger.jsonl current with the sandbox flow (.benzene/scripts/paypal_sandbox.py). End with one line 'SUGGEST COO: <the change the numbers support>' when the model needs product work.",
+  "skill": "pricing",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_f395ef25",
+    "by": "decider",
+    "confidence": 0.52,
+    "reason": "jev-latest: elegant-cfo-pricing",
+    "probabilities": {
+      "cell_f395ef25": 0.76,
+      "cell_d874eba8": 0.24
+    }
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "HTTP 429: {\"error\":{\"message\":\"Rate limit exceeded: free-models-per-day-high-balance. \",\"code\":429,\"metadata\":{\"headers\":{\"X-RateLimit-Limit\":\"1000\",\"X-RateLimit-Remaining\":\"0\",\"X-RateLimit-Reset\":\"1792454400000\"},\"limit_source\":\"openrouter_free_tier_daily\",\"remedy_hint\":\"Wait for the daily reset (s"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0.0s of 2700s allowed"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "pricing",
+      "attempt": 1,
+      "model": "xingchen-agi/xing4.0-29b-a4b:free",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Update the specified files (`.benzene/material/finance/pricing.md`, `business-model.md`, `projection.md`, `.benzene/material/finance/payments.md`, `ledger.jsonl`) to reflect the current record (price changes are proposed, not applied) based on the sandbox flow in `(.benzene/scripts/paypal_sandbox.py)`, and conclude with a specific suggestion line.",
+    "approach": "The instruction requires updating several documents with information derived from a sandbox script execution, which implies using the `pricing` skill to inform these updates.",
+    "steps": [
+      {
+        "step": "=",
+        "skill": null,
+        "after": []
+      },
+      {
+        "step": "1",
+        "skill": "pricing",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "pricing",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 1,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cfo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 0.0,
+  "model": "xingchen-agi/xing4.0-29b-a4b:free",
+  "stop_reason": "error",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792439628.555778
+}

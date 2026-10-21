@@ -1,0 +1,247 @@
+{
+  "task_id": "task_ae0cd2f5",
+  "cell_id": "cell_f8c63b02",
+  "cell_name": "elegant-cto-template-harness-b",
+  "generation": 7,
+  "instruction": "The project at the root of the workspace fails its checks (this task: rules stale, references, consistency, missing, tier; other findings are handled in later tasks). Here is the exact output:\n\nFAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: missing Layout; extra Skeleton (the other templates have Layout)\nFAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\n\nFix it: list the workspace files, read the files named in the output and the files they refer to, write the corrected file(s) back with the workspace tools (change only what the failure needs), and report the files you changed and what changed in each. The same checks run again after you answer.",
+  "skill": "template-repo-wide-consistency-sweep",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_f8c63b02",
+    "by": "decider",
+    "confidence": 0.97,
+    "reason": "jev-latest: elegant-cto-template-harness-b",
+    "probabilities": {
+      "cell_aefb0b66": 0.01,
+      "cell_f6f0db8b": 0.0,
+      "cell_f8c63b02": 0.98,
+      "cell_c1e6e994": 0.0,
+      "cell_a2b47b76": 0.01
+    }
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "Invalid pattern: '**' can only be an entire path component"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "required_patterns",
+      "passed": false,
+      "score": 0.0,
+      "detail": "missing: ## When to use"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "337.0s of 3600s allowed"
+    }
+  ],
+  "heal_attempts": 2,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "template-repo-wide-consistency-sweep",
+      "attempt": 1,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 336.993,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"docs/ui/*.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/events.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/ui/element.md\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "forbidden_patterns",
+        "written_files",
+        "verify:template-integrity",
+        "verify:template-agents"
+      ]
+    },
+    {
+      "step": "template-repo-wide-consistency-sweep",
+      "attempt": 2,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"docs/ui/*.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/events.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/props.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/ui/element.md\"}"
+        }
+      ],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length",
+        "required_patterns"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "The project at the root of the workspace has failed consistency checks across documentation and templates, specifically related to staleness (missing review dates), references, consistency, missing agent configurations, and tier information in pricing data.",
+    "approach": "Use the `template-repo-wide-consistency-sweep` skill to address all identified issues simultaneously by fixing documentation entries and template files based on the specified rules.",
+    "steps": [
+      {
+        "step": "template-repo-wide-consistency-sweep",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "template-repo-wide-consistency-sweep",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 2,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 336.9928824901581,
+  "model": "google/gemma-4-12b",
+  "stop_reason": "error",
+  "efficacy_before": 0.5543499999999999,
+  "efficacy_after": 0.5543499999999999,
+  "skill_efficacy_after": 0.5543499999999999,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792381171.7070558
+}

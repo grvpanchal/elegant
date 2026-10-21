@@ -1,0 +1,70 @@
+{
+ "measured": "2026-10-19",
+ "template": "templates/chota-react-redux",
+ "versions": {
+  "react": "19.2.5",
+  "react-redux": "9.2.0",
+  "redux": "5.0.1",
+  "reselect": "5.1.1",
+  "vitest": "4.1.4"
+ },
+ "list renders from 3 theme toggles (steps: the render count after mount and after each toggle)": {
+  "as shipped / SHOW_ALL": {
+   "rerenders": 4,
+   "steps": "1 3 4 5",
+   "warnings": 1
+  },
+  "as shipped / SHOW_ACTIVE": {
+   "rerenders": 4,
+   "steps": "1 3 4 5",
+   "warnings": 1
+  },
+  "shallowEqual / SHOW_ALL": {
+   "rerenders": 0,
+   "steps": "1 1 1 1",
+   "warnings": 0
+  },
+  "shallowEqual / SHOW_ACTIVE": {
+   "rerenders": 4,
+   "steps": "1 3 4 5",
+   "warnings": 1
+  },
+  "createSelector / SHOW_ALL": {
+   "rerenders": 0,
+   "steps": "1 1 1 1",
+   "warnings": 0
+  },
+  "createSelector / SHOW_ACTIVE": {
+   "rerenders": 0,
+   "steps": "1 1 1 1",
+   "warnings": 0
+  }
+ },
+ "parameterised selector, 10 calls alternating ids 1 and 2": {
+  "default (weakMapMemoize), 10 calls alternating ids 1 and 2": 2,
+  "lruMemoize on both layers (Reselect 4 default), the same 10 calls": 10
+ },
+ "stability check, named selector and the reference gate": {
+  "once": {
+   "stabilityCheck": "once",
+   "warningsOnAll": 0,
+   "warningsAfterActive": 0,
+   "rendersFrom3Toggles": 3
+  },
+  "always": {
+   "stabilityCheck": "always",
+   "warningsOnAll": 0,
+   "warningsAfterActive": 7,
+   "rendersFrom3Toggles": 3
+  },
+  "named": [
+   "Selector selectTodoData returned a different result when called with the same parameters. This can lead to unnecessary rerenders."
+  ],
+  "gate": {
+   "memoizedToBe": true,
+   "recomputations": 1,
+   "plainToBe": false,
+   "plainToEqual": true
+  }
+ }
+}

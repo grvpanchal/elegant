@@ -1,0 +1,319 @@
+{
+  "task_id": "task_23a1a10a",
+  "cell_id": "cell_7a665041",
+  "cell_name": "elegant-cto-training-site",
+  "generation": 1,
+  "instruction": "Edit docs/index.md to add a hero section at the top that explicitly names 'Training Site' and 'Practice Dashboard', distinguishes them from a CLI tool, and embeds the existing code-playground include (slug=\"action-creators\") as a live lesson preview. Keep all existing sections below.",
+  "skill": "training-site",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_7a665041",
+    "by": "decider",
+    "confidence": 0.71,
+    "reason": "jev-latest: elegant-cto-training-site",
+    "probabilities": {
+      "cell_7a665041": 0.78,
+      "cell_aefb0b66": 0.22,
+      "cell_f6f0db8b": 0.0,
+      "cell_f8c63b02": 0.0
+    }
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "timed out"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1004.2s of 1800s allowed"
+    }
+  ],
+  "heal_attempts": 3,
+  "questions": [],
+  "files_written": [
+    "docs/index.md"
+  ],
+  "trace": [
+    {
+      "step": "training-site",
+      "attempt": 1,
+      "model": "prism-ml/bonsai-27b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 354.544,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/index.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"docs/index.md\",\"content\":\"---\\nlayout: home\\ntitle: Frontend Architecture Principles\\n---\\n\\n<section id=\\\"hero\\\" class=\\\"landing-section\\\">\\n  <p clas"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/index.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"docs/index.md\",\"content\":\"---\\nlayout: home\\ntitle: Frontend Architecture Principles\\n---\\n\\n<section id=\\\"hero\\\" class=\\\"landing-section\\\">\\n  <p clas"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/index.md\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "verify:site-health",
+        "verify:seo",
+        "verify:pricing-sync"
+      ]
+    },
+    {
+      "step": "training-site",
+      "attempt": 2,
+      "model": "prism-ml/bonsai-27b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 649.612,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/blog\",\"pattern\":\"*.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/blog\",\"pattern\":\"*.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/accessibility-is-not-a-checklist.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/accessible-forms-labels-and-errors.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/head-custom.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"*.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/_data\",\"pattern\":\"pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/finance/pricing.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/actions-are-messages-not-setters.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/head-custom.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/actions-are-messages-not-setters.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "verify:site-health",
+        "verify:seo",
+        "verify:pricing-sync"
+      ]
+    },
+    {
+      "step": "training-site",
+      "attempt": 3,
+      "model": "prism-ml/bonsai-27b",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/blog\",\"pattern\":\"*.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/blog\",\"pattern\":\"*.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/accessibility-is-not-a-checklist.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/accessible-forms-labels-and-errors.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/head-custom.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"*.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs/_data\",\"pattern\":\"pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/finance/pricing.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/actions-are-messages-not-setters.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/head-custom.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/blog/actions-are-messages-not-setters.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        }
+      ],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Edit docs/index.md to add a hero section at the top that explicitly names 'Training Site' and 'Practice Dashboard', distinguishes them from a CLI tool, and embeds the existing code-playground include (slug=\"action-creators\") as a live lesson preview. Keep all existing sections below.",
+    "approach": "execute with the routed skill training-site",
+    "steps": [
+      {
+        "step": "Edit docs/index.md to add a hero section at the top that explicitly names 'Training Site' and 'Practice Dashboard', distinguishes them from a CLI tool, and embeds the existing code-playground include (slug=\"action-creators\") as a live lesson preview. Keep all existing sections below.",
+        "skill": "training-site",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "training-site",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 3,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 1004.1558258533478,
+  "model": "prism-ml/bonsai-27b",
+  "stop_reason": "error",
+  "efficacy_before": 0.82,
+  "efficacy_after": 0.82,
+  "skill_efficacy_after": 0.82,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792336698.1194742
+}

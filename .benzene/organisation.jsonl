@@ -1,0 +1,336 @@
+{"kind": "found", "task": 0, "ts": 1792272572.7064314, "office": "cto", "reason": "founded at the start: the product is built first", "cell": "cell_7a665041", "skills": ["training-site"]}
+{"kind": "milestone", "task": 0, "ts": 1792272580.768527, "name": "showcase", "index": "docs/_site/index.html", "showcase_kind": "site", "what": "The training site itself: the dashboard, the free courses and the practice bank, every lesson a term with its downloadable Agent Skill, built from this repository by Jekyll."}
+{"kind": "handoff", "task": 0, "ts": 1792272580.7686265, "from_office": "cto", "to_office": "cmo", "asset": "docs/_site/index.html", "what": "The training site itself: the dashboard, the free courses and the practice bank, every lesson a term with its downloadable Agent Skill, built from this repository by Jekyll."}
+{"kind": "found", "task": 0, "ts": 1792272689.708524, "office": "coo", "reason": "the standard is its blueprint: 5 bars", "cell": "cell_45f402db", "skills": ["orchestrate"]}
+{"kind": "found", "task": 0, "ts": 1792273373.4463387, "office": "cmo", "reason": "the standard is its blueprint: 11 bars", "cell": "cell_56ce9497", "skills": ["blog-writer"]}
+{"kind": "found", "task": 0, "ts": 1792273668.4106119, "office": "cxo", "reason": "the standard is its blueprint: 4 bars", "cell": "cell_755b22d3", "skills": ["analytics-report"]}
+{"kind": "found", "task": 0, "ts": 1792273878.834455, "office": "cfo", "reason": "the standard is its blueprint: 3 bars", "cell": "cell_f395ef25", "skills": ["pricing"]}
+{"kind": "found", "task": 0, "ts": 1792273998.3388174, "office": "cio", "reason": "the standard is its blueprint: 2 bars", "cell": "cell_3de3cec9", "skills": ["pitch"]}
+{"kind": "instruction", "task": 1, "ts": 1792275227.0793664, "office": "cto", "tasks": ["task_77982bbe"], "passed": false, "cost_usd": 0.495492}
+{"kind": "instruction", "task": 2, "ts": 1792276003.604358, "office": "cmo", "tasks": ["task_9cee6de4"], "passed": false, "cost_usd": 0.747976}
+{"kind": "instruction", "task": 3, "ts": 1792276368.4436307, "office": "cfo", "tasks": ["task_b0bc0c7c"], "passed": true, "cost_usd": 0.001148}
+{"kind": "evaluation", "task": 3, "ts": 1792276474.2069027, "office": "cxo", "format": "user_panel", "metrics": {"satisfaction": 0.36, "upvotes": 1.0}, "path": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/evaluations/cxo-001-user_panel.md", "tag": ""}
+{"kind": "metric", "task": 3, "ts": 1792276474.2070584, "name": "satisfaction", "value": 0.36, "source": "cxo:user_panel"}
+{"kind": "feedback_held", "task": 3, "ts": 1792276474.2072148, "name": "satisfaction", "value": 0.36, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "metric", "task": 3, "ts": 1792276474.2760637, "name": "upvotes", "value": 1.0, "source": "cxo:user_panel"}
+{"kind": "feedback_held", "task": 3, "ts": 1792276474.2762518, "name": "upvotes", "value": 1.0, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "evaluation", "task": 3, "ts": 1792276599.872444, "office": "cio", "format": "investor_panel", "metrics": {"investability": 0.2167, "offers": 0.0, "investment_usd": 0.0}, "path": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/evaluations/cio-001-investor_panel.md", "tag": ""}
+{"kind": "metric", "task": 3, "ts": 1792276599.8725839, "name": "investability", "value": 0.2167, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 3, "ts": 1792276599.8728256, "name": "investability", "value": 0.2167, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "metric", "task": 3, "ts": 1792276599.9358199, "name": "offers", "value": 0.0, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 3, "ts": 1792276599.9359124, "name": "offers", "value": 0.0, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "metric", "task": 3, "ts": 1792276599.9808416, "name": "investment_usd", "value": 0.0, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 3, "ts": 1792276599.9809275, "name": "investment_usd", "value": 0.0, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "cluster", "task": 3, "ts": 1792276833.1631818, "office": "coo", "skills": ["sprint-within-capacity"], "cells": ["cell_ba603ed7"], "names": ["elegant-coo-sprint-within-capacity-1"], "refreshed": [], "reason": "the coder answered coo/sprint-within-capacity"}
+{"kind": "instruction", "task": 4, "ts": 1792277590.1581724, "office": "cto", "tasks": ["task_5b35857d"], "passed": false, "cost_usd": 0.130222}
+{"kind": "instruction", "task": 5, "ts": 1792278391.3652704, "office": "cto", "tasks": ["task_d9de14c9"], "passed": false, "cost_usd": 0.522169}
+{"kind": "evaluation_unchanged", "task": 5, "ts": 1792278391.3699052, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 6, "ts": 1792278903.1865854, "office": "coo", "tasks": ["task_9b9e1372"], "passed": false, "cost_usd": 0.00348}
+{"kind": "evaluation_unchanged", "task": 6, "ts": 1792278903.1932585, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 7, "ts": 1792279264.5831437, "office": "coo", "tasks": ["task_ea667117"], "passed": false, "cost_usd": 0.3499}
+{"kind": "cluster", "task": 7, "ts": 1792281113.042507, "office": "cmo", "skills": ["youtube"], "cells": ["cell_bef2fb7e"], "names": ["elegant-cmo-youtube-1"], "refreshed": [], "reason": "the CEO asked for a YouTube agent in the CMO"}
+{"kind": "standard_sync", "task": 7, "ts": 1792281119.1608474, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 8, "ts": 1792283053.4178977, "office": "cto", "tasks": ["task_f2efac25"], "passed": false, "cost_usd": 0.592765}
+{"kind": "instruction", "task": 9, "ts": 1792285001.5835726, "office": "cto", "tasks": ["task_dff1f17e"], "passed": false, "cost_usd": 0.295027}
+{"kind": "evaluation_unchanged", "task": 9, "ts": 1792285001.5883899, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 10, "ts": 1792285602.7143977, "office": "cto", "tasks": ["task_7cbba722"], "passed": false, "cost_usd": 0.137184}
+{"kind": "evaluation_unchanged", "task": 10, "ts": 1792285602.717758, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 10, "ts": 1792286063.72891, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 11, "ts": 1792286123.3484452, "office": "coo", "tasks": ["task_947fe097"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 11, "ts": 1792286204.8961935, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 12, "ts": 1792287055.4408576, "office": "cto", "tasks": ["task_bf2fdf67"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 12, "ts": 1792287055.4499586, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 13, "ts": 1792287323.0085208, "office": "cto", "tasks": ["task_b6e428e7"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 14, "ts": 1792287454.1668158, "office": "cto", "tasks": ["task_ac6dd882"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 14, "ts": 1792287515.6082885, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 15, "ts": 1792287626.8045192, "office": "coo", "tasks": ["task_7778f6d8"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 15, "ts": 1792287626.8149433, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 15, "ts": 1792287626.8244524, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 15, "ts": 1792287688.1938212, "office": "cto", "by": "decider", "confidence": 0.64}
+{"kind": "instruction", "task": 16, "ts": 1792287907.7914147, "office": "cto", "tasks": ["task_86e58b11"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 16, "ts": 1792291259.2668443, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 17, "ts": 1792291556.9229813, "office": "cto", "tasks": ["task_4fa24719"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 18, "ts": 1792291910.980591, "office": "cmo", "tasks": ["task_d128c85c"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 18, "ts": 1792291910.9883394, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 19, "ts": 1792292189.2651227, "office": "cfo", "tasks": ["task_ef4e9e06"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 19, "ts": 1792292436.4966123, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "standard_sync", "task": 19, "ts": 1792294127.814129, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 20, "ts": 1792295183.510657, "office": "cto", "tasks": ["task_0cc43095"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 20, "ts": 1792295183.5196803, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 21, "ts": 1792295469.4893165, "office": "coo", "tasks": ["task_7baae568"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 21, "ts": 1792295469.50175, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 21, "ts": 1792295531.4111657, "office": "coo", "by": "decider", "confidence": 0.95}
+{"kind": "instruction", "task": 22, "ts": 1792295695.2188241, "office": "coo", "tasks": ["task_f7c5157b"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 22, "ts": 1792296269.6175945, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "standard_sync", "task": 22, "ts": 1792296698.5393078, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 23, "ts": 1792298781.1639907, "office": "cto", "tasks": ["task_c8642253"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation", "task": 23, "ts": 1792298875.2498395, "office": "cio", "format": "investor_panel", "metrics": {"investability": 0.1333, "offers": 0.0, "investment_usd": 0.0}, "path": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/evaluations/cio-002-investor_panel.md", "tag": ""}
+{"kind": "metric", "task": 23, "ts": 1792298875.250009, "name": "investability", "value": 0.1333, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 23, "ts": 1792298875.2501786, "name": "investability", "value": 0.1333, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "metric", "task": 23, "ts": 1792298875.3308473, "name": "offers", "value": 0.0, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 23, "ts": 1792298875.3309438, "name": "offers", "value": 0.0, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "metric", "task": 23, "ts": 1792298875.3862157, "name": "investment_usd", "value": 0.0, "source": "cio:investor_panel"}
+{"kind": "feedback_held", "task": 23, "ts": 1792298875.3863041, "name": "investment_usd", "value": 0.0, "why": "combined_audience unmeasured < 5000: healing against the standard, feedback held"}
+{"kind": "route", "task": 23, "ts": 1792298986.96241, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 24, "ts": 1792299018.0098145, "office": "coo", "tasks": ["task_5cf635a5"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 24, "ts": 1792299018.0229962, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 24, "ts": 1792299087.1135066, "office": "coo", "by": "decider", "confidence": 0.98}
+{"kind": "instruction", "task": 25, "ts": 1792299118.9033456, "office": "coo", "tasks": ["task_81446728"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 25, "ts": 1792299118.9287937, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 26, "ts": 1792302918.4167857, "office": "cto", "tasks": ["task_2285eb03"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 27, "ts": 1792303013.2311082, "office": "cmo", "tasks": ["task_ce370c23"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 27, "ts": 1792303013.2416258, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 28, "ts": 1792303168.1644614, "office": "cfo", "tasks": ["task_47b15849"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 28, "ts": 1792303338.0430462, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 29, "ts": 1792303369.2844083, "office": "coo", "tasks": ["task_b2461931"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 29, "ts": 1792303430.2036767, "office": "coo", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 30, "ts": 1792303461.0282097, "office": "coo", "tasks": ["task_43b4bdf0"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 30, "ts": 1792303461.0406668, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 30, "ts": 1792303461.0516608, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 31, "ts": 1792305450.1237037, "office": "cto", "tasks": ["task_cd64dc65"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 31, "ts": 1792305560.3996665, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 32, "ts": 1792305591.8418486, "office": "coo", "tasks": ["task_960f8064"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 32, "ts": 1792305652.6205056, "office": "coo", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 33, "ts": 1792305684.1875794, "office": "coo", "tasks": ["task_4293e917"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 33, "ts": 1792305684.201492, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 34, "ts": 1792307256.9215086, "office": "cto", "tasks": ["task_68b774ad"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 34, "ts": 1792307366.422713, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 35, "ts": 1792307398.1318648, "office": "coo", "tasks": ["task_27acca98"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 35, "ts": 1792307398.1448712, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 35, "ts": 1792307457.832155, "office": "coo", "by": "decider", "confidence": 0.98}
+{"kind": "instruction", "task": 36, "ts": 1792307488.7979982, "office": "coo", "tasks": ["task_3c3d1dd8"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 36, "ts": 1792307488.8126137, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 37, "ts": 1792311283.578884, "office": "cto", "tasks": ["task_6cd16d95"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 38, "ts": 1792311377.3169694, "office": "cmo", "tasks": ["task_8ea2983c"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 39, "ts": 1792311532.2981532, "office": "cfo", "tasks": ["task_5465952e"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 39, "ts": 1792311532.3135855, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 39, "ts": 1792311701.2535155, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 40, "ts": 1792311732.4170856, "office": "coo", "tasks": ["task_bb0e5479"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 40, "ts": 1792311732.4307163, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 40, "ts": 1792311792.6673877, "office": "coo", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 41, "ts": 1792311823.3087416, "office": "coo", "tasks": ["task_f97f2feb"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 42, "ts": 1792315619.4759731, "office": "cto", "tasks": ["task_7a8d7400"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 42, "ts": 1792315619.4889371, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 42, "ts": 1792315619.6558006, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 43, "ts": 1792315758.333239, "office": "coo", "tasks": ["task_0c681eba"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 44, "ts": 1792315848.90263, "office": "coo", "tasks": ["task_ce4823d6"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 45, "ts": 1792319645.9556515, "office": "cto", "tasks": ["task_43fc8612"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 45, "ts": 1792319645.9655404, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 45, "ts": 1792319645.9706454, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 46, "ts": 1792319786.843839, "office": "coo", "tasks": ["task_14bb9008"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 47, "ts": 1792319877.8636875, "office": "coo", "tasks": ["task_72e0607c"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 48, "ts": 1792323673.4336474, "office": "cto", "tasks": ["task_bfc4a71b"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 48, "ts": 1792323673.4457834, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 49, "ts": 1792323768.731524, "office": "cmo", "tasks": ["task_63a1a286"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 50, "ts": 1792323923.359686, "office": "cfo", "tasks": ["task_83e38e3f"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 50, "ts": 1792323923.3758695, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 51, "ts": 1792324124.6668963, "office": "coo", "tasks": ["task_659ae774"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 51, "ts": 1792324124.6856103, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 52, "ts": 1792324214.9610488, "office": "coo", "tasks": ["task_a18fd14d"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 53, "ts": 1792328010.7595124, "office": "cto", "tasks": ["task_934816c8"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 54, "ts": 1792328151.4181828, "office": "coo", "tasks": ["task_b9891cb6"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 54, "ts": 1792328151.4254928, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 55, "ts": 1792328244.2101898, "office": "coo", "tasks": ["task_b2ae10d8"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 55, "ts": 1792328244.2200332, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "standard_sync", "task": 55, "ts": 1792331205.872069, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 56, "ts": 1792333866.9012353, "office": "cto", "tasks": ["task_9700b677"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 56, "ts": 1792334002.3414092, "office": "coo", "by": "decider", "confidence": 1.0}
+{"kind": "instruction", "task": 57, "ts": 1792336137.950932, "office": "coo", "tasks": ["task_e5f6728e"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 57, "ts": 1792336137.9596841, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 57, "ts": 1792336199.7659755, "office": "coo", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 58, "ts": 1792342877.6509573, "office": "coo", "tasks": ["task_e841268f", "task_23a1a10a", "task_01532857", "task_ccbd5da8", "task_d96d6832"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 58, "ts": 1792343586.2724364, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 59, "ts": 1792346019.7402506, "office": "cto", "tasks": ["task_6f78cd42"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 60, "ts": 1792346784.2296283, "office": "cmo", "tasks": ["task_c8968acf"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 60, "ts": 1792346784.2411833, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 60, "ts": 1792346784.250932, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 61, "ts": 1792348566.2922695, "office": "cfo", "tasks": ["task_68a065ff"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 61, "ts": 1792348629.0103083, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 61, "ts": 1792348767.4878404, "office": "cto", "by": "decider", "confidence": 0.7}
+{"kind": "instruction", "task": 62, "ts": 1792350269.5905037, "office": "cto", "tasks": ["task_98af0a00"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 62, "ts": 1792350337.7340596, "office": "cto", "by": "decider", "confidence": 0.92}
+{"kind": "instruction", "task": 63, "ts": 1792354011.6411061, "office": "cto", "tasks": ["task_f96f47c1"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 63, "ts": 1792354011.652417, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "standard_sync", "task": 63, "ts": 1792354478.8162644, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 64, "ts": 1792356852.948393, "office": "cto", "tasks": ["task_326ded64"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 64, "ts": 1792356983.7838993, "office": "coo", "by": "decider", "confidence": 0.59}
+{"kind": "instruction", "task": 65, "ts": 1792358605.6553931, "office": "coo", "tasks": ["task_86961af8", "task_b8a0bd2e"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 65, "ts": 1792358605.6819127, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 65, "ts": 1792358669.2384715, "office": "coo", "by": "decider", "confidence": 0.93}
+{"kind": "instruction", "task": 66, "ts": 1792359865.6588767, "office": "coo", "tasks": ["task_5978679f"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 66, "ts": 1792359865.6867223, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 67, "ts": 1792367369.5633805, "office": "cto", "tasks": ["task_27e6ee0c"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 67, "ts": 1792367833.8269317, "office": "coo", "by": "decider", "confidence": 0.65}
+{"kind": "instruction", "task": 68, "ts": 1792369402.2677586, "office": "coo", "tasks": ["task_8aaa9095", "task_77ca18b1"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 68, "ts": 1792369463.612455, "office": "coo", "by": "decider", "confidence": 0.94}
+{"kind": "instruction", "task": 69, "ts": 1792369574.7070777, "office": "coo", "tasks": ["task_06b4dd07"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 69, "ts": 1792369574.7187757, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "standard_sync", "task": 69, "ts": 1792369643.3168132, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 70, "ts": 1792370201.1178792, "office": "cmo", "tasks": ["task_14cf0954"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 70, "ts": 1792370201.1308088, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 71, "ts": 1792373033.1617606, "office": "cfo", "tasks": ["task_0283a84f", "task_56307a6f"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 71, "ts": 1792373966.700755, "office": "cto", "by": "decider", "confidence": 0.9}
+{"kind": "instruction", "task": 72, "ts": 1792378670.638845, "office": "cto", "tasks": ["task_e634cc87"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 72, "ts": 1792378670.6750207, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 72, "ts": 1792378738.950606, "office": "cto", "by": "decider", "confidence": 0.95}
+{"kind": "instruction", "task": 73, "ts": 1792380925.4760935, "office": "cto", "tasks": ["task_c232cbe7"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 73, "ts": 1792380998.1167755, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 74, "ts": 1792382211.1449704, "office": "cto", "tasks": ["task_ae0cd2f5"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 74, "ts": 1792382345.3145888, "office": "cto", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 75, "ts": 1792383491.1702156, "office": "cto", "tasks": ["task_d8acd4f6"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 75, "ts": 1792383491.1851697, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 75, "ts": 1792383491.197818, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 75, "ts": 1792383553.6530359, "office": "cto", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 76, "ts": 1792384902.1551437, "office": "cto", "tasks": ["task_82e6d6c2"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 76, "ts": 1792384975.8019707, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 77, "ts": 1792387487.964025, "office": "cto", "tasks": ["task_32c24b45"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 77, "ts": 1792387488.1276875, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 78, "ts": 1792388092.1496906, "office": "cmo", "tasks": ["task_048794e0"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 78, "ts": 1792388092.1630778, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 78, "ts": 1792388394.7995076, "office": "cto", "by": "decider", "confidence": 0.98}
+{"kind": "instruction", "task": 79, "ts": 1792391831.724, "office": "cto", "tasks": ["task_f83f3d2a"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 79, "ts": 1792391893.4494665, "office": "cto", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 80, "ts": 1792394039.7151718, "office": "cto", "tasks": ["task_4bf15c11"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 80, "ts": 1792394039.7274897, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "standard_sync", "task": 80, "ts": 1792394098.5696945, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 81, "ts": 1792395450.0481422, "office": "cto", "tasks": ["task_054d3607"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 81, "ts": 1792395450.062628, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 82, "ts": 1792396502.3566873, "office": "cmo", "tasks": ["task_df0b4d50"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 83, "ts": 1792398796.4976194, "office": "cfo", "tasks": ["task_85643b68"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 83, "ts": 1792399204.5215945, "office": "cmo", "by": "decider", "confidence": 0.77}
+{"kind": "instruction", "task": 84, "ts": 1792401167.3975217, "office": "cmo", "tasks": ["task_f3e62b16"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 84, "ts": 1792401167.4134078, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 84, "ts": 1792401281.6214683, "office": "cto", "by": "decider", "confidence": 0.98}
+{"kind": "instruction", "task": 85, "ts": 1792402698.9803636, "office": "cto", "tasks": ["task_fcc1344c"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 85, "ts": 1792402698.995, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "standard_sync", "task": 85, "ts": 1792402773.280217, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 86, "ts": 1792422247.264212, "office": "cto", "tasks": ["task_cd5aa7e3", "task_39c19156", "task_7aa7ebc0", "task_6be81b67", "task_e585dc71", "task_fa9870a5"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 87, "ts": 1792423377.134772, "office": "coo", "tasks": ["task_cc0abddf"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 87, "ts": 1792423377.169468, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 88, "ts": 1792425332.9796004, "office": "cmo", "tasks": ["task_54c8787c"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 89, "ts": 1792427111.5339787, "office": "coo", "tasks": ["task_f59494cf"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 89, "ts": 1792427181.2669458, "office": "cto", "by": "decider", "confidence": 0.58}
+{"kind": "instruction", "task": 90, "ts": 1792429331.8813097, "office": "cto", "tasks": ["task_2e8cbaaa"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 90, "ts": 1792429331.8994722, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 90, "ts": 1792429331.917147, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "standard_sync", "task": 90, "ts": 1792431569.095054, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 91, "ts": 1792432795.8448339, "office": "coo", "tasks": ["task_ea45a827"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 92, "ts": 1792434170.4701707, "office": "coo", "tasks": ["task_74178820"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 92, "ts": 1792434232.2868097, "office": "coo", "by": "decider", "confidence": 0.63}
+{"kind": "instruction", "task": 93, "ts": 1792434768.094269, "office": "coo", "tasks": ["task_54744ae5"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 93, "ts": 1792434768.1312273, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 94, "ts": 1792439255.3684728, "office": "cmo", "tasks": ["task_f7fd2df6"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 95, "ts": 1792440359.1178544, "office": "cfo", "tasks": ["task_d2c3080f"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 95, "ts": 1792440359.1408424, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 96, "ts": 1792441230.831937, "office": "coo", "tasks": ["task_1ac61d24"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 96, "ts": 1792441230.9554112, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 96, "ts": 1792442841.0605311, "office": "cto", "by": "decider", "confidence": 0.98}
+{"kind": "instruction", "task": 97, "ts": 1792445909.7518647, "office": "cto", "tasks": ["task_bcbadeb8"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 97, "ts": 1792445973.5352948, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "standard_sync", "task": 97, "ts": 1792447236.2831142, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "instruction", "task": 98, "ts": 1792453839.71515, "office": "cto", "tasks": ["task_5ca80602"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 98, "ts": 1792453839.9351137, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 99, "ts": 1792454759.1895154, "office": "coo", "tasks": ["task_5a23403a"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 99, "ts": 1792454759.2111692, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 100, "ts": 1792456220.0036957, "office": "cmo", "tasks": ["task_a5078e8b"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 100, "ts": 1792456220.022121, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 101, "ts": 1792456762.4619708, "office": "cmo", "tasks": ["task_2e7beeb9"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 101, "ts": 1792457155.743511, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 102, "ts": 1792459971.0691295, "office": "cto", "tasks": ["task_a1ce3c8a"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 102, "ts": 1792459971.090161, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 102, "ts": 1792460035.6946783, "office": "coo", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 103, "ts": 1792461250.3433456, "office": "coo", "tasks": ["task_307febca"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 104, "ts": 1792465956.6248364, "office": "cto", "tasks": ["task_61653103"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 105, "ts": 1792466807.5402796, "office": "coo", "tasks": ["task_5d3df1b9"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 105, "ts": 1792466807.563948, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 105, "ts": 1792466807.584758, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 106, "ts": 1792467404.0211926, "office": "cmo", "tasks": ["task_df55d05a"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 107, "ts": 1792467879.298856, "office": "cmo", "tasks": ["task_b82c6baf"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 107, "ts": 1792468211.8723197, "office": "cto", "by": "decider", "confidence": 0.94}
+{"kind": "instruction", "task": 108, "ts": 1792473806.3592308, "office": "cto", "tasks": ["task_c62dc863"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 108, "ts": 1792473806.3774962, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "route", "task": 108, "ts": 1792473867.8001554, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 109, "ts": 1792476183.0361872, "office": "cto", "tasks": ["task_3cbd7432"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 110, "ts": 1792480863.6915567, "office": "cto", "tasks": ["task_e044bc8e"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 110, "ts": 1792480863.712097, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 111, "ts": 1792481434.9999108, "office": "cmo", "tasks": ["task_56812ee9"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 111, "ts": 1792481435.0223927, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 112, "ts": 1792482121.0405226, "office": "cfo", "tasks": ["task_e2440c14"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 113, "ts": 1792482805.232504, "office": "coo", "tasks": ["task_d1f12883"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 114, "ts": 1792489219.3190548, "office": "cmo", "tasks": ["task_c61ca157"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 114, "ts": 1792489219.3411787, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 115, "ts": 1792489816.6677125, "office": "cmo", "tasks": ["task_2740874c"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 115, "ts": 1792489816.6864896, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 116, "ts": 1792491129.3865077, "office": "cmo", "tasks": ["task_cf0259a0"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 116, "ts": 1792492315.3103318, "office": "cto", "by": "decider", "confidence": 0.94}
+{"kind": "instruction", "task": 117, "ts": 1792496597.2743719, "office": "cto", "tasks": ["task_99e36d83"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 117, "ts": 1792496597.2972188, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "instruction", "task": 118, "ts": 1792497476.3076105, "office": "coo", "tasks": ["task_392260fd"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 118, "ts": 1792497550.5437894, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "standard_sync", "task": 118, "ts": 1792497593.6114454, "added": ["cmo/elegant-cmo-youtube-1: verify:youtube"]}
+{"kind": "route", "task": 118, "ts": 1792507152.962502, "office": "cxo", "by": "decider", "confidence": 0.86}
+{"kind": "instruction", "task": 119, "ts": 1792508685.2687197, "office": "cxo", "tasks": ["task_60357e06"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 119, "ts": 1792508748.8362625, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 120, "ts": 1792512162.3198369, "office": "coo", "tasks": ["task_cfacf93b"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 120, "ts": 1792512162.3429277, "office": "cxo", "format": "user_panel", "tag": ""}
+{"kind": "evaluation_unchanged", "task": 120, "ts": 1792512162.4275997, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 121, "ts": 1792517256.353069, "office": "cto", "tasks": ["task_192ccd53"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 121, "ts": 1792526323.0534546, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "cluster", "task": 121, "ts": 1792526323.0536096, "office": "cmo", "skills": ["folder-diagram"], "cells": ["cell_9d98af25"], "names": ["elegant-cmo-folder-diagram-1"], "refreshed": [], "reason": "asked by the top coder"}
+{"kind": "standard_sync", "task": 121, "ts": 1792526373.9790661, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "standard_sync", "task": 121, "ts": 1792527980.3352253, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 122, "ts": 1792532356.3214471, "office": "cto", "tasks": ["task_53403e45"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 123, "ts": 1792533388.136739, "office": "cmo", "tasks": ["task_5678103d"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 124, "ts": 1792533936.6834471, "office": "cfo", "tasks": ["task_3b2007d6"], "passed": true, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 124, "ts": 1792533998.9240327, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "route", "task": 124, "ts": 1792534339.6069813, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 125, "ts": 1792540615.542483, "office": "cto", "tasks": ["task_80a14ec2"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 125, "ts": 1792540678.1278853, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "standard_sync", "task": 125, "ts": 1792542691.6505687, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 126, "ts": 1792544766.2315588, "office": "cmo", "tasks": ["task_9b2b19d7"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 127, "ts": 1792547592.8490646, "office": "cto", "tasks": ["task_74677a45"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 127, "ts": 1792547860.8366115, "office": "cto", "by": "decider", "confidence": 1.0}
+{"kind": "standard_sync", "task": 127, "ts": 1792551673.745569, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "route", "task": 127, "ts": 1792551887.8654544, "office": "cmo", "by": "decider", "confidence": 0.89}
+{"kind": "instruction", "task": 128, "ts": 1792552387.5538478, "office": "cmo", "tasks": ["task_a97f9fd4"], "passed": true, "cost_usd": 0.0}
+{"kind": "route", "task": 128, "ts": 1792552440.5277314, "office": "cxo", "by": "decider", "confidence": 0.89}
+{"kind": "instruction", "task": 129, "ts": 1792552729.0145838, "office": "cxo", "tasks": ["task_9e759e36"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 129, "ts": 1792554414.950805, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "standard_sync", "task": 129, "ts": 1792556280.086051, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "standard_sync", "task": 129, "ts": 1792557366.6909873, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 130, "ts": 1792558071.5202732, "office": "cmo", "tasks": ["task_9b9751c2"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 131, "ts": 1792559081.7765713, "office": "cfo", "tasks": ["task_06aaf955"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 132, "ts": 1792559669.8824966, "office": "cto", "tasks": ["task_7b5ee426"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 133, "ts": 1792560001.3606267, "office": "coo", "tasks": ["task_7dd057e8"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 134, "ts": 1792560831.7213025, "office": "cto", "tasks": ["task_f443e8af"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 135, "ts": 1792561673.6676834, "office": "cto", "tasks": ["task_a73430da"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 135, "ts": 1792561707.5579169, "office": "cto", "by": "decider", "confidence": 0.96}
+{"kind": "instruction", "task": 136, "ts": 1792564141.484151, "office": "cto", "tasks": ["task_62fd6cf0"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 136, "ts": 1792564177.0204835, "office": "cto", "by": "decider", "confidence": 0.94}
+{"kind": "instruction", "task": 137, "ts": 1792567743.6622808, "office": "cto", "tasks": ["task_45b3c8be"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 137, "ts": 1792567799.0263758, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 138, "ts": 1792570289.4298072, "office": "cto", "tasks": ["task_8f24ea52"], "passed": false, "cost_usd": 0.0}
+{"kind": "evaluation_unchanged", "task": 138, "ts": 1792570289.7047682, "office": "cio", "format": "investor_panel", "tag": ""}
+{"kind": "instruction", "task": 139, "ts": 1792571323.772013, "office": "coo", "tasks": ["task_452fb8bf"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 140, "ts": 1792573440.9102302, "office": "cto", "tasks": ["task_f3a6ae6b"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 140, "ts": 1792573473.9032269, "office": "cto", "by": "decider", "confidence": 0.82}
+{"kind": "instruction", "task": 141, "ts": 1792577333.6111746, "office": "cto", "tasks": ["task_c4d26bda"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 141, "ts": 1792577370.1941297, "office": "cto", "by": "decider", "confidence": 0.92}
+{"kind": "instruction", "task": 142, "ts": 1792579672.6166232, "office": "cto", "tasks": ["task_34b53c98"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 143, "ts": 1792587532.6390142, "office": "cto", "tasks": ["task_c7597739"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 144, "ts": 1792591617.576016, "office": "cto", "tasks": ["task_92263962"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 145, "ts": 1792592631.118949, "office": "cmo", "tasks": ["task_9ee2ab2c"], "passed": true, "cost_usd": 0.0}
+{"kind": "instruction", "task": 146, "ts": 1792593822.7830899, "office": "cfo", "tasks": ["task_7c339bed"], "passed": true, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 146, "ts": 1792599018.3359683, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 147, "ts": 1792602761.8191063, "office": "cto", "tasks": ["task_b7a99ff3"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 147, "ts": 1792602778.0926466, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}
+{"kind": "instruction", "task": 148, "ts": 1792604819.05459, "office": "cto", "tasks": ["task_6d71075c"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 149, "ts": 1792606658.2442622, "office": "cto", "tasks": ["task_a7c83333"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 149, "ts": 1792606692.7544136, "office": "cto", "by": "decider", "confidence": 0.95}
+{"kind": "instruction", "task": 150, "ts": 1792606820.2994864, "office": "cmo", "tasks": ["task_036220c0"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 151, "ts": 1792608337.4463708, "office": "cto", "tasks": ["task_d5f14cb2"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 152, "ts": 1792610546.455453, "office": "cmo", "tasks": ["task_4ffb6a92"], "passed": false, "cost_usd": 0.0}
+{"kind": "instruction", "task": 153, "ts": 1792611687.501825, "office": "cto", "tasks": ["task_9970a4cf"], "passed": false, "cost_usd": 0.0}
+{"kind": "route", "task": 153, "ts": 1792611723.6117036, "office": "cto", "by": "decider", "confidence": 0.99}
+{"kind": "instruction", "task": 154, "ts": 1792612835.2968585, "office": "cto", "tasks": ["task_d927726c"], "passed": false, "cost_usd": 0.0}
+{"kind": "standard_sync", "task": 154, "ts": 1792612883.4597116, "added": ["cmo/elegant-cmo-folder-diagram-1: verify:diagrams"]}

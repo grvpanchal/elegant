@@ -1,0 +1,3583 @@
+{
+  "cells": [
+    {
+      "name": "elegant-cxo-analytics-report",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "analytics-report",
+          "description": "Read the week's analytics snapshot (Upload-Post for Instagram, Facebook, the LinkedIn page, X and YouTube; ConnectSafely for personal LinkedIn) and write what it says and what the COO should do about it.",
+          "instructions": "# Analytics report\n\nThe snapshot is taken by the instrument (`.benzene/scripts/analytics.py`, read-only) into\n`.benzene/material/experience/analytics/<YYYY-Www>.json` and summarised in `analytics.md`. You read it and write\n`.benzene/material/experience/analytics-report.md`:\n\n```yaml\nweek: <the snapshot's week, e.g. 2026-W42>\ncombined_audience: <the snapshot's number>\nsource: .benzene/material/experience/analytics/<week>.json\n```\n\nSections: `## Audience` (the combined audience against the 5,000 threshold at which feedback steers the product, and\nthe trend against last week's snapshot), `## Channels` (one line per channel with its numbers), `## What changed`\n(only what the numbers show), `## Suggestion` (one concrete suggestion for the COO, written as `SUGGEST COO: ...`).\nNever a number that is not in a snapshot; never a person's name or comment text.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "analytics",
+            "metrics",
+            "followers",
+            "audience",
+            "snapshot",
+            "report",
+            "material.analytics",
+            "material.analytics-report"
+          ],
+          "stages": [
+            {
+              "name": "report",
+              "role": "primary",
+              "instruction": "Read the snapshot JSON and analytics.md, then write the report.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen3.8-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openai_compatible",
+          "base_url": "https://opencode.ai/inference/go/openai/v1",
+          "api_key_env": "OPENCODE_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "glm-5.3-flash",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openai_compatible",
+              "base_url": "https://opencode.ai/inference/go/openai/v1",
+              "api_key_env": "OPENCODE_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {
+                "x-opencode-session": "{session}"
+              },
+              "extra_body": {},
+              "concurrency": 4,
+              "context_tokens": 64000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {
+            "x-opencode-session": "{session}"
+          },
+          "extra_body": {},
+          "concurrency": 4,
+          "context_tokens": 64000,
+          "skills": []
+        },
+        {
+          "role": "writer",
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "effort": "low",
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "coder",
+          "id": "poolside/laguna-s-2.1:free",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "judge",
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": [
+            "poolside/laguna-s-2.1:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "router",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {
+                "reasoning_effort": "none"
+              },
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-super-120b-a12b:free",
+              "effort": "low",
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "scout",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "decider",
+          "id": "jev-latest",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": [],
+          "fallback_models": [],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "evolver",
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "effort": "low",
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3.5-super-vl:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_755b22d3",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for analytics-report",
+        "2026-10-17T21:42:53Z seeded into colony"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_755b22d3",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:analytics",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "analytics"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          },
+          {
+            "type": "command",
+            "name": "verify:analytics-report",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "analytics-report"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "protected": [
+          ".benzene/checks/**"
+        ],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 2700.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "split_below_tokens": 64000,
+        "max_chain_steps": 24,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ]
+    },
+    {
+      "name": "elegant-cxo-feedback-log",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "feedback-log",
+          "description": "Keep the feedback log: every piece of feedback from the channels and the site, its source and its response, so nothing is left unanswered.",
+          "instructions": "# Feedback log\n\n`.benzene/material/experience/feedback-log.md` has `## Sources` (the channels feedback arrives on: GitHub issues,\nLinkedIn, Instagram, X, YouTube comments, the site) and `## Responses`: a table\n`| date | source | feedback | response | status |`, one row per item, the feedback paraphrased in a line (never a\nperson's name or handle), the response proposed (a person sends it), status open | answered | shipped.\n\nRead the CXO's analytics snapshot for comment counts and the GitHub issues of the repository when the instruction gives\nthem; never invent feedback. An item older than 30 days without a response is the first thing you write about.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "feedback",
+            "comment",
+            "reply",
+            "response",
+            "complaint",
+            "material.feedback-log"
+          ],
+          "stages": [
+            {
+              "name": "log",
+              "role": "primary",
+              "instruction": "Update the log with what the instruction and the record say, then write it.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen3.8-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openai_compatible",
+          "base_url": "https://opencode.ai/inference/go/openai/v1",
+          "api_key_env": "OPENCODE_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "glm-5.3-flash",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openai_compatible",
+              "base_url": "https://opencode.ai/inference/go/openai/v1",
+              "api_key_env": "OPENCODE_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {
+                "x-opencode-session": "{session}"
+              },
+              "extra_body": {},
+              "concurrency": 4,
+              "context_tokens": 64000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {
+            "x-opencode-session": "{session}"
+          },
+          "extra_body": {},
+          "concurrency": 4,
+          "context_tokens": 64000,
+          "skills": []
+        },
+        {
+          "role": "writer",
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "effort": "low",
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "coder",
+          "id": "poolside/laguna-s-2.1:free",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "judge",
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": [
+            "poolside/laguna-s-2.1:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "router",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {
+                "reasoning_effort": "none"
+              },
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-super-120b-a12b:free",
+              "effort": "low",
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "scout",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "decider",
+          "id": "jev-latest",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": [],
+          "fallback_models": [],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "evolver",
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "effort": "low",
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3.5-super-vl:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_8fee0d29",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for feedback-log",
+        "2026-10-17T21:42:53Z seeded into colony"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_8fee0d29",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:feedback-log",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "feedback-log"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "protected": [
+          ".benzene/checks/**"
+        ],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 2700.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "split_below_tokens": 64000,
+        "max_chain_steps": 24,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ]
+    },
+    {
+      "name": "elegant-cxo-beta-test",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "beta-test",
+          "description": "Run a simulated beta test of each CTO change in beta: a persona from the UX model walks through the change's pages and reports what passed and failed.",
+          "instructions": "# Beta test (consolidated report for CEO approval gate)   # For each CTO change in beta or review in `.benzene/changes.json` without a report, write   # a consolidated markdown report at `.benzene/reports/beta-test-YYYY-MM-DD.md`   # (today's date in ISO format) with the following structure:  ```markdown  # Beta Test Report - YYYY-MM-DD  ## Summary  - **Date**: YYYY-MM-DD  - **Participants**: 5-10 simulated frontend developers displaced by AI  - **Changes tested**: [<list of change ids from .benzene/changes.json in beta/review>]  - **Overall severity**: none | minor | major | blocker  ## Participants  | Persona | Background |  |---------|------------|  | <persona 1> | <e.g. laid-off React developer, 6 years exp> |  | ... | ... |  ## Test Areas & Findings  ### Onboarding  **Tasks attempted**: [3-5 specific tasks]  **Passed**: [what worked]  **Failed**: [what did not, specific]  **Blockers**: [stoppers]  **Satisfaction**: 1-5  ### Lesson Completion  **Tasks attempted**: [3-5 specific tasks]  **Passed**: [what worked]  **Failed**: [what did not, specific]  **Blockers**: [stoppers]  **Satisfaction**: 1-5  ### Skill Practice  **Tasks attempted**: [3-5 specific tasks]  **Passed**: [what worked]  **Failed**: [what did not, specific]  **Blockers**: [stoppers]  **Satisfaction**: 1-5  ### Tier Upgrade Flow  **Tasks attempted**: [3-5 specific tasks]  **Passed**: [what worked]  **Failed**: [what did not, specific]  **Blockers**: [stoppers]  **Satisfaction**: 1-5  ## Overall Blockers  - <blocker 1: what stops the persona's task>  - ...  ## Recommendations  - <actionable items for CEO>  ```  **Execution steps (do not narrate, write files):**  1. If `.benzene/changes.json` does not exist, create it by extracting CTO changes marked beta or review from ROADMAP.md and CHANGELOG.md. Each entry: id, title, status (beta|review), type (CTO), date, worktree_path, files[].  2. Read `.benzene/changes.json`. For every change with status beta or review that lacks a report file at `.benzene/reports/beta-test-YYYY-MM-DD.md` (today's date), generate the report content per the structure above.  3. Read each change's files at its worktree_path and the affected pages (showcase at docs/_site/index.html and practice dashboard) before writing findings.  4. Write the report file using the workspace write tool at `.benzene/reports/beta-test-YYYY-MM-DD.md`.  5. A blocker is something that stops the persona's task. The CEO reads this before final approval.  The report file MUST exist at `.benzene/reports/beta-test-YYYY-MM-DD.md` for the beta-tested-before-approval check to pass.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "beta",
+            "beta test",
+            "persona",
+            "ux",
+            "usability",
+            "change",
+            "material.beta"
+          ],
+          "stages": [
+            {
+              "name": "test",
+              "role": "primary",
+              "instruction": "Read the change's files and the UX model, then write the beta report.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 2,
+          "last_score": 0.875,
+          "adaptations": {},
+          "efficacy": 0.9099999999999999,
+          "guardrail_efficacy": 0.9099999999999999,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 2,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen3.8-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openai_compatible",
+          "base_url": "https://opencode.ai/inference/go/openai/v1",
+          "api_key_env": "OPENCODE_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "glm-5.3-flash",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openai_compatible",
+              "base_url": "https://opencode.ai/inference/go/openai/v1",
+              "api_key_env": "OPENCODE_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {
+                "x-opencode-session": "{session}"
+              },
+              "extra_body": {},
+              "concurrency": 4,
+              "context_tokens": 64000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {
+            "x-opencode-session": "{session}"
+          },
+          "extra_body": {},
+          "concurrency": 4,
+          "context_tokens": 64000,
+          "skills": []
+        },
+        {
+          "role": "writer",
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "effort": "low",
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "coder",
+          "id": "poolside/laguna-s-2.1:free",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "judge",
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": [
+            "poolside/laguna-s-2.1:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "router",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {
+                "reasoning_effort": "none"
+              },
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-super-120b-a12b:free",
+              "effort": "low",
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "scout",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "decider",
+          "id": "jev-latest",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": [],
+          "fallback_models": [],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "evolver",
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "effort": "low",
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3.5-super-vl:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 0.9099999999999999,
+      "guardrail_efficacy": 0.9099999999999999,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_74049908",
+      "generation": 2,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 2,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for beta-test",
+        "2026-10-17T21:42:53Z seeded into colony",
+        "2026-10-21T03:18:48Z skill beta-test repaired after task task_9e759e36 (unverified: no eval set)",
+        "2026-10-21T15:30:54Z skill beta-test repaired after task task_9417a3bc (unverified: no eval set)"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_74049908",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [
+        {
+          "generation": 1,
+          "system_addendum": "",
+          "skills_patched": [
+            "beta-test"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.75,
+          "score_after": 0.875,
+          "kind": "repair",
+          "skill": "beta-test",
+          "skill_tasks_before": 1,
+          "task_score_before": 0.75,
+          "ts": 1792552728.9922683
+        },
+        {
+          "generation": 2,
+          "system_addendum": "",
+          "skills_patched": [
+            "beta-test"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": null,
+          "score_after": null,
+          "kind": "repair",
+          "skill": "beta-test",
+          "skill_tasks_before": 2,
+          "task_score_before": 0.875,
+          "ts": 1792596654.141979
+        }
+      ],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:beta",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "beta"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "protected": [
+          ".benzene/checks/**"
+        ],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 2700.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "split_below_tokens": 64000,
+        "max_chain_steps": 24,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ]
+    }
+  ],
+  "founders": {
+    "cell_755b22d3": {
+      "name": "elegant-cxo-analytics-report",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "analytics-report",
+          "description": "Read the week's analytics snapshot (Upload-Post for Instagram, Facebook, the LinkedIn page, X and YouTube; ConnectSafely for personal LinkedIn) and write what it says and what the COO should do about it.",
+          "instructions": "# Analytics report\n\nThe snapshot is taken by the instrument (`.benzene/scripts/analytics.py`, read-only) into\n`.benzene/material/experience/analytics/<YYYY-Www>.json` and summarised in `analytics.md`. You read it and write\n`.benzene/material/experience/analytics-report.md`:\n\n```yaml\nweek: <the snapshot's week, e.g. 2026-W42>\ncombined_audience: <the snapshot's number>\nsource: .benzene/material/experience/analytics/<week>.json\n```\n\nSections: `## Audience` (the combined audience against the 5,000 threshold at which feedback steers the product, and\nthe trend against last week's snapshot), `## Channels` (one line per channel with its numbers), `## What changed`\n(only what the numbers show), `## Suggestion` (one concrete suggestion for the COO, written as `SUGGEST COO: ...`).\nNever a number that is not in a snapshot; never a person's name or comment text.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "analytics",
+            "metrics",
+            "followers",
+            "audience",
+            "snapshot",
+            "report",
+            "material.analytics",
+            "material.analytics-report"
+          ],
+          "stages": [
+            {
+              "name": "report",
+              "role": "primary",
+              "instruction": "Read the snapshot JSON and analytics.md, then write the report.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "writer",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "qwen/qwen3.7-plus"
+          ]
+        },
+        {
+          "role": "coder",
+          "id": "qwen/qwen3.7-plus",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.32,
+            1.28
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "judge",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "router",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "scout",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "decider",
+          "id": "typesafe/jev-router",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "evolver",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_755b22d3",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for analytics-report"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_755b22d3",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:analytics",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "analytics"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          },
+          {
+            "type": "command",
+            "name": "verify:analytics-report",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "analytics-report"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 1800.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ],
+      "origin": null
+    },
+    "cell_8fee0d29": {
+      "name": "elegant-cxo-feedback-log",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "feedback-log",
+          "description": "Keep the feedback log: every piece of feedback from the channels and the site, its source and its response, so nothing is left unanswered.",
+          "instructions": "# Feedback log\n\n`.benzene/material/experience/feedback-log.md` has `## Sources` (the channels feedback arrives on: GitHub issues,\nLinkedIn, Instagram, X, YouTube comments, the site) and `## Responses`: a table\n`| date | source | feedback | response | status |`, one row per item, the feedback paraphrased in a line (never a\nperson's name or handle), the response proposed (a person sends it), status open | answered | shipped.\n\nRead the CXO's analytics snapshot for comment counts and the GitHub issues of the repository when the instruction gives\nthem; never invent feedback. An item older than 30 days without a response is the first thing you write about.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "feedback",
+            "comment",
+            "reply",
+            "response",
+            "complaint",
+            "material.feedback-log"
+          ],
+          "stages": [
+            {
+              "name": "log",
+              "role": "primary",
+              "instruction": "Update the log with what the instruction and the record say, then write it.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "writer",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "qwen/qwen3.7-plus"
+          ]
+        },
+        {
+          "role": "coder",
+          "id": "qwen/qwen3.7-plus",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.32,
+            1.28
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "judge",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "router",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "scout",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "decider",
+          "id": "typesafe/jev-router",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "evolver",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_8fee0d29",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for feedback-log"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_8fee0d29",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:feedback-log",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "feedback-log"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 1800.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ],
+      "origin": null
+    },
+    "cell_74049908": {
+      "name": "elegant-cxo-beta-test",
+      "description": "CXO of elegant",
+      "system": "You are a cell of the CXO office of the elegant organisation. You read the experience of the people the site is for\n(frontend developers displaced by AI) from the record only: the weekly analytics snapshot (Upload-Post and\nConnectSafely, read-only), the feedback, and the CTO's changes in beta. You write under .benzene/material/experience/.\nNever a person's name, handle or comment text in a file; never a number that is not on the record.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.\n- analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.\n- feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.\n- beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'.",
+      "skills": [
+        {
+          "name": "beta-test",
+          "description": "Run a simulated beta test of each CTO change in beta: a persona from the UX model walks through the change's pages and reports what passed and failed.",
+          "instructions": "# Beta test\n\nFor each CTO change in beta or review in `.benzene/changes.json` without a report, write\n`.benzene/material/experience/beta/<change id>.md`:\n\n```yaml\nchange: <id>\ntitle: <the change's title>\npersona: <a persona from .benzene/material/experience/ux-model.md, e.g. a laid-off React developer, 6 years in>\ntasks: [<the 3 to 5 things that persona tries on the changed pages>]\npassed: [<what worked>]\nfailed: [<what did not, specific>]\nseverity: none | minor | major | blocker\n```\n\nRead the change's files (listed in changes.json) in the worktree path it names, and the page it changes, before\njudging; a blocker is something that stops the persona's task. The CEO reads this before the final approval.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "beta",
+            "beta test",
+            "persona",
+            "ux",
+            "usability",
+            "change",
+            "material.beta"
+          ],
+          "stages": [
+            {
+              "name": "test",
+              "role": "primary",
+              "instruction": "Read the change's files and the UX model, then write the beta report.",
+              "writes": true
+            }
+          ],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "write_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "writer",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "qwen/qwen3.7-plus"
+          ]
+        },
+        {
+          "role": "coder",
+          "id": "qwen/qwen3.7-plus",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.32,
+            1.28
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "judge",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "router",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "scout",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "decider",
+          "id": "typesafe/jev-router",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "evolver",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Read the audience and the users honestly, and beta-test every change before the CEO approves it",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Read what users experience by frequency and severity, from analytics and feedback, not from opinion.",
+          "virtue": "wisdom",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Hand the COO the uncomfortable perspective when the record shows it.",
+          "virtue": "courage",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Represent every user's experience, not the loudest one.",
+          "virtue": "justice",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Recommend the smallest change that addresses the most experience.",
+          "virtue": "temperance",
+          "sector": "cxo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "cxo",
+      "id": "cell_74049908",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792273373.4775224,
+      "lineage": [
+        "2026-10-17T21:42:53Z sub-agent of the cxo for beta-test"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_74049908",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "verifiers": [
+          {
+            "type": "command",
+            "name": "verify:beta",
+            "cwd": ".",
+            "command": [
+              "python3",
+              ".benzene/checks/material.py",
+              "beta"
+            ],
+            "file": null,
+            "pattern": null,
+            "forbidden": null,
+            "setup": null,
+            "target": null,
+            "standards": null,
+            "viewport": "mobile",
+            "rules": null,
+            "max_pages": 20,
+            "files": [],
+            "required_sections": [],
+            "patterns": {},
+            "front_matter": [],
+            "sources": [],
+            "allow_labelled": [],
+            "ids": true,
+            "currency": "strict",
+            "finance_rules": {},
+            "max_bytes": null,
+            "gzip": false,
+            "rubric": null,
+            "min_score": 0.7,
+            "model": null,
+            "max_images": 12,
+            "context": null,
+            "timeout_s": 900.0,
+            "required": true,
+            "skip_if_untouched": false
+          }
+        ],
+        "require_written_files": true,
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 1800.0,
+        "judge_rubric": null,
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "satisfaction",
+        "objective": 0.8,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "analytics-snapshot-weekly: The newest analytics snapshot under .benzene/material/experience/analytics/ is at most 8 days old and has upload_post, connectsafely and combined_audience. Target: newest snapshot <= 8 days old; 3 of 3 keys. Competition: roadmap.sh homepage counts '52K Discord Members', '+3.2M Registered Users', Frontend Mentor live counter 'Join 1,202,288 developers', GreatFrontEnd '2M+ engineers helped', 'Verifiable by Google Analytics'.",
+        "analytics-read-weekly: experience/analytics-report.md reads the newest snapshot's week and has Audience, Channels, What Changed and Suggestion sections. Target: report week == newest snapshot week; 4 of 4 sections. Competition: Scrimba weekly Town Hall 'Every Tuesday', Master.dev (Frontend Masters) a member survey was cited as the basis for the 2026 rebrand, roadmap.sh monthly changelog; collaborators reply in about 1-2 days.",
+        "feedback-logged-and-answered: experience/feedback-log.md has Sources and Responses sections, and every Responses row records a date, source, feedback and response. Target: 2 of 2 sections; 100% of response rows complete. Competition: GreatFrontEnd issue #7 closed in about 5 h (2022 median 2.9 d); 2024 median 697 d (anti-pattern), roadmap.sh 3 open vs 3,214 closed issues; replies in about 1-2 days, Scrimba replies to 25% of negative Trustpilot reviews, patterns.dev skills issue #6 answered the next day; #9 has 0 comments.",
+        "beta-tested-before-approval: Every CTO change in beta or review in .benzene/changes.json has a beta report experience/beta/<id>.md recording persona, tasks, passed, failed and severity. Target: 100% of beta and review changes have a complete report. Competition: Josh W. Comeau about 30 testers for CSS for JS Devs; about 70 in the Joy of React 'Test Squad', Epic Web (Kent C. Dodds) content 'rigorously tested ... in a series of live workshops'; QA reviews ahead of launch, Frontend Mentor platform beta (Apr 2019) 'Based on community feedback'."
+      ],
+      "origin": null
+    }
+  },
+  "genome": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/offices/cxo/genome.yaml"
+}

@@ -1,0 +1,125 @@
+{
+  "task_id": "task_5465952e",
+  "cell_id": "cell_f395ef25",
+  "cell_name": "elegant-cfo-pricing",
+  "generation": 0,
+  "instruction": "Heartbeat duty: keep .benzene/material/finance/pricing.md, business-model.md and projection.md inside their bars and current with the record (a price change is the CEO's: propose it, never apply it), and .benzene/material/finance/payments.md and ledger.jsonl current with the sandbox flow (.benzene/scripts/paypal_sandbox.py). End with one line 'SUGGEST COO: <the change the numbers support>' when the model needs product work.",
+  "skill": "pricing",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_f395ef25",
+    "by": "match",
+    "confidence": 0.9,
+    "reason": "skill triggers matched elegant-cfo-pricing",
+    "probabilities": {}
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "HTTP 402: {\"error\":{\"message\":\"This request requires more credits, or fewer max_tokens. You requested up to 12000 tokens, but can only afford 435. To increase, visit https://openrouter.ai/settings/credits and add more credits\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_credits\",\"remedy_hint\":"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0.0s of 1800s allowed"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "pricing",
+      "attempt": 1,
+      "model": "qwen/qwen3.7-flash",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Heartbeat duty: keep .benzene/material/finance/pricing.md, business-model.md and projection.md inside their bars and current with the record (a price change is the CEO's: propose it, never apply it), and .benzene/material/finance/payments.md and ledger.jsonl current with the sandbox flow (.benzene/scripts/paypal_sandbox.py). End with one line 'SUGGEST COO: <the change the numbers support>' when th",
+    "approach": "execute with the routed skill pricing",
+    "steps": [
+      {
+        "step": "Heartbeat duty: keep .benzene/material/finance/pricing.md, business-model.md and projection.md inside their bars and current with the record (a price change is the CEO's: propose it, never apply it), and .benzene/material/finance/payments.md and ledger.jsonl current with the sandbox flow (.benzene/scripts/paypal_sandbox.py). End with one line 'SUGGEST COO: <the change the numbers support>' when th",
+        "skill": "pricing",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "pricing",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 1,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cfo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.0026358,
+  "actual_cost_usd": 0.0,
+  "latency_s": 0.0,
+  "model": "qwen/qwen3.7-flash",
+  "stop_reason": "error",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792311501.7566676
+}

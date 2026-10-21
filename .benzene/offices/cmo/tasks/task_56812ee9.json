@@ -1,0 +1,243 @@
+{
+  "task_id": "task_56812ee9",
+  "cell_id": "cell_594020d6",
+  "cell_name": "elegant-cmo-instagram",
+  "generation": 0,
+  "instruction": "Heartbeat duty: prepare this week's material, one step per sub-agent, all of it held for the CEO's review in the marketing room (nothing is posted). First read .benzene/material/experience/analytics-report.md and .benzene/material/marketing/profile.md. Then: the blog writer one new article in .benzene/material/marketing/articles/; the newsletter agent this ISO week's issue in .benzene/material/marketing/newsletter/ if it is missing; LinkedIn one terminology post, a document carousel (a deck in .benzene/material/marketing/slides/) when fewer than two decks are dated this week; X one thread on the same campaign; Instagram one carousel; Facebook the twin of the newest Instagram campaign; ad boosts a proposal only when a post's engagement is at least twice the channel's median, otherwise nothing. Every post keeps its showcase_url with UTM tags. If the campaign needs product work, end with one line 'SUGGEST COO: <the product work>'.",
+  "skill": "instagram",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_594020d6",
+    "by": "match",
+    "confidence": 0.9,
+    "reason": "skill triggers matched elegant-cmo-instagram",
+    "probabilities": {}
+  },
+  "output": "Both files are written. Here's the report:\n\n**Files written:**\n\n1. `.benzene/material/marketing/slides/skeleton-cls-gate.md` — 5-slide carousel deck (one idea per slide, last slide = CTA), drawn square-safe in the Elegant theme (#fff7f2 / #f3f6fa / #202028 / #606c71 / #fe854c / #155799, Open Sans). Slides: the skeleton that matches the row; the failure mode (hand-tuned heights break on CSS edits); the fix (reuse the row's own CSS class); prove it with PerformanceObserver `layout-shift` = 0; why shared-class is the only version that survives; try it free in the `skeleton-list` practice question.\n\n2. `.benzene/material/marketing/posts/instagram-2026-10-21-skeleton-cls-gate.md` — Instagram post held for CEO review:\n   - Front matter: `channel: instagram`, `date: 2026-10-21` (ISO week 2026-W42), `claim`, `source` (article + skill + practice), `campaign: skeleton-cls-gate`, `showcase_url` with `utm_source=instagram&utm_medium=social&utm_campaign=skeleton-cls-gate`\n   - `slides:` points to the new deck (5 slides, within 2–10)\n   - Caption: ~560 characters (≤ 2,200), 5 hashtags (≤ 5), \"Link in bio. The full link is in the first comment.\" with the tagged URL in `first_comment:`\n   - Voice follows profile.md: one term (skeleton), concrete contrast, mechanism shown (PerformanceObserver script), source named, plain words, no engagement bait.\n\n**Checks against the standard:**\n- All 6 front-matter fields present ✓\n- showcase_url on elegantfrontend.training with correct UTM tags ✓\n- Deck: 5 slides (2–10 range) ✓\n- Caption ≤ 2,200 chars, ≤ 5 hashtags ✓\n- Date in current ISO week (2026-W42) ✓\n\nNothing is posted; both items await the CEO's approval in the marketing room.",
+  "status": "ok",
+  "passed": true,
+  "verified": true,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1682 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1682 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "162.0s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "verify:instagram",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/material.py instagram` passed"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 1.0,
+      "detail": "not-ai-slop: chose 'genuine' (conf 1.00)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/slides/skeleton-cls-gate.md",
+    ".benzene/material/marketing/posts/instagram-2026-10-21-skeleton-cls-gate.md"
+  ],
+  "trace": [
+    {
+      "step": "instagram",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 161.986,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/experience/analytics-report.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing/posts\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing/slides\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/competition/instagram.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/articles/selectors-must-return-the-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/articles/selector-factories-stop-cache-thrashing.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/articles/skeleton-cls-gate.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/newsletter/2026-W42.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/ads/README.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-28-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-launch-slop-is-architecture.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/skeleton-cls-gate.md\",\"content\":\"# Skeleton that matches the row\\n\\nA skeleton that borrows its row's own CSS class "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-skeleton-cls-gate.md\",\"content\":\"---\\nchannel: instagram\\ndate: 2026-10-21\\nformat: carousel\\ncl"
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "The user wants to automate the preparation of multi-channel marketing content (Blog, Newsletter, LinkedIn, X, Instagram, Facebook) based on specific logic and data sources from local files, while ensuring all items are held for review and formatted with proper UTM tracking.",
+    "approach": "I will orchestrate several sub-agents to process each platform's requirements. The core logic involves reading the analytics and profile data first, then conditionally generating content for different platforms based on the provided rules (e.g., checking dates for slide decks, engagement metrics for ads). Since 'instagram' is the only skill provided, I will use it to handle the Instagram carousel specifically, while others are handled by the orchestration logic.",
+    "steps": [
+      {
+        "step": "Read context",
+        "skill": null,
+        "after": []
+      },
+      {
+        "step": "Write blog article in .benzene/material/marketing/articles/",
+        "skill": null,
+        "after": [
+          1
+        ]
+      },
+      {
+        "step": "Prepare newsletter for this ISO week if missing",
+        "skill": null,
+        "after": [
+          1
+        ]
+      },
+      {
+        "step": "Create LinkedIn terminology post and document carousel (if <2 decks)",
+        "skill": null,
+        "after": [
+          1
+        ]
+      },
+      {
+        "step": "Create X thread on the same campaign",
+        "skill": null,
+        "after": [
+          1
+        ]
+      },
+      {
+        "step": "Prepare Instagram carousel (held for review)",
+        "skill": "instagram",
+        "after": [
+          1
+        ]
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "instagram",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.05,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 161.98572969436646,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792481260.6693306
+}

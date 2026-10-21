@@ -1,0 +1,180 @@
+{
+  "task_id": "task_a5078e8b",
+  "cell_id": "cell_e8a2a016",
+  "cell_name": "elegant-cmo-linkedin",
+  "generation": 0,
+  "instruction": "Rewrite .benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md and its deck .benzene/material/marketing/slides/selector-same-reference.md (LinkedIn, with your linkedin skill) so it beats the competition on LinkedIn. It stays held for the CEO's review. When you are done it is measured again: G-Eval by google/gemma-4-12b against the competitor's best post, and Jev's not-ai-slop gate. Only a version that scores higher and that Jev calls genuine is kept; anything else is put back, so change the writing, not only the wording.\n\nThe current version (version 1) scores 0.53; the bar is 0.75.\n- beats-competition 0.50: The competitor bar is a scroll-stopping numbered hook (“5 React pairs that sound similar, but work differently” plus a save-before-interview CTA) in a one-pair-per-slide carousel. The actual opening is a flat technical sentence about a new-object selector, so a job-seeking frontend reader scrolling LinkedIn is less likely to stop. The payoff is stronger than that pairs model: the bad useSelector line, 3 theme toggles causing 3 re-renders on React 19.2 / React-Redux 9.2, shallowEqual failing on Active, createSelector taking it to 0, and a toBe/recomputations gate, plus a free practice link. It \n- human-voice 0.40: The LinkedIn post is grounded in a real measurement (3 theme toggles, 3 re-renders on React 19.2 and React-Redux 9.2), the TodoListContainer line, getVisibleTodos returning { ...todo, todoItems }, and the All-vs-Active shallowEqual failure, so it is not interchangeable boilerplate. Those specifics are undercut by dominating generated tells: a 'Why this matters' signpost, a four-item arrow preview of the carousel, aphoristic reversals ('A rule in prose is a suggestion. The test is what makes it hold.'), and the same === / new-object claim restated almost unchanged across the post and every deck\n- channel-native 0.70: The LinkedIn output correctly uses a story plus a document carousel, and it adds material the visible twins do not show: the All-vs-Active shallowEqual failure, the createSelector snippet, the ===/recomputations gate, and the free practice CTA for elegantfrontend.training. It is not a copy of the other LinkedIn posts. It still opens with the X twin’s claim verbatim, reuses the 3 theme toggles / 3 re-renders measurement and the getVisibleTodos spread example, and walks the same === then shallowEqual order as the X and Instagram twins, so the first half would feel familiar.\n- Jev: genuine (0% likely slop)\n\nKeep the front matter's channel, date, campaign, source and showcase_url, and every fact its source supports. Add no number, quote, version or link the source does not give. Write it for this channel alone: its twins (.benzene/material/marketing/posts/x-2026-10-25-selector-reference-gate.md, .benzene/material/marketing/posts/x-2026-10-24-selector-factory-cache.md, .benzene/material/marketing/posts/x-2026-10-21-named-selector-warning.md, .benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md, .benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md, .benzene/material/marketing/posts/linkedin-2026-10-22-state-pairs.md, .benzene/material/marketing/posts/linkedin-2026-10-21-warning-to-gate.md, .benzene/material/marketing/posts/linkedin-2026-10-20-read-path-fails-quietly.md, .benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md, .benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md, .benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md) carry the same claim, so this one must not read as their copy.\n\nWhat the competition did on LinkedIn (.benzene/material/marketing/competition/linkedin.md):\n---\ncompetitor: GreatFrontEnd\npost: \"5 React pairs that sound similar, but work differently … Save this before your next React interview\"\ndate: \"between 2026-10-12 and 2026-10-16 (the report records the visible posts as aged 1d–5d on 2026-10-17, not a date per post)\"\nmedia: \"\"\nhook: \"5 React pairs that sound similar, but work differently\"\ntext_chars:\nreach: \"11–208 reactions across the 10 visible posts (a range; the report does not attribute a count to this post); 89,925 Page followers\"\nsource: https://www.linkedin.com/company/greatfrontend\n---\n\n# LinkedIn: the bar GreatFrontEnd's pairs series sets\n\n**Source.** CMO report, evidence [E22] (https://www.linkedin.com/company/greatfrontend, fetched 2026-10-17), playbook\n\"What their best posts have in common\", and the `linkedin-carousels` bar in `benzene-standards.yaml`.\n\n**What the report records.**\n\n- GreatFrontEnd's Page has 89,925 followers. Its 10 visible posts were aged 1 to 5 days, and their reactions ranged\n  from 11 to 208.\n- The openings it quotes include a series: \"5 CSS animation pairs that sound similar, but work differently: Regular CSS\n  transition vs @starting-style…\", \"5 React pairs that sound similar, but work differently … Save this before your next\n  React interview\" and \"5 image and media pairs…\".\n- The report names this series as the model for our terminology carousels: it \"maps 1:1 onto our glossary\".\n\n**What it does not record.** It gives no per-post reaction count, so we cannot say which post earned the 208. It gives\nno character count either. It also could not confirm that any competitor post is a document (carousel), because\ncompany-page HTML does not show the post type. `media` and `text_chars` are left empty on purpose, and `reach` keeps the\nrange rather than a number for this post.\n\n**The bar for\n\nRead the files first, then write_workspace_file each one you change. Answer with what you changed and why.",
+  "skill": "linkedin",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_e8a2a016",
+    "by": "only",
+    "confidence": 1.0,
+    "reason": "the only living cell",
+    "probabilities": {}
+  },
+  "output": "Both files are written. Summary of the rewrite:\n\n**Post** (`linkedin-2026-10-19-selector-same-reference.md`):\n- Front matter unchanged: channel `linkedin`, date `2026-10-19`, claim, source, campaign `state-selectors`, showcase_url, slides, document_title, first_comment.\n- Opens with the competitor's winning format — a numbered pairs hook (\"2 selector rules that sound the same, but work differently\") plus a save-before-code-review CTA — instead of the flat technical opening.\n- Keeps every sourced fact: 3 theme toggles / 3 re-renders on React 19.2.5 + React-Redux 9.2.0, `getVisibleTodos` returning `{ ...todo, todoItems }`, `===` comparison, shallowEqual passing \"All\" and failing \"Active\", `createSelector` taking it to 0 re-renders, and the `toBe` not `toEqual` gate.\n- Removes the slop tells flagged: no \"Why this matters\" signpost, no four-item arrow preview, no aphoristic reversal, and no restating the same claim across post and deck.\n- Framed for LinkedIn alone — doesn't open with the X twin's claim verbatim and doesn't mirror the X/Instagram slide order.\n- 5 hashtags (#frontend #redux #react #javascript #webdevelopment), under 3,000 characters, showcase link in the first comment.\n\n**Deck** (`selector-same-reference.md`):\n- 7 slides (within 5–9), one idea per slide with `# Title` headings, slide 1 naming the term, last slide the CTA pointing at `elegantfrontend.training/practice/memoized-selector.html`.\n- document_title: \"Selector: same state in, same reference out\".\n- Same measured facts, no invented numbers, versions, quotes, or links.",
+  "status": "ok",
+  "passed": true,
+  "verified": true,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1562 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1562 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "53.3s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "verify:linkedin",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/material.py linkedin` passed"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 1.0,
+      "detail": "not-ai-slop: chose 'genuine' (conf 1.00)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md",
+    ".benzene/material/marketing/slides/selector-same-reference.md"
+  ],
+  "trace": [
+    {
+      "step": "linkedin",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 53.275,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/competition/linkedin.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\",\"content\":\"---\\nchannel: linkedin\\ndate: 2026-10-19\\nformat: document"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/selector-same-reference.md\",\"content\":\"# Selector: same state in, same reference out\\n\\nThe contract has two halves:"
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Rewrite the content of `linkedin-2026-10-19-selector-same-reference.md` and its associated deck (`selector-same-reference.md`) using the LinkedIn agent to outperform competitors on LinkedIn, specifically by incorporating specific, measurable technical details (grounding) that increase perceived authenticity ('human-voice') and channel-native quality, while ensuring it avoids sounding like existing content.",
+    "approach": "Use the `linkedin` skill to rewrite the specified files based on the competitive analysis and required enhancements. The process will involve generating the revised content and then implicitly applying the quality checks described in the instruction (G-Eval and Jev gate) by focusing the output on the defined winning characteristics.",
+    "steps": [
+      {
+        "step": "Rewrite .benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md and its deck .benzene/material/marketing/slides/selector-same-reference.md (LinkedIn, with your linkedin skill) so it beats the competition on LinkedIn. It stays held for the CEO's review. When you are done it is measured again: G-Eval by google/gemma-4-12b against the competitor's best post, and Jev's not-ai-",
+        "skill": "linkedin",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "linkedin",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.05,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 53.274587869644165,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 0.9972804999999998,
+  "efficacy_after": 0.9980963499999997,
+  "skill_efficacy_after": 0.9980963499999997,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792456122.74477
+}

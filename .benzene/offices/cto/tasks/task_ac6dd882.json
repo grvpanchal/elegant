@@ -1,0 +1,125 @@
+{
+  "task_id": "task_ac6dd882",
+  "cell_id": "cell_7a665041",
+  "cell_name": "elegant-cto-training-site",
+  "generation": 1,
+  "instruction": "Rework docs/courses/state-layer/selectors.md for the CEO, who reviewed it and rejected it with this feedback:\n\n\"The lesson says Reselect's cache holds only the last call. In Reselect 5 (used by Redux Toolkit 2) the default memoize is weakMapMemoize, which keeps an entry per set of arguments; the single-entry lruMemoize is an option. Correct the lesson and cite the Reselect 5 docs.\"\n\nRewrite that file so it answers the feedback point by point. Keep its front matter fields (update a claim or source only when the feedback asks), keep the channel's format and limits, and do not change any other file.",
+  "skill": "training-site",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_7a665041",
+    "by": "match",
+    "confidence": 0.95,
+    "reason": "skill triggers matched elegant-cto-training-site",
+    "probabilities": {}
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "HTTP 402: {\"error\":{\"message\":\"This request requires more credits, or fewer max_tokens. You requested up to 16000 tokens, but can only afford 11998. To increase, visit https://openrouter.ai/settings/credits and add more credits\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_credits\",\"remedy_hint"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0.0s of 1800s allowed"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "training-site",
+      "attempt": 1,
+      "model": "qwen/qwen3.7-flash",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "The markdown file docs/courses/state-layer/selectors.md contains incorrect information about Reselect's caching behavior (LRU vs WeakMap) that was rejected by the CEO. It needs to be rewritten to accurately describe Reselect 5's default weakMapMemoize behavior and cite official documentation, while preserving all other front matter and content.",
+    "approach": "Use the 'training-site' skill with a single step to rewrite the specific file content based on the provided feedback. This is a knowledge update task within the scope of maintaining the training site's documentation.",
+    "steps": [
+      {
+        "step": "Rewrite docs/courses/state-layer/selectors.md to correct the section on Reselect's cache behavior. Explicitly state that Reselect 5 (used in Redux Toolkit 2) uses `weakMapMemoize` by default, which keeps entries for each unique set of arguments rather than just the last call. Mention that `lruMemoize` is an available option but not the default. Add appropriate citations to the official Reselect 5 documentation regarding memoization strategies. Ensure all existing front matter fields are preserved and no other files are modified.",
+        "skill": "training-site",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "training-site",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 1,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.00317412,
+  "actual_cost_usd": 0.0,
+  "latency_s": 0.0,
+  "model": "qwen/qwen3.7-flash",
+  "stop_reason": "error",
+  "efficacy_before": 0.82,
+  "efficacy_after": 0.82,
+  "skill_efficacy_after": 0.82,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792287402.577144
+}

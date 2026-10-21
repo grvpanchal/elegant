@@ -1,0 +1,100 @@
+{"kind": "seed", "cell_id": "cell_45f402db", "name": "elegant-coo"}
+{"kind": "seed", "cell_id": "cell_ba603ed7", "name": "elegant-coo-sprint-within-capacity-1"}
+{"kind": "task", "task_id": "task_9b9e1372", "cell_id": "cell_45f402db", "score": 0.5166666666666667, "efficacy": 0.855, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate", "accepted": true, "reason": "skill orchestrate rewritten (unverified: no eval set)", "generation": 1}
+{"kind": "task", "task_id": "task_ea667117", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_947fe097", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.96}
+{"kind": "task", "task_id": "task_947fe097", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_7778f6d8", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_7778f6d8", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_7baae568", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_f7c5157b", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.54}
+{"kind": "task", "task_id": "task_f7c5157b", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_5cf635a5", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.96}
+{"kind": "task", "task_id": "task_5cf635a5", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_81446728", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_b2461931", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_b2461931", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_43b4bdf0", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.54}
+{"kind": "task", "task_id": "task_43b4bdf0", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_960f8064", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_960f8064", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_4293e917", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.58}
+{"kind": "task", "task_id": "task_4293e917", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_27acca98", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_27acca98", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "route", "task_id": "task_3c3d1dd8", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.5}
+{"kind": "task", "task_id": "task_3c3d1dd8", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_bb0e5479", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_bb0e5479", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_f97f2feb", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "task", "task_id": "task_0c681eba", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_ce4823d6", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "task", "task_id": "task_14bb9008", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_72e0607c", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "task", "task_id": "task_659ae774", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_a18fd14d", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "task", "task_id": "task_b9891cb6", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_b2ae10d8", "cell_id": "cell_45f402db", "score": 0.0, "efficacy": 0.855, "action": "provider_error"}
+{"kind": "route", "task_id": "task_e5f6728e", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.98}
+{"kind": "task", "task_id": "task_e5f6728e", "cell_id": "cell_ba603ed7", "score": 0.34921975778666414, "efficacy": 0.8047659273359992, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_ba603ed7", "skill": "sprint-within-capacity", "accepted": true, "reason": "skill sprint-within-capacity rewritten (unverified: no eval set)", "generation": 1}
+{"kind": "route", "task_id": "task_e841268f", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.6}
+{"kind": "task", "task_id": "task_e841268f", "cell_id": "cell_45f402db", "score": 0.725, "efficacy": 0.816, "action": "ok"}
+{"kind": "route", "task_id": "task_86961af8", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.82}
+{"kind": "task", "task_id": "task_86961af8", "cell_id": "cell_45f402db", "score": 1.0, "efficacy": 0.8712, "action": "ok"}
+{"kind": "route", "task_id": "task_5978679f", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.94}
+{"kind": "task", "task_id": "task_5978679f", "cell_id": "cell_ba603ed7", "score": 0.0, "efficacy": 0.8047659273359992, "action": "provider_error"}
+{"kind": "route", "task_id": "task_8aaa9095", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.82}
+{"kind": "task", "task_id": "task_8aaa9095", "cell_id": "cell_45f402db", "score": 1.0, "efficacy": 0.90984, "action": "ok"}
+{"kind": "route", "task_id": "task_06b4dd07", "cell_id": "cell_ba603ed7", "by": "decider", "confidence": 0.94}
+{"kind": "task", "task_id": "task_06b4dd07", "cell_id": "cell_ba603ed7", "score": 0.835, "efficacy": 0.8138361491351993, "action": "ok"}
+{"kind": "route", "task_id": "task_cc0abddf", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.84}
+{"kind": "task", "task_id": "task_cc0abddf", "cell_id": "cell_45f402db", "score": 0.5, "efficacy": 0.7868879999999999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate", "accepted": true, "reason": "skill orchestrate rewritten (unverified: no eval set)", "generation": 2}
+{"kind": "route", "task_id": "task_f59494cf", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.62}
+{"kind": "task", "task_id": "task_f59494cf", "cell_id": "cell_45f402db", "score": 0.5785714285714285, "efficacy": 0.7243930285714284, "action": "evolve"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate", "accepted": true, "reason": "skill orchestrate rewritten (unverified: no eval set)", "generation": 3}
+{"kind": "bifurcate", "cell_id": "cell_45f402db", "skill": "orchestrate", "into": ["orchestrate-site-updates", "orchestrate-content-marketing", "orchestrate-user-research", "orchestrate-strategic-planning"], "accepted": true, "generation": 4}
+{"kind": "evolve", "cell_id": "cell_45f402db", "accepted": true, "reason": "bifurcated orchestrate into ['orchestrate-site-updates', 'orchestrate-content-marketing', 'orchestrate-user-research', 'orchestrate-strategic-planning']", "generation": 4}
+{"kind": "route", "task_id": "task_ea45a827", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.88}
+{"kind": "task", "task_id": "task_ea45a827", "cell_id": "cell_45f402db", "score": 0.9375, "efficacy": 0.7883251199999999, "action": "autophagy"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-content-marketing", "accepted": true, "reason": "skill orchestrate-content-marketing rewritten (unverified: no eval set)", "generation": 5}
+{"kind": "autophagy", "cell_id": "cell_45f402db", "changed": true, "removed_addenda": 0, "trimmed_feedback": 0, "trimmed_examples": 0}
+{"kind": "route", "task_id": "task_74178820", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.88}
+{"kind": "task", "task_id": "task_74178820", "cell_id": "cell_45f402db", "score": 0.9375, "efficacy": 0.8330775839999999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-content-marketing", "accepted": true, "reason": "skill orchestrate-content-marketing rewritten (unverified: no eval set)", "generation": 6}
+{"kind": "route", "task_id": "task_54744ae5", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.56}
+{"kind": "task", "task_id": "task_54744ae5", "cell_id": "cell_45f402db", "score": 0.875, "efficacy": 0.8456543087999999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-site-updates", "accepted": true, "reason": "skill orchestrate-site-updates rewritten (unverified: no eval set)", "generation": 7}
+{"kind": "route", "task_id": "task_1ac61d24", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.94}
+{"kind": "task", "task_id": "task_1ac61d24", "cell_id": "cell_45f402db", "score": 0.9375, "efficacy": 0.8732080161599999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-content-marketing", "accepted": true, "reason": "skill orchestrate-content-marketing rewritten (unverified: no eval set)", "generation": 8}
+{"kind": "route", "task_id": "task_5a23403a", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.78}
+{"kind": "task", "task_id": "task_5a23403a", "cell_id": "cell_45f402db", "score": 0.5, "efficacy": 0.7612456113119999, "action": "autophagy"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-site-updates", "accepted": true, "reason": "skill orchestrate-site-updates rewritten (unverified: no eval set)", "generation": 9}
+{"kind": "autophagy", "cell_id": "cell_45f402db", "changed": true, "removed_addenda": 0, "trimmed_feedback": 0, "trimmed_examples": 0}
+{"kind": "route", "task_id": "task_307febca", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.76}
+{"kind": "task", "task_id": "task_307febca", "cell_id": "cell_45f402db", "score": 0.4375, "efficacy": 0.6641219279183999, "action": "evolve"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-strategic-planning", "accepted": true, "reason": "skill orchestrate-strategic-planning rewritten (unverified: no eval set)", "generation": 10}
+{"kind": "evolve", "cell_id": "cell_45f402db", "accepted": true, "reason": "accepted without eval set (unverified)", "generation": 11}
+{"kind": "route", "task_id": "task_5d3df1b9", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.62}
+{"kind": "task", "task_id": "task_5d3df1b9", "cell_id": "cell_45f402db", "score": 0.4375, "efficacy": 0.5961353495428798, "action": "autophagy"}
+{"kind": "repair", "cell_id": "cell_45f402db", "skill": "orchestrate-site-updates", "accepted": true, "reason": "skill orchestrate-site-updates rewritten (unverified: no eval set)", "generation": 12}
+{"kind": "autophagy", "cell_id": "cell_45f402db", "changed": true, "removed_addenda": 0, "trimmed_feedback": 0, "trimmed_examples": 0}
+{"kind": "route", "task_id": "task_d1f12883", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.62}
+{"kind": "task", "task_id": "task_d1f12883", "cell_id": "cell_45f402db", "score": 0.7375, "efficacy": 0.6385447446800159, "action": "ok"}
+{"kind": "route", "task_id": "task_392260fd", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.94}
+{"kind": "task", "task_id": "task_392260fd", "cell_id": "cell_45f402db", "score": 0.9669750493707077, "efficacy": 0.7370738360872233, "action": "evolve"}
+{"kind": "evolve", "cell_id": "cell_45f402db", "accepted": true, "reason": "accepted without eval set (unverified)", "generation": 13}
+{"kind": "route", "task_id": "task_cfacf93b", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.68}
+{"kind": "task", "task_id": "task_cfacf93b", "cell_id": "cell_45f402db", "score": 0.875, "efficacy": 0.7784516852610563, "action": "autophagy"}
+{"kind": "autophagy", "cell_id": "cell_45f402db", "changed": true, "removed_addenda": 0, "trimmed_feedback": 0, "trimmed_examples": 0}
+{"kind": "route", "task_id": "task_f6b79ae2", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.86}
+{"kind": "task", "task_id": "task_f6b79ae2", "cell_id": "cell_45f402db", "score": 0.875, "efficacy": 0.8074161796827395, "action": "ok"}
+{"kind": "route", "task_id": "task_7dd057e8", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.88}
+{"kind": "task", "task_id": "task_7dd057e8", "cell_id": "cell_45f402db", "score": 0.875, "efficacy": 0.8276913257779177, "action": "ok"}
+{"kind": "route", "task_id": "task_452fb8bf", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.84}
+{"kind": "task", "task_id": "task_452fb8bf", "cell_id": "cell_45f402db", "score": 0.8625, "efficacy": 0.8381339280445423, "action": "ok"}
+{"kind": "route", "task_id": "task_ccd6b440", "cell_id": "cell_45f402db", "by": "decider", "confidence": 0.84}
+{"kind": "task", "task_id": "task_ccd6b440", "cell_id": "cell_45f402db", "score": 1.0, "efficacy": 0.8866937496311795, "action": "ok"}

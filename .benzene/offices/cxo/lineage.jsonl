@@ -1,0 +1,10 @@
+{"kind": "seed", "cell_id": "cell_755b22d3", "name": "elegant-cxo-analytics-report"}
+{"kind": "seed", "cell_id": "cell_8fee0d29", "name": "elegant-cxo-feedback-log"}
+{"kind": "seed", "cell_id": "cell_74049908", "name": "elegant-cxo-beta-test"}
+{"kind": "task", "task_id": "task_60357e06", "cell_id": "cell_74049908", "score": 0.0, "efficacy": 1.0, "action": "provider_error"}
+{"kind": "task", "task_id": "task_9e759e36", "cell_id": "cell_74049908", "score": 0.75, "efficacy": 0.9249999999999999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_74049908", "skill": "beta-test", "accepted": true, "reason": "skill beta-test rewritten (unverified: no eval set)", "generation": 1}
+{"kind": "brief", "problem": "The system needs to run simulated beta tests for each CTO change.", "steps": [{"cell": "cell_74049908", "check": "verify:beta", "files": ["beta-test-reports.md"]}]}
+{"kind": "task", "task_id": "task_9417a3bc", "cell_id": "cell_74049908", "score": 0.875, "efficacy": 0.9099999999999999, "action": "ok"}
+{"kind": "repair", "cell_id": "cell_74049908", "skill": "beta-test", "accepted": true, "reason": "skill beta-test rewritten (unverified: no eval set)", "generation": 2}
+{"kind": "brief", "problem": "The instruction requests a verification of the beta test results for each CTO change.", "steps": [{"cell": "cell_74049908", "check": null, "files": []}]}
