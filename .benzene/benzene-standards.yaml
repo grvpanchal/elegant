@@ -475,11 +475,12 @@ offices:
         timeout_s: 900
   cmo:
     summary: 'Market at the leaders'' cadence: three posts a week syndicated under our canonical, one newsletter a week, platform-fit
-      LinkedIn, X, Instagram and Facebook posts that each carry one UTM-tagged showcase link, and boosts only for proven posts.'
+      LinkedIn, X, Instagram and Facebook posts and a weekly YouTube Short, each carrying one UTM-tagged showcase link, and boosts
+      only for proven posts.'
     report: standards/cmo.md
     scale:
-      cells: 7
-      reason: 'seven sub-agents: blog, newsletter, LinkedIn, X, Instagram, Facebook, ad boosts'
+      cells: 8
+      reason: 'eight sub-agents: blog, newsletter, LinkedIn, X, Instagram, Facebook, YouTube, ad boosts'
     every: 3
     bars:
     - name: profile
@@ -654,6 +655,32 @@ offices:
         - linkedin
         cwd: .
         timeout_s: 900
+    - name: folder-diagrams
+      statement: Every folder diagram under marketing/diagrams draws only paths that exist under its root, every callout names
+        a node of its tree (a layer callout banding the folders it names), and it fits a feed; and at least one LinkedIn
+        post dated this ISO week is a folder diagram.
+      target: 0 diagram failures; >= 1 LinkedIn folder-diagram post a week
+      competitors:
+        roadmap.sh: every roadmap is a drawn diagram, its topics boxed and joined by lines
+        patterns.dev: each pattern explained with an animated diagram of where the code runs
+      sources:
+      - https://www.linkedin.com/posts/calab-he-him-383a1a211_claude-claude-claudeai-activity-7518153544517038080-s0NF
+      - https://roadmap.sh/frontend
+      - https://www.patterns.dev/
+      when: heal
+      why: 'The CEO, 2026-10-20: "I need bza cmo agents advance enough to build folder diagram posts like this", with the UI,
+        Server (containers and pages) and State layers highlighted and the brand logo on the same template as the other
+        posts. The tree is the proof: every node is a real file of the templates, which no slop post can fake.'
+      skill: folder-diagram
+      check:
+        type: command
+        name: verify:diagrams
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - diagrams
+        cwd: .
+        timeout_s: 900
     - name: x-posts-fit
       statement: Every X post and thread part is at most 280 weighted characters (a URL counts 23, an emoji 2), and a thread
         carries at most one URL.
@@ -722,6 +749,39 @@ offices:
         - python3
         - .benzene/checks/material.py
         - facebook
+        cwd: .
+        timeout_s: 900
+    - name: youtube-shorts
+      statement: At least one YouTube Short is dated this ISO week or the next, and every Short storyboard is vertical or square,
+        at most 3:00, with a title of at most 100 characters, a description of at most 5,000 bytes and tags of at most 500
+        characters (none carrying < or >), the UTM-tagged showcase link in the description, at least 4 timed shots from 0 s
+        without a gap, and a LinkedIn twin in its campaign.
+      target: '>= 1 Short a week; <= 3:00; title <= 100 characters; description <= 5,000 bytes; tags <= 500 characters'
+      competitors:
+        Master.dev (Frontend Masters): 81.8K subscribers, 665 videos
+        Scrimba: 63.4K subscribers, 460 videos; a launch video in its launch sequence
+        Epic Web (Kent C. Dodds): 59.8K subscribers, 474 videos
+        roadmap.sh: 220K subscribers, but no upload since 2025-09-26 (the dormant anti-pattern)
+      sources:
+      - https://www.youtube.com/@MasterDotDev
+      - https://www.youtube.com/@Scrimba
+      - https://www.youtube.com/@kentcdodds-vids
+      - https://www.youtube.com/@roadmapsh
+      - https://developers.google.com/youtube/v3/docs/videos
+      - https://support.google.com/youtube/answer/12779649
+      when: publish
+      why: The Data API rejects metadata over its limits, and a channel without a weekly upload goes the way of roadmap.sh's.
+        On 2026-10-20 the CEO removed the office's Shorts ("Youtube videos are terrible") and asked for a service to make
+        the brand introduction video; until that video exists the bar holds only a video that goes out, and the office
+        writes no storyboard to meet a cadence.
+      skill: youtube
+      check:
+        type: command
+        name: verify:youtube
+        command:
+        - python3
+        - .benzene/checks/material.py
+        - youtube
         cwd: .
         timeout_s: 900
     - name: boost-rules

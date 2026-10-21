@@ -115,6 +115,73 @@ def deck(meta: dict) -> list[str] | None:
     return [s for s in re.split(r"(?m)^---\s*$", body) if s.strip()]
 
 
+_BOX = str.maketrans({c: " " for c in "│├└─┬┼|`"})
+
+
+def diagram_problems(rel_path: str) -> list[str]:
+    """A folder diagram (benzene/diagrams.py draws it): its tree, every node under its root, every callout on a node, the
+    sizes a feed shows. The same rules the room flags, in stdlib, so the bar and the room agree."""
+    p = ROOT / rel_path
+    if not p.is_file():
+        return [f"{rel_path} does not exist"]
+    meta, body = fm(p)
+    m = re.search(r"```tree\s*\n(.*?)```", body, re.S)
+    if not m:
+        return [f"{rel_path}: no ```tree block"]
+    nodes, stack = [], []
+    for raw in m.group(1).splitlines():
+        flat = raw.rstrip().translate(_BOX)
+        name = flat.strip()
+        if not name or name.startswith("#") or name in (".", "./"):
+            continue
+        indent = len(flat) - len(flat.lstrip())
+        while stack and indent <= stack[-1][0]:
+            stack.pop()
+        path = "/".join([n.rstrip("/") for _, n in stack] + [name.rstrip("/")])
+        nodes.append({"name": name, "path": path, "depth": len(stack), "dir": name.endswith("/")})
+        stack.append((indent, name))
+    for i, n in enumerate(nodes):
+        if i + 1 < len(nodes) and nodes[i + 1]["depth"] > n["depth"]:
+            n["dir"] = True
+    out = []
+    for k in ("title", "subtitle"):
+        if len(str(meta.get(k) or "")) > 28:
+            out.append(f"{rel_path}: the {k} is over 28 characters")
+    if not meta.get("title"):
+        out.append(f"{rel_path}: no title")
+    if len(nodes) > 24:
+        out.append(f"{rel_path}: {len(nodes)} nodes; at most 24")
+    root = ROOT / str(meta.get("root") or "").strip().rstrip("/")
+    if not meta.get("root") or not root.is_dir():
+        out.append(f"{rel_path}: root {meta.get('root')!r} is not a folder of the repository")
+    else:
+        for n in nodes:
+            q = root / n["path"]
+            if (n["dir"] and not q.is_dir()) or (not n["dir"] and not q.is_file()):
+                out.append(f"{rel_path}: {meta['root']}/{n['path']} is not in the repository")
+    names = {n["name"].rstrip("/") for n in nodes} | {n["path"] for n in nodes}
+    callouts = re.split(r"(?m)^##\s+", body[m.end():])[1:]
+    if not callouts:
+        out.append(f"{rel_path}: no ## callout")
+    if len(callouts) > 8:
+        out.append(f"{rel_path}: {len(callouts)} callouts; at most 8")
+    for chunk in callouts:
+        head, _, rest = chunk.partition("\n")
+        head = re.sub(r"\s*\{\w+\}\s*$", "", head).strip()
+        am = re.match(r"(.*?)\s*(?:→|->)\s*(.*)$", head)
+        refs = [r for r in re.split(r"[,\s]+", am.group(2)) if r] if am else [head]
+        for ref in refs:
+            if ref.strip().rstrip("/") not in names:
+                out.append(f"{rel_path}: the callout {head!r} names {ref!r}, which is no node of the tree")
+        bullets = [l for l in rest.splitlines() if re.match(r"^\s*[-*•]\s+\S", l)]
+        if not 1 <= len(bullets) <= 4:
+            out.append(f"{rel_path}: the callout {head!r} has {len(bullets)} bullets; 1 to 4")
+        for b in bullets:
+            if len(re.sub(r"^\s*[-*•]\s+", "", b).strip()) > 64:
+                out.append(f"{rel_path}: a bullet of {head!r} is over 64 characters")
+    return out
+
+
 def x_length(text: str) -> int:
     text = re.sub(r"https?://\S+", "x" * 23, text)
     return sum(2 if ord(ch) > 0xFFFF else 1 for ch in text)
@@ -287,8 +354,10 @@ def b_linkedin() -> None:
         if not 3 <= len(tags) <= 5:
             fail("hashtags", f"{rel(p)}: {len(tags)} hashtags; 3 to 5")
         slides = deck(meta)
-        if slides is None and not meta.get("media"):
-            fail("media", f"{rel(p)}: no slides deck and no media (every LinkedIn post carries a document, image or video)")
+        if slides is None and not meta.get("media") and not meta.get("diagram"):
+            fail("media", f"{rel(p)}: no slides deck, diagram or media (every LinkedIn post carries a document, image or video)")
+        for problem in diagram_problems(str(meta["diagram"])) if meta.get("diagram") else []:
+            fail("diagram", f"{rel(p)}: {problem}")
         if slides is not None:
             if not 5 <= len(slides) <= 9:
                 fail("deck", f"{rel(p)}: the deck {meta['slides']} has {len(slides)} slides; 5 to 9")
@@ -300,6 +369,21 @@ def b_linkedin() -> None:
     weekly = [m for _, m, _ in posts if date_of(m) and week(date_of(m)) == this]
     if len(weekly) < 5 or sum(1 for m in weekly if m.get("slides")) < 2:
         fail("cadence", f"{len(weekly)} LinkedIn posts dated in {this} ({sum(1 for m in weekly if m.get('slides'))} decks); at least 5, 2 of them decks")
+
+
+def b_diagrams() -> None:
+    """Every folder diagram is true to the repository, and at least one LinkedIn post a week is one."""
+    for p in files(MK / "diagrams"):
+        for problem in diagram_problems(rel(p)):
+            fail("diagram", problem)
+    posts = [(p, m) for ch in ("linkedin", "instagram", "facebook", "x") for p, m, _ in channel_posts(ch) if m.get("diagram")]
+    for p, m in posts:
+        if not (ROOT / str(m["diagram"])).is_file():
+            fail("missing", f"{rel(p)}: diagram {m['diagram']} does not exist")
+    this = week(TODAY)
+    weekly = [p for p, m, _ in channel_posts("linkedin") if m.get("diagram") and date_of(m) and week(date_of(m)) == this]
+    if not weekly:
+        fail("cadence", f"no LinkedIn post dated in {this} is a folder diagram (diagram: .benzene/material/marketing/diagrams/<name>.md)")
 
 
 def b_x() -> None:
@@ -325,8 +409,10 @@ def b_instagram() -> None:
         if len(re.findall(r"(?<!\w)#\w+", body)) > 5:
             fail("hashtags", f"{rel(p)}: more than 5 hashtags")
         slides = deck(meta)
-        if slides is None and not meta.get("media"):
-            fail("media", f"{rel(p)}: an Instagram post needs a carousel deck (slides:) or media")
+        if slides is None and not meta.get("media") and not meta.get("diagram"):
+            fail("media", f"{rel(p)}: an Instagram post needs a carousel deck (slides:), a diagram or media")
+        for problem in diagram_problems(str(meta["diagram"])) if meta.get("diagram") else []:
+            fail("diagram", f"{rel(p)}: {problem}")
         if slides is not None and not 2 <= len(slides) <= 10:
             fail("carousel", f"{rel(p)}: {len(slides)} slides; Instagram carousels take 2 to 10")
 
@@ -338,6 +424,85 @@ def b_facebook() -> None:
         fail("missing", "no Facebook post (channel: facebook)")
     for c in sorted(ig - fb):
         fail("twin", f"the Instagram campaign {c!r} has no Facebook twin")
+
+
+SHOT = re.compile(r"^\s*\|\s*(\d+(?:\.\d+)?)\s*(?:–|—|-|to)\s*(\d+(?:\.\d+)?)\s*s\s*\|(.*)$")   # the replica's shot row
+
+
+def b_youtube() -> None:
+    shorts = []
+    for p in files(MK / "video"):
+        meta, body = fm(p)
+        if str(meta.get("channel", "")).lower() == "youtube":
+            shorts.append((p, meta, body))
+    if not shorts:
+        fail("missing", "no YouTube storyboard (channel: youtube) under .benzene/material/marketing/video/")
+    linkedin = {str(m.get("campaign")) for _, m, _ in channel_posts("linkedin")}
+    for p, meta, body in shorts:
+        for k in ("date", "format", "aspect", "duration_s", "title", "tags", "claim", "source", "campaign", "showcase_url"):
+            if meta.get(k) in (None, "", []):
+                fail("front-matter", f"{rel(p)}: no {k}")
+        if meta.get("format") and str(meta["format"]) != "short":
+            fail("format", f"{rel(p)}: format is {meta['format']!r}; this bar holds Shorts (format: short)")
+        if meta.get("aspect") and str(meta["aspect"]) not in ("9:16", "1:1"):
+            fail("aspect", f"{rel(p)}: aspect {meta['aspect']!r}; a Short is vertical (9:16) or square (1:1)")
+        try:
+            duration = float(meta.get("duration_s") or 0)
+        except (TypeError, ValueError):
+            duration = 0.0
+        if not 0 < duration <= 180:
+            fail("duration", f"{rel(p)}: duration_s {meta.get('duration_s')!r}; a Short runs up to 180 s")
+        title = str(meta.get("title") or "")
+        if len(title) > 100 or re.search(r"[<>]", title):
+            fail("title", f"{rel(p)}: the title is {len(title)} characters (100) or carries < or >")
+        tags = meta.get("tags") or []
+        if not isinstance(tags, list) or len(",".join(str(t) for t in tags)) > 500:
+            fail("tags", f"{rel(p)}: tags must be a list of at most 500 characters in all")
+        desc = re.split(r"(?m)^##\s", re.sub(r"(?m)\A\s*#\s+.*\n", "", body, count=1), maxsplit=1)[0].strip()
+        if not desc:
+            fail("description", f"{rel(p)}: no description between the title and the first ## section")
+        if len(desc.encode("utf-8")) > 5000 or re.search(r"[<>]", desc):
+            fail("description", f"{rel(p)}: the description is {len(desc.encode('utf-8'))} bytes (5000) or carries < or >")
+        if len(re.findall(r"(?<!\w)#\w+", desc)) > 3:
+            fail("hashtags", f"{rel(p)}: more than 3 hashtags in the description")
+        url, campaign = str(meta.get("showcase_url", "")), str(meta.get("campaign", ""))
+        if url and not (SITE in url and "utm_source=youtube" in url and "utm_medium=video" in url and f"utm_campaign={campaign}" in url):
+            fail("utm", f"{rel(p)}: showcase_url must be on {SITE} with utm_source=youtube&utm_medium=video&utm_campaign={campaign}")
+        if url and url not in "\n".join(desc.splitlines()[:2]):
+            fail("link", f"{rel(p)}: the showcase_url is not in the first two lines of the description")
+        if campaign and campaign not in linkedin:
+            fail("twin", f"{rel(p)}: no LinkedIn post carries the campaign {campaign!r}")
+        shots = []
+        for line in body.splitlines():
+            m = SHOT.match(line)
+            if m:
+                cells = [c.strip() for c in m.group(3).strip().strip("|").split("|")]
+                shots.append((float(m.group(1)), float(m.group(2)), cells[1] if len(cells) > 1 else ""))
+        if len(shots) < 4:
+            fail("shots", f"{rel(p)}: {len(shots)} timed shots; at least 4")
+        at = 0.0
+        for start, end, caption in shots:
+            if abs(start - at) > 1e-6 or end <= start:
+                fail("shots", f"{rel(p)}: the shot {start:g}–{end:g} s does not follow on from {at:g} s")
+            if not caption or len(caption) > 60:
+                fail("caption", f"{rel(p)}: the shot at {start:g} s has {'no caption' if not caption else f'a {len(caption)}-character caption (60)'}")
+            at = end
+        if shots and duration and abs(at - duration) > 1e-6:
+            fail("shots", f"{rel(p)}: the shots end at {at:g} s, duration_s is {duration:g}")
+        if meta.get("thumbnail"):
+            thumb = ROOT / str(meta["thumbnail"])
+            if not thumb.is_file() or thumb.suffix.lower() not in (".png", ".jpg", ".jpeg"):
+                fail("thumbnail", f"{rel(p)}: thumbnail {meta['thumbnail']} is not a PNG or JPG in the workspace")
+            else:
+                from PIL import Image
+
+                with Image.open(thumb) as im:
+                    w, h = im.size
+                if w < 640 or not any(abs(w / h - r) < 0.01 for r in (9 / 16, 1.0)):
+                    fail("thumbnail", f"{rel(p)}: thumbnail is {w}×{h}; at least 640 px wide, 9:16 or 1:1")
+    this, ahead = week(TODAY), week(TODAY + dt.timedelta(days=7))
+    if shorts and not any(date_of(m) and week(date_of(m)) in (this, ahead) for _, m, _ in shorts):
+        fail("cadence", f"no Short dated in {this} or {ahead}; at least one a week")
 
 
 def b_newsletter() -> None:
