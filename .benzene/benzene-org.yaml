@@ -19,15 +19,44 @@ skills_dir: skills
 design_offices: false                  # every chartered office below is given: its sub-agents are decided, not invented
 found_from_blueprint: true
 parallel: 3
-coder: {cli: claude, max_per_beat: 1, timeout_s: 1800, retry_beats: 3}
+coder: {cli: opencode, model: opencode-go/kimi-k2.7-code, max_per_beat: 1, timeout_s: 1800, retry_beats: 3}   # Go's Kimi K2.7 Code (the CLI finds OPENCODE_API_KEY in the daemon's environment); one model: a failed run is retried next beat
+
+# Every role runs on OpenCode Go first (the CEO's $10 subscription, 2026-10-21; OPENCODE_API_KEY in .env), then on a free
+# OpenRouter model, and last on the LAN machines: the CEO's order of 2026-10-21. Every Go model has its own allowance (a
+# model's month, a fifth of it per 5 hours), so each office runs on a model of its own, primary and writer alike (most of
+# the CMO's cells, and one each of the COO's and the CIO's, run as one-stage writer clusters, which take the writer
+# role): the COO GLM-5.3-Flash (~6,300 requests a 5-hour window, JSON-schema plans), the CMO MiMo V2.6 Pro (the best of
+# ten on one LinkedIn brief, 2026-10-21), the CXO Qwen3.8 Flash (~5,400), the CFO Step 5 Preview, the CIO GLM-5.3; the
+# CTO's models are in benzene.yaml. The judge is Hy3, of another family than every office's writer; the router and the
+# scout MiMo V2.6 Flash (~30,100); the evolver Kimi K3, stronger than the work it repairs. One slot pool serves every
+# Go model (8 slots, the same as benzene.yaml's: the provider keys the pool by endpoint and creates it once). The free
+# OpenRouter day is 1000 requests across the account; the LAN Gemma 4 12B (LM Studio on 192.168.1.152:1234, 50k shared by
+# two requests, so 24k each) and .198's Gemma E2B (its CPU, one at a time) are the last fallbacks.
+x-go: &go {provider: openai_compatible, base_url: "https://opencode.ai/inference/go/openai/v1", api_key_env: OPENCODE_API_KEY, headers: {x-opencode-session: "{session}"}, concurrency: 8, context_tokens: 64000, max_tokens: 12000, timeout_s: 300, price_per_mtok: [0, 0]}
+x-free-nemotron: &free_nemotron {provider: openrouter, id: nvidia/nemotron-3-ultra-550b-a55b:free, api_key_env: OPENROUTER_API_KEY, price_per_mtok: [0, 0], max_tokens: 12000, timeout_s: 300, effort: low}
+x-free-laguna: &free_laguna {provider: openrouter, id: poolside/laguna-s-2.1:free, api_key_env: OPENROUTER_API_KEY, price_per_mtok: [0, 0], max_tokens: 12000, timeout_s: 300}
+x-free-vl: &free_vl {provider: openrouter, id: nvidia/nemotron-3.5-super-vl:free, api_key_env: OPENROUTER_API_KEY, price_per_mtok: [0, 0], max_tokens: 12000, timeout_s: 300, effort: low}
+x-free-small: &free_small {provider: openrouter, id: nvidia/nemotron-3-super-120b-a12b:free, api_key_env: OPENROUTER_API_KEY, price_per_mtok: [0, 0], max_tokens: 3000, timeout_s: 120, effort: low}
+x-lan-gemma: &lan_gemma {provider: lmstudio, base_url: "http://192.168.1.152:1234/v1", id: google/gemma-4-12b, concurrency: 2, context_tokens: 24000, max_tokens: 6000, timeout_s: 600, price_per_mtok: [0, 0]}
+x-lan-quick: &lan_quick {<<: *lan_gemma, max_tokens: 3000, timeout_s: 300, extra_body: {reasoning_effort: none}}   # thinking off: a route in 2-4 s
+x-lan-198: &lan_198 {provider: lmstudio, base_url: "http://192.168.1.198:1234/v1", id: google/gemma-4-e2b, concurrency: 1, context_tokens: 30000, max_tokens: 3000, timeout_s: 300, price_per_mtok: [0, 0]}
+x-p40: &p40 {provider: llamacpp, base_url: "http://127.0.0.1:1236/v1", id: gemma-4-26b-a4b-qat, api_key_env: BONSAI_API_KEY, concurrency: 2, context_tokens: 109000, max_tokens: 16000, timeout_s: 600, price_per_mtok: [0, 0]}
 
 offices:
   - office: cto
     manifest: benzene.yaml
     cell_per_skill: true
   - office: coo                          # the built-in planner: a plan before any instruction drills down to an office
+    models:                              # primary and writer on its own Go model, then free OpenRouter, then the LAN
+      - &coo {<<: *go, role: primary, id: glm-5.3-flash, temperature: 0.3, timeout_s: 360,
+         fallback_models: [{<<: *go, id: qwen3.8-flash}, *free_nemotron, *lan_gemma]}
+      - {<<: *coo, role: writer}
   - office: cmo
     cell_per_skill: true
+    models:                              # primary and writer on its own Go model, then free OpenRouter, then the LAN
+      - &cmo {<<: *go, role: primary, id: mimo-v2.6-pro, temperature: 0.5, timeout_s: 360,
+         fallback_models: [{<<: *go, id: step-5-preview}, *free_vl, *lan_gemma]}
+      - {<<: *cmo, role: writer}
     charter:
       capability: Prepare the brand's material on every channel, held for the CEO's review, never posted
       pass_threshold: 0.70
@@ -40,9 +69,13 @@ offices:
         as its channel shows it in the marketing room and the CEO approves or rejects each item; a rejection comes back to
         you with the CEO's feedback. Follow your skill's format exactly; read profile.md, the CXO's analytics and the
         site's terminology before writing; never invent a link, a number, a version or a quote.
-      skills: [{name: blog-writer}, {name: newsletter}, {name: linkedin}, {name: x}, {name: instagram}, {name: facebook}, {name: ad-boosts}]
+      skills: [{name: blog-writer}, {name: newsletter}, {name: linkedin}, {name: x}, {name: instagram}, {name: facebook}, {name: youtube}, {name: ad-boosts}]
   - office: cxo
     cell_per_skill: true
+    models:                              # primary and writer on its own Go model, then free OpenRouter, then the LAN
+      - &cxo {<<: *go, role: primary, id: qwen3.8-flash, temperature: 0.3, timeout_s: 360,
+         fallback_models: [{<<: *go, id: glm-5.3-flash}, *free_laguna, *lan_gemma]}
+      - {<<: *cxo, role: writer}
     charter:
       capability: Read the audience and the users honestly, and beta-test every change before the CEO approves it
       pass_threshold: 0.70
@@ -55,6 +88,10 @@ offices:
       skills: [{name: analytics-report}, {name: feedback-log}, {name: beta-test}]
   - office: cfo
     cell_per_skill: true
+    models:                              # primary and writer on its own Go model, then free OpenRouter, then the LAN
+      - &cfo {<<: *go, role: primary, id: step-5-preview, temperature: 0.3, timeout_s: 360,
+         fallback_models: [{<<: *go, id: hy3}, {<<: *free_small, id: xingchen-agi/xing4.0-29b-a4b:free, max_tokens: 12000, timeout_s: 300}, *lan_gemma]}
+      - {<<: *cfo, role: writer}
     charter:
       capability: Price the site for developers between jobs and run the PayPal sandbox payment flow
       pass_threshold: 0.70
@@ -67,6 +104,10 @@ offices:
       skills: [{name: pricing}, {name: payments}]
   - office: cio
     cell_per_skill: true
+    models:                              # primary and writer on its own Go model, then free OpenRouter, then the LAN
+      - &cio {<<: *go, role: primary, id: glm-5.3, temperature: 0.3, timeout_s: 360,
+         fallback_models: [{<<: *go, id: step-5-preview}, {<<: *free_small, id: google/gemma-4-31b-it:free, max_tokens: 12000, timeout_s: 300}, *lan_gemma]}
+      - {<<: *cio, role: writer}
     charter:
       capability: Keep the pitch and the traction record ready for the moment the audience floor is met
       pass_threshold: 0.70
@@ -77,25 +118,29 @@ offices:
         Nothing is sent to an investor: the CEO decides.
       skills: [{name: pitch}, {name: traction}]
 
-models:
-  - {role: primary, provider: openrouter, id: qwen/qwen3.7-flash, fallback_ids: [deepseek/deepseek-v4-flash-0731], api_key_env: OPENROUTER_API_KEY,
-     max_tokens: 12000, temperature: 0.3, timeout_s: 300, price_per_mtok: [0.03, 0.13]}
-  - {role: writer, provider: openrouter, id: anthropic/claude-sonnet-5, fallback_ids: [qwen/qwen3.7-plus], api_key_env: OPENROUTER_API_KEY,
-     max_tokens: 16000, temperature: 0.5, timeout_s: 360, price_per_mtok: [2.0, 10.0]}
-  - {role: coder, provider: openrouter, id: qwen/qwen3.7-plus, fallback_ids: [deepseek/deepseek-v4-flash-0731], api_key_env: OPENROUTER_API_KEY,
-     max_tokens: 16000, temperature: 0.2, timeout_s: 360, price_per_mtok: [0.32, 1.28]}
-  - {role: judge, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, temperature: 0, timeout_s: 120,
-     price_per_mtok: [0.03, 0.13]}
-  - {role: router, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, timeout_s: 120,
-     price_per_mtok: [0.03, 0.13]}
-  - {role: scout, provider: openrouter, id: qwen/qwen3.7-flash, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, timeout_s: 120,
-     price_per_mtok: [0.03, 0.13]}
-  - {role: decider, provider: openrouter, id: typesafe/jev-router, api_key_env: OPENROUTER_API_KEY, timeout_s: 60, price_per_mtok: [0.042, 0.0]}
-  - {role: evolver, provider: openrouter, id: anthropic/claude-sonnet-5, api_key_env: OPENROUTER_API_KEY, max_tokens: 8000, timeout_s: 240,
-     price_per_mtok: [2.0, 10.0]}
+# The project's brand on every page the organisation shows: the graph (here and on the relay), the rooms, the replicas.
+brand: {name: Elegant, logo: .benzene/material/marketing/media/avatar.png, logo_dark: docs/assets/img/dark-logo.png, accent: "#fe854c"}
 
+# The roles every office shares, unless its own models above name them: each on Go, then free OpenRouter, then the LAN.
+# The one paid call is Jev, the not-ai-slop gate (decider, about $0.0001 a decision): OpenRouter's decisions endpoint
+# takes no chat model. Not cohere/north-mini-code: it failed the brief (400) and the Plan schema in beat 15.
+models:
+  - {<<: *go, role: primary, id: glm-5.3-flash, temperature: 0.3, fallback_models: [{<<: *go, id: qwen3.8-flash}, *free_small, *lan_gemma]}
+  - {<<: *go, role: writer, id: mimo-v2.6-pro, max_tokens: 16000, temperature: 0.5, timeout_s: 360, fallback_models: [{<<: *go, id: step-5-preview, max_tokens: 16000}, *free_vl, *lan_gemma]}
+  - {<<: *go, role: coder, id: kimi-k2.7-code, max_tokens: 16000, temperature: 1.0, timeout_s: 600, fallback_models: [{<<: *go, id: glm-5.2, max_tokens: 16000, timeout_s: 600}, *free_laguna, *p40, *lan_gemma]}
+  - {<<: *go, role: judge, id: hy3, max_tokens: 4000, temperature: 0, timeout_s: 180, fallback_models: [{<<: *go, id: mimo-v2.6-flash, max_tokens: 4000, timeout_s: 180}, *free_small, *lan_gemma]}
+  - {<<: *go, role: router, id: mimo-v2.6-flash, max_tokens: 4000, temperature: 0, timeout_s: 120,
+     fallback_models: [{<<: *go, id: glm-5.3-flash, max_tokens: 4000, timeout_s: 120}, *free_small, *lan_quick, *lan_198]}
+  - {<<: *go, role: scout, id: mimo-v2.6-flash, max_tokens: 4000, timeout_s: 180,
+     fallback_models: [{<<: *go, id: glm-5.3-flash, max_tokens: 4000, timeout_s: 180}, {<<: *free_laguna, max_tokens: 3000, timeout_s: 120}, *lan_gemma, *lan_198]}
+  - {role: decider, provider: openrouter, id: jev-latest, api_key_env: OPENROUTER_API_KEY, timeout_s: 60, price_per_mtok: [0.042, 0.0]}
+  - {<<: *go, role: evolver, id: kimi-k3, max_tokens: 16000, timeout_s: 600,
+     fallback_models: [{<<: *go, id: glm-5.3, max_tokens: 16000, timeout_s: 600}, {<<: *go, id: qwen3.8-max, max_tokens: 16000, timeout_s: 600}, {<<: *free_nemotron, max_tokens: 8000, timeout_s: 240}, *p40, *lan_gemma]}
+
+# The checks under .benzene/checks/ grade every build, and run from the build's own worktree: no cell may write them
+# (the CEO's call, 2026-10-19). A check that is wrong is the operator's to change.
 guardrail: {min_chars: 20, max_chars: 16000, forbidden_patterns: ["as an ai language model"], verifier_fail_cap: 0.40, max_cost_usd: 0.50,
-            value_usd: 0.05, max_latency_s: 1800, judge_weight: 0.5, pass_threshold: 0.70}
+            value_usd: 0.05, max_latency_s: 2700, judge_weight: 0.5, pass_threshold: 0.70, protected: [".benzene/checks/**"]}
 
 # The COO plans in Linear: every plan step an issue in team ELT, in the current two-week cycle while its office has
 # capacity (its sub-agents times tasks_per_cell), else in the next cycle, deferred. Approved items join "Release plan";
@@ -123,6 +168,27 @@ heartbeat:
     build: [python3, .benzene/checks/site.py, build, --out, docs/_site, --baseurl, '/beta/{change}']
     preview: docs/_site
     max_open: 3
+
+# The quality ratchet on what the CMO holds for review (benzene.quality): every item is scored by G-Eval (DeepEval) against
+# the competitor's best post on its channel, with Gemma as the judge (another family than the CMO's NVIDIA writer), and Jev
+# (jev-latest, the decider above, through OpenRouter's decisions endpoint) says genuine or ai_slop with the skill's own gate. Each beat
+# the worst items go back to their channel's sub-agent; a rewrite is kept only when Jev calls it genuine, its channel's
+# bars hold, and it beats the best version so far. Versions: .benzene/quality/versions/; scores: .benzene/quality.json.
+quality:
+  offices: [cmo]
+  # the LAN Gemma 12B, freed when the CTO moved to the P40: gemma-4-31b:free was rate-limited upstream on every beat, and
+  # .198's E2B answered G-Eval with invalid JSON (G-Eval takes one model, and calls it outside the organisation's slots,
+  # so never the CTO's machine)
+  judge: {role: judge, provider: lmstudio, base_url: "http://192.168.1.152:1234/v1", id: google/gemma-4-12b, price_per_mtok: [0, 0], max_tokens: 4000, temperature: 0,
+          timeout_s: 900}
+  threshold: 0.75
+  margin: 0.02
+  rounds: 2
+  per_beat: 0                          # paused, the CEO's call on 2026-10-19: the social posts were written by Claude, outside
+                                       # the organisation, and stay as written until reviewed (it was 2; its judge kept
+                                       # rewrites that reintroduced false numbers)
+  every: 1
+  skills: {devto: blog-writer, email: newsletter}
 
 homeostasis: {divide_below: 0.55, evolve_below: 0.75, heal_max_attempts: 2, min_tasks_before_divide: 3, mature_after_verified_tasks: 1,
               repair_skill_on_failure: true}

@@ -27,70 +27,62 @@ capability: Build and maintain the Elegant training site, its templates and its 
 skills: [training-site, template-harness, docs-maintainer]
 tools: [list_workspace_files, read_workspace_file, write_workspace_file, fetch_url]
 
+# Every CTO role runs on OpenCode Go first (a $10 monthly subscription, the CEO's of 2026-10-21; its key OPENCODE_API_KEY
+# is in .env), then on a free OpenRouter model, and last on the local machines: the CEO's order of 2026-10-21, after none
+# of the CTO's 24 tasks of 2026-10-20 and 21 passed on the local models alone. Every Go model has its own monthly
+# allowance (a 5-hour window holds a fifth of it, a week half), so each kind of work has a model of its own, chosen on
+# 2026-10-21 by a structured tool call, a JSON-schema answer and, for the writers, one LinkedIn brief:
+#   the templates and the harness   Kimi K2.7 Code ($60 a month, ~1,350 requests a 5-hour window, ~40 tokens a second)
+#   the training site               GLM-5.2 ($60, ~880, ~100 a second)
+#   the docs and any writer         Qwen3.7 Plus ($60, ~4,300)
+#   the judge                       Hy3 ($60, ~4,300, ~100 a second): Tencent's, of another family than every writer here
+#   the router and the scout        MiMo V2.6 Flash ($60, ~30,100): the small structured calls
+#   the evolver                     Kimi K3 ($15, ~110), then GLM-5.3 and Qwen3.8 Max ($15 each): stronger than the work
+#                                   it repairs, and rarely called
+# A model out of its window falls back to another Go model, then to a free OpenRouter one (Poolside Laguna for code,
+# NVIDIA Nemotron for the rest; the account's free day is 1000 requests), then to the local ones: the P40's Gemma 4
+# 26B-A4B (llama-server on 127.0.0.1:1236, unit gemma-local, its key BONSAI_API_KEY), .212's Gemma 4 12B (LM Studio,
+# 150k shared by four slots), the LAN Gemma 12B on .152 and .198's Gemma E2B. The subscription is a flat fee with no
+# extra usage, so its price here is 0; 64k a session keeps each request's reading cheap, and a longer task runs as a
+# chain. Go asks its clients for their own user agent and one x-opencode-session a conversation (benzene-agent #98).
+# One slot pool serves every Go model of the organisation (the provider keys it by endpoint) and a session holds its
+# slot to its end, so 8 slots, the same in benzene-org.yaml: a route never waits behind three sessions. Kimi K2.7 Code
+# takes temperature 1 only. The decider stays Jev on OpenRouter: its decisions endpoint takes no chat model.
+x-go: &go {provider: openai_compatible, base_url: "https://opencode.ai/inference/go/openai/v1", api_key_env: OPENCODE_API_KEY, headers: {x-opencode-session: "{session}"}, concurrency: 8, context_tokens: 64000, max_tokens: 16000, timeout_s: 600, price_per_mtok: [0, 0]}
+x-or-code: &or_code {provider: openrouter, id: poolside/laguna-s-2.1:free, api_key_env: OPENROUTER_API_KEY, context_tokens: 64000, max_tokens: 16000, timeout_s: 360, price_per_mtok: [0, 0]}
+x-or-write: &or_write {provider: openrouter, id: nvidia/nemotron-3.5-super-vl:free, api_key_env: OPENROUTER_API_KEY, context_tokens: 64000, max_tokens: 16000, timeout_s: 360, effort: low, price_per_mtok: [0, 0]}
+x-or-small: &or_small {provider: openrouter, id: nvidia/nemotron-3-super-120b-a12b:free, api_key_env: OPENROUTER_API_KEY, max_tokens: 3000, timeout_s: 120, effort: low, price_per_mtok: [0, 0]}
+x-or-evolve: &or_evolve {provider: openrouter, id: nvidia/nemotron-3-ultra-550b-a55b:free, api_key_env: OPENROUTER_API_KEY, max_tokens: 8000, timeout_s: 240, effort: low, price_per_mtok: [0, 0]}
+x-p40: &p40 {provider: llamacpp, base_url: "http://127.0.0.1:1236/v1", id: gemma-4-26b-a4b-qat, api_key_env: BONSAI_API_KEY, concurrency: 2, context_tokens: 109000, max_tokens: 16000, timeout_s: 600, price_per_mtok: [0, 0]}
+x-212: &lan212 {provider: lmstudio, base_url: "http://192.168.1.212:1234/v1", id: google/gemma-4-12b, concurrency: 2, context_tokens: 64000, max_tokens: 8000, timeout_s: 1500, price_per_mtok: [0, 0]}
+x-152: &lan152 {provider: lmstudio, base_url: "http://192.168.1.152:1234/v1", id: google/gemma-4-12b, concurrency: 2, context_tokens: 24000, max_tokens: 8000, timeout_s: 600, price_per_mtok: [0, 0]}
+x-152-quick: &lan152_quick {<<: *lan152, max_tokens: 3000, timeout_s: 300, extra_body: {reasoning_effort: none}}   # thinking off: a route in 2-4 s
+x-198: &lan198 {provider: lmstudio, base_url: "http://192.168.1.198:1234/v1", id: google/gemma-4-e2b, concurrency: 1, context_tokens: 30000, max_tokens: 3000, timeout_s: 300, price_per_mtok: [0, 0]}
 models:
-  - role: primary
-    provider: openrouter
-    id: qwen/qwen3.7-flash
-    fallback_ids: [deepseek/deepseek-v4-flash-0731]
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 12000
-    temperature: 0.3
-    timeout_s: 300
-    price_per_mtok: [0.03, 0.13]
-  - role: coder                        # the training site and the templates: real frontend work
-    provider: openrouter
-    id: qwen/qwen3.7-plus
-    fallback_ids: [deepseek/deepseek-v4-flash-0731, qwen/qwen3.7-flash]
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 16000
-    temperature: 0.2
-    timeout_s: 360
-    price_per_mtok: [0.32, 1.28]
-  - role: writer                       # the terminology docs: current, specific prose
-    provider: openrouter
-    id: anthropic/claude-sonnet-5
-    fallback_ids: [qwen/qwen3.7-plus]
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 16000
-    temperature: 0.4
-    timeout_s: 360
-    price_per_mtok: [2.0, 10.0]
-  - role: judge
-    provider: openrouter
-    id: qwen/qwen3.7-flash
-    fallback_ids: [deepseek/deepseek-v4-flash-0731]
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 3000
-    temperature: 0
-    timeout_s: 120
-    price_per_mtok: [0.03, 0.13]
-  - role: router
-    provider: openrouter
-    id: qwen/qwen3.7-flash
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 2000
-    timeout_s: 90
-    price_per_mtok: [0.03, 0.13]
-  - role: scout
-    provider: openrouter
-    id: qwen/qwen3.7-flash
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 3000
-    timeout_s: 120
-    price_per_mtok: [0.03, 0.13]
+  # the templates and the harness (and any skill no spec below names)
+  - {<<: *go, role: primary, id: kimi-k2.7-code, temperature: 1.0, fallback_models: [{<<: *go, id: glm-5.2}, *or_code, *p40, *lan152]}
+  - {<<: *go, role: coder, id: kimi-k2.7-code, temperature: 1.0, fallback_models: [{<<: *go, id: glm-5.2}, *or_code, *p40, *lan152]}
+  - {<<: *go, role: writer, id: qwen3.7-plus, temperature: 0.4, fallback_models: [{<<: *go, id: glm-5.3-flash}, *or_write, *p40, *lan152]}
+  # the training site and every facet split from it: every one is a one-stage coder cluster, so it needs a coder spec too
+  - {<<: *go, role: primary, skills: [training-site], id: glm-5.2, temperature: 0.2, fallback_models: [{<<: *go, id: kimi-k2.7-code, temperature: 1.0}, *or_code, *lan212, *p40]}
+  - {<<: *go, role: coder, skills: [training-site], id: glm-5.2, temperature: 0.2, fallback_models: [{<<: *go, id: kimi-k2.7-code, temperature: 1.0}, *or_code, *lan212, *p40]}
+  # the terminology docs: every docs facet is a one-stage writer cluster
+  - {<<: *go, role: primary, skills: [docs-maintainer], id: qwen3.7-plus, temperature: 0.3, fallback_models: [{<<: *go, id: glm-5.3-flash}, *or_write, *lan212, *p40]}
+  - {<<: *go, role: writer, skills: [docs-maintainer], id: qwen3.7-plus, temperature: 0.4, fallback_models: [{<<: *go, id: glm-5.3-flash}, *or_write, *lan212, *p40]}
+  - {<<: *go, role: judge, id: hy3, max_tokens: 4000, temperature: 0, timeout_s: 180,
+     fallback_models: [{<<: *go, id: mimo-v2.6-flash, max_tokens: 4000, timeout_s: 180}, *or_small, {<<: *lan152, max_tokens: 6000}]}
+  - {<<: *go, role: router, id: mimo-v2.6-flash, max_tokens: 4000, temperature: 0, timeout_s: 120,
+     fallback_models: [{<<: *go, id: glm-5.3-flash, max_tokens: 4000, timeout_s: 120}, *or_small, *lan152_quick, *lan198]}
+  - {<<: *go, role: scout, id: mimo-v2.6-flash, max_tokens: 4000, timeout_s: 180,
+     fallback_models: [{<<: *go, id: glm-5.3-flash, max_tokens: 4000, timeout_s: 180}, {<<: *or_code, max_tokens: 3000, timeout_s: 120}, {<<: *lan152, max_tokens: 6000}, *lan198]}
   - role: decider                      # TypeSafe Jev: routing among the sub-agents and the not-ai-slop gates
     provider: openrouter
-    id: typesafe/jev-router
+    id: jev-latest
     api_key_env: OPENROUTER_API_KEY
     timeout_s: 60
     price_per_mtok: [0.042, 0.0]
-  - role: evolver
-    provider: openrouter
-    id: anthropic/claude-sonnet-5
-    api_key_env: OPENROUTER_API_KEY
-    max_tokens: 8000
-    timeout_s: 240
-    price_per_mtok: [2.0, 10.0]
+  - {<<: *go, role: evolver, id: kimi-k3,
+     fallback_models: [{<<: *go, id: glm-5.3}, {<<: *go, id: qwen3.8-max}, *or_evolve, *p40, {<<: *lan152, max_tokens: 6000}]}
 
 guardrail:
   min_chars: 20
@@ -99,7 +91,7 @@ guardrail:
   verifier_fail_cap: 0.40
   max_cost_usd: 0.60
   value_usd: 0.10
-  max_latency_s: 1800
+  max_latency_s: 3600                 # a local 27B at ~18 tokens a second on the P40, thinking first
   judge_weight: 0.4
   pass_threshold: 0.70
   require_written_files: true
@@ -111,3 +103,1021 @@ homeostasis:
   min_tasks_before_divide: 3
   mature_after_verified_tasks: 1
   repair_skill_on_failure: true
+
+# --- cluster: how the original evolved (written by Benzene; edit above this line) ---
+cluster:
+- id: cell_7a665041
+  name: elegant-cto-training-site
+  generation: 4
+  status: divided
+  born: '2026-10-17T21:22:51Z'
+  efficacy: 0.544
+  guardrail_efficacy: 0.544
+  world_efficacy: 1.0
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.5222
+  skills:
+  - training-site-lesson-accuracy
+  - training-site-landing-pages
+  - training-site-health-seo
+  - training-site-pricing-sync
+  office: cto
+  changes:
+    skills_added:
+    - training-site-health-seo
+    - training-site-landing-pages
+    - training-site-lesson-accuracy
+    - training-site-pricing-sync
+    skills_removed:
+    - training-site
+    skills:
+      training-site-lesson-accuracy:
+        source: bifurcation:training-site
+      training-site-landing-pages:
+        source: bifurcation:training-site
+      training-site-health-seo:
+        source: bifurcation:training-site
+      training-site-pricing-sync:
+        source: bifurcation:training-site
+    autophagies: 2
+  last_event: 2026-10-19T02:41:56Z divided into cell_c1e6e994 and cell_a2b47b76 at efficacy 0.54
+- id: cell_4d5592a9
+  name: elegant-cto-template-harness
+  generation: 4
+  status: divided
+  born: '2026-10-17T21:22:51Z'
+  efficacy: 0.544
+  guardrail_efficacy: 0.544
+  world_efficacy: 1.0
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 1.5135
+  skills:
+  - template-integrity-rename
+  - template-ceo-single-file-review-fix
+  - template-repo-wide-consistency-sweep
+  office: cto
+  changes:
+    skills_added:
+    - template-ceo-single-file-review-fix
+    - template-integrity-rename
+    - template-repo-wide-consistency-sweep
+    skills_removed:
+    - template-harness
+    skills:
+      template-integrity-rename:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-harness
+      template-ceo-single-file-review-fix:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-harness
+      template-repo-wide-consistency-sweep:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-harness
+    autophagies: 2
+  last_event: 2026-10-18T00:51:38Z divided into cell_f6f0db8b and cell_f8c63b02 at efficacy 0.54
+- id: cell_aefb0b66
+  name: elegant-cto-docs-maintainer
+  generation: 4
+  status: divided
+  born: '2026-10-17T21:22:51Z'
+  efficacy: 0.544
+  guardrail_efficacy: 0.544
+  world_efficacy: 1.0
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - audit-content-validity
+  - resolve-metadata-checks
+  office: cto
+  changes:
+    skills_added:
+    - audit-content-validity
+    - resolve-metadata-checks
+    skills_removed:
+    - docs-maintainer
+    skills:
+      audit-content-validity:
+        source: bifurcation:docs-maintainer
+      resolve-metadata-checks:
+        source: bifurcation:docs-maintainer
+    autophagies: 2
+  last_event: 2026-10-19T23:47:30Z divided into cell_9b4b0bc4 and cell_be220e5a at efficacy 0.54
+- id: cell_9b4b0bc4
+  name: elegant-cto-docs-maintainer-a
+  generation: 7
+  status: alive
+  born: '2026-10-19T23:47:30Z'
+  efficacy: 0.62
+  guardrail_efficacy: 0.62
+  world_efficacy: 0.85
+  tasks_seen: 2
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - audit-content-validity
+  parent: cell_aefb0b66
+  office: cto
+  changes:
+    skills_added:
+    - audit-content-validity
+    skills_removed:
+    - docs-maintainer
+    skills:
+      audit-content-validity:
+        guardrail: scout:scout_eaf265f8
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:docs-maintainer
+    autophagies: 2
+  last_event: '2026-10-21T18:45:37Z autophagy 2: -0 addenda, -1 skill patches, -0 feedback, -0 examples'
+- id: cell_a2b47b76
+  name: elegant-cto-training-site-b
+  generation: 8
+  status: divided
+  born: '2026-10-19T02:41:56Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - training-site-lesson-accuracy
+  - training-site-pricing-sync
+  parent: cell_7a665041
+  office: cto
+  changes:
+    skills_added:
+    - training-site-lesson-accuracy
+    - training-site-pricing-sync
+    skills_removed:
+    - training-site
+    skills:
+      training-site-lesson-accuracy:
+        source: bifurcation:training-site
+      training-site-pricing-sync:
+        source: bifurcation:training-site
+    autophagies: 3
+  last_event: 2026-10-21T19:18:13Z divided into cell_db9af71f and cell_09e77f90 at efficacy 0.51
+- id: cell_be220e5a
+  name: elegant-cto-docs-maintainer-b
+  generation: 8
+  status: renewed
+  born: '2026-10-19T23:47:30Z'
+  efficacy: 0.476
+  guardrail_efficacy: 0.476
+  world_efficacy: 0.85
+  tasks_seen: 5
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - resolve-metadata-checks
+  parent: cell_aefb0b66
+  office: cto
+  changes:
+    skills_added:
+    - resolve-metadata-checks
+    skills_removed:
+    - docs-maintainer
+    skills:
+      resolve-metadata-checks:
+        guardrail: scout:scout_d30263e2
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:docs-maintainer
+    autophagies: 4
+  last_event: 2026-10-21T01:53:12Z renewed as cell_fc9571e9 at efficacy 0.48
+- id: cell_db9af71f
+  name: elegant-cto-training-site-b-a
+  generation: 9
+  status: alive
+  born: '2026-10-21T19:18:13Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - training-site-lesson-accuracy
+  parent: cell_a2b47b76
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: training-site-lesson-accuracy.
+      If an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - training-site-lesson-accuracy
+    skills_removed:
+    - training-site
+    skills:
+      training-site-lesson-accuracy:
+        guardrail: scout:scout_55515574
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site
+  last_event: '2026-10-21T19:28:05Z scout scout_55515574: skill training-site-lesson-accuracy guardrail += forbidden
+    /TODO/, judge rubric'
+- id: cell_09e77f90
+  name: elegant-cto-training-site-b-b
+  generation: 9
+  status: alive
+  born: '2026-10-21T19:18:13Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - training-site-pricing-sync
+  parent: cell_a2b47b76
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: training-site-pricing-sync. If
+      an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - training-site-pricing-sync
+    skills_removed:
+    - training-site
+    skills:
+      training-site-pricing-sync:
+        source: bifurcation:training-site
+  last_event: 2026-10-21T19:18:13Z born by division of cell_a2b47b76 (efficacy 0.51) with skills ['training-site-pricing-sync']
+- id: cell_f6f0db8b
+  name: elegant-cto-template-harness-a
+  generation: 10
+  status: divided
+  born: '2026-10-18T00:51:38Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.1372
+  skills:
+  - template-ceo-single-file-review-fix
+  - template-integrity-rename
+  parent: cell_4d5592a9
+  office: cto
+  changes:
+    skills_added:
+    - template-ceo-single-file-review-fix
+    - template-integrity-rename
+    skills_removed:
+    - template-harness
+    skills:
+      template-ceo-single-file-review-fix:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-harness
+      template-integrity-rename:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-harness
+    autophagies: 2
+  last_event: 2026-10-20T13:07:55Z divided into cell_03800103 and cell_2a836815 at efficacy 0.51
+- id: cell_f8c63b02
+  name: elegant-cto-template-harness-b
+  generation: 10
+  status: divided
+  born: '2026-10-18T00:51:38Z'
+  efficacy: 0.476
+  guardrail_efficacy: 0.476
+  world_efficacy: 0.85
+  tasks_seen: 5
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-tier-consistency
+  - template-stale-dates-consistency
+  - template-references-consistency
+  - template-layout-consistency
+  parent: cell_4d5592a9
+  office: cto
+  changes:
+    skills_added:
+    - template-layout-consistency
+    - template-references-consistency
+    - template-stale-dates-consistency
+    - template-tier-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-tier-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+      template-stale-dates-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+      template-references-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+      template-layout-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+    autophagies: 3
+  last_event: 2026-10-19T06:24:04Z divided into cell_002014be and cell_77c15891 at efficacy 0.48
+- id: cell_c1e6e994
+  name: elegant-cto-training-site-a
+  generation: 10
+  status: divided
+  born: '2026-10-19T02:41:56Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - training-site-health-seo
+  - training-site-landing-pages
+  parent: cell_7a665041
+  office: cto
+  changes:
+    skills_added:
+    - training-site-health-seo
+    - training-site-landing-pages
+    skills_removed:
+    - training-site
+    skills:
+      training-site-health-seo:
+        source: bifurcation:training-site
+      training-site-landing-pages:
+        guardrail: scout:scout_ca896008
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site
+    autophagies: 2
+  last_event: 2026-10-20T23:43:55Z divided into cell_ad3063d3 and cell_ed440fe2 at efficacy 0.51
+- id: cell_2a836815
+  name: elegant-cto-template-harness-a-b
+  generation: 12
+  status: alive
+  born: '2026-10-20T13:07:55Z'
+  efficacy: 0.715
+  guardrail_efficacy: 0.715
+  world_efficacy: 0.85
+  tasks_seen: 1
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-integrity-rename
+  parent: cell_f6f0db8b
+  office: cto
+  changes:
+    skills_added:
+    - template-integrity-rename
+    skills_removed:
+    - template-harness
+    skills:
+      template-integrity-rename:
+        guardrail: scout:scout_e6c1af2e
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:layer-taxonomy-doc
+        source: bifurcation:template-harness
+    autophagies: 1
+  last_event: '2026-10-21T18:17:38Z autophagy 1: -0 addenda, -3 skill patches, -0 feedback, -0 examples'
+- id: cell_ad3063d3
+  name: elegant-cto-training-site-a-a
+  generation: 12
+  status: alive
+  born: '2026-10-20T23:43:55Z'
+  efficacy: 0.715
+  guardrail_efficacy: 0.715
+  world_efficacy: 0.85
+  tasks_seen: 1
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - training-site-landing-pages
+  parent: cell_c1e6e994
+  office: cto
+  changes:
+    skills_added:
+    - training-site-landing-pages
+    skills_removed:
+    - training-site
+    skills:
+      training-site-landing-pages:
+        guardrail: scout:scout_e3240c92
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site
+    autophagies: 1
+  last_event: '2026-10-21T06:29:01Z autophagy 1: -0 addenda, -3 skill patches, -0 feedback, -0 examples'
+- id: cell_ed440fe2
+  name: elegant-cto-training-site-a-b
+  generation: 12
+  status: alive
+  born: '2026-10-20T23:43:55Z'
+  efficacy: 0.62
+  guardrail_efficacy: 0.62
+  world_efficacy: 0.85
+  tasks_seen: 2
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - health-seo-diagnosis
+  - seo-head-patch
+  - content-remediation
+  - verification-cycle
+  parent: cell_c1e6e994
+  office: cto
+  changes:
+    skills_added:
+    - content-remediation
+    - health-seo-diagnosis
+    - seo-head-patch
+    - verification-cycle
+    skills_removed:
+    - training-site
+    skills:
+      health-seo-diagnosis:
+        guardrail: scout:scout_7d97b774
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site-health-seo
+      seo-head-patch:
+        guardrail: scout:scout_7d97b774
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site-health-seo
+      content-remediation:
+        guardrail: scout:scout_7d97b774
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site-health-seo
+      verification-cycle:
+        guardrail: scout:scout_7d97b774
+        guardrail_added:
+        - verify:showcase
+        - verify:site-build
+        - verify:site-health
+        - verify:no-secrets
+        - verify:courses
+        - verify:seo
+        - verify:pricing-sync
+        - verify:checkout
+        - verify:learner-journey
+        source: bifurcation:training-site-health-seo
+    autophagies: 1
+  last_event: 2026-10-21T10:47:52Z bifurcated training-site-health-seo into ['health-seo-diagnosis', 'seo-head-patch',
+    'content-remediation', 'verification-cycle'] at efficac
+- id: cell_03800103
+  name: elegant-cto-template-harness-a-a
+  generation: 13
+  status: alive
+  born: '2026-10-20T13:07:55Z'
+  efficacy: 0.554
+  guardrail_efficacy: 0.554
+  world_efficacy: 0.85
+  tasks_seen: 3
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-doc-fix
+  - template-code-refactor
+  - template-integrity-sync
+  parent: cell_f6f0db8b
+  office: cto
+  changes:
+    skills_added:
+    - template-code-refactor
+    - template-doc-fix
+    - template-integrity-sync
+    skills_removed:
+    - template-harness
+    skills:
+      template-doc-fix:
+        guardrail: scout:scout_5cb88d55
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-config
+        source: bifurcation:template-ceo-single-file-review-fix
+      template-code-refactor:
+        guardrail: scout:scout_5cb88d55
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-config
+        source: bifurcation:template-ceo-single-file-review-fix
+      template-integrity-sync:
+        guardrail: scout:scout_5cb88d55
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-config
+        source: bifurcation:template-ceo-single-file-review-fix
+    autophagies: 2
+  last_event: 2026-10-21T17:46:58Z bifurcated template-ceo-single-file-review-fix into ['template-doc-fix', 'template-code-refactor',
+    'template-integrity-sync'] at efficacy 0
+- id: cell_fc9571e9
+  name: elegant-cto-docs-maintainer-b-r1
+  generation: 13
+  status: divided
+  born: '2026-10-21T01:53:12Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - elegant-cto-fix-templates-agents
+  - elegant-cto-fix-pricing-sync
+  - elegant-cto-fix-docs-metadata
+  parent: cell_be220e5a
+  office: cto
+  changes:
+    skills_added:
+    - elegant-cto-fix-docs-metadata
+    - elegant-cto-fix-pricing-sync
+    - elegant-cto-fix-templates-agents
+    skills_removed:
+    - docs-maintainer
+    skills:
+      elegant-cto-fix-templates-agents:
+        guardrail: scout:scout_d30263e2
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+      elegant-cto-fix-pricing-sync:
+        guardrail: scout:scout_d30263e2
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+      elegant-cto-fix-docs-metadata:
+        guardrail: scout:scout_d30263e2
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+    renewals: 1
+    autophagies: 1
+  last_event: 2026-10-21T16:50:34Z divided into cell_2b496b04 and cell_4a17af4b at efficacy 0.51
+- id: cell_002014be
+  name: elegant-cto-template-harness-b-a
+  generation: 14
+  status: divided
+  born: '2026-10-19T06:24:04Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-references-consistency
+  - template-stale-dates-consistency
+  parent: cell_f8c63b02
+  office: cto
+  changes:
+    skills_added:
+    - template-references-consistency
+    - template-stale-dates-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-references-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+      template-stale-dates-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+    autophagies: 3
+  last_event: 2026-10-20T14:25:00Z divided into cell_1ce71a86 and cell_b0d3bbab at efficacy 0.51
+- id: cell_2b496b04
+  name: elegant-cto-docs-maintainer-b-r1-a
+  generation: 14
+  status: alive
+  born: '2026-10-21T16:50:34Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - elegant-cto-fix-docs-metadata
+  - elegant-cto-fix-pricing-sync
+  parent: cell_fc9571e9
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: elegant-cto-fix-docs-metadata,
+      elegant-cto-fix-pricing-sync. If an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - elegant-cto-fix-docs-metadata
+    - elegant-cto-fix-pricing-sync
+    skills_removed:
+    - docs-maintainer
+    skills:
+      elegant-cto-fix-docs-metadata:
+        guardrail: scout:scout_e3fdbaab
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+      elegant-cto-fix-pricing-sync:
+        guardrail: scout:scout_d30263e2
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+    renewals: 1
+  last_event: '2026-10-21T17:01:21Z scout scout_e3fdbaab: skill elegant-cto-fix-docs-metadata guardrail += forbidden
+    /sb_secret_/, forbidden /service_role/, forbidden /sk-or-v'
+- id: cell_4a17af4b
+  name: elegant-cto-docs-maintainer-b-r1-b
+  generation: 14
+  status: alive
+  born: '2026-10-21T16:50:34Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - elegant-cto-fix-templates-agents
+  parent: cell_fc9571e9
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: elegant-cto-fix-templates-agents.
+      If an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - elegant-cto-fix-templates-agents
+    skills_removed:
+    - docs-maintainer
+    skills:
+      elegant-cto-fix-templates-agents:
+        guardrail: scout:scout_7d30375c
+        guardrail_added:
+        - verify:showcase
+        - verify:terminology-docs
+        - verify:skill-doc
+        source: bifurcation:resolve-metadata-checks
+    renewals: 1
+  last_event: '2026-10-21T17:12:41Z scout scout_7d30375c: skill elegant-cto-fix-templates-agents guardrail += forbidden
+    /PAYPAL_SECRET/, forbidden /SUPABASE_SECRET/, forbidden'
+- id: cell_b0d3bbab
+  name: elegant-cto-template-harness-b-a-b
+  generation: 15
+  status: alive
+  born: '2026-10-20T14:25:00Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-references-consistency
+  parent: cell_002014be
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: template-references-consistency.
+      If an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - template-references-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-references-consistency:
+        guardrail: scout:scout_a7c9ff47
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-md-structure
+        source: bifurcation:template-repo-wide-consistency-sweep
+  last_event: '2026-10-20T14:34:40Z scout scout_a7c9ff47: skill template-references-consistency guardrail += verify:agents-md-structure'
+- id: cell_77c15891
+  name: elegant-cto-template-harness-b-b
+  generation: 16
+  status: divided
+  born: '2026-10-19T06:24:04Z'
+  efficacy: 0.508
+  guardrail_efficacy: 0.508
+  world_efficacy: 0.85
+  tasks_seen: 4
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-tier-consistency
+  - template-layout-consistency
+  parent: cell_f8c63b02
+  office: cto
+  changes:
+    skills_added:
+    - template-layout-consistency
+    - template-tier-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-tier-consistency:
+        guardrail: scout:scout_94255f56
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:pricing-has-free
+        - verify:pricing-has-lifetime
+        - verify:pricing-no-extra-slugs
+        source: bifurcation:template-repo-wide-consistency-sweep
+      template-layout-consistency:
+        guardrail: scout:scout_f420654b
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-doc
+        source: bifurcation:template-repo-wide-consistency-sweep
+    judge_rubric: 'The agent must read docs/_data/pricing.yml, ensure four tiers (free, monthly, annual, lifetime)
+      exist as complete top-level entries, write the corrected file, and run the pricing verification checks. '
+    autophagies: 2
+  last_event: 2026-10-21T05:26:27Z divided into cell_35f72c07 and cell_f1b2686e at efficacy 0.51
+- id: cell_1ce71a86
+  name: elegant-cto-template-harness-b-a-a
+  generation: 16
+  status: alive
+  born: '2026-10-20T14:25:00Z'
+  efficacy: 0.715
+  guardrail_efficacy: 0.715
+  world_efficacy: 0.85
+  tasks_seen: 1
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-stale-dates-consistency
+  parent: cell_002014be
+  office: cto
+  changes:
+    skills_added:
+    - template-stale-dates-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-stale-dates-consistency:
+        guardrail: scout:scout_65a6d230
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        source: bifurcation:template-repo-wide-consistency-sweep
+    autophagies: 1
+  last_event: '2026-10-21T20:00:35Z autophagy 1: -0 addenda, -1 skill patches, -0 feedback, -0 examples'
+- id: cell_35f72c07
+  name: elegant-cto-template-harness-b-b-a
+  generation: 17
+  status: alive
+  born: '2026-10-21T05:26:27Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-layout-consistency
+  parent: cell_77c15891
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: template-layout-consistency.
+      If an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - template-layout-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-layout-consistency:
+        guardrail: scout:scout_158bdb92
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:agents-doc
+        - verify:agents-md-four-sections
+        source: bifurcation:template-repo-wide-consistency-sweep
+    judge_rubric: 'The agent must read docs/_data/pricing.yml, ensure four tiers (free, monthly, annual, lifetime)
+      exist as complete top-level entries, write the corrected file, and run the pricing verification checks. '
+  last_event: '2026-10-21T05:31:27Z scout scout_158bdb92: skill template-layout-consistency guardrail += verify:agents-md-four-sections,
+    forbidden /Skeleton/'
+- id: cell_f1b2686e
+  name: elegant-cto-template-harness-b-b-b
+  generation: 17
+  status: alive
+  born: '2026-10-21T05:26:27Z'
+  efficacy: 0.85
+  guardrail_efficacy: 0.85
+  world_efficacy: 0.85
+  tasks_seen: 0
+  verified_tasks: 0
+  stage: healing
+  earned_usd: 0.0
+  spent_usd: 0.0
+  skills:
+  - template-tier-consistency
+  parent: cell_77c15891
+  office: cto
+  changes:
+    system_addendum: 'Specialisation: this cell handles only the following skills: template-tier-consistency. If
+      an instruction clearly falls outside them, say so briefly instead of guessing.'
+    skills_added:
+    - template-tier-consistency
+    skills_removed:
+    - template-harness
+    skills:
+      template-tier-consistency:
+        guardrail: scout:scout_767e8137
+        guardrail_added:
+        - verify:showcase
+        - verify:template-integrity
+        - verify:template-agents
+        - verify:todo-stability
+        - verify:pricing-has-free
+        - verify:pricing-has-lifetime
+        - verify:pricing-no-extra-slugs
+        - verify:template-agents-doc
+        - verify:pricing-tier-count
+        source: bifurcation:template-repo-wide-consistency-sweep
+    judge_rubric: 'The agent must read docs/_data/pricing.yml, ensure four tiers (free, monthly, annual, lifetime)
+      exist as complete top-level entries, write the corrected file, and run the pricing verification checks. '
+  last_event: '2026-10-21T05:33:51Z scout scout_767e8137: skill template-tier-consistency guardrail += verify:template-agents-doc,
+    verify:pricing-tier-count'
