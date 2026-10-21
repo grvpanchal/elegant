@@ -1,0 +1,627 @@
+{
+  "task_id": "task_fa9870a5",
+  "cell_id": "cell_77c15891",
+  "cell_name": "elegant-cto-template-harness-b-b",
+  "generation": 12,
+  "instruction": "Validate that pricing structures align with expected tiers (free, lifetime) across the workspace; success is passing verify:pricing-has-free and verify:pricing-has-lifetime.\nMust pass: verify:pricing-has-free\nProblem: The project fails integrity, consistency, and content freshness checks across UI documentation, template structures, agent configurations, and pricing data.\n\n## Intent (the instruction as the office received it, for context)\n> The project at the root of the workspace fails its checks (this task: rules stale, references, consistency, missing, tier; other findings are handled in later tasks). Here is the exact output:\n> \n> FAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\n> FAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\n> FAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\n> FAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: missing Layout; extra Skeleton (the other templates have Layout)\n> FAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\n> \n> Fix it: list the workspace files, read the files named in the output and the files they refer to, write the corrected file(s) back with the workspace tools (change only what the failure needs), and report the files you changed and what changed in each. The same checks run again after you answer.",
+  "skill": "template-layout-consistency",
+  "route_confidence": 0.9,
+  "route_reason": "3 trigger match(es)",
+  "cell_route": {},
+  "output": "<tool_call>\n<function=remove_directory>\n<parameter=path>\ntemplates/chota-angular-ngrx/ui/templates/Skeleton\n</parameter>\n</function>\n</tool_call>",
+  "status": "failed_guardrail",
+  "passed": false,
+  "verified": false,
+  "stage": "self_heal",
+  "guardrail_score": 0.4,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "145 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "145 chars, maximum 16000"
+    },
+    {
+      "name": "required_patterns",
+      "passed": false,
+      "score": 0.0,
+      "detail": "missing: ## When to use"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2877.1s of 3600s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "16 file(s) written"
+    },
+    {
+      "name": "verify:showcase",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`sh -c rm -rf 'docs/_site'; python3 .benzene/checks/site.py build --out docs/_site >/dev/null 2>&1 || exit 1; test -f docs/_site/index.htm...` passed"
+    },
+    {
+      "name": "verify:template-integrity",
+      "passed": false,
+      "score": 0.0,
+      "detail": "`python3 .benzene/checks/templates.py integrity` failed (exit 1):\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: extra Skeleton (the other templates have Layout)"
+    },
+    {
+      "name": "verify:template-agents",
+      "passed": false,
+      "score": 0.0,
+      "detail": "`python3 .benzene/checks/templates.py agents` failed (exit 1):\nFAIL templates.agents [skills] chota-angular-ngrx/AGENTS.md names 0 skills (skills/<name>); wire at least 8\nFAIL templates.agents [skills] chota-react-redux/AGENTS.md names 0 skills (skills/<name>); wire at least 8\n...\nFAIL templates.agents [skills] chota-react-zustand/AGENTS.md names 0 skills (skills/<name>); wire at least 8\nFAIL templates.agents [commands] chota-react-zustand/AGENTS.md does not say how to build (npm run build)\nFAIL templates.agents [commands] chota-react-zustand/AGENTS.md does not say how to test (npm run test)\nFAIL templates.agents [skills] chota-vue-pinia/AGENTS.md names 0 skills (skills/<name>); wire at least 8\nFAIL templates.agents [section] chota-wc-saga/AGENTS.md: no '## Build a todo app'\nFAIL templates.agents [skills] chota-wc-saga/AGENTS.md names 0 skills (skills/<name>); wire at least 8\nFAIL templates.agents [commands] chota-wc-saga/AGENTS.md does not say how to build (npm run build)\nFAIL templates.agents [commands] chota-wc-saga/AGENTS.md does not say how to test (npm run test)"
+    },
+    {
+      "name": "verify:todo-stability",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/templates.py stability 25` passed"
+    },
+    {
+      "name": "verify:agents-doc",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1 document(s) carry every required section"
+    }
+  ],
+  "heal_attempts": 3,
+  "questions": [],
+  "files_written": [
+    "templates/chota-angular-ngrx/ui/templates/Layout/README.md",
+    "templates/chota-react-redux/ui/templates/Layout/README.md",
+    "templates/chota-react-rtk/ui/templates/Layout/README.md",
+    "templates/chota-react-saga/ui/templates/Layout/README.md",
+    "templates/chota-react-zustand/ui/templates/Layout/README.md",
+    "templates/chota-vue-pinia/ui/templates/Layout/README.md",
+    "templates/chota-wc-saga/ui/templates/Layout/README.md",
+    "templates/chota-angular-ngrx/AGENTS.md",
+    "templates/chota-react-redux/AGENTS.md",
+    "templates/chota-react-rtk/AGENTS.md",
+    "templates/chota-react-saga/AGENTS.md",
+    "templates/chota-react-zustand/AGENTS.md",
+    "templates/chota-vue-pinia/AGENTS.md",
+    "templates/chota-wc-saga/AGENTS.md",
+    "templates/chota-angular-ngrx/ui/templates/Skeleton/README.md",
+    "templates/chota-angular-ngrx/ui/templates/README.md"
+  ],
+  "trace": [
+    {
+      "step": "template-layout-consistency",
+      "attempt": 1,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 741.237,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"chota-*/ui/templates/**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/chota-angular-ngrx/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\": \"**/*-ng*/**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \".\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/element.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/ui/component.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"docs/\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \".benzene/material/finance/pricing.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\": \"docs/_data/pricing.yml\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\": \"templates/\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_data/pricing.yml\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "required_patterns",
+        "written_files",
+        "verify:template-integrity",
+        "verify:template-agents",
+        "verify:agents-doc"
+      ]
+    },
+    {
+      "step": "template-layout-consistency",
+      "attempt": 2,
+      "model": "prism-ml/bonsai-27b",
+      "served_by": null,
+      "stop_reason": "max_iterations",
+      "iterations": 1,
+      "latency_s": 939.132,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-redux\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-saga\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-zustand\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue-pinia\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-wc-saga\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\",\"pattern\":\"**/*.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\",\"pattern\":\"**/*.js\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-redux/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-saga/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-zustand/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue-pinia/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-wc-saga/ui/templates\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates/Layout/README.md\",\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire applicat"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# Layout\\n\\nLayout is the foundational UI pattern that wraps the entire application. It handles the root shell structure, routing, and global layout"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-angular-ngrx uses Angular for component rendering and NgRx for state management. The application follows an atomic architec"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-redux uses React for component rendering and Redux for state management. The application follows an atomic architectu"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-rtk uses React for component rendering and Redux Toolkit for state management. The application follows an atomic arch"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-saga uses React for component rendering and Saga patterns for async state management. The application follows an atom"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-zustand uses React for component rendering and Zustand for state management. The application follows an atomic archit"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-vue-pinia uses Vue for component rendering and Pinia for state management. The application follows an atomic architecture w"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-wc-saga uses vanilla JavaScript for component rendering and Saga patterns for async state management. The application follo"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates/Skeleton/README.md\",\"content\":\"# Skeleton\\n\\nThis is a placeholder for the Skeleton directory. The layout str"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates/Skeleton\",\"pattern\":\"**\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"content\":\"# TODO: Delete Skeleton directory — use rmdir -rf templates/chota-angular-ngrx/ui/templates/Skele"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"pattern\":\"Skeleton\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"pattern\":\"*\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates/README.md\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Sk"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-redux/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — al"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — all "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-saga/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — all"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-zustand/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-vue-pinia/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — all "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-wc-saga/ui/templates\",\"content\":\"# TODO: Remove this file and the Skeleton directory\\n# The Layout directory replaces Skeleton — all te"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-redux/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-saga/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-zustand/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue-pinia/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-wc-saga/ui/templates\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"# TODO: Run: rmdir -rf templates/chota-angular-ngrx/ui/templates/Skeleton\\n# Then: rmdir templates/chota-angular-ngrx/ui/templates/README.md\\n# The "
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\",\"content\":\"# TODO: Run: rmdir -rf templates/chota-angular-ngrx/ui/templates/Skeleton\\n# The Layout directory"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "min_length",
+        "required_patterns",
+        "verify:template-integrity",
+        "verify:template-agents"
+      ]
+    },
+    {
+      "step": "template-layout-consistency",
+      "attempt": 3,
+      "model": "prism-ml/bonsai-27b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 1196.765,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-redux/AGENTS.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\",\"pattern\":\"**/SKILL.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/ui/templates\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-saga/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-zustand/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-vue-pinia/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-wc-saga/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-vue-pinia/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-zustand/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue-pinia/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-wc-saga/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-saga/ui/templates\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-vue-pinia uses Vue for component rendering and Pinia for state management. The application follows an atomic architecture w"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-angular-ngrx uses Angular for component rendering and NgRx for state management. The application follows an atomic architec"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-redux uses React for component rendering and Redux for state management. The application follows an atomic architectu"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-rtk uses React for component rendering and Redux Toolkit for state management. The application follows an atomic arch"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-rtk uses React for component rendering and Redux Toolkit for state management. The application follows an atomic arch"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"**/AGENTS.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-saga uses React for component rendering and Saga patterns for async state management. The application follows an atom"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-react-zustand uses React for component rendering and Zustand for state management. The application follows an atomic archit"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-wc-saga uses vanilla JavaScript for component rendering and Saga patterns for async state management. The application follo"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-angular-ngrx uses Angular for component rendering and NgRx for state management. The application follows an atomic architec"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/AGENTS.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"## Architecture\\n\\nchota-angular-ngrx uses Angular for component rendering and NgRx for state management. The application follows an atomic architec"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-saga/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-zustand/AGENTS.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-wc-saga/AGENTS.md\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "required_patterns",
+        "verify:template-integrity",
+        "verify:template-agents"
+      ]
+    }
+  ],
+  "skill_repair": "skill template-layout-consistency rewritten (unverified: no eval set)",
+  "plan": {
+    "problem": "Validate that pricing structures align with expected tiers (free, lifetime) across the workspace; success is passing verify:pricing-has-free and verify:pricing-has-lifetime.",
+    "approach": "orchestrate",
+    "steps": [
+      {
+        "step": "1",
+        "skill": "template-layout-consistency",
+        "after": []
+      },
+      {
+        "step": "2",
+        "skill": "template-tier-consistency",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "template-layout-consistency",
+      "score": 0.4,
+      "passed": false,
+      "attempts": 3,
+      "stopped_reason": "max_attempts"
+    }
+  ],
+  "reflection": "The agent did not validate pricing structures; it only removed a template directory, leaving the pricing verification (verify:pricing-has-free and verify:pricing-has-lifetime) unaddressed and the guardrail still failing. · keep: The orchestration mindset of planning steps to address the problem. · change: Replace the template‑cleanup actions with actual pricing‑tier checks (run verify:pricing-has-free and verify:pricing-has-lifetime) and, separately, fix the template guardrail issues (add missing ## When to use, restore expected Layout, add required skills and build/test commands).",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": {
+    "problem": "The project fails integrity, consistency, and content freshness checks across UI documentation, template structures, agent configurations, and pricing data.",
+    "step": 6,
+    "of": 6,
+    "check": "verify:pricing-has-free",
+    "files": [],
+    "intent": "The project at the root of the workspace fails its checks (this task: rules stale, references, consistency, missing, tier; other findings are handled in later tasks). Here is the exact output:\n\nFAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: missing Layout; extra Skeleton (the other templates have Layout)\nFAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL material.pr"
+  },
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "max_attempts",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 2877.1333470344543,
+  "model": "google/gemma-4-12b",
+  "stop_reason": "end_turn",
+  "efficacy_before": 0.715,
+  "efficacy_after": 0.6204999999999999,
+  "skill_efficacy_after": 0.6204999999999999,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "autophagy",
+  "ts": 1792417585.03505
+}

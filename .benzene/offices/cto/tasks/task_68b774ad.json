@@ -1,0 +1,137 @@
+{
+  "task_id": "task_68b774ad",
+  "cell_id": "cell_f8c63b02",
+  "cell_name": "elegant-cto-template-harness-b",
+  "generation": 5,
+  "instruction": "The project at the root of the workspace fails its checks (this task: rules tier, stale, references, consistency, missing; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\nFAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: missing Layout; extra Skeleton (the other templates have Layout)\nFAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\n\nFix it: list the workspace files, read the files named in the output and the files they refer to, write the corrected file(s) back with the workspace tools (change only what the failure needs), and report the files you changed and what changed in each. The same checks run again after you answer.",
+  "skill": "template-repo-wide-consistency-sweep",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_f8c63b02",
+    "by": "decider",
+    "confidence": 1.0,
+    "reason": "typesafe/jev-router: elegant-cto-template-harness-b",
+    "probabilities": {
+      "cell_7a665041": 0.0,
+      "cell_aefb0b66": 0.0,
+      "cell_f6f0db8b": 0.0,
+      "cell_f8c63b02": 1.0
+    }
+  },
+  "output": "",
+  "status": "provider_error",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.0,
+  "guardrail_checks": [
+    {
+      "name": "provider",
+      "passed": false,
+      "score": 0.0,
+      "detail": "HTTP 402: {\"error\":{\"message\":\"This request requires more credits, or fewer max_tokens. You requested up to 16000 tokens, but can only afford 114. To increase, visit https://openrouter.ai/settings/credits and add more credits\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_credits\",\"remedy_hint\":"
+    },
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "required_patterns",
+      "passed": false,
+      "score": 0.0,
+      "detail": "missing: ## When to use"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0.0s of 1800s allowed"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "template-repo-wide-consistency-sweep",
+      "attempt": 1,
+      "model": "qwen/qwen3.7-flash",
+      "served_by": null,
+      "stop_reason": "error",
+      "iterations": 1,
+      "latency_s": 0.0,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.0,
+      "passed": false,
+      "failed_checks": [
+        "provider",
+        "min_length",
+        "required_patterns"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "The project at the root of the workspace fails its checks (this task: rules tier, stale, references, consistency, missing; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.ym",
+    "approach": "execute with the routed skill template-repo-wide-consistency-sweep",
+    "steps": [
+      {
+        "step": "The project at the root of the workspace fails its checks (this task: rules tier, stale, references, consistency, missing; other findings are handled in later tasks). Here is the exact output:\n\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.ym",
+        "skill": "template-repo-wide-consistency-sweep",
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "template-repo-wide-consistency-sweep",
+      "score": 0.0,
+      "passed": false,
+      "attempts": 1,
+      "stopped_reason": "provider_error"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "provider_error",
+  "estimated_cost_usd": 0.00318852,
+  "actual_cost_usd": 0.0,
+  "latency_s": 0.0,
+  "model": "qwen/qwen3.7-flash",
+  "stop_reason": "error",
+  "efficacy_before": 0.85,
+  "efficacy_after": 0.85,
+  "skill_efficacy_after": 0.85,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792307226.3834386
+}

@@ -1,0 +1,206 @@
+{
+  "task_id": "task_df55d05a",
+  "cell_id": "cell_bef2fb7e",
+  "cell_name": "elegant-cmo-youtube-1",
+  "generation": 0,
+  "instruction": "Rewrite .benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md (YouTube, with your youtube skill) so it beats the competition on YouTube. It stays held for the CEO's review. When you are done it is measured again: G-Eval by google/gemma-4-12b against the competitor's best post, and Jev's not-ai-slop gate. Only a version that scores higher and that Jev calls genuine is kept; anything else is put back, so change the writing, not only the wording.\n\nThe current version (version 1) scores 0.65; the bar is 0.75.\n- beats-competition 0.80: Scrimba's recorded best post has an empty hook, no length, and no Shorts, while the channel bar is a 30–60s Short with one term, one failure, and one fix. The opening title names the === re-render failure, and the first three seconds (three theme toggles, three re-renders of an unchanged list) would stop a scrolling frontend developer at least as readily. The payoff is concrete and usable today: measured 3-then-0 re-renders on React 19.2 and React-Redux 9.2, the shallowEqual miss on Active because filter() returns a new array, plus createSelector and a toBe lock. The 45s shot list and script f\n- human-voice 0.60: The package is grounded in a real measurement: the template selector returning { ...todo, todoItems }, 3 theme toggles causing 3 re-renders on React 19.2 and React-Redux 9.2, and shallowEqual passing All but failing Active because filter() makes a new array. That detail could not be moved to another topic unchanged. Generated-copy tells still show up and shape the spoken half: the signpost \"Here's why,\" the labeled \"The fix:,\" the aphoristic closer \"Same state in, same reference out,\" and the same === claim restated from the title through the description, shot captions, and script.\n- channel-native 0.40: The YouTube script repeats the twins’ claim in the same order and with the same examples: a new-object selector, 3 theme toggles causing 3 re-renders, getVisibleTodos returning { ...todo, todoItems }, and useSelector’s === check, then the shallowEqual patch. It does earn the channel format with an immediate hook (“Three theme toggles. Three re-renders.”) and a timed shot list, and it adds the All-vs-Active failure plus a toBe lock and practice CTA, but a reader of the twins would still mostly see the same post retold.\n- Jev: genuine (0% likely slop)\n\nKeep the front matter's channel, date, campaign, source and showcase_url, and every fact its source supports. Add no number, quote, version or link the source does not give. Write it for this channel alone: its twins (.benzene/material/marketing/posts/x-2026-10-25-selector-reference-gate.md, .benzene/material/marketing/posts/x-2026-10-24-selector-factory-cache.md, .benzene/material/marketing/posts/x-2026-10-21-named-selector-warning.md, .benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md, .benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md, .benzene/material/marketing/posts/linkedin-2026-10-22-state-pairs.md, .benzene/material/marketing/posts/linkedin-2026-10-21-warning-to-gate.md, .benzene/material/marketing/posts/linkedin-2026-10-20-read-path-fails-quietly.md, .benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md, .benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md, .benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md) carry the same claim, so this one must not read as their copy.\n\nWhat the competition did on YouTube (.benzene/material/marketing/competition/youtube.md):\n---\ncompetitor: Scrimba\npost: \"Introducing Explain by Scrimba\"\ndate: 2026-08-13\nmedia: video\nhook: \"\"\ntext_chars:\nreach: \"2,289 views (the channel RSS, read for the CMO report on 2026-10-17); 63.4K subscribers\"\nsource: https://www.youtube.com/feeds/videos.xml?channel_id=UCNW7HDseZb6N3nKUEP6uLag\n---\n\n# YouTube: the bar the competition sets\n\n**Source.** The CMO report (`.benzene/standards/cmo.md`), evidence [E44], [E79], [E93], [E107], [E141], [E217] and [E218],\nfetched 2026-10-17, and the `youtube-shorts` bar in `benzene-standards.yaml`.\n\n**The one video the report records with a date and a count.** Scrimba's launch video \"Introducing Explain by Scrimba\",\npublished 2026-08-13, had 2,289 views. It was one step in a launch sequence: YouTube, Product Hunt, a Show HN (226 points,\n97 comments) and the weekly email [E87][E93]. The report records no hook, no length and no Shorts for it, so `hook` and\n`text_chars` are left empty on purpose.\n\n**The channels.**\n\n| Channel | Subscribers | Videos | Evidence |\n|---|---|---|---|\n| roadmap.sh | 220K | 80 | [E141]: no upload since 2025-09-26 |\n| Master.dev (@MasterDotDev) | 81.8K | 665 | [E44] |\n| Scrimba | 63.4K | 460 | [E79] |\n| Epic Web (Kent C. Dodds, @kentcdodds-vids) | 59.8K | 474 | [E107] |\n| Frontend Mentor | 796 | 2 | [E63] |\n| GreatFrontEnd | 227 | 11 | [E26] |\n| **@ElegantFrontend** | not shown | 0 | [E6]; 0 followers in the 2026-W42 analytics snapshot |\n\n**The bar for us.**\n\n- Volume beats size. The channels that grew uploaded hundreds of videos. roadmap.sh shows what stopping costs: 220K\n  subscribers and no upload in over a year. The bar is one Short a week, every week.\n- A Short is vertical or square and up to 3 minutes [E218]. We keep ours to 30–60 seconds: one term, one failure, one fix.\n- Title at most 100 characters, \n\nRead the file first, then write_workspace_file each one you change. Answer with what you changed and why.",
+  "skill": "youtube",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_bef2fb7e",
+    "by": "only",
+    "confidence": 1.0,
+    "reason": "the only living cell",
+    "probabilities": {}
+  },
+  "output": "Done. I rewrote the Short at `.benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md`.\n\n## What changed and why\n\n**Narrative shape (channel-native, not a twin copy).** The old Short followed the twins' exact order — new-object selector → 3 theme toggles → `getVisibleTodos` returning `{ ...todo, todoItems }` → `useSelector`'s `===` → `shallowEqual` patch — with the same signposts (\"Here's why,\" \"The fix:,\" \"Same state in, same reference out\"). The rewrite leads with the failure as a visual hook (\"Three toggles. Three re-renders.\"), then explains the mechanism, then the `shallowEqual` half-fix, then `createSelector`, then the `toBe` lock. It reads like a YouTube Short first, not a retold LinkedIn post.\n\n**Voice.** Removed the slop signposts (\"Here's why,\" \"The fix:,\" the aphoristic closer). The script is spoken-word, one sentence per shot, plain words, no engagement bait. The claim and every fact are unchanged: 3 theme toggles, 3 re-renders, React 19.2.5 / React-Redux 9.2.0 / Reselect 5.1.1, `filter()` making a new array on \"Active\", `createSelector` over `state.todo` and the filter id taking renders to zero, `toBe` not `toEqual`.\n\n**Format checks kept:**\n- Front matter unchanged where required: `channel: youtube`, `date: 2026-10-21`, `campaign: state-selectors`, `source`, `showcase_url` (UTM-tagged, on its own line within the first two description lines).\n- Title under 100 characters, no `<` or `>`; tags under 500 characters total; 3 hashtags at the end of the description.\n- 6 timed shots, 0–45 s with no gap; first shot is the hook (failure, not greeting); middle shots show code/diagram; last shot is the practice CTA; every caption under 60 characters.\n- No invented numbers, versions, quotes, or links; nothing from outside the source.\n\nThe file is held for the CEO's review; nothing is posted.",
+  "status": "ok",
+  "passed": true,
+  "verified": null,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1847 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1847 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "57.0s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 1.0,
+      "detail": "not-ai-slop: chose 'genuine' (conf 1.00)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md"
+  ],
+  "trace": [
+    {
+      "step": "youtube",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 57.041,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/competition/youtube.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-24-selector-factory-cache.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-25-selector-reference-gate.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-21-named-selector-warning.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-20-read-path-fails-quietly.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-21-warning-to-gate.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-22-state-pairs.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md\",\"content\":\"---\\nchannel: youtube\\ndate: 2026-10-21\\nformat: short\\nasp"
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Rewrite the content of `.benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md` to outperform the competition on YouTube, focusing on generating a superior narrative that satisfies internal quality gates (G-Eval and Jev's genuineness), while ensuring it avoids being perceived as a mere copy of existing internal materials.",
+    "approach": "Orchestrate",
+    "steps": [
+      {
+        "step": "!youtube",
+        "skill": "youtube",
+        "after": []
+      },
+      {
+        "step": "rewrite_and_filter",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "youtube",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.05,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 57.04133200645447,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792467263.8963485
+}

@@ -1,0 +1,26 @@
+{
+ "sprints": {
+  "cycle-1": {
+   "cto": {
+    "steps": 5,
+    "capacity": 45
+   },
+   "cmo": {
+    "steps": 19,
+    "capacity": 45
+   },
+   "cxo": {
+    "steps": 3,
+    "capacity": 15
+   }
+  }
+ },
+ "current": {
+  "key": "cycle-1",
+  "number": 1,
+  "id": "1c0cb741-7789-4c0a-8235-7720894d12ad",
+  "starts": "2026-10-19T04:00:00.000Z",
+  "ends": "2026-11-02T05:00:00.000Z",
+  "next_id": "431a8a92-17b4-49da-8cf9-0bd3d74007c4"
+ }
+}

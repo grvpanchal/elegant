@@ -1,0 +1,179 @@
+{
+  "task_id": "task_74178820",
+  "cell_id": "cell_45f402db",
+  "cell_name": "elegant-coo",
+  "generation": 5,
+  "instruction": "Design and execute a 4-week launch campaign targeting frontend developers displaced by AI. Channels: LinkedIn (carousel series per approved prop_d476636e), blog (cadence per same), Twitter/X, and dev communities (Reddit, Discord, newsletters). Landing page at /courses/ with clear value prop: free courses + practice dashboard + affordable paid tiers. Capture email signups for waitlist. CMO office owns execution; CTO provides tracking pixels; CFO sets CAC budget.\n\n## Acceptance checks available per office\n- cto: verify:showcase, verify:terminology-docs, verify:template-integrity, verify:template-agents, verify:todo-stability, verify:site-build, verify:site-health, verify:no-secrets, verify:courses, verify:seo, verify:pricing-sync, verify:checkout, verify:learner-journey, verify:pricing-has-free, verify:pricing-has-lifetime, verify:pricing-no-extra-slugs, verify:agents-doc\n- cmo: verify:articles, verify:blog-cadence, verify:syndication, verify:newsletter, verify:linkedin, verify:x, verify:instagram, verify:facebook, verify:boosts, verify:youtube\n- cxo: verify:analytics, verify:analytics-report, verify:feedback-log, verify:beta\n- cfo: verify:pricing, verify:finance-docs, verify:paypal-sandbox\n- cio: verify:pitch, verify:pitch-structure, verify:pitch-completion-minimums, verify:traction\n\n## What a step is\nWork in the workspace's files, done by a cell with the workspace tools. No step runs a command or a check, commits, pushes, opens or updates a pull request or its status, publishes, or waits for a person's answer: the organisation runs the checks after each step, records the work and publishes it itself. The file work such an ask contains (the post, the fix, the note) is a step; only the rest is left out. When nothing remains, the plan has no steps and its problem says why.",
+  "skill": "orchestrate-content-marketing",
+  "route_confidence": 0.95,
+  "route_reason": "decider (typed choice)",
+  "cell_route": {
+    "target": "cell_45f402db",
+    "by": "decider",
+    "confidence": 0.88,
+    "reason": "jev-latest: elegant-coo",
+    "probabilities": {
+      "cell_45f402db": 0.94,
+      "cell_ba603ed7": 0.06
+    }
+  },
+  "output": "```json\n{\n  \"problem\": \"Design and execute a 4-week multi-channel launch campaign targeting frontend developers displaced by AI to promote free courses, practice dashboards, and affordable paid tiers on /courses/. The execution requires content creation for blog and LinkedIn (CMO), tracking pixel integration (CTO), and CAC budget determination (CFO).\",\n  \"steps\": [\n    {\n      \"office\": \"cmo\",\n      \"step\": \"Create a 4-week content calendar and assets for the launch campaign, including blog posts, LinkedIn carousels, Twitter/X updates, and dev community outreach. Ensure requirements for verify:blog-cadence and verify:linkedin are met.\",\n      \"acceptance\": [\n        {\n          \"text\": \"Content plan includes all specified channels and satisfies cadence and platform-specific requirements.\",\n          \"check\": {\n            \"verifier\": \"verify:blog-cadence, verify:linkedin\"\n          }\n        }\n      ]\n    },\n    {\n      \"office\": \"cto\",\n      \"step\": \"Configure and integrate tracking pixels on the /courses/ landing page to monitor conversion metrics for the 4-week launch campaign.\",\n      \"acceptance\": [\n        {\n          \"text\": \"Tracking pixels are active and properly reporting data from the /courses/ page.\",\n          \"check\": {\n            \"verifier\": \"verify:site-build\"\n          }\n        }\n      ]\n    },\n    {\n      \"office\": \"cfo\",\n      \"step\": \"Define and allocate the CAC budget for the 4-week launch campaign across all marketing channels.\",\n      \"acceptance\": [\n        {\n          \"text\": \"CAC budget is established and documented in the finance records.\",\n          \"check\": {\n            \"verifier\": \"verify:pricing\"\n          }\n        }\n      ]\n    }\n  ]\n}\n```",
+  "status": "failed_guardrail",
+  "passed": false,
+  "verified": null,
+  "stage": "self_heal",
+  "guardrail_score": 0.9375,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1703 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1703 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "json_schema",
+      "passed": true,
+      "score": 1.0,
+      "detail": "valid"
+    },
+    {
+      "name": "acceptance",
+      "passed": false,
+      "score": 0.0,
+      "detail": "step 1 criterion 1: cmo has no verifier 'verify:blog-cadence, verify:linkedin'; it has verify:articles, verify:blog-cadence, verify:syndication, verify:newsletter, verify:linkedin, verify:x, verify:instagram, verify:facebook, verify:boosts, verify:youtube"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "335.9s of 2700s allowed"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "judge",
+      "passed": true,
+      "score": 1.0,
+      "detail": ""
+    }
+  ],
+  "heal_attempts": 3,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "orchestrate-content-marketing",
+      "attempt": 1,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 102.716,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.375,
+      "passed": false,
+      "failed_checks": [
+        "json_schema",
+        "acceptance",
+        "judge"
+      ]
+    },
+    {
+      "step": "orchestrate-content-marketing",
+      "attempt": 2,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 104.762,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.9375,
+      "passed": false,
+      "failed_checks": [
+        "acceptance"
+      ]
+    },
+    {
+      "step": "orchestrate-content-marketing",
+      "attempt": 3,
+      "model": "google/gemma-4-12b",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 128.443,
+      "cost_usd": 0.0,
+      "tool_calls": [],
+      "score": 0.9375,
+      "passed": false,
+      "failed_checks": [
+        "acceptance"
+      ]
+    }
+  ],
+  "skill_repair": "skill orchestrate-content-marketing rewritten (unverified: no eval set)",
+  "plan": {
+    "problem": "Design and execute a 4-week launch campaign targeting frontend developers displaced by AI using specified channels (LinkedIn, blog, Twitter/X, dev communities) to promote free courses, a practice dashboard, and affordable paid tiers on a landing page (/courses/), while managing stakeholder responsibilities (CMO execution, CTO tracking pixels, CFO CAC budget).",
+    "approach": "orchestrate",
+    "steps": [
+      {
+        "step": "orchestrate-content-marketing",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "orchestrate-content-marketing",
+      "score": 0.9375,
+      "passed": false,
+      "attempts": 3,
+      "stopped_reason": "max_attempts"
+    }
+  ],
+  "reflection": "The agent failed to provide a valid plan because it used concatenated, non-existent verifier strings instead of selecting specific ones from the allowed list. · keep: The distribution of tasks among the appropriate offices (CMO for content, CTO for tracking, and CFO for budget). · change: Use individual verifiers for each platform (e.g., 'verify:blog-cadence' and 'verify:linkedin') instead of comma-separated strings to satisfy guardrail requirements.",
+  "earned_usd": 0.0,
+  "office": "coo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "max_attempts",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 335.921320438385,
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 0.7883251199999999,
+  "efficacy_after": 0.8330775839999999,
+  "skill_efficacy_after": 0.8330775839999999,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "ok",
+  "ts": 1792433525.9542515
+}

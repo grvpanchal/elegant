@@ -3,7 +3,7 @@ name: Elegant
 handle: "@elegantfrontend"
 bio: "Frontend terms for the AI era: UI, Server and State, each with the Agent Skill that encodes it and a free practice question. No sign-up."
 link: https://elegantfrontend.training
-avatar: docs/assets/img/light-logo.png
+avatar: .benzene/material/marketing/media/avatar.png
 header: docs/assets/img/ui-server-state.png
 about: >-
   Elegant teaches frontend architecture as a vocabulary you can hand to a coding agent. Every lesson is one term from

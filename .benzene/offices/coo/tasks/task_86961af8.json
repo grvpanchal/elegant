@@ -1,0 +1,317 @@
+{
+  "task_id": "task_86961af8",
+  "cell_id": "cell_45f402db",
+  "cell_name": "elegant-coo",
+  "generation": 1,
+  "instruction": "CMO Office, in coordination with CTO Office: Audit the homepage (`index.html`) and key course pages. Ensure the headline and hero section explicitly state 'Frontend AI Harness Training Site' and highlight 'Free Courses', 'Practice Dashboard', and 'Paid Tiers'. Remove or de-emphasize references to `npx elegant` boilerplate generation if they dominate the narrative. Propose specific copy changes for CEO review before implementation.\n\nThe CEO approved this with a change; where it differs from the above, it wins: Do not remove or de-emphasise `npx elegant` and the templates. Make the templates the starting point of building an AI frontend harness. The headline still says Frontend AI Harness Training Site, and the hero reads as a path: 1) start from a template (`npx elegant chota-react-rtk`, or chota-react-redux, chota-react-saga, chota-react-zustand, chota-angular-ngrx, chota-vue-pinia, chota-wc-saga); 2) grow it into your AI frontend harness with the free courses and the Practice Dashboard; 3) the paid tiers. Showcase every template on the homepage: its stack, what it sets up, and its one-line start command. Link each course and lesson to the template it builds on. The copy goes to the CEO for review before it ships; the site changes go through a CTO worktree and beta.\n\n## Acceptance checks available per office\n- cto: verify:showcase, verify:site-build, verify:site-health, verify:no-secrets, verify:courses, verify:seo, verify:pricing-sync, verify:checkout, verify:learner-journey, verify:terminology-docs, verify:template-integrity, verify:template-agents, verify:todo-stability\n- cmo: verify:articles, verify:blog-cadence, verify:syndication, verify:newsletter, verify:linkedin, verify:x, verify:instagram, verify:facebook, verify:boosts, verify:youtube\n- cxo: verify:analytics, verify:analytics-report, verify:feedback-log, verify:beta\n- cfo: verify:pricing, verify:finance-docs, verify:paypal-sandbox\n- cio: verify:pitch, verify:pitch-structure, verify:pitch-completion-minimums, verify:traction\n\n## What a step is\nWork in the workspace's files, done by a cell with the workspace tools. No step runs a command or a check, commits, pushes, opens or updates a pull request or its status, publishes, or waits for a person's answer: the organisation runs the checks after each step, records the work and publishes it itself. The file work such an ask contains (the post, the fix, the note) is a step; only the rest is left out. When nothing remains, the plan has no steps and its problem says why.",
+  "skill": "orchestrate",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_45f402db",
+    "by": "decider",
+    "confidence": 0.82,
+    "reason": "jev-latest: elegant-coo",
+    "probabilities": {
+      "cell_45f402db": 0.91,
+      "cell_ba603ed7": 0.09
+    }
+  },
+  "output": "{\n  \"problem\": \"The homepage and key course pages need to be audited and updated per CEO direction: headline must read 'Frontend AI Harness Training Site', hero must present a three-step path (1) start from a template — showcase all 7 templates with stack, setup, and npx command; (2) grow into AI frontend harness via free courses and Practice Dashboard; (3) paid tiers. Courses/lessons must link to the template they build on. All copy changes require CEO review before CTO implements via worktree and beta.\",\n  \"steps\": [\n    {\n      \"office\": \"cmo\",\n      \"step\": \"Audit the current homepage (docs/index.md, docs/_includes/landing-hero.html, docs/_includes/begin-boilerplate.html) and key course pages (docs/_site/courses/index.html, docs/_site/pricing/index.html) against the CEO-approved narrative. Produce a written audit report noting: current headline/eyebrow/lede/CTAs; how templates are currently presented (picker only, no showcase cards); whether courses link to templates; whether the three-step path exists. Save the report to .benzene/material/marketing/homepage-audit.md.\",\n      \"after\": [],\n      \"acceptance\": [\n        {\n          \"text\": \"Audit report exists at .benzene/material/marketing/homepage-audit.md and covers all required comparison points.\",\n          \"check\": { \"type\": \"file_pattern\", \"file\": \".benzene/material/marketing/homepage-audit.md\", \"pattern\": \"headline|eyebrow|lede|template|showcase|three.step|path|course.*template|pricing\" }\n        }\n      ]\n    },\n    {\n      \"office\": \"cmo\",\n      \"step\": \"Draft the proposed copy changes for the homepage hero and template showcase section. The draft must include: (1) new headline 'Frontend AI Harness Training Site'; (2) new eyebrow 'Frontend AI Harness Training Site'; (3) hero lede rewritten as a three-step path with numbered steps; (4) a template showcase grid listing all 7 templates (chota-react-rtk, chota-react-redux, chota-react-saga, chota-react-zustand, chota-angular-ngrx, chota-vue-pinia, chota-wc-saga) each with stack, what it sets up, and one-line npx command; (5) updated CTAs pointing to /courses/, /practice/, /pricing/; (6) note that course/lesson pages will need template back-links. Save the draft to .benzene/material/marketing/homepage-copy-proposal.md.\",\n      \"after\": [1],\n      \"acceptance\": [\n        {\n          \"text\": \"Copy proposal exists at .benzene/material/marketing/homepage-copy-proposal.md and contains all six required elements.\",\n          \"check\": { \"type\": \"file_pattern\", \"file\": \".benzene/material/marketing/homepage-copy-proposal.md\", \"pattern\": \"Frontend AI Harness Training Site|three.step|1\\\\.|2\\\\.|3\\\\.|chota-react-rtk|chota-react-redux|chota-react-saga|chota-react-zustand|chota-angular-ngrx|chota-vue-pinia|chota-wc-saga|stack|sets up|npx elegant|course.*template|lesson.*template\" }\n        }\n      ]\n    },\n    {\n      \"office\": \"cmo\",\n      \"step\": \"Draft the proposed copy changes for the courses index page (docs/courses/index.md) to add explicit template back-links for each course (UI layer → React/Angular/Vue/WC templates, State layer → Redux/RTK/Saga/NgRx/Pinia/Zustand templates, Server layer → all templates, Agent Skills → all templates). Save to .benzene/material/marketing/courses-copy-proposal.md.\",\n      \"after\": [1],\n      \"acceptance\": [\n        {\n          \"text\": \"Courses copy proposal exists at .benzene/material/marketing/courses-copy-proposal.md and specifies template back-links per course.\",\n          \"check\": { \"type\": \"file_pattern\", \"file\": \".benzene/material/marketing/courses-copy-proposal.md\", \"pattern\": \"template|back.link|UI layer|State layer|Server layer|Agent Skills|chota-\" }\n        }\n      ]\n    },\n    {\n      \"office\": \"cmo\",\n      \"step\": \"Prepare a CEO review package combining the audit report and both copy proposals into a single review document at .benzene/material/marketing/ceo-review-package.md with a clear summary of changes, before/after comparisons, and a request for approval to proceed to CTO worktree.\",\n      \"after\": [2, 3],\n      \"acceptance\": [\n        {\n          \"text\": \"CEO review package exists at .benzene/material/marketing/ceo-review-package.md and includes audit summary, homepage proposal, courses proposal, and approval request.\",\n          \"check\": { \"type\": \"file_pattern\", \"file\": \".benzene/material/marketing/ceo-review-package.md\", \"pattern\": \"audit|proposal|before|after|approval|CEO|worktree\" }\n        }\n      ]\n    }\n  ]\n}",
+  "status": "ok",
+  "passed": true,
+  "verified": null,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "4447 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "4447 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "json_schema",
+      "passed": true,
+      "score": 1.0,
+      "detail": "valid"
+    },
+    {
+      "name": "acceptance",
+      "passed": true,
+      "score": 1.0,
+      "detail": "every criterion is checkable"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "97.1s of 2700s allowed"
+    },
+    {
+      "name": "judge",
+      "passed": true,
+      "score": 1.0,
+      "detail": ""
+    }
+  ],
+  "heal_attempts": 2,
+  "questions": [],
+  "files_written": [],
+  "trace": [
+    {
+      "step": "orchestrate",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "served_by": null,
+      "stop_reason": "max_iterations",
+      "iterations": 20,
+      "latency_s": 68.443,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\",\"pattern\":\"**/*.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/courses/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/pricing/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-redux/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-saga/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-zustand/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-vue-pinia/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-wc-saga/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/landing-hero.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/begin-boilerplate.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_layouts/home.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs\",\"pattern\":\"index.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/index.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/cli.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/cli.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        }
+      ],
+      "score": 0.3333,
+      "passed": false,
+      "failed_checks": [
+        "min_length",
+        "json_schema",
+        "judge"
+      ]
+    },
+    {
+      "step": "orchestrate",
+      "attempt": 2,
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 28.654,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\",\"pattern\":\"**/*.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/courses/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/pricing/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-rtk/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-redux/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-saga/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-react-zustand/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-vue-pinia/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-wc-saga/index.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/landing-hero.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_includes/begin-boilerplate.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_layouts/home.html\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"docs\",\"pattern\":\"index.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/index.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_site/cli.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/cli.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "CMO Office, in coordination with CTO Office, must audit the homepage and key course pages to ensure the headline and hero section explicitly state 'Frontend AI Harness Training Site' and highlight 'Free Courses', 'Practice Dashboard', and 'Paid Tiers'. Per CEO approval, references to `npx elegant` boilerplate generation must NOT be removed or de-emphasized; instead, the templates should be presented as the starting point for building an AI frontend harness. The hero should read as a three‑step path: 1) start from a template (list of specific `npx elegant` commands), 2) grow it into an AI frontend harness with the free courses and Practice Dashboard, 3) the paid tiers. Every template must be showcased on the homepage with its stack, what it sets up, and its one‑line start command. Courses and lessons must be linked to the template they build on. All copy changes must be proposed for CEO review before implementation, and site changes must go through a CTO worktree and beta.",
+    "approach": "self",
+    "steps": [
+      {
+        "step": ", ",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "orchestrate",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 2,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "The plan only defined an initial audit step and left the rest of the required actions undefined, so it does not fully satisfy the CMO Office role of turning the instruction into a complete ordered plan for the active offices. · keep: The initial audit step (CMO office auditing homepage and course pages and producing a report) is correctly formulated and should be retained. · change: Add the remaining ordered steps: CMO drafts copy changes per the three‑step hero path and template showcase, submits them for CEO review; after approval, CTO Office creates a worktree, implements the copy and template cards, links courses/lessons to templates, runs beta testing, and finally merges to main; each step should list the responsible office, specific actions, acceptance criteria, and dependencies.",
+  "earned_usd": 0.05,
+  "office": "coo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": true,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 97.09653949737549,
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 0.816,
+  "efficacy_after": 0.8712,
+  "skill_efficacy_after": 0.8712,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792356984.084974
+}

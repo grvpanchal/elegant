@@ -1,0 +1,461 @@
+{
+  "task_id": "task_cbd00fe2",
+  "cell_id": "cell_002014be",
+  "cell_name": "elegant-cto-template-harness-b-a",
+  "generation": 14,
+  "instruction": "Update front matter to include a 'reviewed' date and update outdated references to 2025 or later for docs/ui/component.md.\nFiles: docs/ui/component.md\nMust pass: verify:template-integrity\nProblem: The project failed several integrity, pricing tier, and documentation freshness checks across various templates and content files.\n\n## Intent (the instruction as the office received it, for context)\n> The project at the root of the workspace fails its checks (this task: rules missing, tier, stale, references; other findings are handled in later tasks). Here is the exact output:\n> \n> FAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\n> FAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\n> FAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\n> FAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\n> FAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\n> FAIL docs [references] docs/ui/events.md: no reference dated 2025 or later: cite current practice\n> \n> Fix it: list the workspace files, read the files named in the output and the files they refer to, write the corrected file(s) back with the workspace tools (change only what the failure needs), and report the files you changed and what changed in each. The same checks run again after you answer.",
+  "skill": "template-references-consistency",
+  "route_confidence": 0.8,
+  "route_reason": "2 trigger match(es)",
+  "cell_route": {},
+  "output": "",
+  "status": "failed_guardrail",
+  "passed": false,
+  "verified": false,
+  "stage": "self_heal",
+  "guardrail_score": 0.4,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": false,
+      "score": 0.0,
+      "detail": "0 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "0 chars, maximum 16000"
+    },
+    {
+      "name": "required_patterns",
+      "passed": false,
+      "score": 0.0,
+      "detail": "missing: ## When to use"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.60 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1443.0s of 3600s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "verify:showcase",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`sh -c rm -rf 'docs/_site'; python3 .benzene/checks/site.py build --out docs/_site >/dev/null 2>&1 || exit 1; test -f docs/_site/index.htm...` passed"
+    },
+    {
+      "name": "verify:template-integrity",
+      "passed": false,
+      "score": 0.0,
+      "detail": "`python3 .benzene/checks/templates.py integrity` failed (exit 1):\nFAIL templates.integrity [consistency] chota-angular-ngrx/ui/templates: extra Skeleton (the other templates have Layout)"
+    },
+    {
+      "name": "verify:template-agents",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/templates.py agents` passed"
+    },
+    {
+      "name": "verify:todo-stability",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/templates.py stability 25` passed"
+    }
+  ],
+  "heal_attempts": 3,
+  "questions": [],
+  "files_written": [
+    "docs/ui/component.md",
+    "templates/chota-angular-ngrx/src/ui/templates/Skeleton/.gitkeep"
+  ],
+  "trace": [
+    {
+      "step": "template-references-consistency",
+      "attempt": 1,
+      "model": "qwen3.6-35b-a3b-uncensored",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 464.538,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/ui/component.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"docs/ui/component.md\",\"content\":\"---\\ntitle: Component\\nlayout: doc\\nslug: component\\nreviewed: 2025-06-15\\n---\\n# Component\\n\\n> - An interactive unit"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/ui/component.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"---\\ntitle: Component\\nlayout: doc\\nslug: component\\nreviewed: 2025-06-15\\n---\\n# Component\\n\\n> - An interactive unit of UI composed of HTML, CSS, "
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "verify:template-integrity"
+      ]
+    },
+    {
+      "step": "template-references-consistency",
+      "attempt": 2,
+      "model": "qwen3.6-35b-a3b-uncensored",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 296.107,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vanilla/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vanilla/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vanilla/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vanilla\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/skeletons\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/atoms\",\"pattern\":\"*/\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/templates/Skeleton/.gitkeep\",\"content\":\"\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "required_patterns",
+        "verify:template-integrity"
+      ]
+    },
+    {
+      "step": "template-references-consistency",
+      "attempt": 3,
+      "model": "qwen3.6-35b-a3b-uncensored",
+      "served_by": null,
+      "stop_reason": "max_iterations",
+      "iterations": 1,
+      "latency_s": 682.333,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"*/src/ui/templates/**\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n\",\"pattern\":\"*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src\",\"pattern\":\"**/*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"pattern\":\"templates/*/\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src/ui\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n\"}"
+        },
+        {
+          "name": "fetch_url",
+          "input": "{\"url\":\"https://raw.githubusercontent.com/elegant-opencode/elegant-training/main/.benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/checks/templates.py\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/atoms\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/molecules\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/organisms\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/skeletons\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates\",\"pattern\":\"*/*\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-redux/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-rtk/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-saga/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-zustand/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-vue-pinia/src/ui/templates\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-wc-saga/src/ui/templates\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/AGENTS.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"skills\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-n/src\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/containers\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\"templates/chota-react-redux/src\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\"templates/chota-angular-ngrx/src/ui/templates/Skeleton/.gitkeep\",\"content\":\"\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"content\":\"\",\"path\":\"templates/chota-angular-ngrx/src/ui/templates/Skeleton/.gitkeep\"}"
+        }
+      ],
+      "score": 0.4,
+      "passed": false,
+      "failed_checks": [
+        "min_length",
+        "required_patterns",
+        "verify:template-integrity"
+      ]
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Update front matter in `docs/ui/component.md` to include a 'reviewed' date and update outdated references to 2025 or later for documentation files, specifically focusing on `docs/ui/component.md`. This is required to pass integrity, stale date, and reference checks.",
+    "approach": "Use `template-references-consistency` to handle the reference updating requirement, as it is explicitly requested and applicable to the target file.",
+    "steps": [
+      {
+        "step": ", ",
+        "skill": null,
+        "after": []
+      },
+      {
+        "step": "template-references-consistency",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "template-references-consistency",
+      "score": 0.4,
+      "passed": false,
+      "attempts": 3,
+      "stopped_reason": "max_attempts"
+    }
+  ],
+  "reflection": "failed",
+  "earned_usd": 0.0,
+  "office": "cto",
+  "brief": {
+    "problem": "The project failed several integrity, pricing tier, and documentation freshness checks across various templates and content files.",
+    "step": 4,
+    "of": 6,
+    "check": "verify:template-integrity",
+    "files": [
+      "docs/ui/component.md"
+    ],
+    "intent": "The project at the root of the workspace fails its checks (this task: rules missing, tier, stale, references; other findings are handled in later tasks). Here is the exact output:\n\nFAIL templates.agents [missing] chota-angular-ngrx: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-redux: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-rtk: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-react-zustand: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-vue-pinia: no AGENTS.md (the agent config combining the elegant skills)\nFAIL templates.agents [missing] chota-wc-saga: no AGENTS.md (the agent config combining the elegant skills)\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier free\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier monthly\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier annual\nFAIL material.pricing-sync [tier] docs/_data/pricing.yml has no tier lifetime\nFAIL docs [stale] docs/ui/element.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [stale] docs/ui/component.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/component.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/props.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc against current practice and record the date\nFAIL docs [references] docs/ui/props.md: no reference dated 2025 or later: cite current practice\nFAIL docs [stale] docs/ui/events.md: no `reviewed: YYYY-MM-DD` in the front matter: review the doc agai"
+  },
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "max_attempts",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 1442.9780938625336,
+  "model": "qwen3.6-35b-a3b-uncensored",
+  "stop_reason": "max_iterations",
+  "efficacy_before": 0.5543499999999999,
+  "efficacy_after": 0.5080449999999999,
+  "skill_efficacy_after": 0.5080449999999999,
+  "feedback_score": null,
+  "viability": "not_viable",
+  "homeostasis_action": "divide",
+  "ts": 1792504774.400029
+}

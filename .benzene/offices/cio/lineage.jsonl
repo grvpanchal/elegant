@@ -1,0 +1,3 @@
+{"kind": "seed", "cell_id": "cell_3de3cec9", "name": "elegant-cio-pitch"}
+{"kind": "seed", "cell_id": "cell_1aeb42be", "name": "elegant-cio-traction"}
+{"kind": "guardrail", "cell_id": "cell_3de3cec9", "skill": "pitch", "scout": "scout_d3941d01", "added": ["verify:pitch-structure", "verify:pitch-completion-minimums", "forbidden /TODO/"], "rejected": ["verify:pitch-why-now-citations", "verify:pitch-traction-record"], "questions": 0, "escalated": false, "path": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/offices/cio/guardrails/cell_3de3cec9-pitch.md"}

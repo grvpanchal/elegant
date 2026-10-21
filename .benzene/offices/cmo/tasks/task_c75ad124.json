@@ -1,0 +1,175 @@
+{
+  "task_id": "task_c75ad124",
+  "cell_id": "cell_bef2fb7e",
+  "cell_name": "elegant-cmo-youtube-1",
+  "generation": 0,
+  "instruction": "create-youtube-shorts-posts",
+  "skill": "youtube",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_bef2fb7e",
+    "by": "decider",
+    "confidence": 0.99,
+    "reason": "jev-latest: elegant-cmo-youtube-1",
+    "probabilities": {
+      "cell_56ce9497": 0.0,
+      "cell_8cd4652b": 0.0,
+      "cell_e8a2a016": 0.0,
+      "cell_6118e7b3": 0.0,
+      "cell_594020d6": 0.01,
+      "cell_9a701e44": 0.0,
+      "cell_d11d3d56": 0.0,
+      "cell_bef2fb7e": 0.99,
+      "cell_9d98af25": 0.0
+    }
+  },
+  "output": "Done. I wrote the YouTube Short storyboard to:\n\n`.benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md`\n\nWhat it carries:\n- **Channel/date/campaign:** YouTube, 2026-10-23, campaign `state-selectors` — matching the LinkedIn (2026-10-19) and Instagram (2026-10-21) twins word for word on the claim.\n- **Claim:** \"A selector that returns a new object re-renders its component on every store change, because useSelector compares with ===; memoizing on stable inputs takes it to zero.\"\n- **Source:** `skills/state-selectors/SKILL.md`; `templates/chota-react-redux/src/containers/TodoListContainer.jsx`; render counts measured on React 19.2.5 + React-Redux 9.2.0 under jsdom on 2026-10-17.\n- **Showcase URL:** `https://elegantfrontend.training/practice/memoized-selector.html?utm_source=youtube&utm_medium=video&utm_campaign=state-selectors`, on its own line within the first two lines of the description.\n- **Format:** 9:16, 60 s, title under 100 characters, tags well under 500 characters total, three hashtags at the end of the description.\n- **Shots:** six timed shots from 0 s to 60 s with no gap — hook (theme toggle re-renders an unchanged list), the `===` comparison, the new-object selector, `createSelector` on stable inputs (0 re-renders), the `toBe` gate, and the CTA practice-question slide. All captions are under 60 characters.\n- **Script:** spoken lines matching each shot, no invented numbers, versions, or quotes; everything cited from the named source files.\n\nThe file is held in the marketing room for the CEO's review; nothing is uploaded or posted.",
+  "status": "ok",
+  "passed": true,
+  "verified": null,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1590 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1590 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "110.9s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 1.0,
+      "detail": "not-ai-slop: chose 'genuine' (conf 1.00)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md"
+  ],
+  "trace": [
+    {
+      "step": "youtube",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 110.872,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/selector-same-reference.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\",\"content\":\"channel: youtube\\ndate: 2026-10-23\\nformat: short\\naspect: "
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Create storyboards for YouTube Shorts posts for the brand @ElegantFrontend.",
+    "approach": "Use the `youtube` skill to prepare storyboards for the brand's YouTube channel as storyboards that YouTube's watch page shows, held for review (never uploaded).",
+    "steps": [
+      {
+        "step": ", youtube",
+        "skill": null,
+        "after": []
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "youtube",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.05,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 110.87150478363037,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792595235.4268491
+}

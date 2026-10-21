@@ -1,0 +1,197 @@
+{
+  "task_id": "task_048794e0",
+  "cell_id": "cell_e8a2a016",
+  "cell_name": "elegant-cmo-linkedin",
+  "generation": 0,
+  "instruction": "Rewrite .benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md (LinkedIn, with your linkedin skill) so it beats the competition on LinkedIn. It stays held for the CEO's review. When you are done it is measured again: G-Eval by google/gemma-4-e2b against the competitor's best post, and Jev's not-ai-slop gate. Only a version that scores higher and that Jev calls genuine is kept; anything else is put back, so change the writing, not only the wording.\n\nThe current version (version 1) scores 0.47; the bar is 0.75.\n- beats-competition 0.30: GreatFrontEnd's bar is a numbered pairs hook ('5 React pairs that sound similar, but work differently') plus a save-before-interview CTA in a scannable carousel. The actual first line is a career thesis ('If an agent took the typing part of your frontend job...') that a scroller would not stop for as readily. The body names a usable failure mode (spread `{ ...todo, todoItems }` re-renders; reject shallowEqual because filter() returns a new array; toBe() / createSelector), but withholds the practice question to the first comment and spends the rest on a 315-minute course pitch instead of code o\n- human-voice 0.70: The LinkedIn post is specific to the selector claim and sources: createSelector inputs, the { ...todo, todoItems } diff, rejecting shallowEqual because filter() allocates, a toBe() guard, and the 315-minute State essentials plan with eight named docs. That work detail and the between-jobs interview opinion could not be moved to another topic unchanged. Generated-copy habits still shape it: an aphoristic reversal opener, the claim restated before the list, arrow bullets, and a One/Then/Then product cadence.\n- channel-native 0.60: The LinkedIn post is not a straight twin: its claim (naming the layer and what “done” means as a test is the job left after agents write code), campaign-wrap framing, and product specifics (elegantfrontend.training, 315-minute State essentials, eight terms, practice in the first comment) are new to a reader of the selector twins. It still recycles the same examples those twins already used—createSelector, { ...todo, todoItems }, rejecting shallowEqual because filter() returns a new array, and a toBe() guardrail—and it never becomes the story-plus-document-carousel LinkedIn is supposed to rewar\n- Jev: genuine (0% likely slop)\n\nKeep the front matter's channel, date, campaign, source and showcase_url, and every fact its source supports. Add no number, quote, version or link the source does not give. Write it for this channel alone: its twins (.benzene/material/marketing/posts/x-2026-10-25-selector-reference-gate.md, .benzene/material/marketing/posts/x-2026-10-24-selector-factory-cache.md, .benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md, .benzene/material/marketing/posts/linkedin-2026-10-22-state-pairs.md, .benzene/material/marketing/posts/linkedin-2026-10-21-warning-to-gate.md, .benzene/material/marketing/posts/linkedin-2026-10-20-read-path-fails-quietly.md, .benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md, .benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md, .benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md, .benzene/material/marketing/video/youtube-2026-10-21-selector-same-reference.md) carry the same claim, so this one must not read as their copy.\n\nWhat the competition did on LinkedIn (.benzene/material/marketing/competition/linkedin.md):\n---\ncompetitor: GreatFrontEnd\npost: \"5 React pairs that sound similar, but work differently … Save this before your next React interview\"\ndate: \"between 2026-10-12 and 2026-10-16 (the report records the visible posts as aged 1d–5d on 2026-10-17, not a date per post)\"\nmedia: \"\"\nhook: \"5 React pairs that sound similar, but work differently\"\ntext_chars:\nreach: \"11–208 reactions across the 10 visible posts (a range; the report does not attribute a count to this post); 89,925 Page followers\"\nsource: https://www.linkedin.com/company/greatfrontend\n---\n\n# LinkedIn: the bar GreatFrontEnd's pairs series sets\n\n**Source.** CMO report, evidence [E22] (https://www.linkedin.com/company/greatfrontend, fetched 2026-10-17), playbook\n\"What their best posts have in common\", and the `linkedin-carousels` bar in `benzene-standards.yaml`.\n\n**What the report records.**\n\n- GreatFrontEnd's Page has 89,925 followers. Its 10 visible posts were aged 1 to 5 days, and their reactions ranged\n  from 11 to 208.\n- The openings it quotes include a series: \"5 CSS animation pairs that sound similar, but work differently: Regular CSS\n  transition vs @starting-style…\", \"5 React pairs that sound similar, but work differently … Save this before your next\n  React interview\" and \"5 image and media pairs…\".\n- The report names this series as the model for our terminology carousels: it \"maps 1:1 onto our glossary\".\n\n**What it does not record.** It gives no per-post reaction count, so we cannot say which post earned the 208. It gives\nno character count either. It also could not confirm that any competitor post is a document (carousel), because\ncompany-page HTML does not show the post type. `media` and `text_chars` are left empty on purpose, and `reach` keeps the\nrange rather than a number for this post.\n\n**The bar for\n\nRead the file first, then write_workspace_file each one you change. Answer with what you changed and why.",
+  "skill": "linkedin",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_e8a2a016",
+    "by": "only",
+    "confidence": 1.0,
+    "reason": "the only living cell",
+    "probabilities": {}
+  },
+  "output": "Done. I rewrote the post and added its document carousel deck.\n\n## What I changed and why\n\n**`linkedin-2026-10-23-name-the-boundary.md`** — full rewrite of the body, same front-matter fields (channel, date, claim, source, campaign, showcase_url) plus the required `format: document`, `slides`, `document_title`, and `first_comment`.\n\n**Why the old version scored low:**\n- Hook was a career thesis (\"If an agent took the typing part of your frontend job…\") that a scroller wouldn't stop for.\n- No carousel/document format — the core LinkedIn format GreatFrontEnd's bar sets.\n- Body recycled the twins' examples (`{ ...todo, todoItems }`, `shallowEqual`, `toBe()`, createSelector) and spent most of its length on a 315-minute course pitch instead of code/mechanism.\n- Generated-copy habits: aphoristic reversal opener, claim restated before the list, arrow bullets, One/Then/Then cadence.\n\n**What the rewrite does differently:**\n- Hook in the first two lines: *\"An agent writes the selector. A human names the layer it reads from.\"* — specific, concrete, not a topic.\n- A document carousel (7 slides, 5–9 allowed) built around this post's unique claim — *naming the boundary* — not selector mechanics already covered by the 10-19, 10-20, 10-21, 10-22 twins.\n- No arrow bullets, no \"One/Then/Then\" cadence, no claim restated before a list, no recycled `{ ...todo }` / `toBe()` / `shallowEqual` focus.\n- Five terms about layers/boundaries (UI vs server state, action vs event, selector vs reducer, store vs state, done as a reference test), each with one idea and a code-relevant mechanism.\n- Last slide is the CTA pointing at `elegantfrontend.training/practice/memoized-selector.html` with the correct `utm_source=linkedin&utm_medium=social&utm_campaign=state-selectors`.\n- Showcase link lives in `first_comment` per the profile's LinkedIn showcase rule.\n- 4 hashtags (3–5 allowed), ~1,765 characters (under 3,000).\n- All facts sourced from `docs/_data/plans.yml` (315 minutes, eight term docs, eight practice questions), `docs/practice/memoized-selector.md` (`recomputations()`), and `docs/state/selectors.md` — no invented numbers, links, versions, or quotes.\n\n**`slides/name-the-boundary.md`** — new deck file, one slide per `---` block, each with a `# Title` under 60 chars and body under 320 chars, last slide the CTA with the showcase URL.\n\nThe post stays held for CEO review; nothing is posted.",
+  "status": "ok",
+  "passed": true,
+  "verified": true,
+  "stage": "human_feedback",
+  "guardrail_score": 0.985,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2398 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2398 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "143.8s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "2 file(s) written"
+    },
+    {
+      "name": "verify:linkedin",
+      "passed": true,
+      "score": 1.0,
+      "detail": "`python3 .benzene/checks/material.py linkedin` passed"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 0.88,
+      "detail": "not-ai-slop: chose 'genuine' (conf 0.88)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/slides/name-the-boundary.md",
+    ".benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md"
+  ],
+  "trace": [
+    {
+      "step": "linkedin",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 143.775,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/competition/linkedin.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-22-state-pairs.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-21-warning-to-gate.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-20-read-path-fails-quietly.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/_data/plans.yml\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/state/selectors.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"skills/state-selectors/SKILL.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\"docs/practice/memoized-selector.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/name-the-boundary.md\",\"content\":\"# Name the boundary\\n\\nThe agent writes the code. You name the layer a value belong"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md\",\"content\":\"---\\nchannel: linkedin\\ndate: 2026-10-23\\nformat: document\\nclai"
+        }
+      ],
+      "score": 0.985,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Rewrite the file `.benzene/material/marketing/posts/linkedin-2026-10-23-name-the-boundary.md` to significantly improve its performance on LinkedIn, aiming for a G-Eval score above 0.75 and passing the Jev genuine gate (0% likely slop). The rewrite must incorporate specific structural and content elements observed in competitor posts while maintaining factual integrity and channel-native voice.",
+    "approach": "The task requires sophisticated rewriting based on external competitive analysis and internal quality metrics, which necessitates an orchestration of content transformation, competitive benchmarking, and quality gating.",
+    "steps": [
+      {
+        "step": "linkedin",
+        "skill": "linkedin",
+        "after": []
+      },
+      {
+        "step": "orchestrate",
+        "skill": null,
+        "after": [
+          1
+        ]
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "linkedin",
+      "score": 0.985,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.04925,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 143.7749412059784,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 0.9984999999999999,
+  "efficacy_after": 0.99445,
+  "skill_efficacy_after": 0.99445,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792387856.1283152
+}

@@ -1,0 +1,230 @@
+{
+  "task_id": "task_a97f9fd4",
+  "cell_id": "cell_bef2fb7e",
+  "cell_name": "elegant-cmo-youtube-1",
+  "generation": 0,
+  "instruction": "Produce and upload a series of short-form videos to the social media channels. Check via: python3 .benzene/checks/material.py youtube.",
+  "skill": "youtube",
+  "route_confidence": 1.0,
+  "route_reason": "only skill",
+  "cell_route": {
+    "target": "cell_bef2fb7e",
+    "by": "decider",
+    "confidence": 1.0,
+    "reason": "jev-latest: elegant-cmo-youtube-1",
+    "probabilities": {
+      "cell_56ce9497": 0.0,
+      "cell_8cd4652b": 0.0,
+      "cell_e8a2a016": 0.0,
+      "cell_6118e7b3": 0.0,
+      "cell_594020d6": 0.0,
+      "cell_9a701e44": 0.0,
+      "cell_d11d3d56": 0.0,
+      "cell_bef2fb7e": 1.0,
+      "cell_9d98af25": 0.0
+    }
+  },
+  "output": "The YouTube Short storyboard is written. Here's a summary of what was produced:\n\n**File written:** `.benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md`\n\n**What it is:** A 45-second vertical (9:16) YouTube Short storyboard for the `state-selectors` campaign, matching the LinkedIn, Instagram, and Facebook twins word-for-word on the claim.\n\n**Key details verified against the record:**\n- **Claim** — identical to the LinkedIn/Instagram/Facebook posts: a selector returning a new object re-renders on every store change because `useSelector` compares with `===`; memoizing on stable inputs takes re-renders to zero.\n- **Source** — `skills/state-selectors/SKILL.md`, `templates/chota-react-redux/src/containers/TodoListContainer.jsx`, render counts measured on React 19.2.5 + React-Redux 9.2.0 under jsdom on 2026-10-17 (all read from the workspace).\n- **Showcase URL** — `https://elegantfrontend.training/practice/memoized-selector.html?utm_source=youtube&utm_medium=video&utm_campaign=state-selectors`, on its own line within the first two lines of the description; confirmed the page exists and is the \"Memoize a derived selector\" practice question.\n- **Shots** — 5 timed shots from 0–45 s with no gap: hook (theme toggle re-renders an unchanged list), `useSelector` `===` comparison, the `{ ...todo, todoItems }` new-object bug, `createSelector` fix (0 re-renders), and the CTA to the practice page. All captions ≤ 60 characters.\n- **Script** — line-by-line spoken words matching the shots.\n- **Title** — 51 characters, no `<` or `>`. Tags — 5 tags, well under 500 characters. Description — under 5,000 bytes, 3 hashtags at the end, no email addresses.\n\nNothing was uploaded; the storyboard is held in the marketing room for the CEO's review, per office policy.",
+  "status": "ok",
+  "passed": true,
+  "verified": null,
+  "stage": "human_feedback",
+  "guardrail_score": 1.0,
+  "guardrail_checks": [
+    {
+      "name": "min_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1791 chars, minimum 20"
+    },
+    {
+      "name": "max_length",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1791 chars, maximum 16000"
+    },
+    {
+      "name": "forbidden_patterns",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none present"
+    },
+    {
+      "name": "cost",
+      "passed": true,
+      "score": 1.0,
+      "detail": "$0.0000 of $0.50 budget"
+    },
+    {
+      "name": "latency",
+      "passed": true,
+      "score": 1.0,
+      "detail": "165.2s of 2700s allowed"
+    },
+    {
+      "name": "written_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "1 file(s) written"
+    },
+    {
+      "name": "protected_files",
+      "passed": true,
+      "score": 1.0,
+      "detail": "none of .benzene/checks/** written"
+    },
+    {
+      "name": "decision:not-ai-slop",
+      "passed": true,
+      "score": 1.0,
+      "detail": "not-ai-slop: chose 'genuine' (conf 1.00)"
+    }
+  ],
+  "heal_attempts": 1,
+  "questions": [],
+  "files_written": [
+    ".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md"
+  ],
+  "trace": [
+    {
+      "step": "youtube",
+      "attempt": 1,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "served_by": null,
+      "stop_reason": "end_turn",
+      "iterations": 1,
+      "latency_s": 165.217,
+      "cost_usd": 0.0,
+      "tool_calls": [
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/profile.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/instagram-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/linkedin-2026-10-19-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/slides/selector-same-reference.md\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing/competition\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/checks/material.py\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/material/marketing/video\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/experience/analytics/2026-W42.json\"}"
+        },
+        {
+          "name": "list_workspace_files",
+          "input": "{\"path\":\".benzene/checks\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/x-2026-10-20-selector-same-reference.md\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/posts/facebook-2026-10-21-selector-same-reference.md\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\",\"content\":\"---\\nchannel: youtube\\ndate: 2026-10-23\\nformat: short\\nasp"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\",\"content\":\"---\\nchannel: youtube\\ndate: 2026-10-23\\nformat: short\\nasp"
+        },
+        {
+          "name": "fetch_url",
+          "input": "{\"url\":\"https://elegantfrontend.training/practice/memoized-selector.html\"}"
+        },
+        {
+          "name": "read_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\"}"
+        },
+        {
+          "name": "fetch_url",
+          "input": "{\"url\":\"file:///workspace/.benzene/checks/material.py\"}"
+        },
+        {
+          "name": "write_workspace_file",
+          "input": "{\"path\":\".benzene/material/marketing/video/youtube-2026-10-23-selector-same-reference.md\",\"content\":\"---\\nchannel: youtube\\ndate: 2026-10-23\\nformat: short\\nasp"
+        }
+      ],
+      "score": 1.0,
+      "passed": true,
+      "failed_checks": []
+    }
+  ],
+  "skill_repair": "",
+  "plan": {
+    "problem": "Produce and upload a series of short-form videos to the social media channels, verified by checking the output using `python3 .benzene/checks/material.py youtube`.",
+    "approach": "The instruction asks to produce and upload short-form videos, which relates to the `youtube` skill. The verification step involves running a specific script. Since the `youtube` skill's description specifies preparing storyboards for review (never uploading), I must interpret how this maps to the request of 'Produce and upload'. Given the constraints, I will use the available skill to prepare the content as storyboards.",
+    "steps": [
+      {
+        "step": "youtube",
+        "skill": null,
+        "after": []
+      },
+      {
+        "step": "youtube",
+        "skill": null,
+        "after": [
+          1
+        ]
+      }
+    ],
+    "execute": "self"
+  },
+  "steps": [
+    {
+      "skill": "youtube",
+      "score": 1.0,
+      "passed": true,
+      "attempts": 1,
+      "stopped_reason": "passed"
+    }
+  ],
+  "reflection": "",
+  "earned_usd": 0.05,
+  "office": "cmo",
+  "brief": null,
+  "acceptance": [],
+  "acceptance_passed": null,
+  "healed": false,
+  "stopped_reason": "passed",
+  "estimated_cost_usd": 0.0,
+  "actual_cost_usd": 0.0,
+  "latency_s": 165.21696162223816,
+  "model": "nvidia/nemotron-3.5-super-vl:free",
+  "stop_reason": "end_turn",
+  "efficacy_before": 1.0,
+  "efficacy_after": 1.0,
+  "skill_efficacy_after": 1.0,
+  "feedback_score": null,
+  "viability": "needs_feedback",
+  "homeostasis_action": "ok",
+  "ts": 1792552165.8051255
+}

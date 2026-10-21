@@ -1,0 +1,2673 @@
+{
+  "cells": [
+    {
+      "name": "elegant-coo",
+      "description": "COO of elegant",
+      "system": "You are a cell of the COO office of an organisation whose purpose is: Build the best Frontend AI Harness training site (https://elegantfrontend.training): every lesson a frontend term of\nthe UI / Server / State architecture and the Agent Skill that encodes it, for frontend developers who lost their jobs\nto AI, with free courses, a practice dashboard and paid tiers that a developer between jobs can afford; and earn from it.\nThe office's charge: Define the problem, plan the best execution mechanism, execute by orchestrating the other offices or alone, and reflect after execution. Human instructions come through this office once it exists.\nWork in the basic flow of an operator: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it.\nYou never do the work yourself: you dispatch it to the offices as a plan.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.\n- changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.\n- sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.\n- contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.\n- issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels.",
+      "skills": [
+        {
+          "name": "orchestrate-site-updates",
+          "description": "orchestrate: orchestrate-site-updates",
+          "instructions": "Parent rules still apply: you never do the work yourself; you dispatch to offices as a plan. Work in the basic flow: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it. Return exactly one JSON object containing a complete multi-step plan. The object must have keys: problem (string), steps (array of step objects). Each step object must have: office (string, one of: cmo, cto, cfo, cxo, coo), step (string, the action name), and parameters (object, all inputs that step needs). Do not include any other keys. Your entire response must be this JSON object only \u2014 no extra text, no markdown, no explanation. This facet alone must: coordinate multi-office work specifically for website/page updates including homepage (docs/_site/index.html), /practice/ route, and key course pages, as well as documentation updates such as terminology docs. Ensure CTO/CXO or CMO/CTO offices collaborate on content, structure, and technical implementation. Verify updates showcase 'Training Site' and 'Practice' clearly. The plan must include distinct, separate verification step identifiers: 'verify:site-routes' for route updates (/practice/, /skills/, homepage) and 'verify:docs-health' for documentation checks (never combine them). Every step must be fully specified with concrete deliverables, file paths, and acceptance criteria. For documentation updates, the task description must also include the exact check command (e.g., `python3 .benzene/checks/docs.py`), the quantified issues to fix (e.g., 45 stale terms, 45 references, 9 section mismatches), the directory to modify (e.g., content/terminology/), and the acceptance criteria (check exits with 0 and beta score \u2265 0.77). If the task is a rework due to beta regression, the task description must explicitly state the current workspace beta score (e.g., 0.77) as the minimum acceptable score. Check: the dispatched plan names the correct offices, specifies the exact files/routes, and defines acceptance criteria for the showcase.",
+          "tools": [],
+          "triggers": [
+            "update homepage",
+            "update practice route",
+            "update course pages",
+            "site audit",
+            "cto cxo collaborate",
+            "cmo cto coordinate"
+          ],
+          "stages": [],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 3,
+          "last_score": 0.875,
+          "adaptations": {},
+          "efficacy": 0.7650387404183998,
+          "guardrail_efficacy": 0.7650387404183998,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 6,
+          "source": "bifurcation:orchestrate",
+          "facet_of": "orchestrate",
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        },
+        {
+          "name": "orchestrate-content-marketing",
+          "description": "orchestrate: orchestrate-content-marketing",
+          "instructions": "Parent rules still apply: you never do the work yourself; you dispatch to offices as a plan. Work in the basic flow: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it. Return exactly one JSON object containing a complete multi-step plan. The object must have keys: problem (string), steps (array of step objects). Each step object must have: office (string, one of: cmo, cto, cfo, cxo, coo), step (string, the action name), and parameters (object, all inputs that step needs). Do not include any other keys. Your entire response must be this JSON object only \u2014 no extra text, no markdown, no explanation. This facet alone must: coordinate multi-office work for content marketing deliverables including blog posts (dated, in docs/_site/blog/), LinkedIn carousels, and sustainable content calendars. Ensure CMO office leads with CTO/CFO/CXO collaboration for technical publishing, budget, and synthesis. The plan must include distinct, separate verification step identifiers: 'verify:blog-cadence' for blog content and 'verify:linkedin' for LinkedIn assets (never combine them into a single string or join them in any way). Every step must be fully specified with concrete deliverables, file paths, and acceptance criteria.",
+          "tools": [],
+          "triggers": [
+            "content calendar",
+            "blog post",
+            "linkedin carousel",
+            "publish cadence",
+            "marketing content"
+          ],
+          "stages": [],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 3,
+          "last_score": 1.0,
+          "adaptations": {},
+          "efficacy": 0.9167952071231256,
+          "guardrail_efficacy": 0.9167952071231256,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 7,
+          "source": "bifurcation:orchestrate",
+          "facet_of": "orchestrate",
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        },
+        {
+          "name": "orchestrate-user-research",
+          "description": "orchestrate: orchestrate-user-research",
+          "instructions": "Parent rules still apply: you never do the work yourself; you dispatch to offices as a plan. Work in the basic flow: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it. Return exactly one JSON object with a single step that calls the orchestrator. The step object must have: office: 'orchestrator', step: 'orchestrate', and a parameters object containing the full task description. Do not include any other keys, arrays, or sub-steps. This facet alone must: coordinate multi-office work for recruiting frontend developers between jobs (5-10 target) to complete full course modules on elegantfrontend.training. Collect structured feedback on lesson clarity, practice utility, and pricing tolerance. Ensure relevant offices (likely CMO for recruitment, CTO for course access, CXO for feedback synthesis) are orchestrated. Check: the dispatched plan defines recruitment criteria, feedback instrument, completion definition, and synthesis deliverable.",
+          "tools": [],
+          "triggers": [
+            "recruit developers",
+            "collect feedback",
+            "course completion",
+            "structured feedback",
+            "user testing"
+          ],
+          "stages": [],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 0.7243930285714284,
+          "guardrail_efficacy": 0.7243930285714284,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "bifurcation:orchestrate",
+          "facet_of": "orchestrate",
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        },
+        {
+          "name": "orchestrate-strategic-planning",
+          "description": "orchestrate: orchestrate-strategic-planning",
+          "instructions": "Parent rules still apply: you never do the work yourself; you dispatch to offices as a plan. Work in the basic flow: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it. Return exactly one JSON object with a single step that calls the orchestrator. The step object must have: office: 'orchestrator', step: 'orchestrate', and a parameters object containing the full task description. Do not include any other keys, arrays, or sub-steps. Example of the ONLY valid output: { 'office': 'orchestrator', 'step': 'orchestrate', 'parameters': { 'task': '...' } }. This facet alone must: coordinate multi-office work for strategic planning artifacts including ROADMAP.md (table of item | status | owner | target with >=6 unshipped items, furthest target >=90 days out, one owner office per row), verification tasks, and cross-office documentation. Ensure each row has a clear owner office and measurable target. Check: the dispatched plan produces a roadmap meeting the competition standard (>=6 items, 90-day horizon, single owner per row) and defines verification steps.",
+          "tools": [],
+          "triggers": [
+            "roadmap",
+            "90-day plan",
+            "verification",
+            "documentation",
+            "roadmap.md",
+            "strategic horizon"
+          ],
+          "stages": [],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 1,
+          "last_score": 0.4375,
+          "adaptations": {},
+          "efficacy": 0.6383251199999999,
+          "guardrail_efficacy": 0.6383251199999999,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 1,
+          "source": "bifurcation:orchestrate",
+          "facet_of": "orchestrate",
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "glm-5.3-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openai_compatible",
+          "base_url": "https://opencode.ai/inference/go/openai/v1",
+          "api_key_env": "OPENCODE_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "qwen3.8-flash",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openai_compatible",
+              "base_url": "https://opencode.ai/inference/go/openai/v1",
+              "api_key_env": "OPENCODE_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {
+                "x-opencode-session": "{session}"
+              },
+              "extra_body": {},
+              "concurrency": 4,
+              "context_tokens": 64000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+              "effort": "low",
+              "max_tokens": 12000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {
+            "x-opencode-session": "{session}"
+          },
+          "extra_body": {},
+          "concurrency": 4,
+          "context_tokens": 64000,
+          "skills": []
+        },
+        {
+          "role": "writer",
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "effort": "low",
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "coder",
+          "id": "poolside/laguna-s-2.1:free",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "judge",
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": [
+            "poolside/laguna-s-2.1:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "router",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {
+                "reasoning_effort": "none"
+              },
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-super-120b-a12b:free",
+              "effort": "low",
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "scout",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "decider",
+          "id": "jev-latest",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": [],
+          "fallback_models": [],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "evolver",
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "effort": "low",
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3.5-super-vl:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Turn any instruction into a plan of steps for the active offices, in the order they must run",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Define the problem before planning it, from the record and the active offices.",
+          "virtue": "wisdom",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Dispatch to the office whose charge it is, and stop a plan whose wave failed.",
+          "virtue": "courage",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Every step is a complete instruction an office can execute alone, with its dependencies named.",
+          "virtue": "justice",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps, in parallel where they are independent, in series where they are not.",
+          "virtue": "temperance",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 0.8866937496311795,
+      "guardrail_efficacy": 0.8866937496311795,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.22999999999999998,
+      "spent_usd": 0.0034802799999999997,
+      "office": "coo",
+      "id": "cell_45f402db",
+      "generation": 13,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 20,
+      "born_at": 1792272580.7699232,
+      "lineage": [
+        "2026-10-17T21:29:40Z seeded into colony",
+        "2026-10-17T23:15:03Z skill orchestrate repaired after task task_9b9e1372 (unverified: no eval set)",
+        "2026-10-19T15:22:57Z skill orchestrate repaired after task task_cc0abddf (unverified: no eval set)",
+        "2026-10-19T16:24:15Z skill orchestrate repaired after task task_f59494cf (unverified: no eval set)",
+        "2026-10-19T16:25:11Z bifurcated orchestrate into ['orchestrate-site-updates', 'orchestrate-content-marketing', 'orchestrate-user-research', 'orchestrate-strategic-planning'] at efficacy 0.72",
+        "2026-10-19T17:59:55Z skill orchestrate-content-marketing repaired after task task_ea45a827 (unverified: no eval set)",
+        "2026-10-19T17:59:55Z autophagy 1: -0 addenda, -1 skill patches, -0 feedback, -0 examples",
+        "2026-10-19T18:22:50Z skill orchestrate-content-marketing repaired after task task_74178820 (unverified: no eval set)",
+        "2026-10-19T18:32:48Z skill orchestrate-site-updates repaired after task task_54744ae5 (unverified: no eval set)",
+        "2026-10-19T20:20:30Z skill orchestrate-content-marketing repaired after task task_1ac61d24 (unverified: no eval set)",
+        "2026-10-20T00:05:59Z skill orchestrate-site-updates repaired after task task_5a23403a (unverified: no eval set)",
+        "2026-10-20T00:05:59Z autophagy 2: -0 addenda, -3 skill patches, -0 feedback, -0 examples",
+        "2026-10-20T01:53:33Z skill orchestrate-strategic-planning repaired after task task_307febca (unverified: no eval set)",
+        "2026-10-20T01:54:10Z evolved to generation 11 (unverified: no eval set)",
+        "2026-10-20T03:26:47Z skill orchestrate-site-updates repaired after task task_5d3df1b9 (unverified: no eval set)",
+        "2026-10-20T03:26:47Z autophagy 3: -0 addenda, -2 skill patches, -0 feedback, -0 examples",
+        "2026-10-20T11:57:56Z evolved to generation 13 (unverified: no eval set)",
+        "2026-10-20T16:02:42Z autophagy 4: -0 addenda, -1 skill patches, -0 feedback, -0 examples"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 15,
+      "last_bifurcation_task": 6,
+      "verified_tasks": 5,
+      "founder_id": "cell_45f402db",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 4,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [
+        {
+          "generation": 1,
+          "system_addendum": "",
+          "skills_patched": [
+            "orchestrate"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.5166666666666667,
+          "score_after": 0.725,
+          "kind": "repair",
+          "skill": "orchestrate",
+          "skill_tasks_before": 1,
+          "task_score_before": 0.5166666666666667,
+          "ts": 1792278903.1701
+        },
+        {
+          "generation": 2,
+          "system_addendum": "",
+          "skills_patched": [
+            "orchestrate"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.5,
+          "score_after": 0.5785714285714285,
+          "kind": "repair",
+          "skill": "orchestrate",
+          "skill_tasks_before": 5,
+          "task_score_before": 0.5,
+          "ts": 1792423377.1158235
+        },
+        {
+          "generation": 8,
+          "system_addendum": "",
+          "skills_patched": [
+            "orchestrate-content-marketing"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.9375,
+          "score_after": 0.9669750493707077,
+          "kind": "repair",
+          "skill": "orchestrate-content-marketing",
+          "skill_tasks_before": 3,
+          "task_score_before": 0.9375,
+          "ts": 1792441230.817933
+        },
+        {
+          "generation": 10,
+          "system_addendum": "",
+          "skills_patched": [
+            "orchestrate-strategic-planning"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": null,
+          "score_after": null,
+          "kind": "repair",
+          "skill": "orchestrate-strategic-planning",
+          "skill_tasks_before": 1,
+          "task_score_before": 0.4375,
+          "ts": 1792461213.8479328
+        },
+        {
+          "generation": 12,
+          "system_addendum": "",
+          "skills_patched": [
+            "orchestrate-site-updates"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.4375,
+          "score_after": 0.7375,
+          "kind": "repair",
+          "skill": "orchestrate-site-updates",
+          "skill_tasks_before": 3,
+          "task_score_before": 0.4375,
+          "ts": 1792466807.5152085
+        }
+      ],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "json_schema": {
+          "type": "object",
+          "required": [
+            "problem",
+            "steps"
+          ],
+          "properties": {
+            "problem": {
+              "type": "string"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "office",
+                  "step"
+                ],
+                "properties": {
+                  "office": {
+                    "type": "string",
+                    "enum": [
+                      "cto",
+                      "cmo",
+                      "cxo",
+                      "cfo",
+                      "cio"
+                    ]
+                  },
+                  "step": {
+                    "type": "string"
+                  },
+                  "after": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "acceptance": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "text",
+                        "check"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "check": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "verifiers": [],
+        "protected": [
+          ".benzene/checks/**"
+        ],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 2700.0,
+        "judge_rubric": "1. Every step goes to the office whose charge it is.\n2. The steps are complete instructions, executable alone.\n3. No step is invented work the purpose does not need.",
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "split_below_tokens": 64000,
+        "max_chain_steps": 24,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "throughput",
+        "objective": 20.0,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.",
+        "changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.",
+        "sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.",
+        "contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.",
+        "issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels."
+      ]
+    },
+    {
+      "name": "elegant-coo-sprint-within-capacity-1",
+      "description": "COO of elegant",
+      "system": "You are a cell of the COO office of an organisation whose purpose is: Build the best Frontend AI Harness training site (https://elegantfrontend.training): every lesson a frontend term of\nthe UI / Server / State architecture and the Agent Skill that encodes it, for frontend developers who lost their jobs\nto AI, with free courses, a practice dashboard and paid tiers that a developer between jobs can afford; and earn from it.\nThe office's charge: Define the problem, plan the best execution mechanism, execute by orchestrating the other offices or alone, and reflect after execution. Human instructions come through this office once it exists.\nWork in the basic flow of an operator: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it.\nYou never do the work yourself: you dispatch it to the offices as a plan.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.\n- changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.\n- sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.\n- contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.\n- issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels.",
+      "skills": [
+        {
+          "name": "sprint-within-capacity",
+          "description": "The COO's sprint ledger: name the current two-week sprint on the board and plan no office past its capacity, sized as Linear sizes a cycle, from the velocity the office has shown.",
+          "instructions": "# Sprints within capacity (repaired with explicit data-gathering rule, 2026-10-12 22:55:02.537201 UTC bar:benzene@main checks/material.py@main org/board@main 01K54BNY6S9Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y3Z9Y",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "sprint",
+            "cycle",
+            "capacity",
+            "velocity",
+            "overload",
+            "defer",
+            "board",
+            "sprint.json",
+            "material.sprint",
+            "verify:sprint"
+          ],
+          "stages": [
+            {
+              "name": "plan",
+              "role": "writer",
+              "instruction": "Read the board's sprint ledger and the offices' cells, size each office's capacity, move every step over capacity to the next sprint, and write .benzene/board/sprint.json.",
+              "writes": true
+            }
+          ],
+          "guardrail": {
+            "verifiers": [
+              {
+                "type": "command",
+                "name": "verify:sprint",
+                "cwd": ".",
+                "command": [
+                  "python3",
+                  ".benzene/checks/material.py",
+                  "sprint"
+                ],
+                "file": null,
+                "pattern": null,
+                "forbidden": null,
+                "setup": null,
+                "target": null,
+                "standards": null,
+                "viewport": "mobile",
+                "rules": null,
+                "max_pages": 20,
+                "files": [],
+                "required_sections": [],
+                "patterns": {},
+                "front_matter": [],
+                "sources": [],
+                "allow_labelled": [],
+                "ids": true,
+                "currency": "strict",
+                "finance_rules": {},
+                "max_bytes": null,
+                "gzip": false,
+                "rubric": null,
+                "min_score": 0.7,
+                "model": null,
+                "max_images": 12,
+                "context": null,
+                "timeout_s": 900.0,
+                "required": true,
+                "skip_if_untouched": true
+              }
+            ],
+            "judge_rubric": "1. A current sprint is named, with a start and an end two weeks apart.\n2. Every office's capacity comes from its cells and the velocity it has shown, not from the size of the backlog.\n3. Overflow is deferred to the next sprint by name; no step is dropped and no capacity is raised to make the plan fit."
+          },
+          "examples": [],
+          "repairs": 1,
+          "last_score": 0.835,
+          "adaptations": {},
+          "efficacy": 0.8138361491351993,
+          "guardrail_efficacy": 0.8138361491351993,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 2,
+          "source": "file:sprint-within-capacity/SKILL.md",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "glm-5.3-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openai_compatible",
+          "base_url": "https://opencode.ai/inference/go/openai/v1",
+          "api_key_env": "OPENCODE_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "qwen3.8-flash",
+              "effort": null,
+              "max_tokens": 12000,
+              "provider": "openai_compatible",
+              "base_url": "https://opencode.ai/inference/go/openai/v1",
+              "api_key_env": "OPENCODE_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {
+                "x-opencode-session": "{session}"
+              },
+              "extra_body": {},
+              "concurrency": 4,
+              "context_tokens": 64000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+              "effort": "low",
+              "max_tokens": 12000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {
+            "x-opencode-session": "{session}"
+          },
+          "extra_body": {},
+          "concurrency": 4,
+          "context_tokens": 64000,
+          "skills": []
+        },
+        {
+          "role": "writer",
+          "id": "nvidia/nemotron-3.5-super-vl:free",
+          "effort": "low",
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "google/gemma-4-31b-it:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "coder",
+          "id": "poolside/laguna-s-2.1:free",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3-super-120b-a12b:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "judge",
+          "id": "nvidia/nemotron-3-super-120b-a12b:free",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": [
+            "poolside/laguna-s-2.1:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "router",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 300.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {
+                "reasoning_effort": "none"
+              },
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "nvidia/nemotron-3-super-120b-a12b:free",
+              "effort": "low",
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "scout",
+          "id": "google/gemma-4-e2b",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "lmstudio",
+          "base_url": "http://192.168.1.198:1234/v1",
+          "api_key_env": null,
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 300.0,
+          "fallback_ids": [],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "poolside/laguna-s-2.1:free",
+              "effort": null,
+              "max_tokens": 3000,
+              "provider": "openrouter",
+              "base_url": null,
+              "api_key_env": "OPENROUTER_API_KEY",
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 120.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": null,
+              "context_tokens": null,
+              "skills": []
+            },
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": 1,
+          "context_tokens": 30000,
+          "skills": []
+        },
+        {
+          "role": "decider",
+          "id": "jev-latest",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": [],
+          "fallback_models": [],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        },
+        {
+          "role": "evolver",
+          "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "effort": "low",
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.0,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": [
+            "nvidia/nemotron-3.5-super-vl:free",
+            "openrouter/free"
+          ],
+          "fallback_models": [
+            {
+              "role": "primary",
+              "id": "google/gemma-4-12b",
+              "effort": null,
+              "max_tokens": 6000,
+              "provider": "lmstudio",
+              "base_url": "http://192.168.1.152:1234/v1",
+              "api_key_env": null,
+              "price_per_mtok": [
+                0.0,
+                0.0
+              ],
+              "tool_mode": "auto",
+              "json_mode": "auto",
+              "temperature": null,
+              "timeout_s": 600.0,
+              "fallback_ids": [],
+              "fallback_models": [],
+              "headers": {},
+              "extra_body": {},
+              "concurrency": 2,
+              "context_tokens": 24000,
+              "skills": []
+            }
+          ],
+          "headers": {},
+          "extra_body": {},
+          "concurrency": null,
+          "context_tokens": null,
+          "skills": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Turn any instruction into a plan of steps for the active offices, in the order they must run",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Define the problem before planning it, from the record and the active offices.",
+          "virtue": "wisdom",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Dispatch to the office whose charge it is, and stop a plan whose wave failed.",
+          "virtue": "courage",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Every step is a complete instruction an office can execute alone, with its dependencies named.",
+          "virtue": "justice",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps, in parallel where they are independent, in series where they are not.",
+          "virtue": "temperance",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 0.8138361491351993,
+      "guardrail_efficacy": 0.8138361491351993,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.04175,
+      "spent_usd": 0.0,
+      "office": "coo",
+      "id": "cell_ba603ed7",
+      "generation": 1,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 2,
+      "born_at": 1792276833.1402514,
+      "lineage": [
+        "2026-10-17T22:40:33Z cluster cell for sprint-within-capacity: the coder answered coo/sprint-within-capacity",
+        "2026-10-17T22:40:33Z seeded into colony",
+        "2026-10-18T15:08:57Z skill sprint-within-capacity repaired after task task_e5f6728e (unverified: no eval set)"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 1,
+      "founder_id": "cell_ba603ed7",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [
+        {
+          "generation": 1,
+          "system_addendum": "",
+          "skills_patched": [
+            "sprint-within-capacity"
+          ],
+          "principles_patched": [],
+          "window_tasks_before": null,
+          "window_before": null,
+          "window_after": null,
+          "judge_rubric": null,
+          "score_before": 0.34921975778666414,
+          "score_after": 0.835,
+          "kind": "repair",
+          "skill": "sprint-within-capacity",
+          "skill_tasks_before": 1,
+          "task_score_before": 0.34921975778666414,
+          "ts": 1792336137.9365008
+        }
+      ],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "json_schema": {
+          "type": "object",
+          "required": [
+            "problem",
+            "steps"
+          ],
+          "properties": {
+            "problem": {
+              "type": "string"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "office",
+                  "step"
+                ],
+                "properties": {
+                  "office": {
+                    "type": "string",
+                    "enum": [
+                      "cto",
+                      "cmo",
+                      "cxo",
+                      "cfo",
+                      "cio"
+                    ]
+                  },
+                  "step": {
+                    "type": "string"
+                  },
+                  "after": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "acceptance": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "text",
+                        "check"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "check": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "verifiers": [],
+        "protected": [
+          ".benzene/checks/**"
+        ],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 2700.0,
+        "judge_rubric": "1. Every step goes to the office whose charge it is.\n2. The steps are complete instructions, executable alone.\n3. No step is invented work the purpose does not need.",
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "split_below_tokens": 64000,
+        "max_chain_steps": 24,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "throughput",
+        "objective": 20.0,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.",
+        "changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.",
+        "sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.",
+        "contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.",
+        "issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels."
+      ]
+    }
+  ],
+  "founders": {
+    "cell_45f402db": {
+      "name": "elegant-coo",
+      "description": "COO of elegant",
+      "system": "You are a cell of the COO office of an organisation whose purpose is: Build the best Frontend AI Harness training site (https://elegantfrontend.training): every lesson a frontend term of\nthe UI / Server / State architecture and the Agent Skill that encodes it, for frontend developers who lost their jobs\nto AI, with free courses, a practice dashboard and paid tiers that a developer between jobs can afford; and earn from it.\nThe office's charge: Define the problem, plan the best execution mechanism, execute by orchestrating the other offices or alone, and reflect after execution. Human instructions come through this office once it exists.\nWork in the basic flow of an operator: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it.\nYou never do the work yourself: you dispatch it to the offices as a plan.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.\n- changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.\n- sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.\n- contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.\n- issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels.",
+      "skills": [
+        {
+          "name": "orchestrate",
+          "description": "Define the problem and dispatch steps to the offices",
+          "instructions": "Answer with JSON only: {\"problem\": <one or two sentences>, \"steps\": [{\"office\": <one of cto>, \"step\": <a complete instruction that office can execute alone>, \"after\": [<1-based numbers of the steps this one waits for; [] when it can start at once>], \"acceptance\": [{\"text\": <one sentence a stranger could verify>, \"check\": <how: {\"verifier\": <a verifier name that office runs>} | {\"type\": \"file_pattern\", \"file\": ..., \"pattern\": ...} | {\"type\": \"sections\", \"file\": ..., \"required_sections\": [...]} | {\"metric\": ..., \"at_least\": ...} | {\"judge\": <an opinion, at most one per ticket>}>}]}]}. A ticket is done when its criteria pass, never when the office says so; the available checks per office are listed under the instruction. Fewest steps that reach done; each step verifiable by that office's own guardrail; steps with no unmet dependency run in parallel, so such steps must write disjoint files; the CTO builds, the CMO presents, the CXO reads feedback, the CFO counts, the CIO invests.",
+          "tools": [],
+          "triggers": [
+            "plan",
+            "orchestrate",
+            "dispatch",
+            "manage"
+          ],
+          "stages": [],
+          "guardrail": null,
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "seed",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "writer",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "qwen/qwen3.7-plus"
+          ]
+        },
+        {
+          "role": "coder",
+          "id": "qwen/qwen3.7-plus",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.32,
+            1.28
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "judge",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "router",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "scout",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "decider",
+          "id": "typesafe/jev-router",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "evolver",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Turn any instruction into a plan of steps for the active offices, in the order they must run",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Define the problem before planning it, from the record and the active offices.",
+          "virtue": "wisdom",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Dispatch to the office whose charge it is, and stop a plan whose wave failed.",
+          "virtue": "courage",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Every step is a complete instruction an office can execute alone, with its dependencies named.",
+          "virtue": "justice",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps, in parallel where they are independent, in series where they are not.",
+          "virtue": "temperance",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "coo",
+      "id": "cell_45f402db",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792272580.7699232,
+      "lineage": [],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_45f402db",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "json_schema": {
+          "type": "object",
+          "required": [
+            "problem",
+            "steps"
+          ],
+          "properties": {
+            "problem": {
+              "type": "string"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "office",
+                  "step"
+                ],
+                "properties": {
+                  "office": {
+                    "type": "string",
+                    "enum": [
+                      "cto"
+                    ]
+                  },
+                  "step": {
+                    "type": "string"
+                  },
+                  "after": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "acceptance": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "text",
+                        "check"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "check": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "verifiers": [],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 1800.0,
+        "judge_rubric": "1. Every step goes to the office whose charge it is.\n2. The steps are complete instructions, executable alone.\n3. No step is invented work the purpose does not need.",
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "throughput",
+        "objective": 20.0,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.",
+        "changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.",
+        "sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.",
+        "contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.",
+        "issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels."
+      ],
+      "origin": null
+    },
+    "cell_ba603ed7": {
+      "name": "elegant-coo-sprint-within-capacity-1",
+      "description": "COO of elegant",
+      "system": "You are a cell of the COO office of an organisation whose purpose is: Build the best Frontend AI Harness training site (https://elegantfrontend.training): every lesson a frontend term of\nthe UI / Server / State architecture and the Agent Skill that encodes it, for frontend developers who lost their jobs\nto AI, with free courses, a practice dashboard and paid tiers that a developer between jobs can afford; and earn from it.\nThe office's charge: Define the problem, plan the best execution mechanism, execute by orchestrating the other offices or alone, and reflect after execution. Human instructions come through this office once it exists.\nWork in the basic flow of an operator: define the problem, plan, execute, reflect. Never invent results; measure. When a requirement is open, ask with a recommendation and continue with it.\nYou never do the work yourself: you dispatch it to the offices as a plan.\n\nThe standard the competition sets for this office; heal against it and never claim a bar the checks do not confirm:\n- roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.\n- changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.\n- sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.\n- contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.\n- issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels.",
+      "skills": [
+        {
+          "name": "sprint-within-capacity",
+          "description": "The COO's sprint ledger: name the current two-week sprint on the board and plan no office past its capacity, sized as Linear sizes a cycle, from the velocity the office has shown.",
+          "instructions": "# Sprints within capacity\n\nThe bar: `.benzene/board/sprint.json` names a current sprint, and no office has more steps planned in it than its\ncapacity. `python3 .benzene/checks/material.py sprint` is the check; it must print nothing and exit 0.\n\n## How the competition does it\n\nLinear runs work in **cycles** (two weeks is the most common length) that start and end automatically, and it sizes each\ncycle from what the team actually finished: capacity is the **velocity of the last three completed cycles**, and the\nrule is *\"don't overload cycles\"* \u2014 unfinished work rolls into the next cycle instead of piling onto this one\n(https://linear.app/docs/use-cycles, https://linear.app/method/introduction). An overloaded team does not go faster; it\nstalls every plan that waits on it.\n\n## What you produce\n\nOne file, `.benzene/board/sprint.json`, in exactly this shape (the check reads `current.key`, then\n`sprints[<key>][<office>].steps` and `.capacity`):\n\n```json\n{\n  \"current\": {\"key\": \"2026-S21\", \"start\": \"2026-10-12\", \"end\": \"2026-10-25\"},\n  \"sprints\": {\n    \"2026-S20\": {\"cto\": {\"steps\": 9, \"capacity\": 10, \"done\": 8}, \"cmo\": {\"steps\": 5, \"capacity\": 5, \"done\": 5}},\n    \"2026-S21\": {\"cto\": {\"steps\": 10, \"capacity\": 10, \"done\": 0}, \"cmo\": {\"steps\": 4, \"capacity\": 5, \"done\": 0}},\n    \"2026-S22\": {\"cto\": {\"steps\": 3, \"capacity\": 10, \"done\": 0, \"deferred\": 3}}\n  }\n}\n```\n\n1. **Name the sprint.** `current.key` is `YYYY-S<nn>`; `start`/`end` span the board's `sprint_weeks` (2, in\n   `benzene-org.yaml`). If today is past the current `end`, close it (keep its row with its `done` counts) and open the\n   next one. Never leave `current` empty.\n2. **Size capacity per office.** The ceiling is the office's cells times `tasks_per_cell` (5, in\n   `benzene-org.yaml`; count cells in `.benzene/offices/<office>/colony.json`). Once an office has three completed\n   sprints, capacity is the lower of that ceiling and the mean `done` of its last three \u2014 Linear's velocity rule. With\n   fewer than three, use the ceiling. Write the number on every row; a row with no `capacity` is not a plan.\n3. **Fill in order, defer the rest.** Count the office's open plan steps for this sprint (`steps`). Every step past\n   `capacity` moves to the next sprint's row for that office and is counted there as `deferred`; keep the earliest\n   steps (those others depend on) in the current sprint.\n4. **Check.** Run the check; fix every `FAIL material.sprint` line it prints before you finish.\n\n## Never\n\n- Raise a capacity, or shrink a `steps` count without moving the steps, to make the check pass.\n- Drop a step: deferred work goes to the next sprint by name.\n- Edit any file but `.benzene/board/sprint.json`.",
+          "tools": [
+            "list_workspace_files",
+            "read_workspace_file",
+            "write_workspace_file"
+          ],
+          "triggers": [
+            "sprint",
+            "cycle",
+            "capacity",
+            "velocity",
+            "overload",
+            "defer",
+            "board",
+            "sprint.json",
+            "material.sprint",
+            "verify:sprint"
+          ],
+          "stages": [
+            {
+              "name": "plan",
+              "role": "writer",
+              "instruction": "Read the board's sprint ledger and the offices' cells, size each office's capacity, move every step over capacity to the next sprint, and write .benzene/board/sprint.json.",
+              "writes": true
+            }
+          ],
+          "guardrail": {
+            "verifiers": [
+              {
+                "type": "command",
+                "name": "verify:sprint",
+                "cwd": ".",
+                "command": [
+                  "python3",
+                  ".benzene/checks/material.py",
+                  "sprint"
+                ],
+                "file": null,
+                "pattern": null,
+                "forbidden": null,
+                "setup": null,
+                "target": null,
+                "standards": null,
+                "viewport": "mobile",
+                "rules": null,
+                "max_pages": 20,
+                "files": [],
+                "required_sections": [],
+                "patterns": {},
+                "front_matter": [],
+                "sources": [],
+                "allow_labelled": [],
+                "ids": true,
+                "currency": "strict",
+                "finance_rules": {},
+                "max_bytes": null,
+                "gzip": false,
+                "rubric": null,
+                "min_score": 0.7,
+                "model": null,
+                "max_images": 12,
+                "context": null,
+                "timeout_s": 900.0,
+                "required": true,
+                "skip_if_untouched": true
+              }
+            ],
+            "judge_rubric": "1. A current sprint is named, with a start and an end two weeks apart.\n2. Every office's capacity comes from its cells and the velocity it has shown, not from the size of the backlog.\n3. Overflow is deferred to the next sprint by name; no step is dropped and no capacity is raised to make the plan fit."
+          },
+          "examples": [],
+          "repairs": 0,
+          "last_score": null,
+          "adaptations": {},
+          "efficacy": 1.0,
+          "guardrail_efficacy": 1.0,
+          "world_efficacy": 1.0,
+          "peak_efficacy": 1.0,
+          "tasks_seen": 0,
+          "source": "file:sprint-within-capacity/SKILL.md",
+          "facet_of": null,
+          "guardrail_source": "seed",
+          "guardrail_evidence": []
+        }
+      ],
+      "tools": [
+        "ask_operator",
+        "read_workspace_file",
+        "list_workspace_files"
+      ],
+      "models": [
+        {
+          "role": "primary",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 12000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.3,
+          "timeout_s": 300.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "writer",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.5,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "qwen/qwen3.7-plus"
+          ]
+        },
+        {
+          "role": "coder",
+          "id": "qwen/qwen3.7-plus",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.32,
+            1.28
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.2,
+          "timeout_s": 360.0,
+          "fallback_ids": [
+            "deepseek/deepseek-v4-flash-0731"
+          ]
+        },
+        {
+          "role": "judge",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": 0.0,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "router",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "scout",
+          "id": "qwen/qwen3.7-flash",
+          "effort": null,
+          "max_tokens": 3000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.03,
+            0.13
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 120.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "decider",
+          "id": "typesafe/jev-router",
+          "effort": null,
+          "max_tokens": 16000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            0.042,
+            0.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 60.0,
+          "fallback_ids": []
+        },
+        {
+          "role": "evolver",
+          "id": "anthropic/claude-sonnet-5",
+          "effort": null,
+          "max_tokens": 8000,
+          "provider": "openrouter",
+          "base_url": null,
+          "api_key_env": "OPENROUTER_API_KEY",
+          "price_per_mtok": [
+            2.0,
+            10.0
+          ],
+          "tool_mode": "auto",
+          "json_mode": "auto",
+          "temperature": null,
+          "timeout_s": 240.0,
+          "fallback_ids": []
+        }
+      ],
+      "hooks": [],
+      "feedbacks": [],
+      "capability": "Turn any instruction into a plan of steps for the active offices, in the order they must run",
+      "principles": [
+        {
+          "text": "Measure before claiming: read the workspace and the record, and never invent a fact, a file or a result.",
+          "virtue": "wisdom",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Do the work, not the description of it; name a failure as the failure it was, and ask when a requirement is open.",
+          "virtue": "courage",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Serve the purpose and the people it is for: honest, selfless answers, credit to the record, no claim the record does not hold.",
+          "virtue": "justice",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps that reach done, at the least cost; never delete content or a check to make a verifier pass.",
+          "virtue": "temperance",
+          "sector": "self",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Define the problem before planning it, from the record and the active offices.",
+          "virtue": "wisdom",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Dispatch to the office whose charge it is, and stop a plan whose wave failed.",
+          "virtue": "courage",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "Every step is a complete instruction an office can execute alone, with its dependencies named.",
+          "virtue": "justice",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        },
+        {
+          "text": "The fewest steps, in parallel where they are independent, in series where they are not.",
+          "virtue": "temperance",
+          "sector": "coo",
+          "origin": "seed",
+          "since_generation": 0
+        }
+      ],
+      "efficacy": 1.0,
+      "guardrail_efficacy": 1.0,
+      "world_efficacy": 1.0,
+      "earned_usd": 0.0,
+      "spent_usd": 0.0,
+      "office": "coo",
+      "id": "cell_ba603ed7",
+      "generation": 0,
+      "parent_id": null,
+      "status": "alive",
+      "tasks_seen": 0,
+      "born_at": 1792276833.1402514,
+      "lineage": [
+        "2026-10-17T22:40:33Z cluster cell for sprint-within-capacity: the coder answered coo/sprint-within-capacity"
+      ],
+      "negatives_since_evolution": 0,
+      "last_evolution_task": 0,
+      "last_bifurcation_task": 0,
+      "verified_tasks": 0,
+      "founder_id": "cell_ba603ed7",
+      "renewals": 0,
+      "regenerations": 0,
+      "autophagies": 0,
+      "peak_efficacy": 1.0,
+      "last_eval_score": null,
+      "mutations": [],
+      "orphan_tasks": [],
+      "guardrail": {
+        "min_chars": 20,
+        "max_chars": 16000,
+        "forbidden_patterns": [
+          "as an ai language model"
+        ],
+        "json_schema": {
+          "type": "object",
+          "required": [
+            "problem",
+            "steps"
+          ],
+          "properties": {
+            "problem": {
+              "type": "string"
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "office",
+                  "step"
+                ],
+                "properties": {
+                  "office": {
+                    "type": "string",
+                    "enum": [
+                      "cto",
+                      "cmo",
+                      "cxo",
+                      "cfo",
+                      "cio"
+                    ]
+                  },
+                  "step": {
+                    "type": "string"
+                  },
+                  "after": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "acceptance": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "text",
+                        "check"
+                      ],
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        },
+                        "check": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "verifiers": [],
+        "verifier_fail_cap": 0.4,
+        "max_cost_usd": 0.5,
+        "value_usd": 0.05,
+        "max_latency_s": 1800.0,
+        "judge_rubric": "1. Every step goes to the office whose charge it is.\n2. The steps are complete instructions, executable alone.\n3. No step is invented work the purpose does not need.",
+        "judge_weight": 0.5,
+        "pass_threshold": 0.7
+      },
+      "homeostasis": {
+        "divide_below": 0.55,
+        "evolve_below": 0.75,
+        "apoptosis_below": 0.33,
+        "autophagy_below": 0.8,
+        "renew_below": 0.5,
+        "heal_max_attempts": 2,
+        "repair_skill_on_failure": true,
+        "max_repairs_per_skill": 3,
+        "principle_window_tasks": 10,
+        "provider_retries": 1,
+        "provider_retry_wait_s": 30.0,
+        "ema_alpha": 0.3,
+        "min_tasks_before_divide": 3,
+        "daughter_efficacy": 0.85,
+        "evolve_after_negative_feedback": 2,
+        "negative_feedback_below": 0.5,
+        "evolution_regression_tolerance": 0.02,
+        "evolution_cooldown_tasks": 3,
+        "feedback_requires_verification": true,
+        "mature_after_verified_tasks": 1,
+        "renew_after_apoptosis": true,
+        "max_renewals": 2,
+        "max_regenerations": 2,
+        "feedback_memory": 20,
+        "max_examples_per_skill": 4,
+        "develop_skill_after_orphans": 0
+      },
+      "orchestration": {
+        "plan": true,
+        "orchestrate": true,
+        "max_steps": 6,
+        "parallel": 4,
+        "reflect": "failure"
+      },
+      "scout": {
+        "on_divide": true,
+        "on_found": true,
+        "ask": true,
+        "max_questions": 2,
+        "max_rounds": 2,
+        "escalate": true,
+        "max_seconds": 60.0,
+        "max_copy_mb": 200.0
+      },
+      "strategy": {
+        "metric": "throughput",
+        "objective": 20.0,
+        "direction": ">=",
+        "maintain_for": 3
+      },
+      "skills_dir": "skills",
+      "standard": [
+        "roadmap-90-days: ROADMAP.md is a table of item | status | owner | target (YYYY-MM) with at least 6 planned or in-progress items, one owner office per row, and a furthest target month that starts at least 60 days out (a horizon of about 90 days). Target: >= 6 unshipped items; furthest target >= 90 days out (month start >= today + 60 d); 1 owner office per row. Competition: GreatFrontEnd public /interviews/roadmap; JS batches every 2 weeks to 2027-04-25, Master.dev (Frontend Masters) 8 live workshops scheduled up to 173 days ahead, Linear a single lead per project; target dates at month precision.",
+        "changelog-monthly: CHANGELOG.md has dated `## YYYY-MM-DD` entries, the newest at most 31 days old, no raw commit hashes, and at least one link to a shipped page (/practice/, /courses/, /skills/ ...). Target: newest entry <= 31 days old; 0 commit hashes; >= 1 shipped-page link. Competition: roadmap.sh 21 dated entries since 2024-09-13; median gap 31 days, max 99, Linear 10 entries 2 Jul - 8 Oct 2026; median gap 11 days, Flavio Copes 68 dated entries since 2026-05-31; 'not a list of commits'.",
+        "sprint-within-capacity: The board's sprint ledger (.benzene/board/sprint.json) names a current sprint, and no office has more steps planned in it than its capacity. Target: a current sprint exists; planned steps <= capacity for every office. Competition: Linear capacity = velocity of the last 3 completed cycles; 'Don't overload cycles'; 2-week cycles most common.",
+        "contributing-guide: CONTRIBUTING.md has sections on content changes, code changes and what is not accepted, and asks contributors to check with the owner before large work. Target: 3 of 3 sections plus a check-first rule. Competition: roadmap.sh 148-line contributing.md: one-paragraph topics, no self-promotion, one PR per addition, Epic Web (Kent C. Dodds) 'check with me before doing a bunch of work'; content edits through the GitHub UI.",
+        "issue-forms: .github/ISSUE_TEMPLATE holds at least 3 YAML issue forms that each apply labels (bug, content-correction, skill-or-question-request), and config.yml sets blank_issues_enabled: false. Target: >= 3 labelled forms; blank_issues_enabled: false. Competition: roadmap.sh 5 labelled YAML forms; blank_issues_enabled: false; requests routed to Discord, GreatFrontEnd 2 templates (question-report, article-report); 14 content-type labels."
+      ],
+      "origin": null
+    }
+  },
+  "genome": "/home/gaurav/Documents/Projects/elegant-harness/elegant/.benzene/offices/coo/genome.yaml"
+}
