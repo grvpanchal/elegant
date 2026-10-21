@@ -1,0 +1,11 @@
+# This machine's, not the record's: the running daemon and its beat lock, the relay's secret, the crash-recovery
+# copies, a file being written, and what is rendered from the record on demand (the graph, the office rooms).
+# Secrets live in the project's .env (ignored at the root), never under .benzene.
+serve.json
+heartbeat.lock
+relay.json
+snapshots/
+graph.html
+rooms/
+*.tmp
+*.go-tmp
