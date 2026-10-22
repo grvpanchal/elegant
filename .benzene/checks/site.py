@@ -93,13 +93,19 @@ def health(out: Path, changed: list[str], limit: int = 12) -> int:
     """Every finding counted per rule, the first ``limit`` printed: one task closes a handful, not two hundred."""
     if not (out / "index.html").exists() and build(out):
         return 1
-    only = {Path(c).stem for c in changed if c.startswith("docs/")} if changed else None
+    # --changed scopes the check to the session's own work: the pages whose source it wrote, and, for a shared file
+    # (an include, a layout, data, styles, assets), every page, counting only what that file produces (its src or href)
+    shared_dirs = ("docs/_includes/", "docs/_layouts/", "docs/_data/", "docs/_sass/", "docs/_plugins/", "docs/assets/")
+    shared = [c for c in changed if c.startswith(shared_dirs)]
+    only = {Path(c).stem for c in changed if c.startswith("docs/") and not c.startswith(shared_dirs)} if changed else None
+    shared_text = "\n".join((ROOT / c).read_text(encoding="utf-8", errors="replace") for c in shared if (ROOT / c).is_file())
     lines: list[str] = []
     for page in sorted(out.rglob("*.html")):
         rel = page.relative_to(out).as_posix()
         if rel.startswith(("demos/", "assets/", "storybooks/", "blog/drafts/", "skills/")) or "/storybook" in rel:
             continue
-        if only is not None and page.stem not in only and page.parent.name not in only:
+        in_scope = only is None or page.stem in only or page.parent.name in only
+        if not in_scope and not shared:
             continue
         p = Page()
         try:
@@ -109,16 +115,20 @@ def health(out: Path, changed: list[str], limit: int = 12) -> int:
             continue
         if p.redirect:
             continue
+        found: list[tuple[str, str]] = []   # (finding, the src or href it is about; empty for one-h1)
         for href in p.links:
             if re.match(r"(?i)^(https?:|mailto:|tel:|javascript:|data:|#|//)", href) or "{{" in href or href.startswith("/demos/"):
                 continue
             if not resolve(out, page, href):
-                lines.append(f"FAIL site.health [broken-link] {rel} -> {href}")
+                found.append((f"FAIL site.health [broken-link] {rel} -> {href}", href))
         for src, alt, role in p.images:
             if alt is None and role != "presentation":
-                lines.append(f"FAIL site.health [img-alt] {rel}: <img src=\"{src[:80]}\"> has no alt")
+                found.append((f"FAIL site.health [img-alt] {rel}: <img src=\"{src[:80]}\"> has no alt", src))
         if p.h1 != 1 and not rel.endswith("404.html"):
-            lines.append(f"FAIL site.health [one-h1] {rel}: {p.h1} <h1> elements, expected 1")
+            found.append((f"FAIL site.health [one-h1] {rel}: {p.h1} <h1> elements, expected 1", ""))
+        if not in_scope:   # a shared file changed: this page counts for what that file produces
+            found = [(line, key) for line, key in found if key and (key in shared_text or key.lstrip("/") in shared_text)]
+        lines += [line for line, _ in found]
     if not lines:
         print("ok site.health: links resolve, images carry alt, every page has one h1")
         return 0
