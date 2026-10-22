@@ -159,7 +159,8 @@ heartbeat:
   rooms: .benzene/rooms
   publish: false                       # never post: every item waits in its room for Approve / Reject
   commit: false
-  release: []
+  release:                             # after a change lands by policy: the branch level with master, pushed, a PR to master, merged when CI passes
+    - [sh, -c, "git fetch -q origin master && git merge -q --ff-only origin/master && git -c credential.helper='!gh auth git-credential' push -q origin HEAD:refs/heads/benzene/onboarding && (gh pr create --base master --head benzene/onboarding --title 'CTO changes merged by policy from the heartbeat' --body 'Changes that passed their beta (no regression against the workspace, the preview built) and were merged into benzene/onboarding by heartbeat.worktree.auto_approve; each is on record in the CTO room.' >/dev/null 2>&1 || true) && (gh pr merge benzene/onboarding --auto --merge >/dev/null 2>&1 || true)"]
   rework_per_beat: 2
   worktree:
     offices: [cto]
@@ -168,6 +169,7 @@ heartbeat:
     build: [python3, .benzene/checks/site.py, build, --out, docs/_site, --baseurl, '/beta/{change}']
     preview: docs/_site
     max_open: 3
+    auto_approve: [cto]                # the CEO's standing yes (2026-10-22): a CTO change whose beta passes lands and is released
 
 # The quality ratchet on what the CMO holds for review (benzene.quality): every item is scored by G-Eval (DeepEval) against
 # the competitor's best post on its channel, with Gemma as the judge (another family than the CMO's NVIDIA writer), and Jev
