@@ -105,6 +105,7 @@ offices:
         - python3
         - .benzene/checks/site.py
         - health
+        scoped: [python3, .benzene/checks/site.py, health, --changed, '{touched}']   # the pages the session wrote
         cwd: .
         timeout_s: 900
     - name: no-client-secret
@@ -299,6 +300,7 @@ offices:
         - python3
         - .benzene/checks/templates.py
         - agents
+        scoped: [python3, .benzene/checks/templates.py, agents, --changed, '{touched}']   # the templates the session wrote in
         cwd: .
         timeout_s: 900
     - name: todo-app-stability
@@ -346,6 +348,7 @@ offices:
         command:
         - python3
         - .benzene/checks/docs.py
+        scoped: [python3, .benzene/checks/docs.py, --changed, '{touched}']   # the session's own docs
         cwd: .
         timeout_s: 900
     channels:
