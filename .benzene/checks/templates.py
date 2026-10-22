@@ -2,7 +2,7 @@
 """The template harness: every template is the same architecture, configured for agents, and "build a todo app" is stable.
 
     python3 .benzene/checks/templates.py integrity      # atomic layout + the same todo-app parts in every template
-    python3 .benzene/checks/templates.py agents         # every template's AGENTS.md wires the elegant skills it uses
+    python3 .benzene/checks/templates.py agents [--changed FILE ...]      # every template's AGENTS.md wires the elegant skills it uses
     python3 .benzene/checks/templates.py stability [N]  # elegant-opencode's "build a todo app", N runs, on this repo's skills
 
 The Frontend Template Harness Builder (a CTO sub-agent) keeps all three green: it combines the elegant skills
@@ -82,10 +82,18 @@ def integrity() -> int:
     return 1 if lines else 0
 
 
-def agents() -> int:
+def agents(changed: list[str] | None = None) -> int:
+    """With --changed, only the templates the changed files belong to are checked: a session answers for its own work,
+    and a run with no template among its files has nothing here to answer for."""
     lines = []
+    only = {Path(c).parts[1] for c in (changed or []) if Path(c).parts[:1] == ("templates",) and len(Path(c).parts) > 1}
+    if changed is not None and not only:
+        print("ok templates.agents: none of the changed files is a template's")
+        return 0
     known = {p.name for p in SKILLS.iterdir() if (p / "SKILL.md").exists()} if SKILLS.is_dir() else set()
     for t in templates():
+        if only and t.name not in only:
+            continue
         md = t / "AGENTS.md"
         if not md.exists():
             lines.append(f"FAIL templates.agents [missing] {t.name}: no AGENTS.md (the agent config combining the elegant skills)")
@@ -134,13 +142,18 @@ def stability(n: int) -> int:
 
 
 def main() -> int:
-    what = sys.argv[1] if len(sys.argv) > 1 else "integrity"
+    args = sys.argv[1:]
+    changed: list[str] | None = None
+    if "--changed" in args:   # the files a session wrote: the check answers for those alone
+        i = args.index("--changed")
+        changed, args = [a for a in args[i + 1:] if a], args[:i]
+    what = args[0] if args else "integrity"
     if what == "integrity":
         return integrity()
     if what == "agents":
-        return agents()
+        return agents(changed)
     if what == "stability":
-        return stability(int(sys.argv[2]) if len(sys.argv) > 2 else 25)
+        return stability(int(args[1]) if len(args) > 1 else 25)
     print(f"unknown check {what}: integrity | agents | stability [N]")
     return 2
 

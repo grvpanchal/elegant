@@ -667,6 +667,9 @@ def b_pricing() -> None:
 
 
 def b_pricing_sync() -> None:
+    cfg = yaml.safe_load((ROOT / "docs" / "_config.yml").read_text(encoding="utf-8")) or {}
+    if not cfg.get("pricing_live", True):   # the CEO holds pricing off the site (pricing_live: false): the bar waits with it
+        return
     meta = pricing_meta()
     site = ROOT / "docs" / "_data" / "pricing.yml"
     if not meta or not need_file(site, "the site's pricing data, rendered from the CFO's pricing"):
