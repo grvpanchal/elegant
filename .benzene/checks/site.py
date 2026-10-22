@@ -91,7 +91,7 @@ def resolve(site: Path, page: Path, href: str) -> bool:
 
 def health(out: Path, changed: list[str], limit: int = 12) -> int:
     """Every finding counted per rule, the first ``limit`` printed: one task closes a handful, not two hundred."""
-    if not (out / "index.html").exists() and build(out):
+    if (changed or not (out / "index.html").exists()) and build(out):   # a scoped check judges the session's edits: build them first
         return 1
     # --changed scopes the check to the session's own work: the pages whose source it wrote, and, for a shared file
     # (an include, a layout, data, styles, assets), every page, counting only what that file produces (its src or href)
